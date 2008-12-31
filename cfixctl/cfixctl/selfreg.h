@@ -39,7 +39,7 @@ typedef enum _CFIXCTLP_SERVER_REGSCOPE
 	Routine Description:
 		Self (un-) register COM server.
 --*/
-HRESULT CfixctlpRegisterServer(
+EXTERN_C HRESULT CfixctlpRegisterServer(
 	__in HMODULE Module,
 	__in CFIXCTLP_SERVER_TYPE ServerType,
 	__in CFIXCTLP_SERVER_REGSCOPE RegScope,

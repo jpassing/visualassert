@@ -139,10 +139,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cfixctl\main.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>
@@ -229,18 +225,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\include\cfix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\cfixapi.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\cfixcc.h"
-				>
-			</File>
 			<File
 				RelativePath="..\include\cfixctl.h"
 				>

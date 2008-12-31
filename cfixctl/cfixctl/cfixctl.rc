@@ -46,6 +46,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+1 TYPELIB "cfixctl.tlb"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -77,6 +78,7 @@ BEGIN
             VALUE "OriginalFilename", "Cfixctl"
             VALUE "ProductName", "Cfix"
             VALUE "ProductVersion", "1, 1, 0, 1"
+            VALUE "OLESelfRegister", "1"
         END
     END
     BLOCK "VarFileInfo"

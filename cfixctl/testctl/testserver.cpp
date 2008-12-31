@@ -44,10 +44,20 @@ public:
 	{
 		TestComServer( &Exports, CLSID_TestCase );
 	}
+
+	void TestSelfReg()
+	{
+		//
+		// N.B. Requires admin rights.
+		//
+		CFIXCC_ASSERT_OK( Exports.RegisterServer() );
+		CFIXCC_ASSERT_OK( Exports.UnregisterServer() );
+	}
 };
 
 COM_EXPORTS TestServer::Exports;
 
 CFIXCC_BEGIN_CLASS( TestServer )
 	CFIXCC_METHOD( Test )
+	//CFIXCC_METHOD( TestSelfReg )
 CFIXCC_END_CLASS()

@@ -37,6 +37,7 @@ class TestModuleEumerator;
 
 class TestModule : 
 	public ICfixTestModuleInternal,
+	public ICfixTestContainer,
 	public ICfixActionFactory,
 	public IOleItemContainer
 {
@@ -123,6 +124,19 @@ public:
 
 	STDMETHOD( IsRunning )( 
 		__in LPOLESTR Item 
+		);
+
+	/*------------------------------------------------------------------
+	 * ICfixTestContainer methods.
+	 */
+	
+	STDMETHOD( GetItemCount )(
+		__out ULONG *Count
+		);
+
+	STDMETHOD( GetItem )(
+		__in ULONG Ordinal,
+		__out ICfixTestItem **Item
 		);
 
 	/*------------------------------------------------------------------
@@ -301,6 +315,11 @@ STDMETHODIMP TestModule::QueryInterface(
 		*Ptr = static_cast< ICfixTestModuleInternal* >( this );
 		Hr = S_OK;
 	}
+	else if ( InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) )
+	{
+		*Ptr = static_cast< ICfixTestContainer* >( this );
+		Hr = S_OK;
+	}
 	else if ( InlineIsEqualGUID( Iid, IID_IOleContainer ) )
 	{
 		*Ptr = static_cast< IOleContainer* >( this );
@@ -467,6 +486,33 @@ STDMETHODIMP TestModule::IsRunning(
 	}
 
 	return Found ? S_OK : MK_E_NOOBJECT;
+}
+
+/*------------------------------------------------------------------
+ * ICfixTestContainer methods.
+ */
+
+STDMETHODIMP TestModule::GetItemCount(
+	__out ULONG *Count
+	)
+{
+	if ( ! Count )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Count = this->Module->FixtureCount;
+		return S_OK;
+	}
+}
+
+STDMETHODIMP TestModule::GetItem(
+	__in ULONG Ordinal,
+	__out ICfixTestItem **Item
+	)
+{
+	return GetFixture( Ordinal, IID_ICfixTestItem, ( PVOID* ) Item );
 }
 
 /*------------------------------------------------------------------

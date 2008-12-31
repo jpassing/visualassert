@@ -17,5 +17,7 @@
 ; along with cfix.  If not, see <http://www.gnu.org/licenses/>.
  
  EXPORTS
-	DllGetClassObject	PRIVATE
-	DllCanUnloadNow		PRIVATE
+	DllGetClassObject		PRIVATE
+	DllCanUnloadNow			PRIVATE
+	DllRegisterServer		PRIVATE
+	DllUnregisterServer		PRIVATE

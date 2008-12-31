@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------
  * Purpose:
- *		DllMain routine
+ *		COM Self Registration Test.
  *
  * Copyright:
  *		2008, Johannes Passing (passing at users.sourceforge.net)
@@ -21,7 +21,4 @@
  * along with cfix.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cfixctlp.h"
-
-
-
+#include <testctlp.h>

@@ -18,12 +18,13 @@ import "ocidl.idl";
 //57f93e52-d44f-11dd-99e2-0016d3b98f9b
 //57f93e53-d44f-11dd-99e2-0016d3b98f9b
 //57f93e54-d44f-11dd-99e2-0016d3b98f9b
-//57f93e58-d44f-11dd-99e2-0016d3b98f9b
+//
+
 
 [
 	uuid( 57f93e5a-d44f-11dd-99e2-0016d3b98f9b ),
 	helpstring( "Cfix Control Library" ),
-	version( 1.0 )
+	version( 1.0 )	// N.B. Also update self-registration code.
 ]
 library Cfixctl
 {
@@ -140,6 +141,24 @@ library Cfixctl
 			[in] ULONG Flags,
 			[in] ULONG Reserved,
 			[out, retval] ICfixAction **Action
+			);
+	}
+
+	[
+	  object,
+	  uuid( 57f93e58-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixTestContainer : IUnknown 
+	{
+		HRESULT GetItemCount(
+			[out, retval] ULONG *Count
+			);
+
+		HRESULT GetItem(
+			[in] ULONG Ordinal,
+			[out, retval] ICfixTestItem **Item
 			);
 	}
 

@@ -193,8 +193,19 @@ void GetComExports(
 
 	Exports->GetClassObject = ( GETCLASSOBJ_PROC ) 
 		GetProcAddress( Module, "DllGetClassObject" );
+	CFIXCC_ASSERT( Exports->GetClassObject );
+
 	Exports->CanUnloadNow = ( CANUNLOADNOW_PROC ) 
 		GetProcAddress( Module, "DllCanUnloadNow" );
+	CFIXCC_ASSERT( Exports->CanUnloadNow );
+
+	Exports->RegisterServer = ( SELFREGISTER_PROC ) 
+		GetProcAddress( Module, "DllRegisterServer" );
+	CFIXCC_ASSERT( Exports->RegisterServer );
+
+	Exports->UnregisterServer = ( SELFREGISTER_PROC ) 
+		GetProcAddress( Module, "DllUnregisterServer" );
+	CFIXCC_ASSERT( Exports->UnregisterServer );
 
 	CFIX_ASSERT( Exports->GetClassObject );
 	CFIX_ASSERT( Exports->CanUnloadNow );

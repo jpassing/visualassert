@@ -165,6 +165,40 @@ public:
 		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
 	}
 
+	void TestGetItem()
+	{
+		ICfixTestModuleInternal *Module;
+		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
+			NULL, IID_ICfixTestModuleInternal, ( PVOID* ) &Module ) );
+
+		CFIXCC_ASSERT_OK( Module->Initialize( 
+			L"path", 
+			CfixTestModuleTypeUser, 
+			CfixTestModuleArchAmd64,
+			&SampleModule ) );
+
+		ICfixTestContainer *Container;
+		CFIXCC_ASSERT_OK( Module->QueryInterface( 
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
+
+		ULONG Count;
+		CFIXCC_ASSERT_OK( Container->GetItemCount( &Count ) );
+		CFIXCC_ASSERT_EQUALS( 3UL, Count );
+
+		ICfixTestItem *Item;
+		CFIXCC_ASSERT_OK( Container->GetItem( 0, &Item ) );
+		Item->Release();
+
+		CFIXCC_ASSERT_OK( Container->GetItem( 2, &Item ) );
+		Item->Release();
+
+		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Container->GetItem( 3, &Item ) );
+		
+
+		Module->Release();
+		Container->Release();
+	}
+
 	void TestGetObject()
 	{
 		ICfixTestModuleInternal *Module;
@@ -276,6 +310,7 @@ CFIXCC_BEGIN_CLASS( TestModule )
 	CFIXCC_METHOD( TestClassFactory )
 	CFIXCC_METHOD( TestUnknown )
 	CFIXCC_METHOD( TestBasics )
+	CFIXCC_METHOD( TestGetItem )
 	CFIXCC_METHOD( TestGetObject )
 	CFIXCC_METHOD( TestEnumObjects )	
 CFIXCC_END_CLASS()

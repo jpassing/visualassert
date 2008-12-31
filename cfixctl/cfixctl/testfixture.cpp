@@ -37,6 +37,7 @@ const GUID IID_ICfixTestFixtureInternal =
 
 class TestFixture : 
 	public ICfixTestFixtureInternal,
+	public ICfixTestContainer,
 	public IOleItemContainer,
 	public IMarshal
 {
@@ -162,6 +163,19 @@ public:
 		);
 
 	/*------------------------------------------------------------------
+	 * ICfixTestContainer methods.
+	 */
+	
+	STDMETHOD( GetItemCount )(
+		__out ULONG *Count
+		);
+
+	STDMETHOD( GetItem )(
+		__in ULONG Ordinal,
+		__out ICfixTestItem **Item
+		);
+
+	/*------------------------------------------------------------------
 	 * ICfixTestItem methods.
 	 */
 
@@ -249,6 +263,11 @@ STDMETHODIMP TestFixture::QueryInterface(
 	else if ( InlineIsEqualGUID( Iid, IID_ICfixTestFixtureInternal ) )
 	{
 		*Ptr = static_cast< ICfixTestFixtureInternal* >( this );
+		Hr = S_OK;
+	}
+	else if ( InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) )
+	{
+		*Ptr = static_cast< ICfixTestContainer* >( this );
 		Hr = S_OK;
 	}
 	else if ( InlineIsEqualGUID( Iid, IID_IOleContainer ) )
@@ -651,6 +670,49 @@ STDMETHODIMP TestFixture::IsRunning(
 	}
 
 	return Found ? S_OK : MK_E_NOOBJECT;
+}
+
+/*------------------------------------------------------------------
+ * ICfixTestContainer methods.
+ */
+
+STDMETHODIMP TestFixture::GetItemCount(
+	__out ULONG *Count
+	)
+{
+	if ( ! Count )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Count = this->Children.GetCount();
+		return S_OK;
+	}
+}
+
+STDMETHODIMP TestFixture::GetItem(
+	__in ULONG Ordinal,
+	__out ICfixTestItem **Item
+	)
+{
+	if ( ! Item )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Item = NULL;
+	}
+
+	if ( Ordinal >= this->Children.GetCount() )
+	{
+		return E_INVALIDARG;
+	}
+
+	*Item = this->Children.Get( Ordinal );
+	( *Item )->AddRef();
+	return S_OK;
 }
 
 /*------------------------------------------------------------------

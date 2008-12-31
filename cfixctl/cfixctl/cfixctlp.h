@@ -30,6 +30,11 @@
 #include <cfixctlmsg.h>
 #include <crtdbg.h>
 
+#pragma warning( push )
+#pragma warning( disable: 6011; disable: 6387 )
+#include <strsafe.h>
+#pragma warning( pop )
+
 #define ASSERT _ASSERTE
 
 #ifndef VERIFY

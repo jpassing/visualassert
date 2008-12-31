@@ -180,6 +180,44 @@ public:
 		TestMarshal( &Fixture );
 	}
 
+	void TestGetItem()
+	{
+		CFIX_FIXTURE FixtureDefinition = {
+			L"fix",
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			1,
+			{ L"test", NULL, NULL } };
+
+		ICfixTestFixtureInternal *Fixture;
+		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &Fixture ) );
+
+		StubActionFactory Factory;
+		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
+
+		ICfixTestContainer *Container;
+		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
+
+		ULONG Count;
+		CFIXCC_ASSERT_OK( Container->GetItemCount( &Count ) );
+		CFIXCC_ASSERT_EQUALS( 1UL, Count );
+
+		ICfixTestItem *Item;
+		CFIXCC_ASSERT_OK( Container->GetItem( 0, &Item ) );
+		Item->Release();
+
+		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Container->GetItem( 1, &Item ) );
+		
+		Fixture->Release();
+		Container->Release();
+	}
+
 	void TestGetObject()
 	{
 		CFIX_FIXTURE FixtureDefinition = {
@@ -348,6 +386,7 @@ CFIXCC_BEGIN_CLASS( TestFixture )
 	CFIXCC_METHOD( TestUnknown )
 	CFIXCC_METHOD( TestMarshalWithEmptyNameAndFixture )
 	CFIXCC_METHOD( TestMarshalWithNameAndFixture )	
+	CFIXCC_METHOD( TestGetItem )	
 	CFIXCC_METHOD( TestGetObject )	
 	CFIXCC_METHOD( TestEnumObjectsEmpty )	
 	CFIXCC_METHOD( TestEnumObjectsNonEmpty )	

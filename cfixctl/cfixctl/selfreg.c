@@ -318,7 +318,7 @@ HRESULT CfixctlpRegisterServer(
 	{
 		LONG Result = RegOpenKeyEx(
 			HKEY_CURRENT_USER,
-			L"Classes",
+			L"Software\\Classes",
 			0,
 			KEY_WRITE,
 			&BaseKey );
