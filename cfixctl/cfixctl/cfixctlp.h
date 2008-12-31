@@ -29,6 +29,7 @@
 #include <cfixctl.h>
 #include <cfixctlmsg.h>
 #include <crtdbg.h>
+#include "comutil.h"
 
 #pragma warning( push )
 #pragma warning( disable: 6011; disable: 6387 )
@@ -45,19 +46,20 @@
 	#endif
 #endif
 
-#define DECLARE_NOT_COPYABLE( ClassName )								\
-	private:															\
-		ClassName( const ClassName& );									\
-		const ClassName& operator = ( const ClassName& );
-
-HRESULT CfixctlpAddRefServer();
-HRESULT CfixctlpReleaseServer();
-
 /*----------------------------------------------------------------------
  *
  * Class factories.
  *
  */
+
+class CfixctlServerLock
+{
+public:
+	void LockServer(
+		__in BOOL Lock
+		);
+};
+
 IClassFactory& CfixctlpGetTestCaseFactory();
 IClassFactory& CfixctlpGetTestFixtureFactory();
 IClassFactory& CfixctlpGetTestModuleFactory();

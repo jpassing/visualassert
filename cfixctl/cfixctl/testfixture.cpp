@@ -22,7 +22,6 @@
  */
 
 #include "cfixctlp.h"
-#include "comutil.h"
 
 const GUID IID_ICfixTestFixtureInternal = 
 	{ 0xfdac652, 0x27d6, 0x4283, { 0x8b, 0x53, 0x97, 0x5a, 0x99, 0x28, 0xb, 0x97 } };
@@ -209,7 +208,7 @@ public:
  */
 IClassFactory& CfixctlpGetTestFixtureFactory()
 {
-	static ComClassFactory< ComMtaObject< TestFixture > > Factory;
+	static ComClassFactory< ComMtaObject< TestFixture >, CfixctlServerLock > Factory;
 	return Factory;
 }
 

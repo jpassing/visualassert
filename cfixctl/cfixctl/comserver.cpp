@@ -164,26 +164,22 @@ Cleanup:
 
 /*----------------------------------------------------------------------
  *
- * Internals.
+ * Server lock maintenance.
  *
  */
 
-HRESULT CfixctlpAddRefServer()
+void CfixctlServerLock::LockServer(
+	__in BOOL Lock
+	)
 {
-	InterlockedIncrement( &CfixctlsServerLocks );
-	return S_OK;
-}
-
-HRESULT CfixctlpReleaseServer()
-{
-	if ( CfixctlsServerLocks == 0 )
+	if ( Lock )
 	{
-		return E_UNEXPECTED;
+		InterlockedIncrement( &CfixctlsServerLocks );
 	}
 	else
 	{
+		ASSERT( CfixctlsServerLocks > 0 );
 		InterlockedDecrement( &CfixctlsServerLocks );
-		return S_OK;
 	}
 }
 

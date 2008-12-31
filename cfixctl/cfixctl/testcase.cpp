@@ -22,7 +22,6 @@
  */
 
 #include "cfixctlp.h"
-#include "comutil.h"
 
 // {221F2D4B-0DF5-4755-9CF4-CD6B566B0874}
 const GUID IID_ICfixTestCaseInternal = 
@@ -146,7 +145,7 @@ public:
  */
 IClassFactory& CfixctlpGetTestCaseFactory()
 {
-	static ComClassFactory< ComMtaObject< TestCase > > Factory;
+	static ComClassFactory< ComMtaObject< TestCase >, CfixctlServerLock > Factory;
 	return Factory;
 }
 

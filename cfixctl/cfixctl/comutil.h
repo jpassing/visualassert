@@ -21,7 +21,16 @@
  * along with cfix.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cfixctlp.h"
+#include <ole2.h>
+
+#include <crtdbg.h>
+#define ASSERT _ASSERTE
+
+
+#define DECLARE_NOT_COPYABLE( ClassName )								\
+	private:															\
+		ClassName( const ClassName& );									\
+		const ClassName& operator = ( const ClassName& );
 
 /*++
 	Class Description:
@@ -34,13 +43,22 @@ class ComMtaObject : public T
 
 private:
 	volatile LONG ReferenceCount;
+	IClassFactory *Factory;
 
 public:
-	ComMtaObject() : ReferenceCount( 1 )
-	{}
+	ComMtaObject( IClassFactory *Factory ) 
+		: ReferenceCount( 1 )
+		, Factory( Factory )
+	{
+		//
+		// AddRef factory to lock server.
+		//
+		Factory->AddRef();
+	}
 
 	virtual ~ComMtaObject()
 	{
+		this->Factory->Release();
 	}
 
 public:
@@ -65,11 +83,25 @@ public:
 	Class Description:
 		Default implementation for a class factory. Objects of this
 		class support stack allocation only.
+
+		LockT is a class that implements server locking. It has to
+		look as follows:
+
+			class ComServerLock
+			{
+			public:
+				void LockServer(
+					__in BOOL Lock
+					);
+			};
 --*/
-template< typename T >
+template< typename T, typename LockT >
 struct ComClassFactory : public IClassFactory
 {
 	DECLARE_NOT_COPYABLE( ComClassFactory );
+
+private:
+	LockT ServerLock;
 
 public:
 	ComClassFactory()
@@ -133,7 +165,7 @@ public:
 			return CLASS_E_NOAGGREGATION;
 		}
 
-		T* NewObject = new T();
+		T* NewObject = new T( this );
 		if ( Object == NULL )
 		{
 			*Object = NULL;
@@ -160,14 +192,8 @@ public:
 		__in BOOL Lock
 		)
 	{
-		if ( Lock )
-		{
-			return CfixctlpAddRefServer();
-		}
-		else
-		{
-			return CfixctlpReleaseServer();
-		}
+		ServerLock.LockServer( Lock );
+		return S_OK;
 	}
 };
 

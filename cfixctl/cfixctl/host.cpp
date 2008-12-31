@@ -22,7 +22,6 @@
  */
 
 #include "cfixctlp.h"
-#include "comutil.h"
 
 #if _M_AMD64
 	#define CFIXCTLS_ARCH CfixTestModuleArchAmd64
@@ -82,7 +81,7 @@ public:
  */
 IClassFactory& CfixctlpGetHostFactory()
 {
-	static ComClassFactory< ComMtaObject< Host > > Factory;
+	static ComClassFactory< ComMtaObject< Host >, CfixctlServerLock > Factory;
 	return Factory;
 }
 
