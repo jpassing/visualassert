@@ -28,6 +28,102 @@
 static volatile LONG CfixctlsServerLocks = 0;
 static HMODULE CfixctlsModule = NULL;
 
+typedef IClassFactory& ( * CFIXCTLS_GETCLASSFACTORY_PROC )();
+
+#pragma warning( disable: 4510 )	// Reference member in POD struct.
+#pragma warning( disable: 4512 )
+#pragma warning( disable: 4610 )
+
+struct CFIXCTLS_SERVER
+{
+	CFIXCTLS_GETCLASSFACTORY_PROC GetClassFactory;
+	REFCLSID Clsid;
+	PCWSTR FriendlyName;
+	PCWSTR ProgId;
+	PCWSTR VerIndependentProgId;
+	PCWSTR ThreadingModel;
+};
+
+static CFIXCTLS_SERVER CfixctlsServers[] =
+{
+	{ 
+		CfixctlpGetTestCaseFactory, 
+		CLSID_TestCase, 
+		L"Cfix TestCase",
+		L"Cfix.Control.TestCase",
+		L"Cfix.Control.TestCase.1",
+		L"free"
+	},
+	{
+		CfixctlpGetTestFixtureFactory,
+		CLSID_TestFixture,
+		L"Cfix TestCase",
+		L"Cfix.Control.TestFixture",
+		L"Cfix.Control.TestFixture.1",
+		L"free"
+	},
+	{
+		CfixctlpGetTestModuleFactory,
+		CLSID_TestModule,
+		L"Cfix TestModule",
+		L"Cfix.Control.TestModule",
+		L"Cfix.Control.TestModule.1",
+		L"free"
+	},
+	{
+		CfixctlpGetHostFactory,
+		CLSID_Host,
+		L"Cfix Host",
+		L"Cfix.Control.Host",
+		L"Cfix.Control.Host.1",
+		L"free"
+	}
+};
+
+static HRESULT CfixctlsRegisterServer( BOOL Register )
+{
+	HRESULT Hr;
+
+	for ( ULONG Index = 0; Index < _countof( CfixctlsServers ); Index++ )
+	{
+		if ( FAILED( Hr = CfixctlpRegisterServer(
+			CfixctlsModule,
+			CfixctlpServerTypeInproc,
+			CfixctlpServerRegScopeUser,
+			CfixctlsServers[ Index ].Clsid,
+			CfixctlsServers[ Index ].FriendlyName,
+			CfixctlsServers[ Index ].ProgId,
+			CfixctlsServers[ Index ].VerIndependentProgId,
+			CfixctlsServers[ Index ].ThreadingModel,
+			Register ) ) )
+		{
+			goto Cleanup;
+		}
+	}
+
+	Hr = S_OK;
+	
+Cleanup:
+	if ( FAILED( Hr ) )
+	{
+		if ( Register )
+		{
+			//
+			// Unregister everything.
+			//
+			( VOID ) CfixctlsRegisterServer( FALSE );
+		}
+		else
+		{
+			//
+			// Unregistration failed - there is little we can do.
+			//
+		}
+	}
+
+	return Hr;
+}
+
 static HRESULT CfixctlsRegisterTypeLib()
 {
 	ASSERT( CfixctlsModule );
@@ -75,91 +171,6 @@ static HRESULT CfixctlsUnregisterTypeLib()
 		SYS_WIN32
 #endif
 		);
-}
-
-static HRESULT CfixctlsRegisterServer( BOOL Register )
-{
-	HRESULT Hr;
-
-	ASSERT( CfixctlsModule );
-
-	if ( FAILED( Hr = CfixctlpRegisterServer(
-		CfixctlsModule,
-		CfixctlpServerTypeInproc,
-		CfixctlpServerRegScopeUser,
-		CLSID_TestCase,
-		L"Cfix TestCase",
-		L"Cfix.Control.TestCase",
-		L"Cfix.Control.TestCase.1",
-		L"free",
-		Register ) ) )
-	{
-		goto Cleanup;
-	}
-
-	if ( FAILED( Hr = CfixctlpRegisterServer(
-		CfixctlsModule,
-		CfixctlpServerTypeInproc,
-		CfixctlpServerRegScopeUser,
-		CLSID_TestFixture,
-		L"Cfix TestCase",
-		L"Cfix.Control.TestFixture",
-		L"Cfix.Control.TestFixture.1",
-		L"free",
-		Register ) ) )
-	{
-		goto Cleanup;
-	}
-
-	if ( FAILED( Hr = CfixctlpRegisterServer(
-		CfixctlsModule,
-		CfixctlpServerTypeInproc,
-		CfixctlpServerRegScopeUser,
-		CLSID_TestModule,
-		L"Cfix TestModule",
-		L"Cfix.Control.TestModule",
-		L"Cfix.Control.TestModule.1",
-		L"free",
-		Register ) ) )
-	{
-		goto Cleanup;
-	}
-
-	if ( FAILED( Hr = CfixctlpRegisterServer(
-		CfixctlsModule,
-		CfixctlpServerTypeInproc,
-		CfixctlpServerRegScopeUser,
-		CLSID_Host,
-		L"Cfix Host",
-		L"Cfix.Control.Host",
-		L"Cfix.Control.Host.1",
-		L"free",
-		Register ) ) )
-	{
-		goto Cleanup;
-	}
-
-	Hr = S_OK;
-	
-Cleanup:
-	if ( FAILED( Hr ) )
-	{
-		if ( Register )
-		{
-			//
-			// Unregister everything.
-			//
-			( VOID ) CfixctlsRegisterServer( FALSE );
-		}
-		else
-		{
-			//
-			// Unregistration failed - there is little we can do.
-			//
-		}
-	}
-
-	return Hr;
 }
 
 /*----------------------------------------------------------------------
@@ -237,26 +248,16 @@ HRESULT STDMETHODCALLTYPE DllGetClassObject(
 		return E_INVALIDARG;
 	}
 
-	if ( InlineIsEqualGUID( Clsid, CLSID_TestCase ) )
+	for ( ULONG Index = 0; Index < _countof( CfixctlsServers ); Index++ )
 	{
-		return CfixctlpGetTestCaseFactory().QueryInterface( Iid, ClassObject );
+		if ( InlineIsEqualGUID( Clsid, CfixctlsServers[ Index ].Clsid ) )
+		{
+			IClassFactory& factory = ( CfixctlsServers[ Index ].GetClassFactory )();
+			return factory.QueryInterface( Iid, ClassObject );
+		}
 	}
-	else if ( InlineIsEqualGUID( Clsid, CLSID_TestFixture ) )
-	{
-		return CfixctlpGetTestFixtureFactory().QueryInterface( Iid, ClassObject );
-	}
-	else if ( InlineIsEqualGUID( Clsid, CLSID_TestModule ) )
-	{
-		return CfixctlpGetTestModuleFactory().QueryInterface( Iid, ClassObject );
-	}
-	else if ( InlineIsEqualGUID( Clsid, CLSID_Host ) )
-	{
-		return CfixctlpGetHostFactory().QueryInterface( Iid, ClassObject );
-	}
-	else
-	{
-		return CLASS_E_CLASSNOTAVAILABLE;
-	}
+
+	return CLASS_E_CLASSNOTAVAILABLE;
 }
 
 HRESULT STDMETHODCALLTYPE DllRegisterServer()
