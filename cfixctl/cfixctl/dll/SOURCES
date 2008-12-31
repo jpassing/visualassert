@@ -43,6 +43,8 @@ LINKER_FLAGS=/nxcompat /dynamicbase
 USE_LIBCMT=1
 USE_STL=1
 
+DELAYLOAD=cfixkl.dll
+
 TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\advapi32.lib \
 		   $(SDK_LIB_PATH)\shlwapi.lib \
@@ -50,28 +52,28 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\oleaut32.lib \
 		   $(SDK_LIB_PATH)\uuid.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
-		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixkl.lib		   
+		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixkl.lib \
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	   
 
 TARGETNAME=cfixctl
-TARGETPATH=..\..\bin\$(DDKBUILDENV)
+TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
 TARGETTYPE=DYNLINK
 
-PASS0_HEADERDIR=..\..\include
+PASS0_HEADERDIR=..\..\..\include
 PASS0_SOURCEDIR=.
-PASS0_CLIENTDIR=..\..\include
-PASS0_SERVERDIR=..\..\include
+PASS0_CLIENTDIR=..\..\..\include
+PASS0_SERVERDIR=..\..\..\include
 
 SOURCES=\
-	cfixctl_i.c \
-	cfixctl.idl \
-	testcase.cpp \
-	testfixture.cpp \
-	testmodule.cpp \
-	host.cpp \
-	comserver.cpp \
-	main.cpp \
-	selfreg.c \
-	cfixctl.rc \
-	cfixctlmsg.mc
+	..\cfixctl.idl \
+	..\testcase.cpp \
+	..\testfixture.cpp \
+	..\testmodule.cpp \
+	..\host.cpp \
+	..\comserver.cpp \
+	..\main.cpp \
+	..\selfreg.c \
+	..\cfixctl.rc \
+	..\cfixctlmsg.mc
 	
 DLLBASE=0x60f00000

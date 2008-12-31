@@ -47,7 +47,8 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\ole32.lib \
 		   $(SDK_LIB_PATH)\oleaut32.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
-		   $(MAKEDIR)\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl.lib
+		   $(MAKEDIR)\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl.lib \
+		   $(MAKEDIR)\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	
 
 TARGETNAME=testctl
 TARGETPATH=..\..\bin\$(DDKBUILDENV)
@@ -57,7 +58,6 @@ PASS0_HEADERDIR=..\..\include
 PASS0_SOURCEDIR=obj$(BUILD_ALT_DIR)\$(TARGET_DIRECTORY)
 
 SOURCES=\
-	cfixctl_i.c \
 	testserver.cpp \
 	testcom.cpp \
 	testtestcase.cpp \

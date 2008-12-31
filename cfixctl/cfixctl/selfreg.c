@@ -21,7 +21,7 @@
  * along with cfix.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <selfreg.h>
+#include "selfreg.h"
 #include <stdlib.h>
 #include <shlwapi.h>
 
