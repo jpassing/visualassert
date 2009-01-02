@@ -170,8 +170,9 @@ STDMETHODIMP ExecutionAction::Run(
 	//
 	// Query process sink - we do not need a ICfixEventSink.
 	//
-	HRESULT Hr = Sink->QueryInterface( 
-		IID_ICfixProcessEventSink, ( PVOID* ) &ProcessSink );
+	HRESULT Hr = Sink->GetProcessEventSink( 
+		GetCurrentProcessId(),
+		&ProcessSink );
 	if ( FAILED( Hr ) )
 	{
 		goto Cleanup;

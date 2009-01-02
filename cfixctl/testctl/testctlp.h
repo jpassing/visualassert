@@ -28,6 +28,7 @@
 #include "..\cfixctl\cfixctlp.h"
 
 #include <ole2.h>
+#include <shlwapi.h>
 
 #define CFIXCC_ASSERT_OK( Expr ) CFIX_ASSERT_EQUALS_ULONG( S_OK, ( Expr ) )
 

@@ -212,12 +212,12 @@ BOOL APIENTRY DllMain(
 	UNREFERENCED_PARAMETER( Module );
 	UNREFERENCED_PARAMETER( Reserved );
 
-	if ( Reason ==  DLL_PROCESS_ATTACH )
+	if ( Reason == DLL_PROCESS_ATTACH )
 	{
 		CfixctlsModule = Module;
 		return TRUE;
 	}
-	else if ( Reason ==  DLL_PROCESS_DETACH )
+	else if ( Reason == DLL_PROCESS_DETACH )
 	{
 #ifdef DBG	
 		_CrtDumpMemoryLeaks();

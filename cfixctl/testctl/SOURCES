@@ -63,5 +63,6 @@ SOURCES=\
 	testtestcase.cpp \
 	testtestfixture.cpp \
 	testtestmodule.cpp \
-	testhost.cpp
+	testhost.cpp \
+	testexecaction.cpp 
 	

@@ -227,6 +227,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\testctl\testexecaction.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\testctl\testhost.cpp"
 					>
 				</File>
@@ -246,6 +250,26 @@
 					RelativePath=".\testctl\testtestmodule.cpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="testlibs"
+				>
+				<Filter
+					Name="testlib10"
+					>
+					<File
+						RelativePath=".\testlibs\testlib10\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib10\suite.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib10\testlib10.def"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
