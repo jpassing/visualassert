@@ -23,14 +23,6 @@
 
 #include "cfixctlp.h"
 
-#if _M_AMD64
-	#define CFIXCTLS_ARCH CfixTestModuleArchAmd64
-#elif _M_IX86 
-	#define CFIXCTLS_ARCH CfixTestModuleArchI386
-#else
-	#error Unsupported architecture
-#endif
-
 /*------------------------------------------------------------------
  * 
  * Class Declaration.
@@ -207,7 +199,7 @@ STDMETHODIMP Host::LoadModule(
 	Hr = ModuleObject->Initialize(
 		Path,
 		ModuleType,
-		CFIXCTLS_ARCH,
+		CFIXCTLP_OWN_ARCHITECTURE,
 		Module );
 	if ( FAILED( Hr ) )
 	{
@@ -243,7 +235,7 @@ STDMETHODIMP Host::GetArchitecture(
 	}
 	else
 	{
-		*Arch = CFIXCTLS_ARCH;
+		*Arch = CFIXCTLP_OWN_ARCHITECTURE;
 		return S_OK;
 	}
 }

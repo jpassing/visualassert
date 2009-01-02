@@ -143,6 +143,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cfixctl\localagent.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>

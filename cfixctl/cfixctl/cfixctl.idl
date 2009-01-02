@@ -8,8 +8,8 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e4b-d44f-11dd-99e2-0016d3b98f9b
-//57f93e4c-d44f-11dd-99e2-0016d3b98f9b
+//
+//
 //57f93e4d-d44f-11dd-99e2-0016d3b98f9b
 //57f93e4e-d44f-11dd-99e2-0016d3b98f9b
 //57f93e4f-d44f-11dd-99e2-0016d3b98f9b
@@ -104,6 +104,20 @@ library Cfixctl
 			);
 	}
 
+	[
+	  object,
+	  uuid( 57f93e4b-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixAgent : IUnknown 
+	{
+		HRESULT CreateHost( 
+			[in] CfixTestModuleArch Arch,
+			[in] DWORD Clsctx,
+			[out] ICfixHost** Host
+			);
+	}
 
 	/*----------------------------------------------------------------------
 	 *
@@ -121,7 +135,7 @@ library Cfixctl
 	{
 		/*++
 			Method Description:
-				Get the name to the test item.
+				Get the name of the test item.
 
 			Arguments:
 				Name		- Result.
@@ -449,5 +463,13 @@ library Cfixctl
 	coclass FixtureExecutionAction
 	{
 		[default] interface ICfixAction;
+	}
+
+	[
+		uuid( 57f93e4c-d44f-11dd-99e2-0016d3b98f9b )
+	]
+	coclass LocalAgent
+	{
+		[default] interface ICfixAgent;
 	}
 }

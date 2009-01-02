@@ -74,6 +74,7 @@ SOURCES=\
 	..\main.cpp \
 	..\execaction.cpp \
 	..\execctxadapter.cpp \
+	..\localagent.cpp \
 	..\selfreg.c \
 	..\cfixctl.rc \
 	..\cfixctlmsg.mc

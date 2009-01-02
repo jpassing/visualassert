@@ -43,7 +43,7 @@ struct CFIXCTLS_SERVER
 static CFIXCTLS_SERVER CfixctlsServers[] =
 {
 	{ 
-		CfixctlpGetTestCaseFactory, 
+		CfixctlpGetTestCaseFactory,		// Creatable due to MBV.
 		CLSID_TestCase, 
 		L"Cfix TestCase",
 		L"Cfix.Control.TestCase",
@@ -51,7 +51,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"free"
 	},
 	{
-		CfixctlpGetTestFixtureFactory,
+		CfixctlpGetTestFixtureFactory,	// Creatable due to MBV.
 		CLSID_TestFixture,
 		L"Cfix TestCase",
 		L"Cfix.Control.TestFixture",
@@ -67,7 +67,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"free"
 	},
 	{
-		CfixctlpGetHostFactory,
+		NULL,
 		CLSID_Host,
 		L"Cfix Host",
 		L"Cfix.Control.Host",
@@ -75,11 +75,19 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"free"
 	},
 	{
-		CfixctlpGetExecutionActionFactory,
+		NULL,
 		CLSID_FixtureExecutionAction,
 		L"Cfix ExecutionAction",
 		L"Cfix.Control.ExecutionAction",
 		L"Cfix.Control.ExecutionAction.1",
+		L"free"
+	},
+	{
+		CfixctlpGetLocalAgentFactory,
+		CLSID_LocalAgent,
+		L"Cfix LocalAgent",
+		L"Cfix.Control.LocalAgent",
+		L"Cfix.Control.LocalAgent.1",
 		L"free"
 	}
 };
@@ -256,8 +264,18 @@ HRESULT STDMETHODCALLTYPE DllGetClassObject(
 	{
 		if ( InlineIsEqualGUID( Clsid, CfixctlsServers[ Index ].Clsid ) )
 		{
-			IClassFactory& factory = ( CfixctlsServers[ Index ].GetClassFactory )();
-			return factory.QueryInterface( Iid, ClassObject );
+			if ( CfixctlsServers[ Index ].GetClassFactory == NULL )
+			{
+				//
+				// Noncreatable.
+				//
+				return CLASS_E_CLASSNOTAVAILABLE;
+			}
+			else
+			{
+				IClassFactory& factory = ( CfixctlsServers[ Index ].GetClassFactory )();
+				return factory.QueryInterface( Iid, ClassObject );
+			}
 		}
 	}
 
