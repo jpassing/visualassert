@@ -64,6 +64,24 @@ IClassFactory& CfixctlpGetTestCaseFactory();
 IClassFactory& CfixctlpGetTestFixtureFactory();
 IClassFactory& CfixctlpGetTestModuleFactory();
 IClassFactory& CfixctlpGetHostFactory();
+IClassFactory& CfixctlpGetExecutionActionFactory();
+
+/*----------------------------------------------------------------------
+ *
+ * Internal Routines.
+ *
+ */
+
+/*++
+	Routine Description:
+		Create a wrapper execution context that delegates events to
+		a ICfixProcessEventSink.
+--*/
+HRESULT CfixctlpCreateExecutionContextAdapter(
+	__in ICfixTestModule *Module,
+	__in ICfixProcessEventSink *ProcessSink,
+	__out PCFIX_EXECUTION_CONTEXT *Context
+	);
 
 /*----------------------------------------------------------------------
  *
@@ -114,7 +132,6 @@ ICfixTestFixtureInternal : public ICfixTestItem
 	STDMETHOD_( BSTR, GetNameInternal )() PURE;
 };
 
-
 DEFINE_GUID( IID_ICfixTestModuleInternal, 
 	0x2e8f211, 0xe29b, 0x40e0, 0xb2, 0xba, 0x39, 0xba, 0x4c, 0x56, 0xb8, 0x39);
 
@@ -127,5 +144,18 @@ ICfixTestModuleInternal : public ICfixTestModule
 		__in CfixTestModuleType Type,
 		__in CfixTestModuleArch Architecture,
 		__in PCFIX_TEST_MODULE Module
+		) PURE;
+};
+
+DEFINE_GUID( IID_ICfixExecutionActionInternal, 
+	0x5bcd9d4e, 0xa622, 0x4d60, 0x86, 0xed, 0x97, 0xd, 0x11, 0xc1, 0x73, 0x8d);
+
+interface
+DECLSPEC_UUID( "5BCD9D4E-A622-4d60-86ED-970D11C1738D" ) 
+ICfixExecutionActionInternal : public ICfixAction
+{
+	STDMETHOD( Initialize )(
+		__in ICfixTestModule *Module,
+		__in PCFIX_ACTION Action
 		) PURE;
 };

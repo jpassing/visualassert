@@ -119,7 +119,7 @@ public:
 		);
 
 	STDMETHOD( CreateExecutionAction )(
-		__in ULONG Flags,
+		__in ULONG SchedulingFlags,
 		__in ULONG Reserved,
 		__out ICfixAction **Action 
 		);
@@ -411,7 +411,7 @@ STDMETHODIMP TestCase::GetName(
 }
 
 STDMETHODIMP TestCase::CreateExecutionAction(
-	__in ULONG Flags,
+	__in ULONG SchedulingFlags,
 	__in ULONG Reserved,
 	__out ICfixAction **Action 
 	)
@@ -419,7 +419,7 @@ STDMETHODIMP TestCase::CreateExecutionAction(
 	return this->ActionFactory->CreateExecutionAction(
 		this->FixtureOrdinal,
 		this->Ordinal,
-		Flags,
+		SchedulingFlags,
 		Reserved,
 		Action );
 }

@@ -135,15 +135,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cfixctl\DIRS"
+					>
+				</File>
+				<File
 					RelativePath=".\cfixctl\host.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\cfixctl\resource.h"
-					>
-				</File>
-				<File
-					RelativePath=".\cfixctl\SOURCES"
 					>
 				</File>
 				<Filter
@@ -175,6 +175,34 @@
 					</File>
 					<File
 						RelativePath=".\cfixctl\selfreg.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="_dll"
+					>
+					<File
+						RelativePath=".\cfixctl\dll\SOURCES"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="_uuidlib"
+					>
+					<File
+						RelativePath=".\cfixctl\uuidlib\SOURCES"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="actions"
+					>
+					<File
+						RelativePath=".\cfixctl\execaction.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cfixctl\execctxadapter.cpp"
 						>
 					</File>
 				</Filter>

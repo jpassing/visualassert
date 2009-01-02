@@ -44,3 +44,35 @@ SymbolicName	= CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE
 Language		= English
 Unrecognized module type.
 .
+
+MessageId		= 0xB001
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_QUERY_DEF_DISP_FAILED
+Language		= English
+Failed to obtain default disposition decision.
+.
+
+MessageId		= 0xB002
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_REPORT_EVENT_FAILED
+Language		= English
+An event could not be reported.
+.
+
+MessageId		= 0xB003
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_NO_FIXTURE_SINK
+Language		= English
+Obtaining fixture sink failed.
+.
+
+MessageId		= 0xB004
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_NO_TESTCASE_SINK
+Language		= English
+Obtaining testcase sink failed.
+.

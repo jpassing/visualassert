@@ -80,14 +80,14 @@ public:
 	STDMETHOD( CreateExecutionAction )( 
         __in ULONG FixtureOrdinal,
         __in ULONG TestCaseOrdinal,
-        __in ULONG Flags,
+        __in ULONG SchedulingFlags,
         __in ULONG Reserved,
         __out ICfixAction **Action
 		)
 	{
 		UNREFERENCED_PARAMETER( FixtureOrdinal );
 		UNREFERENCED_PARAMETER( TestCaseOrdinal );
-		UNREFERENCED_PARAMETER( Flags );
+		UNREFERENCED_PARAMETER( SchedulingFlags );
 		UNREFERENCED_PARAMETER( Reserved );
 		UNREFERENCED_PARAMETER( Action );
 		return S_OK;

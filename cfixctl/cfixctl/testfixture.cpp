@@ -183,7 +183,7 @@ public:
 		);
 
 	STDMETHOD( CreateExecutionAction )(
-		__in ULONG Flags,
+		__in ULONG SchedulingFlags,
 		__in ULONG Reserved,
 		__out ICfixAction **Action 
 		);
@@ -726,7 +726,7 @@ STDMETHODIMP TestFixture::GetName(
 }
 
 STDMETHODIMP TestFixture::CreateExecutionAction(
-	__in ULONG Flags,
+	__in ULONG SchedulingFlags,
 	__in ULONG Reserved,
 	__out ICfixAction **Action 
 	)
@@ -734,7 +734,7 @@ STDMETHODIMP TestFixture::CreateExecutionAction(
 	return this->ActionFactory->CreateExecutionAction(
 		this->Ordinal,
 		CFIXCTL_EXECUTE_ALL,
-		Flags,
+		SchedulingFlags,
 		Reserved,
 		Action );
 }

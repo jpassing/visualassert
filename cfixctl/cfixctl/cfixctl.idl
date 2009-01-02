@@ -1,13 +1,13 @@
 import "oaidl.idl";
 import "ocidl.idl";
 
+// 
 //
 //
-//57f93e47-d44f-11dd-99e2-0016d3b98f9b
 //
 //
-//57f93e49-d44f-11dd-99e2-0016d3b98f9b
-//57f93e4a-d44f-11dd-99e2-0016d3b98f9b
+//
+//
 //57f93e4b-d44f-11dd-99e2-0016d3b98f9b
 //57f93e4c-d44f-11dd-99e2-0016d3b98f9b
 //57f93e4d-d44f-11dd-99e2-0016d3b98f9b
@@ -17,7 +17,7 @@ import "ocidl.idl";
 //57f93e51-d44f-11dd-99e2-0016d3b98f9b
 //57f93e52-d44f-11dd-99e2-0016d3b98f9b
 //57f93e53-d44f-11dd-99e2-0016d3b98f9b
-//57f93e54-d44f-11dd-99e2-0016d3b98f9b
+//
 //
 
 
@@ -141,7 +141,7 @@ library Cfixctl
 				Action		- Result.
 		--*/
 		HRESULT CreateExecutionAction(
-			[in] ULONG Flags,
+			[in] ULONG SchedulingFlags,
 			[in] ULONG Reserved,
 			[out, retval] ICfixAction **Action
 			);
@@ -199,6 +199,9 @@ library Cfixctl
 
 	const ULONG CFIXCTL_EXECUTE_ALL = 0xFFFFFFFF;
 
+	const ULONG CFIXCTL_DISP_FLAG_ALWAYS_BREAK_ON_FAILURE		= 1;
+	const ULONG CFIXCTL_DISP_FLAG_LEAVE_EXCEPTIONS_UNHANDLED	= 2;
+
 	[
 	  object,
 	  uuid( 57f93e59-d44f-11dd-99e2-0016d3b98f9b ),
@@ -216,14 +219,14 @@ library Cfixctl
 			Arguments:
 				FixtureOrdinal	- Ordinal of fixture or CFIXCTL_EXECUTE_ALL.
 				TestCaseOrdinal	- Ordinal of test case or CFIXCTL_EXECUTE_ALL.
-				Flags			- CFIX_FIXTURE_EXECUTION_* (optional).
+				SchedulingFlags	- CFIX_FIXTURE_EXECUTION_* (optional).
 				Reserved		- Must be 0.
 				Action			- Result.
 		--*/
 		HRESULT CreateExecutionAction(
 			[in] ULONG FixtureOrdinal,
 			[in] ULONG TestCaseOrdinal,
-			[in] ULONG Flags,
+			[in] ULONG SchedulingFlags,
 			[in] ULONG Reserved,
 			[out, retval] ICfixAction **Action
 			);
@@ -235,23 +238,115 @@ library Cfixctl
 	 *
 	 */
 
+	[
+	  object,
+	  uuid( 57f93e49-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixStackTrace : IUnknown
+	{
+		HRESULT GetFrameCount(
+			[out, retval] ULONG *Count
+			);
+
+		HRESULT GetFrame(
+			[in] ULONG Index,
+			[out] ULONGLONG *Address,
+			[out] BSTR *ModuleName,
+			[out] BSTR *FunctionName,
+			[out] ULONG *Displacement,
+			[out] BSTR *SourceFile,
+			[out] ULONG *SourceLine 
+			);
+	}
+
+	//
+	// N.B. The definitions must match CFIX_REPORT_DISPOSITION.
+	//
+
 	typedef 
 	[
-		uuid( 57f93e46-d44f-11dd-99e2-0016d3b98f9b ), 
+		uuid( 57f93e4a-d44f-11dd-99e2-0016d3b98f9b ), 
 		v1_enum,
 		version( 1.0 )
 	]
-	enum CfixOutcome {
-		CfixOutcomeSucceeded	= 0,
-		CfixOutcomeFailed		= 1,
-		CfixOutcomeInconclusive	= 2
-	} CfixOutcome;
+	enum CFIXCTL_REPORT_DISPOSITION {
+		CfixctlDispositionContinue		= 0,
+		CfixctlDispositionBreak			= 1,
+		CfixctlDispositionBreakAlways	= 2,
+		CfixctlDispositionAbort			= 3
+	} CFIXCTL_REPORT_DISPOSITION;
 
-	typedef struct _CFIXCTL_CORD_ID
+	[
+	  object,
+	  uuid( 57f93e46-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixReportEventSink : IUnknown
 	{
-		ULONG ProcessId;
-		ULONG PrimaryThreadId;
-	} CFIXCTL_CORD_ID;
+		HRESULT UnhandledException(
+			[in] ULONG ExceptionCode,
+			[in] ULONG Reserved,
+			[in] ICfixStackTrace *StackTrace,
+			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
+			);
+
+		HRESULT FailedAssertion(
+			[in] const BSTR Routine,
+			[in] const BSTR Expression,
+			[in] const BSTR File,
+			[in] ULONG Line,
+			[in] ULONG LastError,
+			[in] ULONG Reserved,
+			[in] ICfixStackTrace *StackTrace,
+			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
+			);
+
+		HRESULT Inconclusive(
+			[in] const BSTR Message,
+			[in] ULONG Reserved,
+			[in] ICfixStackTrace *StackTrace
+			);
+
+		HRESULT Log(
+			[in] const BSTR Message,
+			[in] ULONG Reserved,
+			[in] ICfixStackTrace *StackTrace
+			);
+
+		HRESULT QueryDefaultFailedAssertionDisposition(
+			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
+			);
+
+		HRESULT QueryDefaultUnhandledExceptionDisposition(
+			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
+			);
+
+		HRESULT BeforeChildThreadStart(
+			[in] ULONG ThreadId
+			);
+
+		HRESULT AfterChildThreadFinish(
+			[in] ULONG ThreadId
+			);
+	}
+
+	[
+	  object,
+	  uuid( 57f93e47-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixTestCaseEventSink : ICfixReportEventSink
+	{
+		HRESULT BeforeTestCaseStart();
+
+		HRESULT AfterTestCaseFinish(
+			[in] BOOL RanToCompletion
+			);
+	}
 
 	[
 	  object,
@@ -259,38 +354,18 @@ library Cfixctl
 	  version( 1.0 ),
 	  oleautomation
 	]
-	interface ICfixCordEventSink : IUnknown
+	interface ICfixFixtureEventSink : ICfixReportEventSink
 	{
-		HRESULT BeforeFixtureStart(
-			[in] ICfixTestModule *Module,
-			[in] ULONG FixtureOrdinal
+		HRESULT BeforeFixtureStart();
+
+		HRESULT AfterFixtureFinish(
+			[in] BOOL RanToCompletion
 			);
 
-		HRESULT AfterFixtureEnd(
-			[in] ICfixTestModule *Module,
-			[in] ULONG FixtureOrdinal,
-			[in] CfixOutcome Outcome
-			);
-
-		HRESULT BeforeTestCaseStart(
-			[in] ICfixTestModule *Module,
-			[in] ULONG FixtureOrdinal,
-			[in] ULONG TestCaseOrdinal
-			);
-
-		HRESULT AfterTestCaseEnd(
-			[in] ICfixTestModule *Module,
-			[in] ULONG FixtureOrdinal,
+		HRESULT GetTestCaseEventSink(
 			[in] ULONG TestCaseOrdinal,
-			[in] CfixOutcome Outcome
-			);
-
-		HRESULT UnhandledException(
-			[in] ULONG ExceptionCode
-			);
-
-		HRESULT ThreadCreated(
-			[in] ULONG ThreadId
+			[in] ULONG ThreadId,
+			[out, retval] ICfixTestCaseEventSink **Sink
 			);
 	}
 
@@ -303,12 +378,13 @@ library Cfixctl
 	interface ICfixProcessEventSink : IUnknown
 	{
 		HRESULT Notification(
-			[in] BSTR Info
+			[in] HRESULT Hr
 			);
 
-		HRESULT GetCordEventSink(
-			[in] CFIXCTL_CORD_ID Id,
-			[out, retval] ICfixCordEventSink **Sink
+		HRESULT GetFixtureEventSink(
+			[in] ICfixTestModule *Module,
+			[in] ULONG FixtureOrdinal,
+			[out, retval] ICfixFixtureEventSink **Sink
 			);
 	}
 
@@ -364,5 +440,14 @@ library Cfixctl
 	coclass TestCase
 	{
 		[default] interface ICfixTestItem;
+	}
+
+	[
+		uuid( 57f93e54-d44f-11dd-99e2-0016d3b98f9b ),
+		noncreatable 
+	]
+	coclass FixtureExecutionAction
+	{
+		[default] interface ICfixAction;
 	}
 }

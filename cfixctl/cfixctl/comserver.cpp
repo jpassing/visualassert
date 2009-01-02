@@ -30,14 +30,10 @@ static HMODULE CfixctlsModule = NULL;
 
 typedef IClassFactory& ( * CFIXCTLS_GETCLASSFACTORY_PROC )();
 
-#pragma warning( disable: 4510 )	// Reference member in POD struct.
-#pragma warning( disable: 4512 )
-#pragma warning( disable: 4610 )
-
 struct CFIXCTLS_SERVER
 {
 	CFIXCTLS_GETCLASSFACTORY_PROC GetClassFactory;
-	REFCLSID Clsid;
+	CLSID Clsid;
 	PCWSTR FriendlyName;
 	PCWSTR ProgId;
 	PCWSTR VerIndependentProgId;
@@ -76,6 +72,14 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix Host",
 		L"Cfix.Control.Host",
 		L"Cfix.Control.Host.1",
+		L"free"
+	},
+	{
+		CfixctlpGetExecutionActionFactory,
+		CLSID_FixtureExecutionAction,
+		L"Cfix ExecutionAction",
+		L"Cfix.Control.ExecutionAction",
+		L"Cfix.Control.ExecutionAction.1",
 		L"free"
 	}
 };

@@ -147,7 +147,7 @@ public:
 		);
 
 	STDMETHOD( CreateExecutionAction )(
-		__in ULONG Flags,
+		__in ULONG SchedulingFlags,
 		__in ULONG Reserved,
 		__out ICfixAction **Action 
 		);
@@ -168,7 +168,7 @@ public:
 	STDMETHOD( CreateExecutionAction )( 
         __in ULONG FixtureOrdinal,
         __in ULONG TestCaseOrdinal,
-        __in ULONG Flags,
+        __in ULONG SchedulingFlags,
         __in ULONG Reserved,
         __out ICfixAction **Action
 		);
@@ -215,6 +215,64 @@ IClassFactory& CfixctlpGetTestModuleFactory()
 {
 	static ComClassFactory< ComMtaObject< TestModule >, CfixctlServerLock > Factory;
 	return Factory;
+}
+
+/*------------------------------------------------------------------
+ * 
+ * Helpers.
+ *
+ */
+
+static HRESULT CfixctlsCreateModuleExecutionAction(
+	__in PCFIX_TEST_MODULE Module,
+	__in ULONG Flags,
+	__out PCFIX_ACTION *Action
+	)
+{
+	ASSERT( Module );
+	ASSERT( Action );
+
+	PCFIX_ACTION SeqAction = NULL;
+	HRESULT Hr;
+
+	Hr = CfixCreateSequenceAction( &SeqAction );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	for ( ULONG Index = 0; Index < Module->FixtureCount; Index++ )
+	{
+		PCFIX_ACTION FixtureAction;
+		Hr = CfixCreateFixtureExecutionAction(
+			Module->Fixtures[ Index ],
+			Flags,
+			&FixtureAction );
+		if ( FAILED( Hr ) )
+		{
+			break;
+		}
+
+		Hr = CfixAddEntrySequenceAction( SeqAction, FixtureAction );
+
+		FixtureAction->Dereference( FixtureAction );
+
+		if ( FAILED( Hr ) )
+		{
+			break;
+		}
+	}
+
+	if ( SUCCEEDED( Hr ) )
+	{
+		*Action = SeqAction;
+		return S_OK;
+	}
+	else
+	{
+		SeqAction->Dereference( SeqAction );
+		return Hr;
+	}
 }
 
 /*------------------------------------------------------------------
@@ -526,7 +584,7 @@ STDMETHODIMP TestModule::GetName(
 }
 
 STDMETHODIMP TestModule::CreateExecutionAction(
-	__in ULONG Flags,
+	__in ULONG SchedulingFlags,
 	__in ULONG Reserved,
 	__out ICfixAction **Action 
 	)
@@ -534,7 +592,7 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 	return CreateExecutionAction(
 		CFIXCTL_EXECUTE_ALL,
 		CFIXCTL_EXECUTE_ALL,
-		Flags,
+		SchedulingFlags,
 		Reserved,
 		Action );
 }
@@ -563,7 +621,7 @@ STDMETHODIMP TestModule::GetType(
 STDMETHODIMP TestModule::CreateExecutionAction( 
     __in ULONG FixtureOrdinal,
     __in ULONG TestCaseOrdinal,
-    __in ULONG Flags,
+    __in ULONG SchedulingFlags,
     __in ULONG Reserved,
     __out ICfixAction **Action
 	)
@@ -579,7 +637,11 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 
 	if ( Reserved != 0 ||
 		 ( FixtureOrdinal == CFIXCTL_EXECUTE_ALL && 
-		   TestCaseOrdinal != CFIXCTL_EXECUTE_ALL ) )
+		   TestCaseOrdinal != CFIXCTL_EXECUTE_ALL ) ||
+		 ( FixtureOrdinal != CFIXCTL_EXECUTE_ALL && 
+		   FixtureOrdinal >= this->Module->FixtureCount ) ||
+		 ( TestCaseOrdinal != CFIXCTL_EXECUTE_ALL && 
+		   TestCaseOrdinal >= this->Module->Fixtures[ FixtureOrdinal ]->TestCaseCount ) )
 	{
 		return E_INVALIDARG;
 	}
@@ -592,12 +654,71 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 		return E_NOTIMPL;
 	}
 
+	//
+	// Create cfix action.
+	//
+	PCFIX_ACTION ExecAction = NULL;
+	ICfixExecutionActionInternal *ActionObject = NULL;
+	HRESULT Hr;
 
-	//TODO
-	UNREFERENCED_PARAMETER( Flags );
-	UNREFERENCED_PARAMETER( Reserved );
-	UNREFERENCED_PARAMETER( Action );
-	return E_NOTIMPL;
+	if ( FixtureOrdinal == CFIXCTL_EXECUTE_ALL )
+	{
+		Hr = CfixctlsCreateModuleExecutionAction(
+			this->Module,
+			SchedulingFlags,
+			&ExecAction );
+	}
+	else
+	{
+		Hr = CfixCreateFixtureExecutionAction(
+			this->Module->Fixtures[ FixtureOrdinal ],
+			SchedulingFlags,
+			&ExecAction );
+	}
+
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	//
+	// Wrap action.
+	//
+	Hr = CfixctlpGetExecutionActionFactory().CreateInstance(
+		NULL,
+		IID_ICfixExecutionActionInternal, 
+		( PVOID* ) &ActionObject );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	Hr = ActionObject->Initialize(
+		static_cast< ICfixTestModule* >( this ),
+		ExecAction );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	*Action = ActionObject;
+	Hr = S_OK;
+
+Cleanup:
+	if ( ExecAction )
+	{
+		ExecAction->Dereference( ExecAction );
+	}
+
+	if ( FAILED( Hr ) )
+	{
+		if ( ActionObject )
+		{
+			ActionObject->Release();
+		}
+	}
+
+	return Hr;
 }
 
 /*------------------------------------------------------------------
@@ -631,7 +752,6 @@ STDMETHODIMP TestModule::Initialize(
 
 	return S_OK;
 }
-
 
 /*------------------------------------------------------------------
  * 

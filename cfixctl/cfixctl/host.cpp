@@ -65,7 +65,7 @@ public:
 	 */
 	
 	STDMETHOD( LoadModule )(
-		__in BSTR const Path,
+		__in const BSTR Path,
 		__out ICfixTestModule **Module
 		);
 

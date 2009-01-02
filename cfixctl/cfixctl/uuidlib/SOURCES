@@ -24,10 +24,10 @@ TARGETNAME=cfixctl_uuid
 TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
 TARGETTYPE=LIBRARY
 
-PASS0_HEADERDIR=..\..\include
+PASS0_HEADERDIR=..\..\..\include
 PASS0_SOURCEDIR=..
-PASS0_CLIENTDIR=..\..\include
-PASS0_SERVERDIR=..\..\include
+PASS0_CLIENTDIR=..\..\..\include
+PASS0_SERVERDIR=..\..\..\include
 
 SOURCES=\
 	..\cfixctl.idl \

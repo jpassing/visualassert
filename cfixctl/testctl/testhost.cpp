@@ -82,22 +82,30 @@ public:
 		CFIXCC_ASSERT_OK( this->HostFactory->CreateInstance( 
 			NULL, IID_ICfixHost, ( PVOID* ) &Host ) );
 
+		BSTR Foo = SysAllocString( L"foo" );
+		BSTR SomeDll = SysAllocString( L"idonotexist.dll" );
+		BSTR SomeFile = SysAllocString( L"idonotexist.xxx" );
+
 		ICfixTestModule *Module;
 		CFIXCC_ASSERT_EQUALS( 
 			E_INVALIDARG,
 			Host->LoadModule(
-				L"foo",
+				Foo,
 				&Module ) );
 		CFIXCC_ASSERT_EQUALS( 
 			HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ),
 			Host->LoadModule(
-				L"idonotexist.dll",
+				SomeDll,
 				&Module ) );
 		CFIXCC_ASSERT_EQUALS( 
 			CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE,
 			Host->LoadModule(
-				L"idonotexist.xxx",
+				SomeFile,
 				&Module ) );
+
+		SysFreeString( Foo );
+		SysFreeString( SomeDll );
+		SysFreeString( SomeFile );
 
 		CFIXCC_ASSERT_EQUALS( 0UL, Host->Release() );
 	}
