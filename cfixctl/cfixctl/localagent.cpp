@@ -138,7 +138,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	}
 
 	if ( Arch > CfixTestModuleArchMax ||
-		( ( Clsctx & ( CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER ) ) != 0 ) )
+		( ( Clsctx & ~( CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER ) ) != 0 ) )
 	{
 		return E_INVALIDARG;
 	}

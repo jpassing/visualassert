@@ -1,0 +1,1 @@
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1805:DoNotInitializeUnnecessarily", Scope = "member", Target = "Cfix.Control.TestModule..ctor(System.String,Cfix.Control.Target)" )]
