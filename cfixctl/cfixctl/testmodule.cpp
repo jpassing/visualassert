@@ -36,7 +36,6 @@ class TestModuleEumerator;
 
 class TestModule : 
 	public ICfixTestModuleInternal,
-	public ICfixTestContainer,
 	public ICfixActionFactory,
 	public IOleItemContainer
 {

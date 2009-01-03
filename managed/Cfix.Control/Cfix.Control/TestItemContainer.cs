@@ -1,15 +1,26 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using Cfixctl;
 
 namespace Cfix.Control
 {
 	public class TestItemContainer : TestItem, ITestItemContainer
 	{
+		/// <summary>
+		/// Children, indexed by ordinal.
+		/// </summary>
 		private ITestItem[] subItems;
 
+		/// <summary>
+		/// Required for updating.
+		/// </summary>
+		private IDictionary< String, ITestItem > subItemsDict 
+			= new Dictionary< String, ITestItem >();
+
+		private Object updateLock = new Object();
+		
 		/*--------------------------------------------------------------
 		 * Publics.
 		 */
@@ -23,38 +34,136 @@ namespace Cfix.Control
 		{
 		}
 
-		internal void Update( ICfixTestContainer container )
+		internal void Update( Target target, ICfixTestContainer container )
 		{
-			this.subItems = new ITestItem[ container.GetItemCount() ];
-
-			for ( uint i = 0; i < subItems.Length; i++ )
+			lock ( updateLock )
 			{
-				ICfixTestItem newItem = container.GetItem( i );
+				this.subItems = new ITestItem[ container.GetItemCount() ];
 
-				try
+				IDictionary<String, ITestItem> newSubItemsDict
+					= new Dictionary<String, ITestItem>();
+
+				for ( uint i = 0; i < subItems.Length; i++ )
 				{
-					this.subItems[ i ] = TestItem.Wrap(
-						this,
-						i,
-						newItem );
+					ICfixTestItem newItem = container.GetItem( i );
 
-					TestItemContainer subContainer =
-						this.subItems[ i ] as TestItemContainer;
-					if ( subContainer != null )
+					bool itemAdded = false;
+
+					//
+					// See if we know this item.
+					//
+					ITestItem existingItem;
+					if ( this.subItemsDict.TryGetValue( newItem.GetName(), out existingItem ) )
 					{
-						subContainer.Update( ( ICfixTestContainer ) newItem );
+						//
+						// This item was there before...
+						//
+						if ( existingItem.Ordinal != i )
+						{
+							//
+							// ...but has changed its position. Re-add.
+							//
+							OnItemRemoved( existingItem );
+							itemAdded = true;
+						}
+						else
+						{
+							//
+							// ...and remains valid.
+							//
+						}
+
+						//
+						// Remove it from subItemsDict mark it has 
+						// having been processed.
+						//
+						this.subItemsDict.Remove( existingItem.Name );
 					}
+					else
+					{
+						//
+						// This item is new.
+						//
+						itemAdded = true;
+					}
+
+					if ( newSubItemsDict.ContainsKey( newItem.GetName() ) )
+					{
+						Clear();
+						throw new CfixException(
+							String.Format( "Ambiguous test case name '{0}'",
+							newItem.GetName() ) );
+					}
+
+					try
+					{
+						if ( itemAdded )
+						{
+							this.subItems[ i ] = TestItem.Wrap(
+								this,
+								i,
+								newItem );
+						}
+						else
+						{
+							this.subItems[ i ] = existingItem;
+						}
+
+						Debug.Assert( this.subItems[ i ] != null );
+
+						TestItemContainer subContainer =
+							this.subItems[ i ] as TestItemContainer;
+						if ( subContainer != null )
+						{
+							subContainer.Update(
+								target, ( ICfixTestContainer ) newItem );
+						}
+					}
+					finally
+					{
+						target.ReleaseObject( newItem );
+					}
+
+					if ( itemAdded )
+					{
+						OnItemAdded( this.subItems[ i ] );
+					}
+
+					newSubItemsDict.Add( this.subItems[ i ].Name, this.subItems[ i ] );
 				}
-				finally
+
+				//
+				// All items left in subItemsDict have been removed.
+				//
+				foreach ( ITestItem item in this.subItemsDict.Values )
 				{
-					Marshal.ReleaseComObject( newItem );
+					OnItemRemoved( item );
+				}
+
+				this.subItemsDict = newSubItemsDict;
+			}
+		}
+
+		public void Clear()
+		{
+			for ( int i = 0; i < this.subItems.Length; i++ )
+			{
+				if ( this.subItems[ i ] != null )
+				{
+					OnItemRemoved( this.subItems[ i ] );
 				}
 			}
+
+			this.subItems = null;
+			this.subItemsDict = null;
 		}
 
 		/*--------------------------------------------------------------
 		 * ITestItemContainer.
 		 */
+
+		public event TestItemChangedEventHandler ItemAdded;
+		public event TestItemChangedEventHandler ItemRemoved;
 
 		public ITestItem GetItem( uint ordinal )
 		{
@@ -65,7 +174,34 @@ namespace Cfix.Control
 		{
 			get
 			{
-				return ( uint ) this.subItems.Length;
+				if ( this.subItems == null )
+				{
+					return 0;
+				}
+				else
+				{
+					return ( uint ) this.subItems.Length;
+				}
+			}
+		}
+
+		/*--------------------------------------------------------------
+		 * Events.
+		 */
+
+		protected virtual void OnItemAdded( ITestItem item )
+		{
+			if ( ItemAdded != null )
+			{
+				ItemAdded( this, item );
+			}
+		}
+
+		protected virtual void OnItemRemoved( ITestItem item )
+		{
+			if ( ItemRemoved != null )
+			{
+				ItemRemoved( this, item );
 			}
 		}
 	}

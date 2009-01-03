@@ -248,9 +248,10 @@ STDMETHODIMP TestFixture::QueryInterface(
 	HRESULT Hr;
 
 	if ( InlineIsEqualGUID( Iid, IID_IUnknown ) ||
-	     InlineIsEqualGUID( Iid, IID_ICfixTestItem ) )
+	     InlineIsEqualGUID( Iid, IID_ICfixTestItem ) ||
+	     InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) )
 	{
-		*Ptr = static_cast< ICfixTestItem* >( this );
+		*Ptr = static_cast< ICfixTestContainer* >( this );
 		Hr = S_OK;
 
 	}
@@ -262,11 +263,6 @@ STDMETHODIMP TestFixture::QueryInterface(
 	else if ( InlineIsEqualGUID( Iid, IID_ICfixTestFixtureInternal ) )
 	{
 		*Ptr = static_cast< ICfixTestFixtureInternal* >( this );
-		Hr = S_OK;
-	}
-	else if ( InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) )
-	{
-		*Ptr = static_cast< ICfixTestContainer* >( this );
 		Hr = S_OK;
 	}
 	else if ( InlineIsEqualGUID( Iid, IID_IOleContainer ) )

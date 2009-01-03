@@ -5,9 +5,9 @@ namespace Cfix.Control
 {
 	public class TestItem : ITestItem
 	{
-		protected readonly TestItemContainer parent;
-		protected readonly uint ordinal;
-		protected readonly String name;
+		private readonly TestItemContainer parent;
+		private readonly uint ordinal;
+		private readonly String name;
 
 		internal static ITestItem Wrap(
 			TestItemContainer parent,

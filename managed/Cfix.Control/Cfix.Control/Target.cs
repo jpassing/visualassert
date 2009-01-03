@@ -24,7 +24,7 @@ namespace Cfix.Control
 			CLSCTX_LOCAL_SERVER = 0x4
 		}
 
-		private Target(
+		protected Target(
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc
@@ -65,10 +65,9 @@ namespace Cfix.Control
 			Dispose( false );
 		}
 
-		public ICfixHost CreateHost()
+		public virtual ICfixHost CreateHost()
 		{
-			Host host;
-			this.agent.CreateHost( this.arch, ( uint ) this.clsctx, out host );
+			ICfixHost host = this.agent.CreateHost( this.arch, ( uint ) this.clsctx );
 
 			Debug.Assert( host != null );
 			return host;
@@ -86,7 +85,7 @@ namespace Cfix.Control
 		{
 			if ( this.agent != null )
 			{
-				Marshal.ReleaseComObject( this.agent );
+				ReleaseObject( this.agent );
 				this.agent = null;
 			}
 		}
@@ -95,6 +94,11 @@ namespace Cfix.Control
 		{
 			Dispose( true );
 			GC.SuppressFinalize( this );
+		}
+
+		public virtual void ReleaseObject( Object obj )
+		{
+			Marshal.ReleaseComObject( obj );
 		}
 	}
 }

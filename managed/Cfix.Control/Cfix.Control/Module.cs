@@ -36,7 +36,7 @@ namespace Cfix.Control
 				}
 				finally
 				{
-					Marshal.ReleaseComObject( host );
+					target.ReleaseObject( host );
 				}
 			}
 			catch ( FileNotFoundException x )
@@ -55,7 +55,7 @@ namespace Cfix.Control
 
 		private void Update( ICfixTestModule ctlModule )
 		{
-			Update( ( ICfixTestContainer ) ctlModule );
+			Update( this.target, ( ICfixTestContainer ) ctlModule );
 		}
 
 		/*--------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace Cfix.Control
 
 		public void Update()
 		{
-			if ( target == null )
+			if ( this.target == null )
 			{
 				throw new ArgumentException();
 			}
@@ -84,11 +84,11 @@ namespace Cfix.Control
 			ICfixTestModule ctlModule = Connect();
 			try
 			{
-				Update( ctlModule );
+				Update( this.target, ctlModule );
 			}
 			finally
 			{
-				Marshal.ReleaseComObject( ctlModule );
+				this.target.ReleaseObject( ctlModule );
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace Cfix.Control
 			}
 			finally
 			{
-				Marshal.ReleaseComObject( ctlModule );
+				target.ReleaseObject( ctlModule );
 			}
 		}
 	}

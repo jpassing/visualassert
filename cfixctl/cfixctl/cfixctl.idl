@@ -10,7 +10,7 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e4d-d44f-11dd-99e2-0016d3b98f9b
+//
 //57f93e4e-d44f-11dd-99e2-0016d3b98f9b
 //57f93e4f-d44f-11dd-99e2-0016d3b98f9b
 //57f93e50-d44f-11dd-99e2-0016d3b98f9b
@@ -29,6 +29,7 @@ import "ocidl.idl";
 library Cfixctl
 {
 	interface ICfixTestItem;
+	interface ICfixTestContainer;
 	interface ICfixTestModule;
 	interface ICfixEventSink;
 
@@ -115,7 +116,7 @@ library Cfixctl
 		HRESULT CreateHost( 
 			[in] CfixTestModuleArch Arch,
 			[in] DWORD Clsctx,
-			[out] ICfixHost** Host
+			[out, retval] ICfixHost** Host
 			);
 	}
 
@@ -167,7 +168,7 @@ library Cfixctl
 	  version( 1.0 ),
 	  oleautomation
 	]
-	interface ICfixTestContainer : IUnknown 
+	interface ICfixTestContainer : ICfixTestItem 
 	{
 		HRESULT GetItemCount(
 			[out, retval] ULONG *Count
@@ -185,7 +186,7 @@ library Cfixctl
 	  version( 1.0 ),
 	  oleautomation
 	]
-	interface ICfixTestModule : ICfixTestItem 
+	interface ICfixTestModule : ICfixTestContainer 
 	{
 		/*++
 			Method Description:
@@ -417,7 +418,8 @@ library Cfixctl
 	}
 
 	[
-		uuid( 57f93e43-d44f-11dd-99e2-0016d3b98f9b )
+		uuid( 57f93e43-d44f-11dd-99e2-0016d3b98f9b ),
+		noncreatable 
 	]
 	coclass Host
 	{
@@ -430,7 +432,7 @@ library Cfixctl
 	]
 	coclass TestModule
 	{
-		[default] interface ICfixTestModule;
+		interface ICfixTestModule;
 		interface ICfixActionFactory;
 		interface ICfixTestContainer;
 		interface IOleItemContainer;
@@ -442,7 +444,7 @@ library Cfixctl
 	]
 	coclass TestFixture
 	{
-		[default] interface ICfixTestItem;
+		interface ICfixTestItem;
 		interface ICfixTestContainer;
 		interface IOleItemContainer;
 	}
@@ -453,7 +455,7 @@ library Cfixctl
 	]
 	coclass TestCase
 	{
-		[default] interface ICfixTestItem;
+		interface ICfixTestItem;
 	}
 
 	[
@@ -462,7 +464,7 @@ library Cfixctl
 	]
 	coclass FixtureExecutionAction
 	{
-		[default] interface ICfixAction;
+		interface ICfixAction;
 	}
 
 	[
@@ -470,6 +472,15 @@ library Cfixctl
 	]
 	coclass LocalAgent
 	{
-		[default] interface ICfixAgent;
+		interface ICfixAgent;
+	}
+
+	[
+		uuid( 57f93e4d-d44f-11dd-99e2-0016d3b98f9b )
+	]
+	coclass TypeLibWorkaround
+	{
+		interface ICfixTestModule;
+		interface ICfixHost;
 	}
 }
