@@ -122,11 +122,32 @@ public:
 	}
 
 	STDMETHOD( FailedAssertion )(
-		__in const BSTR Routine,
 		__in const BSTR Expression,
+		__in const BSTR Routine,
 		__in const BSTR File,
+		__in const BSTR Message,
 		__in ULONG Line,
 		__in ULONG LastError,
+		__in ULONG Flags,
+		__in ULONG Reserved,
+		__in ICfixStackTrace *StackTrace,
+		__out CFIXCTL_REPORT_DISPOSITION *Disposition
+		)
+	{
+		this->CallbackCount++;
+		this->CallbackMask |= 2;
+		return S_OK;
+	}
+
+	STDMETHOD( FailedRelateAssertion )(
+		__in const VARIANT ExpectedValue,
+		__in const VARIANT ActualValue,
+		__in const BSTR Routine,
+		__in const BSTR File,
+		__in const BSTR Message,
+		__in ULONG Line,
+		__in ULONG LastError,
+		__in ULONG Flags,
 		__in ULONG Reserved,
 		__in ICfixStackTrace *StackTrace,
 		__out CFIXCTL_REPORT_DISPOSITION *Disposition
@@ -321,16 +342,24 @@ static void TearDown()
 
 void Before()
 {
-	IClassFactory *HostFactory;
+	IClassFactory *AgentFactory;
 
 	CFIXCC_ASSERT_OK( Exports.GetClassObject( 
-		CLSID_Host, IID_IClassFactory, ( PVOID* ) &HostFactory ) );
+		CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &AgentFactory ) );
+	CFIX_ASSUME( AgentFactory );
 
-	CFIXCC_ASSERT_OK( HostFactory->CreateInstance( 
-		NULL, IID_ICfixHost, ( PVOID* ) &Host ) );
-	CFIXCC_ASSERT( Host );
+	ICfixAgent *Agent;
+	CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+	CFIX_ASSUME( !Agent );
 
-	HostFactory->Release();
+	CFIXCC_ASSERT_OK( Agent->CreateHost( 
+		TESTCTLP_OWN_ARCHITECTURE,
+		CLSCTX_INPROC_SERVER,
+		&Host ) );
+
+	Agent->Release();
+	AgentFactory->Release();
 }
 
 void After()

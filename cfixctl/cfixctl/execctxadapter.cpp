@@ -216,11 +216,13 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 			BSTR File		= SysAllocString( Event->Info.FailedAssertion.File );
 
 			Hr = Sink->FailedAssertion(
+				NULL,
 				Routine,
-				Expression,
 				File,
+				Expression,
 				Event->Info.FailedAssertion.Line,
 				Event->Info.FailedAssertion.LastError,
+				0,
 				0,
 				NULL,	// TODO.
 				&Disp );

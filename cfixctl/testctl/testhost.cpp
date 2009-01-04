@@ -27,10 +27,10 @@ class TestHost : public cfixcc::TestFixture
 {
 private:
 	static COM_EXPORTS Exports;
-	IClassFactory *HostFactory;
+	ICfixHost *Host;
 	
 public:
-	TestHost() : HostFactory( NULL )
+	TestHost() : Host( NULL )
 	{
 	}
 
@@ -47,41 +47,43 @@ public:
 
 	virtual void Before()
 	{
+		IClassFactory *AgentFactory;
+
 		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
-			CLSID_Host, IID_IClassFactory, ( PVOID* ) &this->HostFactory ) );
-		CFIXCC_ASSERT( this->HostFactory );
+			CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &AgentFactory ) );
+		CFIXCC_ASSERT( AgentFactory );
+		__assume( AgentFactory );
+
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIXCC_ASSERT( Agent );
+		__assume( Agent );
+
+		CFIXCC_ASSERT_OK( Agent->CreateHost( 
+			TESTCTLP_OWN_ARCHITECTURE,
+			CLSCTX_INPROC_SERVER,
+			&Host ) );
+
+		Agent->Release();
+		AgentFactory->Release();
 	}
 
 	virtual void After()
 	{
-		if ( this->HostFactory )
+		if ( Host )
 		{
-			this->HostFactory->Release();
+			Host->Release();
 		}
-	}
-
-	void TestClassFactory()
-	{
-		TestComClassFactory( this->HostFactory, IID_ICfixHost );
 	}
 
 	void TestUnknown()
 	{
-		IUnknown *Item;
-		CFIXCC_ASSERT_OK( this->HostFactory->CreateInstance( 
-			NULL, IID_IUnknown, ( PVOID* ) &Item ) );
-
-		TestComUnknown( Item, IID_ICfixHost, IID_IUnknown );
-
-		CFIXCC_ASSERT_EQUALS( 0UL, Item->Release() );
+		TestComUnknown( this->Host, IID_ICfixHost, IID_IUnknown );
 	}
 
 	void LoadNonExisting()
 	{
-		ICfixHost *Host;
-		CFIXCC_ASSERT_OK( this->HostFactory->CreateInstance( 
-			NULL, IID_ICfixHost, ( PVOID* ) &Host ) );
-
 		BSTR Foo = SysAllocString( L"foo" );
 		BSTR SomeDll = SysAllocString( L"idonotexist.dll" );
 		BSTR SomeFile = SysAllocString( L"idonotexist.xxx" );
@@ -106,16 +108,10 @@ public:
 		SysFreeString( Foo );
 		SysFreeString( SomeDll );
 		SysFreeString( SomeFile );
-
-		CFIXCC_ASSERT_EQUALS( 0UL, Host->Release() );
 	}
 
 	void LoadUser()
 	{
-		ICfixHost *Host;
-		CFIXCC_ASSERT_OK( this->HostFactory->CreateInstance( 
-			NULL, IID_ICfixHost, ( PVOID* ) &Host ) );
-
 		WCHAR OwnPath[ MAX_PATH ];
 		CFIXCC_ASSERT( GetModuleFileName(
 			GetModuleHandle( L"testctl" ),
@@ -129,14 +125,12 @@ public:
 				&Module ) );
 
 		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
-		CFIXCC_ASSERT_EQUALS( 0UL, Host->Release() );
 	}
 };
 
 COM_EXPORTS TestHost::Exports;
 
 CFIXCC_BEGIN_CLASS( TestHost )
-	CFIXCC_METHOD( TestClassFactory )
 	CFIXCC_METHOD( TestUnknown )
 	CFIXCC_METHOD( LoadNonExisting )
 	CFIXCC_METHOD( LoadUser )

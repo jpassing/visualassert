@@ -13,7 +13,7 @@ namespace Cfix.Control.Test
 			this.name = name;
 		}
 
-		public FixtureExecutionAction CreateExecutionAction( uint SchedulingFlags, uint Reserved )
+		public ICfixAction CreateExecutionAction( uint SchedulingFlags, uint Reserved )
 		{
 			throw new NotImplementedException();
 		}

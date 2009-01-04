@@ -104,9 +104,9 @@ namespace Cfix.Control.Test
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
-			ITestItem item = mod.GetItem( 0 );
-			Assert.AreEqual( 0, item.Ordinal );
-			Assert.AreEqual( "foo", item.Name );
+			ITestItem item0 = mod.GetItem( 0 );
+			Assert.AreEqual( 0, item0.Ordinal );
+			Assert.AreEqual( "foo", item0.Name );
 
 			int deletions = 0;
 			int additions = 0;
@@ -134,6 +134,7 @@ namespace Cfix.Control.Test
 			additions = 0;
 
 			Assert.AreEqual( 2, mod.ItemCount );
+			Assert.AreSame( item0, mod.GetItem( 0 ) );
 			Assert.AreEqual( 0, mod.GetItem( 0 ).Ordinal );
 			Assert.AreEqual( "foo", mod.GetItem( 0 ).Name );
 			Assert.AreEqual( 1, mod.GetItem( 1 ).Ordinal );

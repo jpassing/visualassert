@@ -309,11 +309,27 @@ library Cfixctl
 			);
 
 		HRESULT FailedAssertion(
-			[in] const BSTR Routine,
 			[in] const BSTR Expression,
+			[in] const BSTR Routine,
 			[in] const BSTR File,
+			[in] const BSTR Message,
 			[in] ULONG Line,
 			[in] ULONG LastError,
+			[in] ULONG Flags, // NONFATAL
+			[in] ULONG Reserved,
+			[in] ICfixStackTrace *StackTrace,
+			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
+			);
+
+		HRESULT FailedRelateAssertion(
+			[in] const VARIANT ExpectedValue,
+			[in] const VARIANT ActualValue,
+			[in] const BSTR Routine,
+			[in] const BSTR File,
+			[in] const BSTR Message,
+			[in] ULONG Line,
+			[in] ULONG LastError,
+			[in] ULONG Flags, // NONFATAL, VALUE_IS_STATUS/HRESULT
 			[in] ULONG Reserved,
 			[in] ICfixStackTrace *StackTrace,
 			[out, retval] CFIXCTL_REPORT_DISPOSITION *Disposition
@@ -423,7 +439,8 @@ library Cfixctl
 	]
 	coclass Host
 	{
-		interface ICfixHost;
+		interface IUnknown;
+		//interface ICfixHost;
 	}
 
 	[
@@ -432,10 +449,11 @@ library Cfixctl
 	]
 	coclass TestModule
 	{
-		interface ICfixTestModule;
-		interface ICfixActionFactory;
-		interface ICfixTestContainer;
-		interface IOleItemContainer;
+		interface IUnknown;
+		//interface ICfixTestModule;
+		//interface ICfixActionFactory;
+		//interface ICfixTestContainer;
+		//interface IOleItemContainer;
 	}
 
 	[
@@ -444,9 +462,10 @@ library Cfixctl
 	]
 	coclass TestFixture
 	{
-		interface ICfixTestItem;
-		interface ICfixTestContainer;
-		interface IOleItemContainer;
+		interface IUnknown;
+		//interface ICfixTestItem;
+		//interface ICfixTestContainer;
+		//interface IOleItemContainer;
 	}
 
 	[
@@ -455,7 +474,8 @@ library Cfixctl
 	]
 	coclass TestCase
 	{
-		interface ICfixTestItem;
+		interface IUnknown;
+		//interface ICfixTestItem;
 	}
 
 	[
@@ -464,7 +484,8 @@ library Cfixctl
 	]
 	coclass FixtureExecutionAction
 	{
-		interface ICfixAction;
+		interface IUnknown;
+		//interface ICfixAction;
 	}
 
 	[
@@ -475,12 +496,12 @@ library Cfixctl
 		interface ICfixAgent;
 	}
 
-	[
-		uuid( 57f93e4d-d44f-11dd-99e2-0016d3b98f9b )
-	]
-	coclass TypeLibWorkaround
-	{
-		interface ICfixTestModule;
-		interface ICfixHost;
-	}
+	//[
+	//	uuid( 57f93e4d-d44f-11dd-99e2-0016d3b98f9b )
+	//]
+	//coclass TypeLibWorkaround
+	//{
+	//	interface ICfixTestModule;
+	//	interface ICfixHost;
+	//}
 }

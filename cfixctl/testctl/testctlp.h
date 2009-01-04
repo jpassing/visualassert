@@ -32,6 +32,14 @@
 
 #define CFIXCC_ASSERT_OK( Expr ) CFIX_ASSERT_EQUALS_ULONG( S_OK, ( Expr ) )
 
+#if _M_AMD64
+	#define TESTCTLP_OWN_ARCHITECTURE CfixTestModuleArchAmd64
+#elif _M_IX86 
+	#define TESTCTLP_OWN_ARCHITECTURE CfixTestModuleArchI386
+#else
+	#error Unsupported architecture
+#endif
+
 /*----------------------------------------------------------------------
  *
  * Stub classes.
