@@ -139,14 +139,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cfixctl\host.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\cfixctl\localagent.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>
@@ -207,6 +199,22 @@
 					</File>
 					<File
 						RelativePath=".\cfixctl\execctxadapter.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="activation"
+					>
+					<File
+						RelativePath=".\cfixctl\localagent.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cfixctl\localhost.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cfixctl\processhost.cpp"
 						>
 					</File>
 				</Filter>

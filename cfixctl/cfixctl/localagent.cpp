@@ -209,7 +209,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTLP_OWN_ARCHITECTURE )
 	{
-		return CfixctlpGetHostFactory().CreateInstance(
+		return CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
 	}
 	else

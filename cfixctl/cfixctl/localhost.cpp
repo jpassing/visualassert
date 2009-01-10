@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------
  * Purpose:
- *		Host.
+ *		LocalHost.
  *
  * Copyright:
  *		2008, Johannes Passing (passing at users.sourceforge.net)
@@ -29,18 +29,18 @@
  *
  */
 
-class Host : 
+class LocalHost : 
 	public ICfixHost
 {
-	DECLARE_NOT_COPYABLE( Host );
+	DECLARE_NOT_COPYABLE( LocalHost );
 
 private:
 	
 protected:
-	Host();
+	LocalHost();
 
 public:
-	virtual ~Host();
+	virtual ~LocalHost();
 
 	/*------------------------------------------------------------------
 	 * IUnknown methods.
@@ -73,22 +73,22 @@ public:
  * Factory.
  *
  */
-IClassFactory& CfixctlpGetHostFactory()
+IClassFactory& CfixctlpGetLocalHostFactory()
 {
-	static ComClassFactory< ComMtaObject< Host >, CfixctlServerLock > Factory;
+	static ComClassFactory< ComMtaObject< LocalHost >, CfixctlServerLock > Factory;
 	return Factory;
 }
 
 /*------------------------------------------------------------------
  * 
- * Host Class Implementation.
+ * LocalHost Class Implementation.
  *
  */
-Host::Host()
+LocalHost::LocalHost()
 {
 }
 
-Host::~Host()
+LocalHost::~LocalHost()
 {
 }
 
@@ -96,7 +96,7 @@ Host::~Host()
  * IUnknown methods.
  */
 
-STDMETHODIMP Host::QueryInterface( 
+STDMETHODIMP LocalHost::QueryInterface( 
 	__in REFIID Iid, 
 	__out PVOID* Ptr )
 {
@@ -127,7 +127,7 @@ STDMETHODIMP Host::QueryInterface(
  * ICfixHost methods.
  */
 
-STDMETHODIMP Host::LoadModule(
+STDMETHODIMP LocalHost::LoadModule(
 	__in const BSTR Path,
 	__out ICfixTestModule **Result
 	)
@@ -227,7 +227,7 @@ Cleanup:
 	return Hr;
 }
 
-STDMETHODIMP Host::GetArchitecture(
+STDMETHODIMP LocalHost::GetArchitecture(
 	__out CfixTestModuleArch *Arch
 	)
 {
@@ -242,7 +242,7 @@ STDMETHODIMP Host::GetArchitecture(
 	}
 }
 
-STDMETHODIMP Host::Terminate()
+STDMETHODIMP LocalHost::Terminate()
 {
 	return E_NOTIMPL;
 }

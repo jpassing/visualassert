@@ -71,7 +71,8 @@ public:
 IClassFactory& CfixctlpGetTestCaseFactory();
 IClassFactory& CfixctlpGetTestFixtureFactory();
 IClassFactory& CfixctlpGetTestModuleFactory();
-IClassFactory& CfixctlpGetHostFactory();
+IClassFactory& CfixctlpGetLocalHostFactory();
+IClassFactory& CfixctlpGetProcessHostFactory();
 IClassFactory& CfixctlpGetExecutionActionFactory();
 IClassFactory& CfixctlpGetLocalAgentFactory();
 
@@ -175,5 +176,19 @@ ICfixExecutionActionInternal : public ICfixAction
 	STDMETHOD( Initialize )(
 		__in ICfixTestModule *Module,
 		__in PCFIX_ACTION Action
+		) PURE;
+};
+
+DEFINE_GUID( IID_ICfixProcessHostInternal, 
+	0xeabee003, 0xa088, 0x4d2f, 0x82, 0x18, 0x17, 0x26, 0x1d, 0x39, 0xd6, 0x4c);
+
+interface
+DECLSPEC_UUID( "EABEE003-A088-4d2f-8218-17261D39D64C" ) 
+ICfixProcessHostInternal : public ICfixHost
+{
+	STDMETHOD( Initialize )(
+		__in ICfixHost *RemoteHost,
+		__in HANDLE ProcessOrJob,
+		__in BOOL UsesJob
 		) PURE;
 };

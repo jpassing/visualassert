@@ -328,7 +328,7 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 		CfixctlsGetFixtureOrdinal( Fixture ),
 		&Context->FixtureSink ) ) )
 	{
-		VERIFY( SUCCEEDED( Context->FixtureSink->BeforeFixtureStart() ) );
+		return Context->FixtureSink->BeforeFixtureStart();
 	}
 	else
 	{
@@ -367,7 +367,7 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 		MainThreadId,
 		&Context->TestCaseSink ) ) )
 	{
-		VERIFY( SUCCEEDED( Context->TestCaseSink->BeforeTestCaseStart() ) );
+		return Context->TestCaseSink->BeforeTestCaseStart();
 	}
 	else
 	{

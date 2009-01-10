@@ -12,7 +12,7 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e4f-d44f-11dd-99e2-0016d3b98f9b
+//
 //57f93e50-d44f-11dd-99e2-0016d3b98f9b
 //57f93e51-d44f-11dd-99e2-0016d3b98f9b
 //57f93e52-d44f-11dd-99e2-0016d3b98f9b
@@ -504,7 +504,17 @@ library Cfixctl
 		uuid( 57f93e43-d44f-11dd-99e2-0016d3b98f9b ),
 		noncreatable 
 	]
-	coclass Host
+	coclass LocalHost
+	{
+		interface IUnknown;
+		//interface ICfixHost;
+	}
+
+	[
+		uuid( 57f93e4f-d44f-11dd-99e2-0016d3b98f9b ),
+		noncreatable 
+	]
+	coclass ProcessHost
 	{
 		interface IUnknown;
 		//interface ICfixHost;

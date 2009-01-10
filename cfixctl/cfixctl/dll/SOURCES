@@ -69,7 +69,8 @@ SOURCES=\
 	..\testcase.cpp \
 	..\testfixture.cpp \
 	..\testmodule.cpp \
-	..\host.cpp \
+	..\localhost.cpp \
+	..\processhost.cpp \
 	..\comserver.cpp \
 	..\main.cpp \
 	..\execaction.cpp \

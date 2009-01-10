@@ -68,10 +68,18 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 	},
 	{
 		NULL,
-		CLSID_Host,
-		L"Cfix Host",
-		L"Cfix.Control.Host",
-		L"Cfix.Control.Host.1",
+		CLSID_LocalHost,
+		L"Cfix LocalHost",
+		L"Cfix.Control.LocalHost",
+		L"Cfix.Control.LocalHost.1",
+		L"free"
+	},
+	{
+		NULL,
+		CLSID_ProcessHost,
+		L"Cfix ProcessHost",
+		L"Cfix.Control.ProcessHost",
+		L"Cfix.Control.ProcessHost.1",
 		L"free"
 	},
 	{
