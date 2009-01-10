@@ -17,9 +17,15 @@ namespace Cfix.Control.Test
 		{
 			this.target = Target.CreateLocalTarget(
 				Architecture.I386,
-				true );
+				false );
 
 			this.binDir = @"D:\dev\wdev\cfixplus\trunk\bin\chk\i386";
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			this.target.Dispose();
 		}
 
 		[Test]
@@ -34,7 +40,6 @@ namespace Cfix.Control.Test
 		[ExpectedException( typeof( CfixException ) )]
 		public void LoadTestlib10()
         {
-            
             TestModule mod = TestModule.LoadModule(
                 target, this.binDir + "\\testlib10.dll" );
 

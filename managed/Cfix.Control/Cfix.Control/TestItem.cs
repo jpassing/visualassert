@@ -45,6 +45,14 @@ namespace Cfix.Control
 			this.name = item.GetName();
 		}
 
+		internal virtual TestModule Module
+		{
+			get
+			{
+				return this.parent.Module;
+			}
+		}
+
 		/*--------------------------------------------------------------
 		 * ITestItem.
 		 */
@@ -56,15 +64,22 @@ namespace Cfix.Control
 				ICfixTestContainer parentContainer =
 					( ICfixTestContainer ) parent.NativeItem;
 
-				if ( ordinal >= parentContainer.GetItemCount() )
+				try
 				{
-					//
-					// Module must have changed in the meantime.
-					//
-					throw new TestItemDisappearedException();
-				}
+					if ( ordinal >= parentContainer.GetItemCount() )
+					{
+						//
+						// Module must have changed in the meantime.
+						//
+						throw new TestItemDisappearedException();
+					}
 
-				return parentContainer.GetItem( this.ordinal );
+					return parentContainer.GetItem( this.ordinal );
+				}
+				finally
+				{
+					this.Module.Target.ReleaseObject( parentContainer );
+				}
 			}
 		}
 

@@ -123,7 +123,12 @@ namespace Cfix.Control.Test
 	internal class MockTarget : Target
 	{
 		public MockTarget( MockModule module )
-			: base( new MockAgent( module ), CfixTestModuleArch.CfixTestModuleArchI386, true )
+			: base( 
+				new MockAgent( module ), 
+				CfixTestModuleArch.CfixTestModuleArchI386, 
+				true,
+				HostCreationFlags.None,
+				null )
 		{
 		}
 

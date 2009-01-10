@@ -6,7 +6,8 @@ using Cfixctl;
 
 namespace Cfix.Control
 {
-	public class TestItemContainer : TestItem, ITestItemContainer
+	public class TestItemContainer : 
+		TestItem, ITestItemContainer, IEnumerable< ITestItem >
 	{
 		/// <summary>
 		/// Children, indexed by ordinal.
@@ -34,7 +35,7 @@ namespace Cfix.Control
 		{
 		}
 
-		internal void Update( Target target, ICfixTestContainer container )
+		internal void Update( ICfixTestContainer container )
 		{
 			lock ( updateLock )
 			{
@@ -47,56 +48,56 @@ namespace Cfix.Control
 				{
 					ICfixTestItem newItem = container.GetItem( i );
 
-					bool itemAdded = false;
-
-					//
-					// See if we know this item.
-					//
-					ITestItem existingItem;
-					if ( this.subItemsDict.TryGetValue( newItem.GetName(), out existingItem ) )
+					try
 					{
+						bool itemAdded = false;
+
 						//
-						// This item was there before...
+						// See if we know this item.
 						//
-						if ( existingItem.Ordinal != i )
+						ITestItem existingItem;
+						if ( this.subItemsDict.TryGetValue( newItem.GetName(), out existingItem ) )
 						{
 							//
-							// ...but has changed its position. Re-add.
+							// This item was there before...
 							//
-							OnItemRemoved( existingItem );
-							itemAdded = true;
+							if ( existingItem.Ordinal != i )
+							{
+								//
+								// ...but has changed its position. Re-add.
+								//
+								OnItemRemoved( existingItem );
+								itemAdded = true;
+							}
+							else
+							{
+								//
+								// ...and remains valid.
+								//
+							}
+
+							//
+							// Remove it from subItemsDict mark it has 
+							// having been processed.
+							//
+							this.subItemsDict.Remove( existingItem.Name );
 						}
 						else
 						{
 							//
-							// ...and remains valid.
+							// This item is new.
 							//
+							itemAdded = true;
 						}
 
-						//
-						// Remove it from subItemsDict mark it has 
-						// having been processed.
-						//
-						this.subItemsDict.Remove( existingItem.Name );
-					}
-					else
-					{
-						//
-						// This item is new.
-						//
-						itemAdded = true;
-					}
+						if ( newSubItemsDict.ContainsKey( newItem.GetName() ) )
+						{
+							Clear();
+							throw new CfixException(
+								String.Format( "Ambiguous test case name '{0}'",
+								newItem.GetName() ) );
+						}
 
-					if ( newSubItemsDict.ContainsKey( newItem.GetName() ) )
-					{
-						Clear();
-						throw new CfixException(
-							String.Format( "Ambiguous test case name '{0}'",
-							newItem.GetName() ) );
-					}
-
-					try
-					{
 						if ( itemAdded )
 						{
 							this.subItems[ i ] = TestItem.Wrap(
@@ -116,17 +117,17 @@ namespace Cfix.Control
 						if ( subContainer != null )
 						{
 							subContainer.Update(
-								target, ( ICfixTestContainer ) newItem );
+								( ICfixTestContainer ) newItem );
+						}
+
+						if ( itemAdded )
+						{
+							OnItemAdded( this.subItems[ i ] );
 						}
 					}
 					finally
 					{
-						target.ReleaseObject( newItem );
-					}
-
-					if ( itemAdded )
-					{
-						OnItemAdded( this.subItems[ i ] );
+						Module.Target.ReleaseObject( newItem );
 					}
 
 					newSubItemsDict.Add( this.subItems[ i ].Name, this.subItems[ i ] );
@@ -156,6 +157,20 @@ namespace Cfix.Control
 
 			this.subItems = null;
 			this.subItemsDict = null;
+		}
+
+		/*--------------------------------------------------------------
+		 * IEnumerable.
+		 */
+
+		public IEnumerator< ITestItem > GetEnumerator()
+		{
+			return ( ( IList< ITestItem > ) this.subItems ).GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.subItems.GetEnumerator();
 		}
 
 		/*--------------------------------------------------------------

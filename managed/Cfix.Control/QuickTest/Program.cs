@@ -7,7 +7,9 @@ namespace QuickTest
 	{
 		static void Main( string[] args )
 		{
-			Target target = Target.CreateLocalTarget( Architecture.I386, true );
+			Target target = Target.CreateLocalTarget( 
+				Architecture.I386, 
+				true );
 
 			TestModule mod = TestModule.LoadModule(
 				target,

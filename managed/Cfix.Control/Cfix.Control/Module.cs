@@ -53,11 +53,6 @@ namespace Cfix.Control
 			return Connect( this.target, this.path );
 		}
 
-		private void Update( ICfixTestModule ctlModule )
-		{
-			Update( this.target, ( ICfixTestContainer ) ctlModule );
-		}
-
 		/*--------------------------------------------------------------
 		 * ITestItem.
 		 */
@@ -74,6 +69,22 @@ namespace Cfix.Control
 		 * Publics.
 		 */
 
+		internal override TestModule Module
+		{
+			get
+			{
+				return this;
+			}
+		}
+
+		internal Target Target
+		{
+			get
+			{
+				return this.target;
+			}
+		}
+
 		public void Update()
 		{
 			if ( this.target == null )
@@ -84,7 +95,7 @@ namespace Cfix.Control
 			ICfixTestModule ctlModule = Connect();
 			try
 			{
-				Update( this.target, ctlModule );
+				Update( ctlModule );
 			}
 			finally
 			{

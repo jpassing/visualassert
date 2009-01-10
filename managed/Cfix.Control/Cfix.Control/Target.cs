@@ -28,6 +28,9 @@ namespace Cfix.Control
 
 		private uint timeout = DefaultTimeout;
 
+		private readonly HostCreationFlags flags;
+		private readonly String currentDirectory;
+
 		[Flags]
 		private enum Clsctx
 		{
@@ -38,13 +41,17 @@ namespace Cfix.Control
 		protected Target(
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
-			bool allowInproc
+			bool allowInproc,
+			HostCreationFlags flags,
+			String currentDirectory
 			)
 		{
 			Debug.Assert( agent != null );
 
 			this.agent = agent;
 			this.arch = arch;
+			this.flags = flags;
+			this.currentDirectory = currentDirectory;
 
 			if ( allowInproc )
 			{
@@ -74,13 +81,29 @@ namespace Cfix.Control
 
 		public static Target CreateLocalTarget(
 			Architecture arch,
-			bool allowInproc
+			bool allowInproc,
+			HostCreationFlags flags,
+			String currentDirectory
 			)
 		{
 			return new Target(
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
-				allowInproc );
+				allowInproc,
+				flags,
+				currentDirectory );
+		}
+
+		public static Target CreateLocalTarget(
+			Architecture arch,
+			bool allowInproc
+			)
+		{
+			return CreateLocalTarget(
+				arch,
+				allowInproc,
+				HostCreationFlags.None,
+				null );
 		}
 
 		~Target()
@@ -88,25 +111,17 @@ namespace Cfix.Control
 			Dispose( false );
 		}
 
-		public virtual ICfixHost CreateHost(
-			String currentDirectory,
-			HostCreationFlags flags
-			)
+		public virtual ICfixHost CreateHost()
 		{
 			ICfixHost host = this.agent.CreateHost(
 				this.arch, 
 				( uint ) this.clsctx,
-				( uint ) flags,
+				( uint ) this.flags,
 				this.timeout,
 				currentDirectory );
 
 			Debug.Assert( host != null );
 			return host;
-		}
-
-		public virtual ICfixHost CreateHost()
-		{
-			return CreateHost( null, HostCreationFlags.None );
 		}
 
 		public CfixTestModuleArch Architecture
