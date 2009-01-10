@@ -131,6 +131,8 @@ library Cfixctl
 		HRESULT Stop();
 	}
 
+	const ULONG CFIXCTL_AGENT_FLAG_USE_JOB = 1;
+
 	[
 	  object,
 	  uuid( 57f93e4b-d44f-11dd-99e2-0016d3b98f9b ),
@@ -142,6 +144,8 @@ library Cfixctl
 		HRESULT CreateHost( 
 			[in] CfixTestModuleArch Arch,
 			[in] DWORD Clsctx,
+			[in] ULONG Flags,
+			[in] ULONG Timeout,
 			[out, retval] ICfixHost** Host
 			);
 

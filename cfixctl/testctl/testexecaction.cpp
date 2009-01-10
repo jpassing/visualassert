@@ -357,6 +357,8 @@ void Before()
 	CFIXCC_ASSERT_OK( Agent->CreateHost( 
 		TESTCTLP_OWN_ARCHITECTURE,
 		CLSCTX_INPROC_SERVER,
+		0,
+		0,
 		&Host ) );
 
 	Agent->Release();

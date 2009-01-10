@@ -92,3 +92,11 @@ SymbolicName	= CFIXCTL_E_USER_ABORT
 Language		= English
 Run aborted.
 .
+
+MessageId		= 0xB007
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_HOST_IMAGE_NOT_FOUND
+Language		= English
+The host image could not be located.
+.

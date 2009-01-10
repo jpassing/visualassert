@@ -115,7 +115,7 @@
 				Name="cfixctl"
 				>
 				<File
-					RelativePath=".\cfixctl\cfixctl.def"
+					RelativePath=".\cfixctl\dll\cfixctl.def"
 					>
 				</File>
 				<File
@@ -287,6 +287,22 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="cfixhost"
+				>
+				<File
+					RelativePath=".\cfixhost\cfixhost.rc"
+					>
+				</File>
+				<File
+					RelativePath=".\cfixhost\main.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\cfixhost\SOURCES"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -295,6 +311,10 @@
 			>
 			<File
 				RelativePath="..\include\cfixctl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\cfixctlsvr.h"
 				>
 			</File>
 		</Filter>

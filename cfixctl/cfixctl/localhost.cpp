@@ -201,7 +201,7 @@ STDMETHODIMP LocalHost::LoadModule(
 	Hr = ModuleObject->Initialize(
 		Path,
 		ModuleType,
-		CFIXCTLP_OWN_ARCHITECTURE,
+		CFIXCTL_OWN_ARCHITECTURE,
 		Module );
 	if ( FAILED( Hr ) )
 	{
@@ -237,7 +237,7 @@ STDMETHODIMP LocalHost::GetArchitecture(
 	}
 	else
 	{
-		*Arch = CFIXCTLP_OWN_ARCHITECTURE;
+		*Arch = CFIXCTL_OWN_ARCHITECTURE;
 		return S_OK;
 	}
 }

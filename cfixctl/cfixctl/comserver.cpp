@@ -21,12 +21,16 @@
  * along with cfix.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define CFIXCTLAPI
+
 #include <olectl.h>
 #include "cfixctlp.h"
 #include "selfreg.h"
 
 static volatile LONG CfixctlsServerLocks = 0;
 static HMODULE CfixctlsModule = NULL;
+
+static CFIXCRL_SERVER_UNLOCK_PROC CfixctlsUnlockCallback = NULL;
 
 typedef IClassFactory& ( * CFIXCTLS_GETCLASSFACTORY_PROC )();
 
@@ -193,6 +197,11 @@ static HRESULT CfixctlsUnregisterTypeLib()
 		);
 }
 
+HMODULE CfixctlpGetModule()
+{
+	return CfixctlsModule;
+}
+
 /*----------------------------------------------------------------------
  *
  * Server lock maintenance.
@@ -210,7 +219,13 @@ void CfixctlServerLock::LockServer(
 	else
 	{
 		ASSERT( CfixctlsServerLocks > 0 );
-		InterlockedDecrement( &CfixctlsServerLocks );
+		if ( 0 == InterlockedDecrement( &CfixctlsServerLocks ) )
+		{
+			if ( CfixctlsUnlockCallback )
+			{
+				( CfixctlsUnlockCallback )();
+			}
+		}
 	}
 }
 
@@ -248,16 +263,30 @@ BOOL APIENTRY DllMain(
 
 /*----------------------------------------------------------------------
  *
- * COM Server Exports.
+ * Exports.
  *
  */
 
-HRESULT STDMETHODCALLTYPE DllCanUnloadNow()
+EXTERN_C HRESULT CfixctlRegisterServerUnlockCallback(
+	__in CFIXCRL_SERVER_UNLOCK_PROC Callback
+	)
 {
-	return CfixctlsServerLocks == 0 ? S_OK : S_FALSE;
+	if ( ! Callback )
+	{
+		return E_INVALIDARG;
+	}
+
+	if ( CfixctlsUnlockCallback )
+	{
+		return E_UNEXPECTED;
+	}
+
+	CfixctlsUnlockCallback = Callback;
+
+	return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE DllGetClassObject(
+EXTERN_C HRESULT CfixctlGetClassObject(
 	__in REFCLSID Clsid,
 	__in REFIID Iid,
 	__out PVOID *ClassObject 
@@ -288,6 +317,26 @@ HRESULT STDMETHODCALLTYPE DllGetClassObject(
 	}
 
 	return CLASS_E_CLASSNOTAVAILABLE;
+}
+
+/*----------------------------------------------------------------------
+ *
+ * COM Server Exports.
+ *
+ */
+
+HRESULT STDMETHODCALLTYPE DllCanUnloadNow()
+{
+	return CfixctlsServerLocks == 0 ? S_OK : S_FALSE;
+}
+
+HRESULT STDMETHODCALLTYPE DllGetClassObject(
+	__in REFCLSID Clsid,
+	__in REFIID Iid,
+	__out PVOID *ClassObject 
+	)
+{
+	return CfixctlGetClassObject( Clsid, Iid, ClassObject );
 }
 
 HRESULT STDMETHODCALLTYPE DllRegisterServer()

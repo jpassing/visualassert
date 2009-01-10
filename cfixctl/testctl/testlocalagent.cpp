@@ -36,7 +36,7 @@ public:
 
 	static void SetUp()
 	{
-		CoInitialize( NULL );
+		CoInitializeEx( NULL, COINIT_MULTITHREADED );
 		GetComExports( L"cfixctl.dll", &Exports );
 	}
 
@@ -73,6 +73,8 @@ public:
 		CFIXCC_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
+			0,
+			0,
 			&LocalHost ) );
 
 		//
@@ -119,6 +121,8 @@ public:
 		CFIXCC_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
+			0,
+			0,
 			&LocalHost ) );
 
 		CFIXCC_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
@@ -163,6 +167,32 @@ public:
 		WaitForSingleObject( Thread, INFINITE );
 		CloseHandle( Thread );
 	}
+
+	void SpawnSameArch()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			ICfixHost *Host;
+			CFIXCC_ASSERT_OK( Agent->CreateHost(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				FlagSets[ Flags ],
+				INFINITE,
+				&Host ) );
+
+			CFIX_ASSUME( Host );
+			Host->Release();
+		}
+
+		Agent->Release();
+	}
 };
 
 COM_EXPORTS TestLocalAgent::Exports;
@@ -170,4 +200,5 @@ COM_EXPORTS TestLocalAgent::Exports;
 CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( RegisterAndObtainWithoutWaiting )
 	CFIXCC_METHOD( RegisterAndObtainWithWaiting )
+	CFIXCC_METHOD( SpawnSameArch )
 CFIXCC_END_CLASS()

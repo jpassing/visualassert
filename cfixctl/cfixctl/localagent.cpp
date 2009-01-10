@@ -22,7 +22,7 @@
  */
 
 #include "cfixctlp.h"
-#include <list.h>
+#include <shlwapi.h>
 
 /*------------------------------------------------------------------
  * 
@@ -87,6 +87,8 @@ public:
 	STDMETHOD( CreateHost )( 
 		__in CfixTestModuleArch Arch,
 		__in DWORD Clsctx,
+		__in ULONG Flags,
+		__in ULONG Timeout,
 		__out ICfixHost** Host
 		);
 
@@ -107,10 +109,401 @@ public:
  * Factory.
  *
  */
+
 IClassFactory& CfixctlpGetLocalAgentFactory()
 {
 	static ComClassFactory< ComMtaObject< LocalAgent >, CfixctlServerLock > Factory;
 	return Factory;
+}
+
+/*------------------------------------------------------------------
+ * 
+ * Helpers.
+ *
+ */
+
+static HRESULT CfixctlsFindHostImage(
+	__in CfixTestModuleArch Arch,
+	__in SIZE_T PathCch,
+	__out_ecount( PathCch ) PWSTR Path
+	)
+{
+	//
+	// Starting point is the directory this module was loaded from.
+	//
+	WCHAR OwnModulePath[ MAX_PATH ];
+
+	if ( 0 == GetModuleFileName(
+		CfixctlpGetModule(),
+		OwnModulePath,
+		_countof( OwnModulePath ) ) )
+	{
+		return HRESULT_FROM_WIN32( GetLastError() );
+	}
+
+	if ( ! PathRemoveFileSpec( OwnModulePath ) )
+	{
+		return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+	}
+
+	//
+	// Get system information to decide which module (32/64) we need
+	// to load - due to WOW64 the driver image bitness may not be the
+	// same as the bitness of this module.
+	//
+	PWSTR HostImageName;
+	PWSTR HostImageNameWithDirectory;
+
+	switch ( Arch )
+	{
+	case CfixTestModuleArchAmd64:
+		HostImageName = L"cfixhs64.exe";
+		HostImageNameWithDirectory = L"..\\amd64\\cfixhs64.exe";
+		break;
+
+	case CfixTestModuleArchI386:
+		HostImageName = L"cfixhs32.exe";
+		HostImageNameWithDirectory = L"..\\i386\\cfixhs32.exe";
+		break;
+
+	default:
+		return E_INVALIDARG;
+	}
+
+	WCHAR HostModulePath[ MAX_PATH ];
+
+	//
+	// Try .\cfixhsXX.exe
+	//
+	if ( ! PathCombine( HostModulePath, OwnModulePath, HostImageName ) )
+	{
+		return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+	}
+
+	if ( INVALID_FILE_ATTRIBUTES != GetFileAttributes( HostModulePath ) )
+	{
+		return StringCchCopy(
+			Path,
+			PathCch,
+			HostModulePath );
+	}
+
+	//
+	// Try ..\<arch>\cfixhsXX.exe.
+	//
+	if ( ! PathCombine( HostModulePath, OwnModulePath, HostImageNameWithDirectory ) )
+	{
+		return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+	}
+
+	if ( INVALID_FILE_ATTRIBUTES != GetFileAttributes( HostModulePath ) )
+	{
+		return StringCchCopy(
+			Path,
+			PathCch,
+			HostModulePath );
+	}
+
+	return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+}
+
+static HRESULT CfixctlsGetObjrefMonikerString(
+	__in ICfixAgent *Agent,
+	__out LPOLESTR *DisplayName
+	)
+{
+	IMoniker *AgentMk = NULL;
+	IBindCtx *BindCtx = NULL;
+
+	HRESULT Hr = CreateObjrefMoniker( Agent, &AgentMk );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	Hr = CreateBindCtx( 0, &BindCtx );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+	
+	Hr = AgentMk->GetDisplayName( BindCtx, NULL, DisplayName );
+
+Cleanup:
+	if ( AgentMk != NULL )
+	{
+		AgentMk->Release();
+	}
+
+	if ( BindCtx != NULL )
+	{
+		BindCtx->Release();
+	}
+
+	return Hr;
+}
+
+static HRESULT CfixctlsSpawnHost(
+	__in CfixTestModuleArch Arch,
+	__in ICfixAgent *Agent,
+	__in_opt PCWSTR CurrentDirectory,
+	__in BOOL Suspend,
+	__out PPROCESS_INFORMATION ProcessInfo
+	)
+{
+	if ( ! Agent || ! ProcessInfo )
+	{
+		return E_INVALIDARG;
+	}
+
+	//
+	// Find image to load.
+	//
+	WCHAR HostPath[ MAX_PATH ];
+	HRESULT Hr = CfixctlsFindHostImage(
+		Arch, _countof( HostPath ), HostPath );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	LPOLESTR AgentMkDisplayName = NULL;
+	Hr = CfixctlsGetObjrefMonikerString( Agent, &AgentMkDisplayName );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	//
+	// Prepare command line.
+	//
+	SIZE_T CommandLineCch = wcslen( AgentMkDisplayName ) + 32;
+	PWSTR CommandLine = new WCHAR[ CommandLineCch ];
+	if ( CommandLine == NULL )
+	{
+		goto Cleanup;
+	}
+
+	Hr = StringCchPrintf(
+		CommandLine,
+		CommandLineCch,
+		L"cfixhost %s",
+		AgentMkDisplayName );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	//
+	// Spawn.
+	//
+	STARTUPINFO StartupInfo;
+	ZeroMemory( &StartupInfo, sizeof( STARTUPINFO ) );
+	StartupInfo.cb = sizeof( STARTUPINFO );
+
+	if ( ! CreateProcess(
+		HostPath,
+		CommandLine,
+		NULL,
+		NULL,
+		FALSE,
+		Suspend ? CREATE_SUSPENDED : 0,
+		NULL,
+		CurrentDirectory,
+		&StartupInfo,
+		ProcessInfo ) )
+	{
+		Hr = HRESULT_FROM_WIN32( GetLastError() );
+		goto Cleanup;
+	}
+
+	Hr = S_OK;
+
+Cleanup:
+	if ( AgentMkDisplayName != NULL )
+	{
+		CoTaskMemFree( AgentMkDisplayName );
+	}
+
+	if ( CommandLine != NULL )
+	{
+		delete [] CommandLine;
+	}
+
+	return Hr;
+}
+
+static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
+	__in CfixTestModuleArch Arch,
+	__in ICfixAgent *Agent,
+	__in_opt PCWSTR CurrentDirectory,
+	__in BOOL PutInJob,
+	__out HANDLE *ProcessOrJob,
+	__out DWORD *Cookie
+	)
+{
+	ASSERT( Agent );
+	ASSERT( ProcessOrJob );
+
+	//
+	// Spawn the process.
+	//
+	PROCESS_INFORMATION ProcessInfo;
+	ZeroMemory( &ProcessInfo, sizeof( PROCESS_INFORMATION ) );
+
+	HRESULT Hr = CfixctlsSpawnHost( 
+		Arch, 
+		Agent, 
+		CurrentDirectory, 
+		PutInJob,	// suspend.
+		&ProcessInfo );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	ASSERT( ProcessInfo.hProcess );
+	ASSERT( ProcessInfo.hThread );
+
+	//
+	// N.B. The process ID is the cookie.
+	//
+	*Cookie = ProcessInfo.dwProcessId;
+
+	if ( ! PutInJob )
+	{
+		*ProcessOrJob = ProcessInfo.hProcess;
+		VERIFY( CloseHandle( ProcessInfo.hThread ) );
+
+		return S_OK;
+	}
+	else
+	{
+		HANDLE Job = CreateJobObject( NULL, NULL );
+		if ( Job )
+		{
+			if ( AssignProcessToJobObject( Job, ProcessInfo.hProcess ) )
+			{
+				*ProcessOrJob = Job;
+
+				( VOID ) ResumeThread( ProcessInfo.hThread );
+				Hr = S_OK;
+			}
+			else
+			{
+				Hr = HRESULT_FROM_WIN32( GetLastError() );
+				VERIFY( CloseHandle( Job ) );
+			}
+		}
+		else
+		{
+			Hr = HRESULT_FROM_WIN32( GetLastError() );
+		}
+
+		if ( FAILED( Hr ) )
+		{
+			( VOID ) TerminateProcess( ProcessInfo.hProcess, 0 );
+		}
+
+		VERIFY( CloseHandle( ProcessInfo.hProcess ) );
+		VERIFY( CloseHandle( ProcessInfo.hThread ) );
+
+		return Hr;
+	}
+}
+
+static HRESULT CfixctlsCreateProcessHost(
+	__in CfixTestModuleArch Arch,
+	__in ICfixAgent *Agent,
+	__in_opt PCWSTR CurrentDirectory,
+	__in ULONG Flags,
+	__in ULONG Timeout,
+	__out ICfixHost **Result
+	)
+{
+	ASSERT( Agent );
+	ASSERT( Result );
+
+	// TODO: call IsProcessInJob.
+	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
+
+	//
+	// Spawn the process.
+	//
+	HANDLE ProcessOrJob = NULL;
+	DWORD Cookie;
+
+	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
+		Arch, 
+		Agent, 
+		CurrentDirectory, 
+		UseJob,
+		&ProcessOrJob,
+		&Cookie );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	ICfixHost *RemoteHost = NULL;
+	ICfixProcessHostInternal *ProcessHost = NULL;
+
+	//
+	// Wait for it to register and obtain its Host object.
+	//
+	Hr = Agent->WaitForHostConnection(
+		Cookie,
+		Timeout,
+		&RemoteHost );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	//
+	// Wrap by a ProcessHost object. Ownership of the process handle
+	// is transfered to this object.
+	//
+	Hr = CfixctlpGetProcessHostFactory().CreateInstance( 
+		NULL, IID_ICfixProcessHostInternal, ( PVOID* ) &ProcessHost );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	Hr = ProcessHost->Initialize( 
+		RemoteHost, 
+		ProcessOrJob,
+		UseJob );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	ProcessHost->AddRef();
+	*Result = ProcessHost;
+	Hr = S_OK;
+
+Cleanup:
+	if ( RemoteHost )
+	{
+		RemoteHost->Release();
+	}
+
+	if  ( ProcessHost )
+	{
+		ProcessHost->Release();
+	}
+
+	if ( FAILED( Hr ) )
+	{
+		if ( ProcessOrJob )
+		{
+			VERIFY( CloseHandle( ProcessOrJob ) );
+		}
+	}
+
+	return Hr;
 }
 
 /*------------------------------------------------------------------
@@ -189,6 +582,8 @@ STDMETHODIMP LocalAgent::QueryInterface(
 STDMETHODIMP LocalAgent::CreateHost( 
 	__in CfixTestModuleArch Arch,
 	__in DWORD Clsctx,
+	__in ULONG Flags,
+	__in ULONG Timeout,
 	__out ICfixHost** Host
 	)
 {
@@ -207,15 +602,27 @@ STDMETHODIMP LocalAgent::CreateHost(
 		return E_INVALIDARG;
 	}
 
-	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTLP_OWN_ARCHITECTURE )
+	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
 		return CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
 	}
+	else if ( Clsctx & CLSCTX_LOCAL_SERVER )
+	{
+		// 
+		// Spawn process.
+		//
+		return CfixctlsCreateProcessHost(
+			Arch,
+			static_cast< ICfixAgent* >( this ),
+			NULL,
+			Flags,
+			Timeout,
+			Host );
+	}
 	else
 	{
-		// TODO.
-		return E_NOTIMPL;
+		return E_INVALIDARG;
 	}
 }
 

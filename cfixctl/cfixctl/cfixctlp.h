@@ -27,6 +27,7 @@
 #include <cfixapi.h>
 #include <ole2.h>
 #include <cfixctl.h>
+#include <cfixctlsvr.h>
 #include <cfixctlmsg.h>
 #include <crtdbg.h>
 #include "comutil.h"
@@ -44,14 +45,6 @@
 	#else
 		#define VERIFY( x ) ( VOID ) ( x )
 	#endif
-#endif
-
-#if _M_AMD64
-	#define CFIXCTLP_OWN_ARCHITECTURE CfixTestModuleArchAmd64
-#elif _M_IX86 
-	#define CFIXCTLP_OWN_ARCHITECTURE CfixTestModuleArchI386
-#else
-	#error Unsupported architecture
 #endif
 
 /*----------------------------------------------------------------------
@@ -101,6 +94,8 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 HRESULT CfixctlpAbortExecutionContextAdapter(
 	__in PCFIX_EXECUTION_CONTEXT Context
 	);
+
+HMODULE CfixctlpGetModule();
 
 /*----------------------------------------------------------------------
  *
