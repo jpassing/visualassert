@@ -140,6 +140,7 @@ public:
 	}
 
 	STDMETHOD( FailedRelateAssertion )(
+		__in CFIXCTL_RELATE_OPERATOR Operator,
 		__in const VARIANT ExpectedValue,
 		__in const VARIANT ActualValue,
 		__in const BSTR Routine,
@@ -351,7 +352,7 @@ void Before()
 	ICfixAgent *Agent;
 	CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
 		NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
-	CFIX_ASSUME( !Agent );
+	CFIX_ASSUME( Agent );
 
 	CFIXCC_ASSERT_OK( Agent->CreateHost( 
 		TESTCTLP_OWN_ARCHITECTURE,
@@ -435,7 +436,10 @@ void RunFixturesFromTestlib10()
 			0, 0, &ModuleAction ) );
 
 		EventSink Sink( Flags );
+
+		CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
 		HRESULT Hr = ModuleAction->Run( &Sink );
+		CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
 
 		if ( Flags & EVENT_SINK_FAIL_PROCESS_SINK )
 		{

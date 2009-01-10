@@ -11,7 +11,7 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e4e-d44f-11dd-99e2-0016d3b98f9b
+//
 //57f93e4f-d44f-11dd-99e2-0016d3b98f9b
 //57f93e50-d44f-11dd-99e2-0016d3b98f9b
 //57f93e51-d44f-11dd-99e2-0016d3b98f9b
@@ -90,6 +90,16 @@ library Cfixctl
 		HRESULT GetArchitecture(
 			[out] CfixTestModuleArch *Arch
 			);
+
+		/*++
+			Method Description:
+				Terminate the host and any test runs that may
+				currently take place.
+
+				This can lead to teradown/after routines not
+				being called properly.
+		--*/
+		HRESULT Terminate();
 	}
 
 	[
@@ -100,9 +110,25 @@ library Cfixctl
 	]
 	interface ICfixAction : IUnknown 
 	{
+		/*++
+			Method Description:
+				Start the run (synchonously). At most one run per object
+				may be active.
+		--*/
 		HRESULT Run( 
 			[in] ICfixEventSink *Sink
 			);
+
+		/*++
+			Method Description:
+				Stop the run that currently takes place.
+
+			Return Values:
+				S_OK on success.
+				S_FALSE if no run is active.
+				Any failure HRESULT.
+		--*/
+		HRESULT Stop();
 	}
 
 	[
@@ -116,6 +142,31 @@ library Cfixctl
 		HRESULT CreateHost( 
 			[in] CfixTestModuleArch Arch,
 			[in] DWORD Clsctx,
+			[out, retval] ICfixHost** Host
+			);
+
+		/*++
+			Method Description:
+				Registers a host so that it can be obtained
+				using WaitForHostConnection.
+
+				For every call to RegisterHost, there must be a call
+				made to WaitForHostConnection.
+		--*/
+		HRESULT RegisterHost(
+			[in] DWORD Cookie,
+			[in] ICfixHost *Host 
+			);
+
+		/*++
+			Method Description:
+				Wait for a registration. Once the registration is
+				available, the corresponding host pointer is returned.
+				A registration cnnot be waited for twice.
+		--*/
+		HRESULT WaitForHostConnection(
+			[in] DWORD Cookie,
+			[in] ULONG Timeout,
 			[out, retval] ICfixHost** Host
 			);
 	}
@@ -293,6 +344,21 @@ library Cfixctl
 		CfixctlDispositionAbort			= 3
 	} CFIXCTL_REPORT_DISPOSITION;
 
+	typedef 
+	[
+		uuid( 57f93e4e-d44f-11dd-99e2-0016d3b98f9b ), 
+		v1_enum,
+		version( 1.0 )
+	]
+	enum CFIXCTL_RELATE_OPERATOR {
+		CfixctlRelateEquals				= 0,
+		CfixctlRelateNotEquals			= 1,
+		CfixctlRelateGreaterThan		= 2,
+		CfixctlRelateGreaterThanEquals	= 3,
+		CfixctlRelateLessThan			= 4,
+		CfixctlRelateLessThanEquals		= 5,
+	} CFIXCTL_RELATE_OPERATOR;
+
 	[
 	  object,
 	  uuid( 57f93e46-d44f-11dd-99e2-0016d3b98f9b ),
@@ -322,6 +388,7 @@ library Cfixctl
 			);
 
 		HRESULT FailedRelateAssertion(
+			[in] CFIXCTL_RELATE_OPERATOR Operator,
 			[in] const VARIANT ExpectedValue,
 			[in] const VARIANT ActualValue,
 			[in] const BSTR Routine,

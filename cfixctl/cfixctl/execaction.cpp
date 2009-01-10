@@ -42,6 +42,15 @@ private:
 	ICfixTestModule *Module;
 	PCFIX_ACTION Action;
 	
+	//
+	// When a run is active, CurrentAdapter (guarded by
+	// CurrentAdapterLock) holds a pointer to the Adapter object
+	// which can be used to issue abortions.
+	//
+
+	PCFIX_EXECUTION_CONTEXT CurrentAdapter;
+	CRITICAL_SECTION CurrentAdapterLock;
+
 protected:
 	ExecutionAction();
 
@@ -65,6 +74,8 @@ public:
 	STDMETHOD( Run )( 
 		__in ICfixEventSink *Sink
 		);
+
+	STDMETHOD( Stop )();
 
 	/*------------------------------------------------------------------
 	 * ICfixExecutionActionInternal methods.
@@ -97,12 +108,16 @@ IClassFactory& CfixctlpGetExecutionActionFactory()
 
 ExecutionAction::ExecutionAction()
 	: Module( NULL )
-	, Action( 0 )
+	, Action( NULL )
+	, CurrentAdapter( NULL )
 {
+	InitializeCriticalSection( &this->CurrentAdapterLock );
 }
 
 ExecutionAction::~ExecutionAction()
 {
+	ASSERT( ! this->CurrentAdapter );
+
 	if ( this->Action )
 	{
 		Action->Dereference( this->Action );
@@ -112,6 +127,8 @@ ExecutionAction::~ExecutionAction()
 	{
 		this->Module->Release();
 	}
+
+	DeleteCriticalSection( &this->CurrentAdapterLock );
 }
 
 /*----------------------------------------------------------------------
@@ -159,13 +176,15 @@ STDMETHODIMP ExecutionAction::Run(
 		return E_POINTER;
 	}
 
-	if ( this->Module == NULL )
+	if ( this->Module == NULL || 
+		 this->Action == NULL ||
+		 this->CurrentAdapter != NULL )
 	{
 		return E_UNEXPECTED;
 	}
 
-	PCFIX_EXECUTION_CONTEXT Adapter = NULL;
 	ICfixProcessEventSink *ProcessSink = NULL;
+	PCFIX_EXECUTION_CONTEXT Adapter = NULL;
 
 	//
 	// Query process sink - we do not need a ICfixEventSink.
@@ -191,9 +210,21 @@ STDMETHODIMP ExecutionAction::Run(
 	}
 
 	//
+	// Before starting the run, make the adapter object available
+	// s.t. concurrent threads can issue abortions.
+	//
+	EnterCriticalSection( &this->CurrentAdapterLock );
+	this->CurrentAdapter = Adapter;
+	LeaveCriticalSection( &this->CurrentAdapterLock );
+
+	//
 	// Let it run and tunnel events through the adapter.
 	//
 	Hr = Action->Run( Action, Adapter );
+
+	EnterCriticalSection( &this->CurrentAdapterLock );
+	this->CurrentAdapter = NULL;
+	LeaveCriticalSection( &this->CurrentAdapterLock );
 
 Cleanup:
 	if ( ProcessSink )
@@ -205,6 +236,29 @@ Cleanup:
 	{
 		Adapter->Dereference( Adapter );
 	}
+
+	return Hr;
+}
+
+STDMETHODIMP ExecutionAction::Stop()
+{
+	HRESULT Hr;
+	
+	EnterCriticalSection( &this->CurrentAdapterLock );
+	
+	if ( this->CurrentAdapter == NULL )
+	{
+		//
+		// No run active.
+		//
+		Hr = S_FALSE;
+	}
+	else
+	{
+		Hr = CfixctlpAbortExecutionContextAdapter( this->CurrentAdapter );
+	}
+
+	LeaveCriticalSection( &this->CurrentAdapterLock );
 
 	return Hr;
 }

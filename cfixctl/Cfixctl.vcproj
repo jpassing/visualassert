@@ -239,6 +239,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\testctl\testlocalagent.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\testctl\testserver.cpp"
 					>
 				</File>

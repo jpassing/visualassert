@@ -28,6 +28,15 @@ C_ASSERT( CfixctlDispositionBreak		== CfixBreak );
 C_ASSERT( CfixctlDispositionBreakAlways == CfixBreakAlways );
 C_ASSERT( CfixctlDispositionAbort		== CfixAbort );
 
+//
+// Note on locking:
+//   This adapter assumes that there may be multiple concurrent
+//   threads issueing assertions etc, but fixture and test case 
+//   begin/end events are serielized.
+//
+//   That is, there is only one 'main thread', all other threads are
+//   child threads created cvia CfixCreateThread.
+//
 typedef struct _CFIXCTLP_EXEC_CONTEXT
 {
 	CFIX_EXECUTION_CONTEXT Base;
@@ -39,6 +48,8 @@ typedef struct _CFIXCTLP_EXEC_CONTEXT
 	ICfixProcessEventSink *ProcessSink;
 	ICfixFixtureEventSink *FixtureSink;		// May be NULL.
 	ICfixTestCaseEventSink *TestCaseSink;	// May be NULL.
+
+	volatile BOOL IssueAbort;
 } CFIXCTLP_EXEC_CONTEXT, *PCFIXCTLP_EXEC_CONTEXT;
 
 /*----------------------------------------------------------------------
@@ -130,10 +141,9 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxQueryDefaultDisposition(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	UNREFERENCED_PARAMETER( MainThreadId );
-	
+
 	ICfixReportEventSink *Sink = CfixctlsGetEffectiveReportSink( Context );
 	ASSERT( Sink != NULL );
 	if ( Sink == NULL )
@@ -194,8 +204,12 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
 
-	
 	UNREFERENCED_PARAMETER( MainThreadId );
+	
+	if ( Context->IssueAbort )
+	{
+		return CfixAbort;
+	}
 	
 	ICfixReportEventSink *Sink = CfixctlsGetEffectiveReportSink( Context );
 	ASSERT( Sink != NULL );
@@ -288,20 +302,24 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	}
 }
 
-static VOID CfixctlsExecCtxBeforeFixtureStart(
+static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
 	__in ULONG MainThreadId,
 	__in PCFIX_FIXTURE Fixture
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink == NULL );
 
 	UNREFERENCED_PARAMETER( MainThreadId );
-	
+
+	if ( Context->IssueAbort )
+	{
+		return CFIXCTL_E_USER_ABORT;
+	}
+
 	//
 	// Obtain new fixture sink.
 	//
@@ -314,12 +332,11 @@ static VOID CfixctlsExecCtxBeforeFixtureStart(
 	}
 	else
 	{
-		VERIFY( SUCCEEDED( Context->ProcessSink->Notification(
-			CFIXCTL_E_NO_FIXTURE_SINK ) ) );
+		return CFIXCTL_E_NO_FIXTURE_SINK;
 	}
 }
 
-static VOID CfixctlsExecCtxBeforeTestCaseStart(
+static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
 	__in ULONG MainThreadId,
 	__in PCFIX_TEST_CASE TestCase
@@ -327,15 +344,19 @@ static VOID CfixctlsExecCtxBeforeTestCaseStart(
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
 
-	
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink != NULL );
 
 	UNREFERENCED_PARAMETER( MainThreadId );
 	
+	if ( Context->IssueAbort )
+	{
+		return CFIXCTL_E_USER_ABORT;
+	}
+
 	if ( ! Context->FixtureSink )
 	{
-		return;
+		return E_UNEXPECTED;
 	}
 
 	//
@@ -350,8 +371,7 @@ static VOID CfixctlsExecCtxBeforeTestCaseStart(
 	}
 	else
 	{
-		VERIFY( SUCCEEDED( Context->ProcessSink->Notification(
-			CFIXCTL_E_NO_TESTCASE_SINK ) ) );
+		return CFIXCTL_E_NO_TESTCASE_SINK;
 	}
 }
 
@@ -363,7 +383,6 @@ static VOID CfixctlsExecCtxAfterFixtureFinish(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink != NULL );
@@ -392,7 +411,6 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	ASSERT( Context->TestCaseSink != NULL );
 	ASSERT( Context->FixtureSink != NULL );
@@ -419,7 +437,6 @@ VOID CfixctlsExecCtxBeforeChildThreadStart(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	ASSERT( Context->FixtureSink != NULL );
 
@@ -448,7 +465,6 @@ VOID CfixctlsExecCtxAfterChildThreadFinish(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-
 	
 	ASSERT( Context->FixtureSink != NULL );
 
@@ -528,6 +544,7 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 	NewContext->ReferenceCount				= 1;
 	NewContext->Module						= Module;
 	NewContext->ProcessSink					= ProcessSink;
+	NewContext->IssueAbort					= FALSE;
 
 	NewContext->Base.Version				= CFIX_TEST_CONTEXT_VERSION;
 	NewContext->Base.ReportEvent			= CfixctlsExecCtxReportEvent;
@@ -544,6 +561,21 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 	NewContext->Base.Dereference			= CfixctlsExecCtxDereference;
 
 	*Context = &NewContext->Base;
+
+	return S_OK;
+}
+
+HRESULT CfixctlpAbortExecutionContextAdapter(
+	__in PCFIX_EXECUTION_CONTEXT Context
+	)
+{
+	if ( ! Context )
+	{
+		return E_INVALIDARG;
+	}
+
+	PCFIXCTLP_EXEC_CONTEXT Obj = ( PCFIXCTLP_EXEC_CONTEXT ) Context;
+	Obj->IssueAbort = TRUE;
 
 	return S_OK;
 }

@@ -92,6 +92,15 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 	__out PCFIX_EXECUTION_CONTEXT *Context
 	);
 
+/*++
+	Routine Description:
+		Issue an abort as soon as possible s.t. the execution is
+		stopped orderly.
+--*/
+HRESULT CfixctlpAbortExecutionContextAdapter(
+	__in PCFIX_EXECUTION_CONTEXT Context
+	);
+
 /*----------------------------------------------------------------------
  *
  * Internal interfaces.

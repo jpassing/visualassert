@@ -64,6 +64,8 @@ public:
 	STDMETHOD( GetArchitecture )(
 		__out CfixTestModuleArch *Arch
 		);
+
+	STDMETHOD( Terminate )();
 };
 
 /*------------------------------------------------------------------
@@ -238,4 +240,9 @@ STDMETHODIMP Host::GetArchitecture(
 		*Arch = CFIXCTLP_OWN_ARCHITECTURE;
 		return S_OK;
 	}
+}
+
+STDMETHODIMP Host::Terminate()
+{
+	return E_NOTIMPL;
 }

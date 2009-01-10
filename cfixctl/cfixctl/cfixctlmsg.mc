@@ -76,3 +76,19 @@ SymbolicName	= CFIXCTL_E_NO_TESTCASE_SINK
 Language		= English
 Obtaining testcase sink failed.
 .
+
+MessageId		= 0xB005
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_HOST_NOT_FOUND
+Language		= English
+No host has been registered with this cookie.
+.
+
+MessageId		= 0xB006
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_USER_ABORT
+Language		= English
+Run aborted.
+.
