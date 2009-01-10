@@ -95,13 +95,32 @@ HRESULT CfixctlpAbortExecutionContextAdapter(
 	__in PCFIX_EXECUTION_CONTEXT Context
 	);
 
+
+/*++
+	Routine Description:
+		Trace routine for debugging.
+--*/
+VOID CfixctlpDbgPrint(
+	__in PSZ Format,
+	...
+	);
+
+/*++
+	Routine Description:
+		Returns module handle of thie DLL.
+--*/
 HMODULE CfixctlpGetModule();
 
+/*++
+	Routine Description:
+		Calls IsProcessInJob if available, else sets Result to FALSE.
+--*/
 BOOL CfixctlpIsProcessInJob(
 	__in HANDLE ProcessHandle,
 	__in HANDLE JobHandle,
 	__out PBOOL Result
 	);
+
 
 /*----------------------------------------------------------------------
  *

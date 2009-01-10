@@ -22,15 +22,48 @@
  */
 
 #include <ole2.h>
-
 #include <crtdbg.h>
-#define ASSERT _ASSERTE
 
+#pragma warning( push )
+#pragma warning( disable: 6011; disable: 6387 )
+#include <strsafe.h>
+#pragma warning( pop )
+
+#define ASSERT _ASSERTE
 
 #define DECLARE_NOT_COPYABLE( ClassName )								\
 	private:															\
 		ClassName( const ClassName& );									\
 		const ClassName& operator = ( const ClassName& );
+
+
+#if DBG
+	#define COM_TRACE( Args ) ComDbgPrint##Args
+#else
+	#define COM_TRACE( Args ) 
+#endif
+
+__inline VOID ComDbgPrint(
+	__in PCWSTR Format,
+	...
+	)
+{
+	HRESULT hr;
+	WCHAR Buffer[ 512 ];
+	va_list lst;
+	va_start( lst, Format );
+	hr = StringCchVPrintf(
+		Buffer, 
+		_countof( Buffer ),
+		Format,
+		lst );
+	va_end( lst );
+	
+	if ( SUCCEEDED( hr ) )
+	{
+		OutputDebugString( Buffer );
+	}
+}
 
 /*++
 	Class Description:
@@ -64,7 +97,9 @@ public:
 public:
 	STDMETHOD_( ULONG, AddRef )()
 	{
-		return InterlockedIncrement( &this->ReferenceCount );
+		ULONG Refs = InterlockedIncrement( &this->ReferenceCount );
+		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
+		return Refs;
 	}
 
 	STDMETHOD_( ULONG, Release )()
@@ -75,6 +110,7 @@ public:
 			delete this;
 		}
 
+		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
 		return Refs;
 	}
 };
