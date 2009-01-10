@@ -64,6 +64,7 @@ static HRESULT CfixhostsCreateLocalHost(
 				CLSCTX_INPROC_SERVER,
 				0,
 				0,
+				NULL,	// Parent has set the current directory for us.
 				Host );
 
 			LocalAgent->Release();

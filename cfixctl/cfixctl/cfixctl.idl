@@ -141,11 +141,23 @@ library Cfixctl
 	]
 	interface ICfixAgent : IUnknown 
 	{
+		/*++
+			Method Description:
+				Create a new Host object.
+
+			Arguments:
+				Arch		- CPU architecture.
+				Clsctx		- inproc/local server.
+				Flags		- 0 or CFIXCTL_AGENT_FLAG_*.
+				Timeout		- Timeout when wariting for process to spawn.
+				CurrentDir	- Optional.
+		--*/
 		HRESULT CreateHost( 
 			[in] CfixTestModuleArch Arch,
 			[in] DWORD Clsctx,
 			[in] ULONG Flags,
 			[in] ULONG Timeout,
+			[in] BSTR CurrentDirectory,
 			[out, retval] ICfixHost** Host
 			);
 

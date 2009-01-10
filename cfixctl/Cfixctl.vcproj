@@ -131,6 +131,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cfixctl\compat.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\cfixctl\comserver.cpp"
 					>
 				</File>

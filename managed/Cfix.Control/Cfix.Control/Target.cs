@@ -11,11 +11,22 @@ namespace Cfix.Control
 		Amd64 = CfixTestModuleArch.CfixTestModuleArchAmd64
 	}
 
+	[Flags]
+	public enum HostCreationFlags
+	{
+		None = 0,
+		UseJob = 1	// CFIXCTL_AGENT_FLAG_USE_JOB
+	}
+
 	public class Target : IDisposable
 	{
+		private const uint DefaultTimeout = 3000;
+
 		private ICfixAgent agent;
 		private CfixTestModuleArch arch;
 		private Clsctx clsctx;
+
+		private uint timeout = DefaultTimeout;
 
 		[Flags]
 		private enum Clsctx
@@ -49,6 +60,18 @@ namespace Cfix.Control
 		 * Publics.
 		 */
 
+		public uint Timeout
+		{
+			get
+			{
+				return this.timeout;
+			}
+			set
+			{
+				this.timeout = value;
+			}
+		}
+
 		public static Target CreateLocalTarget(
 			Architecture arch,
 			bool allowInproc
@@ -65,12 +88,25 @@ namespace Cfix.Control
 			Dispose( false );
 		}
 
-		public virtual ICfixHost CreateHost()
+		public virtual ICfixHost CreateHost(
+			String currentDirectory,
+			HostCreationFlags flags
+			)
 		{
-			ICfixHost host = this.agent.CreateHost( this.arch, ( uint ) this.clsctx );
+			ICfixHost host = this.agent.CreateHost(
+				this.arch, 
+				( uint ) this.clsctx,
+				( uint ) flags,
+				this.timeout,
+				currentDirectory );
 
 			Debug.Assert( host != null );
 			return host;
+		}
+
+		public virtual ICfixHost CreateHost()
+		{
+			return CreateHost( null, HostCreationFlags.None );
 		}
 
 		public CfixTestModuleArch Architecture

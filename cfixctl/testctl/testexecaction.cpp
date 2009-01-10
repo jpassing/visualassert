@@ -359,6 +359,7 @@ void Before()
 		CLSCTX_INPROC_SERVER,
 		0,
 		0,
+		NULL,
 		&Host ) );
 
 	Agent->Release();

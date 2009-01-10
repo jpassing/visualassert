@@ -89,6 +89,7 @@ public:
 		__in DWORD Clsctx,
 		__in ULONG Flags,
 		__in ULONG Timeout,
+		__in BSTR CurrentDirectory,
 		__out ICfixHost** Host
 		);
 
@@ -351,11 +352,13 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	PROCESS_INFORMATION ProcessInfo;
 	ZeroMemory( &ProcessInfo, sizeof( PROCESS_INFORMATION ) );
 
+	BOOL SuspendInitialThread = PutInJob;
+
 	HRESULT Hr = CfixctlsSpawnHost( 
 		Arch, 
 		Agent, 
 		CurrentDirectory, 
-		PutInJob,	// suspend.
+		SuspendInitialThread,
 		&ProcessInfo );
 	if ( FAILED( Hr ) )
 	{
@@ -370,12 +373,26 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	//
 	*Cookie = ProcessInfo.dwProcessId;
 
+	//
+	// Reconsider decision of assigning the process to a new job based on
+	// whether it already belongs to some otehr job.
+	//
+	if ( PutInJob )
+	{
+		BOOL InJob;
+		if ( ! CfixctlpIsProcessInJob( ProcessInfo.hProcess, NULL, &InJob ) )
+		{
+			InJob = TRUE;
+		}
+
+		PutInJob = PutInJob && ! InJob;
+	}
+
 	if ( ! PutInJob )
 	{
 		*ProcessOrJob = ProcessInfo.hProcess;
-		VERIFY( CloseHandle( ProcessInfo.hThread ) );
 
-		return S_OK;
+		Hr = S_OK;
 	}
 	else
 	{
@@ -385,8 +402,6 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 			if ( AssignProcessToJobObject( Job, ProcessInfo.hProcess ) )
 			{
 				*ProcessOrJob = Job;
-
-				( VOID ) ResumeThread( ProcessInfo.hThread );
 				Hr = S_OK;
 			}
 			else
@@ -406,10 +421,16 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 		}
 
 		VERIFY( CloseHandle( ProcessInfo.hProcess ) );
-		VERIFY( CloseHandle( ProcessInfo.hThread ) );
-
-		return Hr;
 	}
+	
+	if ( SuspendInitialThread )
+	{
+		( VOID ) ResumeThread( ProcessInfo.hThread );
+	}
+
+	VERIFY( CloseHandle( ProcessInfo.hThread ) );
+
+	return Hr;
 }
 
 static HRESULT CfixctlsCreateProcessHost(
@@ -424,7 +445,6 @@ static HRESULT CfixctlsCreateProcessHost(
 	ASSERT( Agent );
 	ASSERT( Result );
 
-	// TODO: call IsProcessInJob.
 	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
 
 	//
@@ -515,7 +535,7 @@ LocalAgent::LocalAgent() : Registration( NULL ), NewRegistrationEvent( NULL )
 {
 	InitializeCriticalSection( &this->RegistrationLock );
 
-	this->NewRegistrationEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
+	this->NewRegistrationEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
 	ASSERT( this->NewRegistrationEvent );
 }
 
@@ -584,6 +604,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in DWORD Clsctx,
 	__in ULONG Flags,
 	__in ULONG Timeout,
+	__in BSTR CurrentDirectory,
 	__out ICfixHost** Host
 	)
 {
@@ -604,8 +625,22 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
-		return CfixctlpGetLocalHostFactory().CreateInstance(
+		HRESULT Hr = CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
+
+		if ( SUCCEEDED( Hr ) && 
+			 CurrentDirectory != NULL &&
+			 SysStringByteLen( CurrentDirectory ) > 0 )
+		{
+			if ( ! SetCurrentDirectory( CurrentDirectory ) )
+			{
+				( *Host )->Release();
+				*Host = NULL;
+				Hr = HRESULT_FROM_WIN32( GetLastError() );
+			}
+		}
+
+		return Hr;
 	}
 	else if ( Clsctx & CLSCTX_LOCAL_SERVER )
 	{
@@ -615,7 +650,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 		return CfixctlsCreateProcessHost(
 			Arch,
 			static_cast< ICfixAgent* >( this ),
-			NULL,
+			CurrentDirectory,
 			Flags,
 			Timeout,
 			Host );
@@ -688,6 +723,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 	}
 
 	HRESULT Hr = E_FAIL;
+	BOOL KeepSpinning = FALSE;
 	do
 	{
 		EnterCriticalSection( &this->RegistrationLock );
@@ -708,14 +744,14 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 				Hr = CFIXCTL_E_HOST_NOT_FOUND;
 			}
 
-			break;
+			KeepSpinning = FALSE;
 		}
 
 		LeaveCriticalSection( &this->RegistrationLock );
 
 		if ( *Host == NULL )
 		{
-			if ( Timeout == NULL )
+			if ( Timeout == 0 )
 			{
 				Hr = CFIXCTL_E_HOST_NOT_FOUND;
 				break;
@@ -740,11 +776,12 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 					//
 					// Search again.
 					//
+					KeepSpinning = TRUE;
 				}
 			}
 		}
 	}
-	while ( *Host == NULL );
+	while ( KeepSpinning );
 
 	ASSERT( SUCCEEDED( Hr ) == ( *Host != NULL ) );
 	return Hr;

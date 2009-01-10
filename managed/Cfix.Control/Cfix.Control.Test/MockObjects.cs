@@ -84,6 +84,10 @@ namespace Cfix.Control.Test
 		{
 			return this.module;
 		}
+
+		public void Terminate()
+		{
+		}
 	}
 
 	internal class MockAgent : ICfixAgent
@@ -95,9 +99,24 @@ namespace Cfix.Control.Test
 			this.module = module;
 		}
 
-		public ICfixHost CreateHost( CfixTestModuleArch Arch, uint Clsctx )
+		public ICfixHost CreateHost( 
+			CfixTestModuleArch Arch, 
+			uint Clsctx, 
+			uint Flags, 
+			uint Timeout, 
+			string CurrentDirectory )
 		{
 			return new MockHost( this.module );
+		}
+
+		public void RegisterHost( uint Cookie, ICfixHost Host )
+		{
+			throw new NotImplementedException();
+		}
+
+		public ICfixHost WaitForHostConnection( uint Cookie, uint Timeout )
+		{
+			throw new NotImplementedException();
 		}
 	}
 

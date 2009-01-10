@@ -75,6 +75,7 @@ public:
 			CLSCTX_INPROC_SERVER,
 			0,
 			0,
+			NULL,
 			&LocalHost ) );
 
 		//
@@ -123,6 +124,7 @@ public:
 			CLSCTX_INPROC_SERVER,
 			0,
 			0,
+			NULL,
 			&LocalHost ) );
 
 		CFIXCC_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
@@ -185,6 +187,7 @@ public:
 				CLSCTX_LOCAL_SERVER,
 				FlagSets[ Flags ],
 				INFINITE,
+				NULL,
 				&Host ) );
 
 			CFIX_ASSUME( Host );
