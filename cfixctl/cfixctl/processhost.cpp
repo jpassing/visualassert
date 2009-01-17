@@ -74,6 +74,14 @@ public:
 
 	STDMETHOD( Terminate )();
 
+	STDMETHOD( SearchModules )(
+		__in BSTR PathFilter,
+		__in ULONG Flags,
+		__in ULONG Types,
+		__in ULONG Architectures,
+		__in ICfixSearchModulesCallback *Callback
+		);
+
 	/*------------------------------------------------------------------
 	 * IID_ICfixProcessHostInternal methods.
 	 */
@@ -184,7 +192,7 @@ STDMETHODIMP ProcessHost::GetArchitecture(
 	}
 	else
 	{
-		return Host->GetArchitecture(Arch );
+		return Host->GetArchitecture( Arch );
 	}
 }
 
@@ -214,6 +222,25 @@ STDMETHODIMP ProcessHost::Terminate()
 	else
 	{
 		return HRESULT_FROM_WIN32( GetLastError() );
+	}
+}
+
+STDMETHODIMP ProcessHost::SearchModules(
+	__in BSTR PathFilter,
+	__in ULONG Flags,
+	__in ULONG Type,
+	__in ULONG Arch,
+	__in ICfixSearchModulesCallback *Callback
+	)
+{
+	if ( ! this->Host )
+	{
+		return E_UNEXPECTED;
+	}
+	else
+	{
+		return Host->SearchModules( 
+			PathFilter, Flags, Type, Arch, Callback );
 	}
 }
 

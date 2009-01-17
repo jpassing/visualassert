@@ -66,6 +66,14 @@ public:
 		);
 
 	STDMETHOD( Terminate )();
+
+	STDMETHOD( SearchModules )(
+		__in BSTR PathFilter,
+		__in ULONG Flags,
+		__in ULONG Types,
+		__in ULONG Architectures,
+		__in ICfixSearchModulesCallback *Callback
+		);
 };
 
 /*------------------------------------------------------------------
@@ -244,5 +252,173 @@ STDMETHODIMP LocalHost::GetArchitecture(
 
 STDMETHODIMP LocalHost::Terminate()
 {
+	//
+	// Terminating a local host is pointless.
+	//
 	return E_NOTIMPL;
+}
+
+static BOOL CfixctlsIsDll(
+	__in PCWSTR Path
+	)
+{
+	size_t Len = wcslen( Path );
+	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".dll" ) );
+}
+
+static BOOL CfixctlsIsSys(
+	__in PCWSTR Path
+	)
+{
+	size_t Len = wcslen( Path );
+	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".sys" ) );
+}
+
+struct CFIXCTLP_SEARCH_CONTEXT
+{
+	ICfixSearchModulesCallback *Callback;
+	ULONG Type;
+	ULONG Architecture;
+};
+
+static HRESULT CfixctlsFileCallback(
+	__in BSTR Path,
+	__in CFIXCTLP_SEARCH_CONTEXT *Context
+	)
+{
+	//
+	// Filter file types.
+	//
+	CfixTestModuleType Type;
+	if ( CfixctlsIsDll( Path ) )
+	{
+		Type = CfixTestModuleTypeUser;
+	}
+	else if ( CfixctlsIsSys( Path ) )
+	{
+		Type = CfixTestModuleTypeKernel;
+	}
+	else
+	{
+		//
+		// Not of interest.
+		//
+		return S_OK;
+	}
+
+	if ( Context->Type != ( ULONG ) -1 && 
+		 Context->Type != ( ULONG ) Type )
+	{
+		return S_OK;
+	}
+	
+	//
+	// Filter architectures.
+	//
+	CfixTestModuleArch Arch;
+
+	CFIX_MODULE_INFO Info;
+	Info.SizeOfStruct = sizeof( CFIX_MODULE_INFO );
+	HRESULT Hr = CfixQueryPeImage( Path, &Info );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	switch ( Info.MachineType )
+	{
+	case IMAGE_FILE_MACHINE_I386:
+		Arch = CfixTestModuleArchI386;
+		break;
+
+	case IMAGE_FILE_MACHINE_AMD64:
+		Arch = CfixTestModuleArchAmd64;
+		break;
+
+	default:
+		//
+		// Unrecognized - skip.
+		//
+		return S_OK;
+	}
+
+	if ( Context->Architecture != ( ULONG ) -1 && 
+		 Context->Architecture != ( ULONG ) Arch )
+	{
+		return S_OK;
+	}
+
+	return Context->Callback->FoundModule(
+		Path,
+		Type,
+		Arch );
+}
+
+static HRESULT CfixctlsSearchCallback(
+	__in PCWSTR Path,
+	__in CFIXUTIL_VISIT_TYPE Type,
+	__in_opt PVOID PvContext,
+	__in BOOL SearchPerformed
+	)
+{
+	UNREFERENCED_PARAMETER( SearchPerformed );
+
+	CFIXCTLP_SEARCH_CONTEXT *Context = 
+		static_cast< CFIXCTLP_SEARCH_CONTEXT* >( PvContext );
+
+	BSTR PathBstr = SysAllocString( Path );
+	if ( PathBstr == NULL )
+	{
+		return E_OUTOFMEMORY;
+	}
+
+	HRESULT Hr;
+	switch ( Type )
+	{
+	case CfixutilEnterDirectory:
+		Hr = Context->Callback->EnterDirectory( PathBstr );
+		break;
+
+	case CfixutilLeaveDirectory:
+		Hr = Context->Callback->LeaveDirectory( PathBstr );
+		break;
+
+	case CfixutilFile:
+		Hr = CfixctlsFileCallback( PathBstr, Context );
+		break;
+
+	default:
+		Hr = E_UNEXPECTED;
+	}
+
+	SysFreeString( PathBstr );
+	return Hr;
+}
+
+STDMETHODIMP LocalHost::SearchModules(
+	__in BSTR PathFilter,
+	__in ULONG Flags,
+	__in ULONG Type,
+	__in ULONG Arch,
+	__in ICfixSearchModulesCallback *Callback
+	)
+{
+	if ( PathFilter == NULL ||
+		 Type != ( ULONG ) -1 && Type > CfixTestModuleTypeMax ||
+		 Arch != ( ULONG ) -1 && Arch > CfixTestModuleArchMax ||
+		 Callback == NULL )
+	{
+		return E_INVALIDARG;
+	}
+
+	CFIXCTLP_SEARCH_CONTEXT Context;
+	Context.Callback		= Callback;
+	Context.Type			= Type;
+	Context.Architecture	= Arch;
+
+	return CfixutilSearch(
+		PathFilter,
+		Flags & CFIXCTL_SEARCH_FLAG_RECURSIVE,
+		CfixctlsSearchCallback,
+		&Context );
 }
