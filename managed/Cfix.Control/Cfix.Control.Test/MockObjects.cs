@@ -88,6 +88,15 @@ namespace Cfix.Control.Test
 		public void Terminate()
 		{
 		}
+
+		public void SearchModules( 
+			string PathFilter, 
+			uint flags, 
+			uint Type, 
+			uint Architecture, 
+			ICfixSearchModulesCallback Callback )
+		{
+		}
 	}
 
 	internal class MockAgent : ICfixAgent
@@ -127,7 +136,7 @@ namespace Cfix.Control.Test
 				new MockAgent( module ), 
 				CfixTestModuleArch.CfixTestModuleArchI386, 
 				true,
-				HostCreationFlags.None,
+				HostCreationOptions.None,
 				null )
 		{
 		}

@@ -48,7 +48,7 @@ namespace Cfix.Control.Test
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
-			ITestItemContainer fixture = ( ITestItemContainer ) mod.GetItem( 0 );
+			ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
 			Assert.AreEqual( 0, fixture.Ordinal );
 			Assert.AreEqual( "TestExecActionDummy", fixture.Name );
 
@@ -79,12 +79,12 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 0, item.Ordinal );
 			Assert.AreEqual( "foo", item.Name );
 
-			mod.ItemRemoved += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				Assert.Fail( "Should not be called " );
 			};
 
-			mod.ItemAdded += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				Assert.Fail( "Should not be called " );
 			};
@@ -116,12 +116,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				additions++;
 			};
@@ -179,12 +179,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				additions++;
 			};
@@ -225,12 +225,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				additions++;
 			};
@@ -288,12 +288,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemContainer sender, ITestItem it )
+			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
 			{
 				additions++;
 			};
