@@ -43,7 +43,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DteCommandBar.cs" />
-    <Compile Include="DteCommandItem.cs" />
+    <Compile Include="DteCommandBarButton.cs" />
+    <Compile Include="DteCommandBarControl.cs" />
+    <Compile Include="DteCommand.cs" />
     <Compile Include="DteConnect.cs">
       <SubType>Code</SubType>
     </Compile>

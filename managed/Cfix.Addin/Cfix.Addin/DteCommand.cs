@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.CommandBars;
 
 namespace Cfix.Addin
 {
-	internal class DteCommandItem
+	internal class DteCommand
 	{
 		public static readonly String CommandPrefix = typeof( DteConnect ).FullName + ".";
 		
@@ -75,7 +75,7 @@ namespace Cfix.Addin
 		 * Publics.
 		 */
 
-		public DteCommandItem( DteConnect connect, String name, String caption )
+		public DteCommand( DteConnect connect, String name, String caption )
 		{
 			this.connect = connect;
 			this.name = name;
@@ -111,7 +111,7 @@ namespace Cfix.Addin
 			}
 		}
 
-		public void AddTo( DteCommandBar bar )
+		public void AddTo( DteCommandBarControl bar )
 		{
 			bar.Add( this );
 		}

@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.CommandBars;
 
 namespace Cfix.Addin
 {
-	internal class DteMainMenu : DteCommandBar
+	internal class DteMainMenu : DteCommandBarControl
 	{
 		private CommandBarPopup popup;
 
@@ -85,11 +85,11 @@ namespace Cfix.Addin
 		{
 		}
 
-		public override void Add( DteCommandItem item )
+		public override void Add( DteCommand item )
 		{
 			// TODO: ordinal.
 			item.Command.AddControl( this.popup.CommandBar, 1 );
-			this.items.Add( item );
+			this.commands.Add( item );
 		}
 
 		public override void Delete()

@@ -13,23 +13,20 @@ namespace Cfix.Addin
 	internal class DteCommandBar
 	{
 		protected readonly String name;
-		protected readonly String caption;
-
 		protected readonly DteConnect connect;
+		private CommandBar control = null;
 
-		protected CommandBarControl control = null;
-
-		protected IList<DteCommandItem> items = new List<DteCommandItem>();
+		private ICollection<DteCommandBarControl> controls = new LinkedList<DteCommandBarControl>();
 
 		/*----------------------------------------------------------------------
 		 * Protected.
 		 */
 
-		protected virtual CommandBarControl CreateControl()
+		protected virtual CommandBar CreateControl()
 		{
 			CommandBars cmdBars = ( CommandBars ) this.connect.DTE.CommandBars;
 
-			return ( CommandBarControl ) cmdBars.Add(
+			return ( CommandBar ) cmdBars.Add(
 				this.name,
 				MsoBarPosition.msoBarTop,
 				Type.Missing,
@@ -40,20 +37,17 @@ namespace Cfix.Addin
 		 * Public.
 		 */
 
-		public DteCommandBar( 
-			DteConnect connect, 
-			String name,
-			String caption )
+		public DteCommandBar(
+			DteConnect connect,
+			String name )
 		{
 			this.connect = connect;
 			this.name = name;
-			this.caption = caption;
 		}
 
 		public void Load()
 		{
 			this.control = CreateControl();
-			this.control.Caption = this.caption;
 		}
 
 		public bool Visible
@@ -62,29 +56,53 @@ namespace Cfix.Addin
 			set { this.control.Visible = value; }
 		}
 
-		public virtual void Add( DteCommandItem item )
-		{
-			if ( this.control == null )
-			{
-				throw new InvalidOperationException( "Not loaded" );
-			}
-
-			// TODO: ordinal.
-			item.Command.AddControl( this.control, 1 );
-			this.items.Add( item );
-		}
-
 		public virtual void Delete()
 		{
 			if ( this.control != null )
 			{
-				this.control.Delete( true );
+				this.control.Delete();
 			}
 
-			foreach( DteCommandItem item in this.items )
+			foreach ( DteCommandBarControl ctl in this.controls )
 			{
-				item.Delete();
+				ctl.Delete();
 			}
 		}
+
+		public CommandBar CommandBar
+		{
+			get { return this.control; }
+		}
+
+		public CommandBarButton Add( DteCommand cmd )
+		{
+			// TODO: position.
+			return ( CommandBarButton ) cmd.Command.AddControl( this.control, 1 );
+		}
+
+		public DteCommandBarControl AddButton( String name, String caption )
+		{
+			DteCommandBarButton button = new DteCommandBarButton(
+				this.connect, this, name, caption );
+			button.Load();
+			this.controls.Add( button );
+
+			return button;
+		}
+		
+		//public DteCommandBarButton AddButton(
+		//    String name,
+		//    String caption
+		//    )
+		//{
+		//    DteCommand cmd = new DteCommand(
+		//        this.connect, name, caption );
+
+		//    // TODO: position.
+		//    CommandBarButton button = ( CommandBarButton )
+		//        cmd.Command.AddControl( this.control, 1 );
+
+		//    return new DteCommandBarButton( button );
+		//}
 	}
 }
