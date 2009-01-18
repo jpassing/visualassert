@@ -13,19 +13,19 @@ namespace Cfix.Addin
 	{
 		private CommandBarPopup popup;
 
-		private int GetToolsMenuIndex()
+		private static int GetToolsMenuIndex( DteConnect connect  )
 		{
 			try
 			{
 				string resourceName = String.Concat( 
-					new CultureInfo( this.connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
+					new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
 
 				ResourceManager resourceManager = new ResourceManager(
 					"Cfix.Addin.CommandBar", Assembly.GetExecutingAssembly() );
 				String name = resourceManager.GetString( resourceName );
 
 				CommandBar menuBarCommandBar = 
-					( ( CommandBars ) this.connect.DTE.CommandBars )[ "MenuBar" ];
+					( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
 				return menuBarCommandBar.Controls[ name ].Index + 1;
 			}
 			catch
@@ -34,12 +34,12 @@ namespace Cfix.Addin
 			}
 		}
 
-		private int CalculateMenuIndex()
+		private static int CalculateMenuIndex( DteConnect connect  )
 		{
 			//
 			// Use Tools menu as starting point.
 			//
-			int toolsIndex = GetToolsMenuIndex();
+			int toolsIndex = GetToolsMenuIndex( connect );
 			if ( toolsIndex > 0 )
 			{
 				return toolsIndex;
@@ -47,45 +47,47 @@ namespace Cfix.Addin
 			else
 			{
 				CommandBar menuBarCommandBar = 
-					( ( CommandBars ) this.connect.DTE.CommandBars )[ "MenuBar" ];
+					( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
 				int menuCount = menuBarCommandBar.Controls.Count;
 				return menuCount;
 			}
 		}
 
+		private DteMainMenu(
+			DteConnect connect,
+			CommandBarPopup popup )
+			: base( connect, popup )
+		{
+			this.popup = popup;
+		}
+
 		/*----------------------------------------------------------------------
-		 * Protected.
+		 * Static.
 		 */
 
-		protected override CommandBarControl CreateControl()
+		public static DteMainMenu Create( DteConnect connect, String name, String caption )
 		{
-			CommandBars cmdBars = ( CommandBars ) this.connect.DTE.CommandBars;
+			CommandBars cmdBars = ( CommandBars ) connect.DTE.CommandBars;
 
-			CommandBars dteCommandBars = ( CommandBars ) this.connect.DTE.CommandBars;
+			CommandBars dteCommandBars = ( CommandBars ) connect.DTE.CommandBars;
 			CommandBar dteMainMenuBar = dteCommandBars[ "MenuBar" ];
 
-			this.popup = ( CommandBarPopup ) dteMainMenuBar.Controls.Add(
+			CommandBarPopup popup = ( CommandBarPopup ) dteMainMenuBar.Controls.Add(
 				MsoControlType.msoControlPopup,
 				Type.Missing,
 				Type.Missing,
-				CalculateMenuIndex(),
+				CalculateMenuIndex( connect ),
 				true );
-			this.popup.CommandBar.Name = this.name;
-			return this.popup;
+			popup.CommandBar.Name = name;
+			popup.Caption = caption;
+			return new DteMainMenu( connect, popup );
 		}
 
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
 
-		public DteMainMenu( 
-			DteConnect connect, 
-			String name, 
-			String caption ) : base( connect, name, caption )
-		{
-		}
-
-		public override void Add( DteCommand item )
+		public void Add( DteCommand item )
 		{
 			// TODO: ordinal.
 			item.Command.AddControl( this.popup.CommandBar, 1 );

@@ -14,41 +14,41 @@ namespace Cfix.Addin
 	{
 		protected readonly String name;
 		protected readonly DteConnect connect;
-		private CommandBar control = null;
+		private readonly CommandBar control;
 
 		private ICollection<DteCommandBarControl> controls = new LinkedList<DteCommandBarControl>();
+
+		private DteCommandBar(
+			DteConnect connect,
+			CommandBar control )
+		{
+			this.connect = connect;
+			this.control = control;
+		}
 
 		/*----------------------------------------------------------------------
 		 * Protected.
 		 */
 
-		protected virtual CommandBar CreateControl()
+		public static DteCommandBar Create( 
+			DteConnect connect,
+			String name 
+			)
 		{
-			CommandBars cmdBars = ( CommandBars ) this.connect.DTE.CommandBars;
+			CommandBars cmdBars = ( CommandBars ) connect.DTE.CommandBars;
 
-			return ( CommandBar ) cmdBars.Add(
-				this.name,
+			CommandBar cmdBarCtl = ( CommandBar ) cmdBars.Add(
+				name,
 				MsoBarPosition.msoBarTop,
 				Type.Missing,
 				true );
+
+			return new DteCommandBar( connect, cmdBarCtl );
 		}
 
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
-
-		public DteCommandBar(
-			DteConnect connect,
-			String name )
-		{
-			this.connect = connect;
-			this.name = name;
-		}
-
-		public void Load()
-		{
-			this.control = CreateControl();
-		}
 
 		public bool Visible
 		{
@@ -58,14 +58,14 @@ namespace Cfix.Addin
 
 		public virtual void Delete()
 		{
-			if ( this.control != null )
-			{
-				this.control.Delete();
-			}
-
 			foreach ( DteCommandBarControl ctl in this.controls )
 			{
 				ctl.Delete();
+			}
+
+			if ( this.control != null )
+			{
+				this.control.Delete();
 			}
 		}
 
@@ -80,11 +80,13 @@ namespace Cfix.Addin
 			return ( CommandBarButton ) cmd.Command.AddControl( this.control, 1 );
 		}
 
-		public DteCommandBarControl AddButton( String name, String caption )
+		public DteCommandBarControl AddButton( DteCommand cmd )
 		{
+			CommandBarButton buttonCtl =
+				( CommandBarButton ) cmd.Command.AddControl( this.control, 1 );
+
 			DteCommandBarButton button = new DteCommandBarButton(
-				this.connect, this, name, caption );
-			button.Load();
+				this.connect, buttonCtl, cmd );
 			this.controls.Add( button );
 
 			return button;

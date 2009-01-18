@@ -20,13 +20,20 @@ namespace Cfix.Addin
 
 		private Command command;
 
+		private bool enabled = true;
+
+		public event ExecDelegate Execute;
+
 		private void QueryStatus(
 			vsCommandStatusTextWanted neededText,
 			ref vsCommandStatus status,
 			ref object commandText )
 		{
-			status = vsCommandStatus.vsCommandStatusSupported |
-					 vsCommandStatus.vsCommandStatusEnabled;
+			if ( enabled )
+			{
+				status = vsCommandStatus.vsCommandStatusSupported |
+						 vsCommandStatus.vsCommandStatusEnabled;
+			}
 		}
 
 		private void Exec(
@@ -35,6 +42,10 @@ namespace Cfix.Addin
 			ref object varOut,
 			ref bool handled )
 		{
+			if ( Execute != null )
+			{
+				Execute( executeOption, ref varIn, ref varOut, ref handled );
+			}
 		}
 
 		private static void FindAndDeleteCommand(
@@ -97,6 +108,12 @@ namespace Cfix.Addin
 			connect.RegisterCommand( name, QueryStatus, Exec );
 		}
 
+		public bool Enabled
+		{
+			get { return enabled; }
+			set { enabled = value; }
+		}
+
 		public void Delete()
 		{
 			this.connect.UnregisterCommand( this.name );
@@ -111,9 +128,5 @@ namespace Cfix.Addin
 			}
 		}
 
-		public void AddTo( DteCommandBarControl bar )
-		{
-			bar.Add( this );
-		}
 	}
 }

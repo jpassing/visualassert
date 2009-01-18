@@ -17,16 +17,13 @@ namespace Cfix.Addin
 
 		protected readonly DteConnect connect;
 
-		protected CommandBarControl control = null;
+		protected readonly CommandBarControl control = null;
 
 		protected ICollection<DteCommand> commands = new LinkedList<DteCommand>();
 
 		/*----------------------------------------------------------------------
 		 * Abstract.
 		 */
-
-		protected abstract CommandBarControl CreateControl();
-		public abstract void Add( DteCommand item );
 
 
 		/*----------------------------------------------------------------------
@@ -35,18 +32,10 @@ namespace Cfix.Addin
 
 		public DteCommandBarControl( 
 			DteConnect connect, 
-			String name,
-			String caption )
+			CommandBarControl control )
 		{
 			this.connect = connect;
-			this.name = name;
-			this.caption = caption;
-		}
-
-		public void Load()
-		{
-			this.control = CreateControl();
-			this.control.Caption = this.caption;
+			this.control = control;
 		}
 
 		public bool Visible
@@ -57,14 +46,24 @@ namespace Cfix.Addin
 
 		public virtual void Delete()
 		{
-			if ( this.control != null )
-			{
-				this.control.Delete( true );
-			}
-
 			foreach( DteCommand item in this.commands )
 			{
 				item.Delete();
+			}
+
+			if ( this.control != null )
+			{
+				try
+				{
+					this.control.Delete( true );
+				}
+				catch ( Exception )
+				{
+					//
+					// VS Bug!? See 
+					// http://www.mztools.com/articles/2006/MZ2006010.aspx.
+					//
+				}
 			}
 		}
 
