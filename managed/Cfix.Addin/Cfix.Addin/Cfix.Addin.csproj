@@ -42,11 +42,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CommandItem.cs" />
-    <Compile Include="Connect.cs">
+    <Compile Include="DteCommandBar.cs" />
+    <Compile Include="DteCommandItem.cs" />
+    <Compile Include="DteConnect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainMenu.cs" />
+    <Compile Include="DteMainMenu.cs" />
     <Compile Include="SampleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
