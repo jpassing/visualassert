@@ -75,7 +75,7 @@ public:
 	STDMETHOD( Terminate )();
 
 	STDMETHOD( SearchModules )(
-		__in BSTR PathFilter,
+		__in const BSTR PathFilter,
 		__in ULONG Flags,
 		__in ULONG Types,
 		__in ULONG Architectures,
@@ -226,7 +226,7 @@ STDMETHODIMP ProcessHost::Terminate()
 }
 
 STDMETHODIMP ProcessHost::SearchModules(
-	__in BSTR PathFilter,
+	__in const BSTR PathFilter,
 	__in ULONG Flags,
 	__in ULONG Type,
 	__in ULONG Arch,

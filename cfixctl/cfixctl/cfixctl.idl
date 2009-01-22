@@ -138,7 +138,7 @@ library Cfixctl
 				Callback	- Object to receive events.
 		--*/
 		HRESULT SearchModules(
-			[in] BSTR PathFilter,
+			[in] const BSTR PathFilter,
 			[in] ULONG Flags,
 			[in] ULONG Type,
 			[in] ULONG Architecture,

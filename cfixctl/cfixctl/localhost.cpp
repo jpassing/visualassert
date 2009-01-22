@@ -68,7 +68,7 @@ public:
 	STDMETHOD( Terminate )();
 
 	STDMETHOD( SearchModules )(
-		__in BSTR PathFilter,
+		__in const BSTR PathFilter,
 		__in ULONG Flags,
 		__in ULONG Types,
 		__in ULONG Architectures,
@@ -313,7 +313,7 @@ static HRESULT CfixctlsFileCallback(
 	}
 	
 	//
-	// Filter architectures.
+	// Query details.
 	//
 	CfixTestModuleArch Arch;
 
@@ -323,6 +323,14 @@ static HRESULT CfixctlsFileCallback(
 	if ( FAILED( Hr ) )
 	{
 		return Hr;
+	}
+
+	if ( ! Info.FixtureExportsPresent )
+	{
+		//
+		// Not a cfix module -- we are not interested.
+		//
+		return S_OK;
 	}
 
 	switch ( Info.MachineType )
@@ -396,7 +404,7 @@ static HRESULT CfixctlsSearchCallback(
 }
 
 STDMETHODIMP LocalHost::SearchModules(
-	__in BSTR PathFilter,
+	__in const BSTR PathFilter,
 	__in ULONG Flags,
 	__in ULONG Type,
 	__in ULONG Arch,

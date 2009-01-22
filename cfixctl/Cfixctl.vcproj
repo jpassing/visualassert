@@ -255,6 +255,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\testctl\testsearch.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\testctl\testserver.cpp"
 					>
 				</File>
