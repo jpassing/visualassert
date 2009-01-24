@@ -16,7 +16,7 @@ namespace Cfix.Control.Test
 
 			Target target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath() );
+				target, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -50,7 +50,7 @@ namespace Cfix.Control.Test
 
 			Target target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath() );
+				target, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -113,7 +113,7 @@ namespace Cfix.Control.Test
 
 			Target target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath() );
+				target, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -159,7 +159,7 @@ namespace Cfix.Control.Test
 
 			Target target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath() );
+				target, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -222,7 +222,7 @@ namespace Cfix.Control.Test
 
 			Target target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath() );
+				target, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 

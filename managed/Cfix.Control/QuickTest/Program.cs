@@ -7,17 +7,21 @@ namespace QuickTest
 {
 	class Program
 	{
+		[STAThread]
 		static void Main( string[] args )
 		{
 			Target target = Target.CreateLocalTarget( 
 				Architecture.I386, 
-				true );
+				false );
 
 			TestModule mod = TestModule.LoadModule(
 				target,
-				@"D:\dev\wdev\cfix-cfixctl\bin\chk\i386\testlib6.dll" );
+				@"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testslow.dll",
+				true );
 
-			Application.Run( new ExplorerForm() );
+			ExplorerForm f = new ExplorerForm();
+			f.Explorer.Session = new GenericSession( mod );
+			Application.Run( f );
 		}
 	}
 }

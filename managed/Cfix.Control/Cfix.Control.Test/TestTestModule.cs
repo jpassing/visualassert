@@ -42,14 +42,14 @@ namespace Cfix.Control.Test
 		public void LoadNonexistingModule()
 		{
 			TestModule mod = TestModule.LoadModule(
-				target, "idonotexist.dll" );
+				target, "idonotexist.dll", true );
 		}
 
 		[Test]
 		public void LoadNonTestlib()
 		{
 			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\notatestdll.dll" );
+				target, this.testdataDir + "\\notatestdll.dll", true );
 			Assert.AreEqual( this.testdataDir + "\\notatestdll.dll", mod.Path );
 			Assert.AreEqual( 0, mod.ItemCount );
 
@@ -63,7 +63,7 @@ namespace Cfix.Control.Test
 		public void LoadTestlibWithEmptyFixture()
 		{
 			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\simple.dll" );
+				target, this.testdataDir + "\\simple.dll", true );
 
 			Assert.AreEqual( 0, mod.Ordinal );
 			Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
@@ -89,7 +89,7 @@ namespace Cfix.Control.Test
 		public void LoadTestlibWithInvalidFixtureName()
 		{
 			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\toolong.dll" );
+				target, this.testdataDir + "\\toolong.dll", true );
 		}
 
 		[Test]
@@ -97,16 +97,24 @@ namespace Cfix.Control.Test
 		public void LoadTestlibWithWrongArch()
 		{
 			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\wrongarch.dll" );
+				target, this.testdataDir + "\\wrongarch.dll", true );
+		}
+
+		[Test]
+		[ExpectedException( typeof( CfixException ) )]
+		public void LoadTestlibWithAmbiguousTestCaseNamesAndFail()
+        {
+            TestModule mod = TestModule.LoadModule(
+				target, this.testdataDir + "\\dupfixturename.dll", false );
 		}
 
 		[Test]
 		public void LoadTestlibWithAmbiguousTestCaseNames()
-        {
-            TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\dupfixturename.dll" );
+		{
+			TestModule mod = TestModule.LoadModule(
+				target, this.testdataDir + "\\dupfixturename.dll", true );
 
-            Assert.AreEqual( 0, mod.Ordinal );
+			Assert.AreEqual( 0, mod.Ordinal );
 			Assert.AreEqual( this.testdataDir + "\\dupfixturename.dll", mod.Path );
 
 			Assert.AreEqual( 1, mod.ItemCount );
@@ -122,10 +130,25 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( "Log", tc.Name );
 
 			tc = fixture.GetItem( 1 );
-			Assert.AreEqual( 1, tc.Ordinal );
-			Assert.AreEqual( "Log", tc.Name );
-		}
+			Assert.IsNull( tc );
 
+			mod.Refresh();
+
+			Assert.AreEqual( 1, mod.ItemCount );
+
+			fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+			Assert.AreEqual( 0, fixture.Ordinal );
+			Assert.AreEqual( "TestExecActionDummy", fixture.Name );
+
+			Assert.AreEqual( 2, fixture.ItemCount );
+
+			tc = fixture.GetItem( 0 );
+			Assert.AreEqual( 0, tc.Ordinal );
+			Assert.AreEqual( "Log", tc.Name );
+
+			tc = fixture.GetItem( 1 );
+			Assert.IsNull( tc );
+		}
 		
 	}
 }

@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericSession.cs" />
     <Compile Include="ITestItemCollection.cs" />
     <Compile Include="Native\NativeAction.cs" />
     <Compile Include="SequenceAction.cs" />
@@ -70,7 +71,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ITestItem.cs" />
     <Compile Include="Native\TestItem.cs" />
-    <Compile Include="Native\TestItemContainer.cs" />
+    <Compile Include="Native\TestItemCollection.cs" />
+    <Compile Include="ISession.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Cfixctl">

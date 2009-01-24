@@ -52,7 +52,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix TestCase",
 		L"Cfix.Control.TestCase",
 		L"Cfix.Control.TestCase.1",
-		L"free"
+		L"both"
 	},
 	{
 		CfixctlpGetTestFixtureFactory,	// Creatable due to MBV.
@@ -60,7 +60,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix TestCase",
 		L"Cfix.Control.TestFixture",
 		L"Cfix.Control.TestFixture.1",
-		L"free"
+		L"both"
 	},
 	{
 		CfixctlpGetTestModuleFactory,

@@ -148,5 +148,31 @@ namespace Cfix.Control
 				}
 			}
 		}
+
+		public virtual void Refresh()
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					ITestItemCollection coll = item as ITestItemCollection;
+					if ( coll != null )
+					{
+						coll.Refresh();
+					}
+				}
+			}
+		}
+
+		public void Dispose()
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.Dispose();
+				}
+			}
+		}
 	}
 }

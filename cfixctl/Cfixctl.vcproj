@@ -282,6 +282,10 @@
 			<Filter
 				Name="testlibs"
 				>
+				<File
+					RelativePath=".\testlibs\DIRS"
+					>
+				</File>
 				<Filter
 					Name="testlib10"
 					>
@@ -295,6 +299,22 @@
 					</File>
 					<File
 						RelativePath=".\testlibs\testlib10\testlib10.def"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testslow"
+					>
+					<File
+						RelativePath=".\testlibs\testslow\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testslow\suite.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testslow\testslow.def"
 						>
 					</File>
 				</Filter>
