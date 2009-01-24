@@ -22,7 +22,26 @@ namespace Cfix.Control
         {}
     }
 
-    [Serializable]
+	[Serializable]
+	public class UnsupportedArchitectureException : CfixException
+	{
+		public UnsupportedArchitectureException()
+		{ }
+
+		protected UnsupportedArchitectureException( SerializationInfo info, StreamingContext ctx )
+			: base( info, ctx )
+		{ }
+
+		public UnsupportedArchitectureException( String msg )
+			: base( msg )
+		{ }
+
+		public UnsupportedArchitectureException( String msg, Exception inner )
+			: base( msg, inner )
+		{ }
+	}
+
+	[Serializable]
     public class TestItemDisappearedException : CfixException
     {
         public TestItemDisappearedException()

@@ -58,11 +58,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Native\TestModuleCollection.cs" />
     <Compile Include="GenericSession.cs" />
     <Compile Include="ITestItemCollection.cs" />
+    <Compile Include="Native\MultiTarget.cs" />
     <Compile Include="Native\NativeAction.cs" />
     <Compile Include="SequenceAction.cs" />
-    <Compile Include="GenericTestItemContainer.cs" />
+    <Compile Include="GenericTestItemCollection.cs" />
     <Compile Include="IAction.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="GlobalSuppressions.cs" />

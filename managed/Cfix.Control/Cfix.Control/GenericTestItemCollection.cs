@@ -9,13 +9,13 @@ namespace Cfix.Control
 	/// 
 	/// Threadsafe.
 	/// </summary>
-	public class GenericTestItemContainer : ITestItemCollection
+	public class GenericTestItemCollection : ITestItemCollection
 	{
 		private readonly String name;
 		private readonly Object listLock = new Object();
 		private readonly List<ITestItem> list = new List<ITestItem>();
 
-		public GenericTestItemContainer( String name )
+		public GenericTestItemCollection( String name )
 		{
 			this.name = name;
 		}
