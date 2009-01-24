@@ -198,7 +198,7 @@ library Cfixctl
 		HRESULT ResolveMessage(
 			[in] ULONG MessageId,
 			[in] ULONG Reserved,
-			[out] BSTR* Message
+			[out, retval] BSTR* Message
 			);
 	}
 

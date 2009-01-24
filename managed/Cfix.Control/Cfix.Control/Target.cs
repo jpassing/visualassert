@@ -23,6 +23,8 @@ namespace Cfix.Control
 		private const uint DefaultTimeout = 3000;
 
 		private ICfixAgent agent;
+		private ICfixMessageResolver resolver;
+
 		private CfixTestModuleArch arch;
 		private Clsctx clsctx;
 
@@ -37,6 +39,10 @@ namespace Cfix.Control
 			CLSCTX_INPROC_SERVER = 0x1,
 			CLSCTX_LOCAL_SERVER = 0x4
 		}
+
+		/*--------------------------------------------------------------
+		 * Ctor/Dtor.
+		 */
 
 		protected Target(
 			ICfixAgent agent,
@@ -61,8 +67,46 @@ namespace Cfix.Control
 			{
 				this.clsctx = Clsctx.CLSCTX_LOCAL_SERVER;
 			}
+
+			this.resolver = agent.CreateMessageResolver();
 		}
 
+		~Target()
+		{
+			Dispose( false );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( this.agent != null )
+			{
+				ReleaseObject( this.agent );
+				this.agent = null;
+			}
+
+			if ( this.resolver != null )
+			{
+				ReleaseObject( this.resolver );
+				this.resolver = null;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/*--------------------------------------------------------------
+		 * Internal.
+		 */
+
+		internal CfixException WrapException( COMException x )
+		{
+			String message = ResolveMessage( x.ErrorCode );
+			return new CfixException( message, x );
+		}
+		
 		/*--------------------------------------------------------------
 		 * Publics.
 		 */
@@ -78,6 +122,48 @@ namespace Cfix.Control
 				this.timeout = value;
 			}
 		}
+
+		public virtual ICfixHost CreateHost()
+		{
+			ICfixHost host = this.agent.CreateHost(
+				this.arch, 
+				( uint ) this.clsctx,
+				( uint ) this.flags,
+				this.timeout,
+				currentDirectory );
+
+			Debug.Assert( host != null );
+			return host;
+		}
+
+		public CfixTestModuleArch Architecture
+		{
+			get
+			{
+				return this.arch;
+			}
+		}
+
+		public String ResolveMessage( int code )
+		{
+			try
+			{
+				return this.resolver.ResolveMessage( ( uint ) code, 0 );
+			}
+			catch ( COMException )
+			{
+				return String.Format( "[0x{0:X}]", code );
+			}
+		}
+
+		public virtual void ReleaseObject( Object obj )
+		{
+			Marshal.ReleaseComObject( obj );
+		}
+
+		/*--------------------------------------------------------------
+		 * Statics.
+		 */
 
 		public static Target CreateLocalTarget(
 			Architecture arch,
@@ -106,50 +192,5 @@ namespace Cfix.Control
 				null );
 		}
 
-		~Target()
-		{
-			Dispose( false );
-		}
-
-		public virtual ICfixHost CreateHost()
-		{
-			ICfixHost host = this.agent.CreateHost(
-				this.arch, 
-				( uint ) this.clsctx,
-				( uint ) this.flags,
-				this.timeout,
-				currentDirectory );
-
-			Debug.Assert( host != null );
-			return host;
-		}
-
-		public CfixTestModuleArch Architecture
-		{
-			get
-			{
-				return this.arch;
-			}
-		}
-
-		protected virtual void Dispose( bool disposing )
-		{
-			if ( this.agent != null )
-			{
-				ReleaseObject( this.agent );
-				this.agent = null;
-			}
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		public virtual void ReleaseObject( Object obj )
-		{
-			Marshal.ReleaseComObject( obj );
-		}
 	}
 }

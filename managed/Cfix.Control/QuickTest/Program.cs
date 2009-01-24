@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using Cfix.Control;
 
 namespace QuickTest
@@ -13,9 +14,9 @@ namespace QuickTest
 
 			TestModule mod = TestModule.LoadModule(
 				target,
-				@"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testlib10.dll" );
+				@"D:\dev\wdev\cfix-cfixctl\bin\chk\i386\testlib6.dll" );
 
-			new Cfix.Control.Test.TestTestModule();
+			Application.Run( new ExplorerForm() );
 		}
 	}
 }

@@ -47,6 +47,10 @@ namespace Cfix.Control
 						path,
 						x.Message ) );
 			}
+			catch ( COMException x )
+			{
+				throw target.WrapException( x );
+			}
 		}
 
 		private ICfixTestModule Connect()

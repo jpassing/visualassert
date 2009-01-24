@@ -50,6 +50,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DteMainMenu.cs" />
+    <Compile Include="DteToolWindow.cs" />
     <Compile Include="SampleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

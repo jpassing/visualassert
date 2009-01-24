@@ -1,53 +1,9 @@
 using System;
+using System.Runtime.InteropServices;
 using Cfixctl;
 
 namespace Cfix.Control
 {
-	internal class NativeAction : IAction
-	{
-		private TestItem item;
-		private ICfixAction action;
-
-		public NativeAction( TestItem item, ICfixAction action )
-		{
-			this.item = item;
-			this.action = action;
-		}
-
-		public ITestItem TestItem 
-		{
-			get
-			{
-				return this.item;
-			}
-		}
-
-		public void Run( ICfixEventSink sink )
-		{
-			this.action.Run( sink );
-		}
-
-		public void Stop()
-		{
-			this.action.Stop();
-		}
-
-		protected virtual void Dispose( bool disposing )
-		{
-			if ( this.action != null )
-			{
-				this.item.Module.Target.ReleaseObject( this.action );
-				this.action = null;
-			}
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-	}
-
 	public class TestItem : ITestItem
 	{
 		private readonly TestItemCollection parent;
@@ -121,6 +77,10 @@ namespace Cfix.Control
 
 					return parentContainer.GetItem( this.ordinal );
 				}
+				catch ( COMException x )
+				{
+					throw this.Module.Target.WrapException( x );
+				}
 				finally
 				{
 					this.Module.Target.ReleaseObject( parentContainer );
@@ -152,6 +112,10 @@ namespace Cfix.Control
 				return new NativeAction( 
 					this, 
 					ctlItem.CreateExecutionAction( ( uint ) flags, 0 ) );
+			}
+			catch ( COMException x )
+			{
+				throw this.Module.Target.WrapException( x );
 			}
 			finally
 			{

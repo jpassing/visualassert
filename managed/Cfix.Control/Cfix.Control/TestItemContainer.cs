@@ -38,109 +38,116 @@ namespace Cfix.Control
 		{
 			lock ( updateLock )
 			{
-				this.subItems = new ITestItem[ container.GetItemCount() ];
-
-				IDictionary<String, ITestItem> newSubItemsDict
-					= new Dictionary<String, ITestItem>();
-
-				for ( uint i = 0; i < subItems.Length; i++ )
+				try
 				{
-					ICfixTestItem newItem = container.GetItem( i );
+					this.subItems = new ITestItem[ container.GetItemCount() ];
 
-					try
+					IDictionary<String, ITestItem> newSubItemsDict
+						= new Dictionary<String, ITestItem>();
+
+					for ( uint i = 0; i < subItems.Length; i++ )
 					{
-						bool itemAdded = false;
+						ICfixTestItem newItem = container.GetItem( i );
 
-						//
-						// See if we know this item.
-						//
-						ITestItem existingItem;
-						if ( this.subItemsDict.TryGetValue( newItem.GetName(), out existingItem ) )
+						try
 						{
+							bool itemAdded = false;
+
 							//
-							// This item was there before...
+							// See if we know this item.
 							//
-							if ( existingItem.Ordinal != i )
+							ITestItem existingItem;
+							if ( this.subItemsDict.TryGetValue( newItem.GetName(), out existingItem ) )
 							{
 								//
-								// ...but has changed its position. Re-add.
+								// This item was there before...
 								//
-								OnItemRemoved( existingItem );
-								itemAdded = true;
+								if ( existingItem.Ordinal != i )
+								{
+									//
+									// ...but has changed its position. Re-add.
+									//
+									OnItemRemoved( existingItem );
+									itemAdded = true;
+								}
+								else
+								{
+									//
+									// ...and remains valid.
+									//
+								}
+
+								//
+								// Remove it from subItemsDict mark it has 
+								// having been processed.
+								//
+								this.subItemsDict.Remove( existingItem.Name );
 							}
 							else
 							{
 								//
-								// ...and remains valid.
+								// This item is new.
 								//
+								itemAdded = true;
 							}
 
-							//
-							// Remove it from subItemsDict mark it has 
-							// having been processed.
-							//
-							this.subItemsDict.Remove( existingItem.Name );
+							if ( newSubItemsDict.ContainsKey( newItem.GetName() ) )
+							{
+								Clear();
+								throw new CfixException(
+									String.Format( "Ambiguous test case name '{0}'",
+									newItem.GetName() ) );
+							}
+
+							if ( itemAdded )
+							{
+								this.subItems[ i ] = TestItem.Wrap(
+									this,
+									i,
+									newItem );
+							}
+							else
+							{
+								this.subItems[ i ] = existingItem;
+							}
+
+							Debug.Assert( this.subItems[ i ] != null );
+
+							TestItemCollection subContainer =
+								this.subItems[ i ] as TestItemCollection;
+							if ( subContainer != null )
+							{
+								subContainer.Update(
+									( ICfixTestContainer ) newItem );
+							}
+
+							if ( itemAdded )
+							{
+								OnItemAdded( this.subItems[ i ] );
+							}
 						}
-						else
+						finally
 						{
-							//
-							// This item is new.
-							//
-							itemAdded = true;
+							Module.Target.ReleaseObject( newItem );
 						}
 
-						if ( newSubItemsDict.ContainsKey( newItem.GetName() ) )
-						{
-							Clear();
-							throw new CfixException(
-								String.Format( "Ambiguous test case name '{0}'",
-								newItem.GetName() ) );
-						}
-
-						if ( itemAdded )
-						{
-							this.subItems[ i ] = TestItem.Wrap(
-								this,
-								i,
-								newItem );
-						}
-						else
-						{
-							this.subItems[ i ] = existingItem;
-						}
-
-						Debug.Assert( this.subItems[ i ] != null );
-
-						TestItemCollection subContainer =
-							this.subItems[ i ] as TestItemCollection;
-						if ( subContainer != null )
-						{
-							subContainer.Update(
-								( ICfixTestContainer ) newItem );
-						}
-
-						if ( itemAdded )
-						{
-							OnItemAdded( this.subItems[ i ] );
-						}
+						newSubItemsDict.Add( this.subItems[ i ].Name, this.subItems[ i ] );
 					}
-					finally
+
+					//
+					// All items left in subItemsDict have been removed.
+					//
+					foreach ( ITestItem item in this.subItemsDict.Values )
 					{
-						Module.Target.ReleaseObject( newItem );
+						OnItemRemoved( item );
 					}
 
-					newSubItemsDict.Add( this.subItems[ i ].Name, this.subItems[ i ] );
+					this.subItemsDict = newSubItemsDict;
 				}
-
-				//
-				// All items left in subItemsDict have been removed.
-				//
-				foreach ( ITestItem item in this.subItemsDict.Values )
+				catch ( COMException x )
 				{
-					OnItemRemoved( item );
+					throw this.Module.Target.WrapException( x );
 				}
-
-				this.subItemsDict = newSubItemsDict;
 			}
 		}
 

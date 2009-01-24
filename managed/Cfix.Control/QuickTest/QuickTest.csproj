@@ -52,16 +52,24 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExplorerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExplorerForm.Designer.cs">
+      <DependentUpon>ExplorerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cfix.Control.Test\Cfix.Control.Test.csproj">
-      <Project>{43932BBA-0D20-45F1-B716-F0C4BCAF36F9}</Project>
-      <Name>Cfix.Control.Test</Name>
+    <ProjectReference Include="..\Cfix.Control.Ui\Cfix.Control.Ui.csproj">
+      <Project>{FD67630D-9595-452C-8097-A1F34E321FCC}</Project>
+      <Name>Cfix.Control.Ui</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cfix.Control\Cfix.Control.csproj">
       <Project>{C48FD013-1C86-4C95-B4BA-126C8749E008}</Project>

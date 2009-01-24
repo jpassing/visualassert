@@ -127,6 +127,11 @@ namespace Cfix.Control.Test
 		{
 			throw new NotImplementedException();
 		}
+
+		public ICfixMessageResolver CreateMessageResolver()
+		{
+			return null;
+		}
 	}
 
 	internal class MockTarget : Target
