@@ -58,18 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NativeAction.cs" />
+    <Compile Include="ITestItemCollection.cs" />
+    <Compile Include="Native\NativeAction.cs" />
     <Compile Include="SequenceAction.cs" />
     <Compile Include="GenericTestItemContainer.cs" />
     <Compile Include="IAction.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Target.cs" />
-    <Compile Include="Module.cs" />
+    <Compile Include="Native\Target.cs" />
+    <Compile Include="Native\TestModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ITestItem.cs" />
-    <Compile Include="TestItem.cs" />
-    <Compile Include="TestItemContainer.cs" />
+    <Compile Include="Native\TestItem.cs" />
+    <Compile Include="Native\TestItemContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Cfixctl">

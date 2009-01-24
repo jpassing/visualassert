@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cfix.Control.Native;
 using Cfixctl;
 
 namespace Cfix.Control.Test

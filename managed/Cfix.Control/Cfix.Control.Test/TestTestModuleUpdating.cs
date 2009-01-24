@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Cfix.Control;
+using Cfix.Control.Native;
 
 namespace Cfix.Control.Test
 {

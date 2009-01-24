@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Cfix.Control;
+using Cfix.Control.Native;
 
 namespace QuickTest
 {
