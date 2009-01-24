@@ -61,6 +61,7 @@ private:
 	// N.B. We currently allow one pending registration only.
 	//
 	CRITICAL_SECTION RegistrationLock;
+	CRITICAL_SECTION SpawnLock;
 	RegistrationEntry *Registration;
 	HANDLE NewRegistrationEvent;
 
@@ -70,7 +71,17 @@ protected:
 public:
 	virtual ~LocalAgent();
 
-	void ClearRegistrations();
+	STDMETHOD_( void, ClearRegistrations )();
+
+	STDMETHOD( CreateProcessHost )(
+		__in CfixTestModuleArch Arch,
+		__in_opt PCWSTR CurrentDirectory,
+		__in ULONG Flags,
+		__in ULONG Timeout,
+		__out ICfixHost **Result
+		);
+
+	STDMETHOD( FinalConstruct )();
 
 	/*------------------------------------------------------------------
 	 * IUnknown methods.
@@ -434,16 +445,65 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	return Hr;
 }
 
-static HRESULT CfixctlsCreateProcessHost(
+/*------------------------------------------------------------------
+ * 
+ * Class Implementation.
+ *
+ */
+LocalAgent::LocalAgent() : Registration( NULL ), NewRegistrationEvent( NULL )
+{
+}
+
+LocalAgent::~LocalAgent()
+{
+	ClearRegistrations();
+	DeleteCriticalSection( &this->RegistrationLock );
+	DeleteCriticalSection( &this->SpawnLock );
+
+	if ( this->NewRegistrationEvent != NULL )
+	{
+		VERIFY( CloseHandle( this->NewRegistrationEvent ) );
+	}
+}
+
+STDMETHODIMP LocalAgent::FinalConstruct() 
+{
+	InitializeCriticalSection( &this->RegistrationLock );
+	InitializeCriticalSection( &this->SpawnLock );
+
+	this->NewRegistrationEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
+	if ( ! this->NewRegistrationEvent )
+	{
+		return HRESULT_FROM_WIN32( GetLastError() );
+	}
+	else
+	{
+		return S_OK;
+	}
+}
+
+STDMETHODIMP_( void ) LocalAgent::ClearRegistrations()
+{
+	EnterCriticalSection( &this->RegistrationLock );
+
+	if ( this->Registration != NULL )
+	{
+		delete this->Registration;
+		this->Registration = NULL;
+	}
+
+	LeaveCriticalSection( &this->RegistrationLock );
+}
+
+
+STDMETHODIMP LocalAgent::CreateProcessHost(
 	__in CfixTestModuleArch Arch,
-	__in ICfixAgent *Agent,
 	__in_opt PCWSTR CurrentDirectory,
 	__in ULONG Flags,
 	__in ULONG Timeout,
 	__out ICfixHost **Result
 	)
 {
-	ASSERT( Agent );
 	ASSERT( Result );
 
 	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
@@ -454,28 +514,35 @@ static HRESULT CfixctlsCreateProcessHost(
 	HANDLE ProcessOrJob = NULL;
 	DWORD Cookie;
 
-	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
-		Arch, 
-		Agent, 
-		CurrentDirectory, 
-		UseJob,
-		&ProcessOrJob,
-		&Cookie );
-	if ( FAILED( Hr ) )
-	{
-		return Hr;
-	}
-
 	ICfixHost *RemoteHost = NULL;
 	ICfixProcessHostInternal *ProcessHost = NULL;
 
 	//
-	// Wait for it to register and obtain its Host object.
+	// Guard this by a lock to prevent multiple interleaving
+	// spawns which are currently ot supported.
 	//
-	Hr = Agent->WaitForHostConnection(
-		Cookie,
-		Timeout,
-		&RemoteHost );
+	EnterCriticalSection( &this->SpawnLock );
+
+	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
+		Arch, 
+		this, 
+		CurrentDirectory, 
+		UseJob,
+		&ProcessOrJob,
+		&Cookie );
+	if ( SUCCEEDED( Hr ) )
+	{
+		//
+		// Wait for it to register and obtain its Host object.
+		//
+		Hr = WaitForHostConnection(
+			Cookie,
+			Timeout,
+			&RemoteHost );
+	}
+
+	LeaveCriticalSection( &this->SpawnLock );
+
 	if ( FAILED( Hr ) )
 	{
 		goto Cleanup;
@@ -525,43 +592,6 @@ Cleanup:
 	}
 
 	return Hr;
-}
-
-/*------------------------------------------------------------------
- * 
- * Class Implementation.
- *
- */
-LocalAgent::LocalAgent() : Registration( NULL ), NewRegistrationEvent( NULL )
-{
-	InitializeCriticalSection( &this->RegistrationLock );
-
-	this->NewRegistrationEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
-	ASSERT( this->NewRegistrationEvent );
-}
-
-LocalAgent::~LocalAgent()
-{
-	ClearRegistrations();
-	DeleteCriticalSection( &this->RegistrationLock );
-
-	if ( this->NewRegistrationEvent != NULL )
-	{
-		VERIFY( CloseHandle( this->NewRegistrationEvent ) );
-	}
-}
-
-void LocalAgent::ClearRegistrations()
-{
-	EnterCriticalSection( &this->RegistrationLock );
-
-	if ( this->Registration != NULL )
-	{
-		delete this->Registration;
-		this->Registration = NULL;
-	}
-
-	LeaveCriticalSection( &this->RegistrationLock );
 }
 
 /*------------------------------------------------------------------
@@ -648,9 +678,8 @@ STDMETHODIMP LocalAgent::CreateHost(
 		// 
 		// Spawn process.
 		//
-		return CfixctlsCreateProcessHost(
+		return CreateProcessHost(
 			Arch,
-			static_cast< ICfixAgent* >( this ),
 			CurrentDirectory,
 			Flags,
 			Timeout,
