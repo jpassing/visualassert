@@ -196,6 +196,28 @@ public:
 
 		Agent->Release();
 	}
+
+	void ResolveMessage()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		ICfixMessageResolver *Resolver;
+		CFIXCC_ASSERT_OK( Agent->CreateMessageResolver( &Resolver ) );
+
+		BSTR Message;
+		CFIXCC_ASSERT_OK( Resolver->ResolveMessage( 
+			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
+			0, 
+			&Message ) );
+		CFIXCC_ASSERT( SysStringLen( Message ) > 0 );
+		SysFreeString( Message );
+
+		Resolver->Release();
+		Agent->Release();
+	}
 };
 
 COM_EXPORTS TestLocalAgent::Exports;
@@ -204,4 +226,5 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( RegisterAndObtainWithoutWaiting )
 	CFIXCC_METHOD( RegisterAndObtainWithWaiting )
 	CFIXCC_METHOD( SpawnSameArch )
+	CFIXCC_METHOD( ResolveMessage )
 CFIXCC_END_CLASS()

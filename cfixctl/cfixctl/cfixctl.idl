@@ -257,9 +257,14 @@ library Cfixctl
 			[out, retval] ICfixHost** Host
 			);
 
-		//HRESULT CreateMessageResolver(
-		//	[out, retval] ICfixMessageResolver **Resolver
-		//	);
+		/*++
+			Method Description:
+				Create message resolver object capable of reslving
+				cfix-related and system error codes.
+		--*/
+		HRESULT CreateMessageResolver(
+			[out, retval] ICfixMessageResolver **Resolver
+			);
 	}
 
 	/*----------------------------------------------------------------------

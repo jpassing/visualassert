@@ -115,6 +115,10 @@ public:
 		__in ULONG Timeout,
 		__out ICfixHost** Host
 		);
+
+	STDMETHOD( CreateMessageResolver )(
+		__out ICfixMessageResolver **Resolver
+		);
 };
 
 /*------------------------------------------------------------------
@@ -815,4 +819,15 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 
 	ASSERT( SUCCEEDED( Hr ) == ( *Host != NULL ) );
 	return Hr;
+}
+
+
+STDMETHODIMP LocalAgent::CreateMessageResolver(
+	__out ICfixMessageResolver **Resolver
+	)
+{
+	return CfixctlpGetMessageResolverFactory().CreateInstance(
+		NULL,
+		IID_ICfixMessageResolver,
+		( PVOID* ) Resolver );
 }

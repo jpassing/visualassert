@@ -52,6 +52,7 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\oleaut32.lib \
 		   $(SDK_LIB_PATH)\uuid.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
+		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cdiag.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixutil.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixkl.lib \
 		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	   
@@ -78,6 +79,7 @@ SOURCES=\
 	..\execctxadapter.cpp \
 	..\localagent.cpp \
 	..\compat.cpp \
+	..\messageresolver.cpp \
 	..\selfreg.c \
 	..\cfixctl.rc \
 	..\cfixctlmsg.mc

@@ -68,6 +68,7 @@ IClassFactory& CfixctlpGetLocalHostFactory();
 IClassFactory& CfixctlpGetProcessHostFactory();
 IClassFactory& CfixctlpGetExecutionActionFactory();
 IClassFactory& CfixctlpGetLocalAgentFactory();
+IClassFactory& CfixctlpGetMessageResolverFactory();
 
 /*----------------------------------------------------------------------
  *
