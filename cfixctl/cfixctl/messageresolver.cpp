@@ -183,28 +183,23 @@ STDMETHODIMP MessageResolver::ResolveMessage(
 	{
 		return E_INVALIDARG;
 	}
-
-	ULONG MessageSize = 256;
-	BSTR Buffer = SysAllocStringLen( NULL, MessageSize );
-	if ( ! Buffer ) 
-	{
-		return E_OUTOFMEMORY;
-	}
+	
+	WCHAR Buffer[ 256 ];
 
 	HRESULT Hr = this->Resolver->ResolveMessage(
 		this->Resolver,
 		MessageId,
 		Reserved,
 		NULL,
-		MessageSize,
+		_countof( Buffer ),
 		Buffer );
 	if ( SUCCEEDED( Hr ) )
 	{
-		*Message = Buffer;
-	}
-	else
-	{
-		SysFreeString( Buffer );
+		*Message = SysAllocString( Buffer );
+		if ( *Message == NULL )
+		{
+			Hr = E_OUTOFMEMORY;
+		}
 	}
 
 	return Hr;
