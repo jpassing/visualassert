@@ -36,6 +36,7 @@ const GUID IID_ICfixTestCaseInternal =
  */
 
 class TestCase : 
+	public ComObjectBase, 
 	public ICfixTestCaseInternal,
 	public IMarshal
 {

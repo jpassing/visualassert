@@ -35,6 +35,7 @@ const GUID IID_ICfixTestFixtureInternal =
  */
 
 class TestFixture : 
+	public ComObjectBase, 
 	public ICfixTestFixtureInternal,
 	public ICfixTestContainer,
 	public IOleItemContainer,

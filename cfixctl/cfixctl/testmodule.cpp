@@ -35,6 +35,7 @@ const GUID IID_ICfixTestModuleInternal =
 class TestModuleEumerator;
 
 class TestModule : 
+	public ComObjectBase, 
 	public ICfixTestModuleInternal,
 	public ICfixActionFactory,
 	public IOleItemContainer

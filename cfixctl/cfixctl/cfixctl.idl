@@ -14,7 +14,7 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e51-d44f-11dd-99e2-0016d3b98f9b
+//
 //57f93e52-d44f-11dd-99e2-0016d3b98f9b
 //57f93e53-d44f-11dd-99e2-0016d3b98f9b
 //
@@ -175,6 +175,33 @@ library Cfixctl
 		HRESULT Stop();
 	}
 
+	[
+	  object,
+	  uuid( 57f93e51-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixMessageResolver : IUnknown 
+	{
+		/*++
+			Method Description:
+				Resolve an (error) message code.
+
+			Arguments:
+				MessageId			Message id, HRESULT, NTSTATUS or Win32
+									error code
+				Reserved			Must be 0.
+				BufferSizeInChars	Buffer size, in chars. Must include
+									space for the null terminator.
+				Buffer				Result.
+		--*/
+		HRESULT ResolveMessage(
+			[in] ULONG MessageId,
+			[in] ULONG Reserved,
+			[out] BSTR* Message
+			);
+	}
+
 	const ULONG CFIXCTL_AGENT_FLAG_USE_JOB = 1;
 
 	[
@@ -229,6 +256,10 @@ library Cfixctl
 			[in] ULONG Timeout,
 			[out, retval] ICfixHost** Host
 			);
+
+		//HRESULT CreateMessageResolver(
+		//	[out, retval] ICfixMessageResolver **Resolver
+		//	);
 	}
 
 	/*----------------------------------------------------------------------

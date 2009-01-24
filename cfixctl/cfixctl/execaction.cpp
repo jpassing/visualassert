@@ -33,7 +33,8 @@ const GUID IID_ICfixExecutionActionInternal =
  *
  */
 
-class ExecutionAction : 
+class ExecutionAction :
+	public ComObjectBase, 
 	public ICfixExecutionActionInternal
 {
 	DECLARE_NOT_COPYABLE( ExecutionAction );

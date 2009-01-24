@@ -50,7 +50,9 @@ struct RegistrationEntry
 	}
 };
 
-class LocalAgent : public ICfixAgent
+class LocalAgent : 
+	public ComObjectBase, 
+	public ICfixAgent
 {
 	DECLARE_NOT_COPYABLE( LocalAgent );
 
@@ -75,7 +77,6 @@ public:
 	 */
 
 	STDMETHOD_( ULONG, AddRef )() PURE;
-	STDMETHOD_( ULONG, Release )() PURE;
 	STDMETHOD( QueryInterface )( 
 		__in REFIID Iid, 
 		__out PVOID* Ptr );

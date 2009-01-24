@@ -34,6 +34,7 @@ const GUID IID_ICfixProcessHostInternal =
  */
 
 class ProcessHost : 
+	public ComObjectBase, 
 	public ICfixProcessHostInternal
 {
 	DECLARE_NOT_COPYABLE( ProcessHost );

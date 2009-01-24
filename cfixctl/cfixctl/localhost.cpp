@@ -30,6 +30,7 @@
  */
 
 class LocalHost : 
+	public ComObjectBase,
 	public ICfixHost
 {
 	DECLARE_NOT_COPYABLE( LocalHost );

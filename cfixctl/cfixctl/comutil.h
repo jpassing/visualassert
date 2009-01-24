@@ -67,6 +67,30 @@ __inline VOID ComDbgPrint(
 
 /*++
 	Class Description:
+		Base class of COM objects.
+--*/
+class ComObjectBase
+{
+	DECLARE_NOT_COPYABLE( ComObjectBase );
+
+public:
+	ComObjectBase() {}
+	virtual ~ComObjectBase() {}
+
+	STDMETHOD_( ULONG, AddRef )() PURE;
+	STDMETHOD_( ULONG, Release )() PURE;
+	STDMETHOD( QueryInterface )( 
+		__in REFIID Iid, 
+		__out PVOID* Ptr ) PURE;
+
+	STDMETHOD( FinalConstruct )() 
+	{
+		return S_OK;
+	};
+};
+
+/*++
+	Class Description:
 		Utility class implementing thread-safe reference counting.
 --*/
 template< typename T >
@@ -201,7 +225,7 @@ public:
 			return CLASS_E_NOAGGREGATION;
 		}
 
-		T* NewObject = new T( this );
+		ComObjectBase* NewObject = new T( this );
 		if ( Object == NULL )
 		{
 			*Object = NULL;
@@ -219,6 +243,15 @@ public:
 			ULONG Refs = NewObject->Release();
 			ASSERT( ( Refs == 1 ) == SUCCEEDED( Hr ) );
 			UNREFERENCED_PARAMETER( Refs );
+
+			if ( SUCCEEDED( Hr ) )
+			{
+				Hr = NewObject->FinalConstruct();
+				if ( FAILED( Hr ) )
+				{
+					NewObject->Release();
+				}
+			}
 
 			return Hr;
 		}
