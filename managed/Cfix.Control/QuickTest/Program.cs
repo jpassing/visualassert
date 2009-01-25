@@ -8,7 +8,7 @@ namespace QuickTest
 {
 	class Program
 	{
-		private class Listener : TestModuleCollection.SearchListener
+		private class Listener : TestModuleCollection.ISearchListener
 		{
 			public uint Invalids;
 
@@ -21,9 +21,13 @@ namespace QuickTest
 		[STAThread]
 		static void Main( string[] args )
 		{
-			Target target = Target.CreateLocalTarget( 
+			Target ooTarget = Target.CreateLocalTarget( 
 				Architecture.I386, 
 				false );
+
+			Target inTarget = Target.CreateLocalTarget(
+				Architecture.I386,
+				true );
 
 			//TestModule mod = TestModule.LoadModule(
 			//    target,
@@ -34,11 +38,12 @@ namespace QuickTest
 			//cont.Add( mod );
 
 			MultiTarget multiTarget = new MultiTarget();
-			multiTarget.AddArchitecture( target );
+			multiTarget.AddArchitecture( ooTarget);
 
 			TestModuleCollection cont = TestModuleCollection.Search(
-				new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl\bin\chk\i386" ),
+				new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl\bin\" ),
 				"*",
+				inTarget,
 				multiTarget,
 				true,
 				true,

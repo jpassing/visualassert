@@ -29,19 +29,6 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public Target GetAnyTarget()
-		{
-			for ( int i = 0; i < this.targets.Length; i++ )
-			{
-				if ( this.targets[ i ] != null )
-				{
-					return this.targets[ i ];
-				}
-			}
-
-			throw new UnsupportedArchitectureException();
-		}
-
 		public bool IsArchitectureSupported( Architecture arch )
 		{
 			return this.targets[ ( int ) arch ] != null;

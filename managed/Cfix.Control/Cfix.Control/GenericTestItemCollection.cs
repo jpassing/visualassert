@@ -12,8 +12,8 @@ namespace Cfix.Control
 	public class GenericTestItemCollection : ITestItemCollection
 	{
 		private readonly String name;
-		private readonly Object listLock = new Object();
-		private readonly List<ITestItem> list = new List<ITestItem>();
+		protected readonly Object listLock = new Object();
+		protected readonly List<ITestItem> list = new List<ITestItem>();
 
 		public GenericTestItemCollection( String name )
 		{
@@ -172,6 +172,19 @@ namespace Cfix.Control
 				{
 					item.Dispose();
 				}
+			}
+		}
+
+		public void Clear()
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.Dispose();
+				}
+
+				this.list.Clear();
 			}
 		}
 	}

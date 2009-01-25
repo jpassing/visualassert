@@ -69,7 +69,14 @@ namespace Cfix.Control.Native
 				this.clsctx = Clsctx.CLSCTX_LOCAL_SERVER;
 			}
 
-			this.resolver = agent.CreateMessageResolver();
+			try
+			{
+				this.resolver = agent.CreateMessageResolver();
+			}
+			catch ( COMException x )
+			{
+				throw WrapException( x );
+			}
 		}
 
 		~Target()

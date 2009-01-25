@@ -12,6 +12,8 @@ namespace Cfix.Control.Ui.Explorer
 {
 	public partial class Explorer : UserControl
 	{
+		private delegate void VoidDelegate();
+		
 		//
 		// ImageList indexes.
 		//
@@ -172,8 +174,22 @@ namespace Cfix.Control.Ui.Explorer
 						//
 						// Populate tree.
 						//
-						this.treeView.Nodes.Add(
-							NodeFactory.CreateNode( session.Tests ) );
+						AbstractExplorerNode childNode =
+							NodeFactory.CreateNode(
+								this.treeView,
+								session.Tests );
+
+						if ( this.treeView.InvokeRequired )
+						{
+							this.treeView.Invoke( ( VoidDelegate ) delegate()
+							{
+								this.treeView.Nodes.Add( childNode );
+							} );
+						}
+						else
+						{
+							this.treeView.Nodes.Add( childNode );
+						}
 					}
 					else
 					{

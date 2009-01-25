@@ -1,21 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Explorer
 {
 	internal class AbstractExplorerCollectionNode : AbstractExplorerNode
 	{
 		private readonly ITestItemCollection testItemCollection;
+		private delegate void VoidDelegate();
 
-		protected void LoadChildren()
+		protected void LoadChildren( TreeView treeView )
 		{
 			foreach ( ITestItem child in testItemCollection )
 			{
 				if ( child != null )
 				{
-					this.Nodes.Add(
-						NodeFactory.CreateNode( child ) );
+					AbstractExplorerNode childNode =
+						NodeFactory.CreateNode( treeView, child );
+
+					if ( treeView.InvokeRequired )
+					{
+						treeView.Invoke( ( VoidDelegate ) delegate()
+						{
+							this.Nodes.Add( childNode );
+						} );
+					}
+					else
+					{
+						this.Nodes.Add( childNode );
+					}
 				}
 			}
 		}

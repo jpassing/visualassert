@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Control.Native;
 
@@ -19,7 +20,7 @@ namespace Cfix.Control.Ui.Explorer
 
 		private class TestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
-			public TestItemCollectionExplorerNode( ITestItemCollection item )
+			public TestItemCollectionExplorerNode( TreeView treeView, ITestItemCollection item )
 				: base(
 					item,
 					Explorer.TestContainerIconIndex,
@@ -28,13 +29,13 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren();
+				LoadChildren( treeView );
 			}
 		}
 
 		private class ModuleExplorerNode : AbstractExplorerCollectionNode
 		{
-			public ModuleExplorerNode( TestModule item )
+			public ModuleExplorerNode( TreeView treeView, TestModule item )
 				: base(
 					item,
 					Explorer.ModuleIconIndex,
@@ -43,13 +44,13 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren();
+				LoadChildren( treeView );
 			}
 		}
 
 		private class GenericTestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
-			public GenericTestItemCollectionExplorerNode( GenericTestItemCollection item )
+			public GenericTestItemCollectionExplorerNode( TreeView treeView, GenericTestItemCollection item )
 				: base(
 					item,
 					Explorer.ContainerIconIndex,
@@ -58,7 +59,7 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren();
+				LoadChildren( treeView );
 			}
 
 			public override void BeforeExpand()
@@ -74,21 +75,26 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
-		internal static AbstractExplorerNode CreateNode( ITestItem item )
+		internal static AbstractExplorerNode CreateNode( 
+			TreeView treeView, 
+			ITestItem item )
 		{
 			if ( item is TestModule )
 			{
 				return new ModuleExplorerNode( 
+					treeView,
 					( TestModule ) item );
 			}
 			else if ( item is GenericTestItemCollection )
 			{
-				return new GenericTestItemCollectionExplorerNode( 
+				return new GenericTestItemCollectionExplorerNode(
+					treeView,
 					( GenericTestItemCollection ) item );
 			}
 			else if ( item is ITestItemCollection )
 			{
-				return new TestItemCollectionExplorerNode( 
+				return new TestItemCollectionExplorerNode(
+					treeView,
 					( ITestItemCollection ) item );
 			}
 			else if ( item is ITestItem )

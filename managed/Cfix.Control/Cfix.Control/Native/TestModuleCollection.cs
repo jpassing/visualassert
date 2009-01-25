@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
@@ -9,8 +10,10 @@ namespace Cfix.Control.Native
 	public class TestModuleCollection : GenericTestItemCollection
 	{
 		private const uint CFIXCTL_SEARCH_FLAG_RECURSIVE = 1;
+		
+		private readonly DirectoryInfo dirInfo;
 
-		public interface SearchListener
+		public interface ISearchListener
 		{
 			void InvalidModule(
 				String path,
@@ -24,16 +27,18 @@ namespace Cfix.Control.Native
 
 		private class Loader : ICfixSearchModulesCallback
 		{
-			private readonly SearchListener listener;
+			private readonly ISearchListener listener;
 			private readonly bool ignoreDuplicates;
 			private readonly MultiTarget target;
 			private readonly Stack<TestModuleCollection> collectionStack =
 				new Stack<TestModuleCollection>();
 
+			private bool firstCallback = true;
+
 			public Loader( 
 				MultiTarget target,
 				TestModuleCollection current,
-				SearchListener listener,
+				ISearchListener listener,
 				bool ignoreDuplicates
 				)
 			{
@@ -48,11 +53,28 @@ namespace Cfix.Control.Native
 				String path 
 				)
 			{
-				TestModuleCollection nested = new TestModuleCollection(
-					new DirectoryInfo( path ), 
-					this.target );
+				if ( firstCallback )
+				{
+					firstCallback = false;
 
-				this.collectionStack.Push( nested );
+					//
+					// Ignore the first directory callback as it is 
+					// redundant for our usage scenario.
+					//
+				}
+				else
+				{
+					Debug.Assert( new DirectoryInfo( path ).Parent.Name.Equals(
+						this.collectionStack.Peek().dirInfo.Name ) );
+
+					TestModuleCollection nested = new TestModuleCollection(
+						new DirectoryInfo( path ),
+						this.target );
+
+					Debug.Print( "Enter: " + path );
+
+					this.collectionStack.Push( nested );
+				}
 			}
 
 			public void FoundModule(
@@ -61,6 +83,11 @@ namespace Cfix.Control.Native
 				CfixTestModuleArch nativeArch
 				)
 			{
+				firstCallback = false;
+
+				Debug.Assert( new FileInfo( path ).Directory.Name.Equals(
+						this.collectionStack.Peek().dirInfo.Name ) );
+
 				Architecture arch = ( Architecture ) nativeArch;
 				if ( this.target.IsArchitectureSupported( arch ) )
 				{
@@ -83,14 +110,68 @@ namespace Cfix.Control.Native
 				String path
 				)
 			{
-				TestModuleCollection loaded = this.collectionStack.Pop();
-				if ( loaded.ItemCount > 0 )
+				Debug.Assert( this.collectionStack.Count != 0 );
+				Debug.Assert( this.collectionStack.Peek().dirInfo.Name.Equals(
+					new DirectoryInfo( path ).Name ) );
+
+				if ( this.collectionStack.Count == 1 )
 				{
-					this.collectionStack.Pop().Add( loaded );
+					//
+					// Root - ignore in the same manner it has been
+					// ignored in EnterDirectory.
+					//
+					Debug.Print( "Leave -- Nop" );
 				}
 				else
 				{
-					loaded.Dispose();
+					TestModuleCollection loaded = this.collectionStack.Pop();
+
+					if ( loaded.ItemCount > 0 )
+					{
+						Debug.Print( "Leave -- Added: " + path );
+						this.collectionStack.Peek().Add( loaded );
+					}
+					else
+					{
+						Debug.Print( "Leave -- Ignored: " + path );
+						loaded.Dispose();
+					}
+				}
+			}
+		}
+
+		private void Populate(
+			String filter,
+			Target searchTarget,
+			MultiTarget runTargets,
+			bool userOnly,
+			bool ignoreDuplicates,
+			ISearchListener listener
+			)
+		{
+			ICfixHost host = null;
+			try
+			{
+				host = searchTarget.CreateHost();
+
+				host.SearchModules(
+					this.dirInfo.FullName + "\\" + filter,
+					CFIXCTL_SEARCH_FLAG_RECURSIVE,
+					userOnly
+						? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
+						: UInt32.MaxValue,
+					runTargets.GetArchitectureMask(),
+					new Loader( runTargets, this, listener, ignoreDuplicates ) );
+			}
+			catch ( COMException x )
+			{
+				throw searchTarget.WrapException( x );
+			}
+			finally
+			{
+				if ( host != null )
+				{
+					searchTarget.ReleaseObject( host );
 				}
 			}
 		}
@@ -104,6 +185,19 @@ namespace Cfix.Control.Native
 			MultiTarget target )
 			: base( dir.Name )
 		{
+			this.dirInfo = dir;
+		}
+
+		/*--------------------------------------------------------------
+		 * Overrides.
+		 */
+
+		public override void Refresh()
+		{
+			lock ( this.listLock )
+			{
+				Clear();
+			}
 		}
 		
 		/*--------------------------------------------------------------
@@ -113,47 +207,27 @@ namespace Cfix.Control.Native
 		public static TestModuleCollection Search(
 			DirectoryInfo dir,
 			String filter, 
-			MultiTarget target,
+			Target searchTarget,
+			MultiTarget runTargets,
 			bool userOnly,
 			bool ignoreDuplicates,
-			SearchListener listener
+			ISearchListener listener
 			)
 		{
-			ICfixHost host = null;
-			Target loadTarget = target.GetAnyTarget();
-			try
-			{
-				host = loadTarget.CreateHost();
-
-				TestModuleCollection result = new TestModuleCollection(
+			TestModuleCollection result = new TestModuleCollection(
 					dir,
-					target );
+					runTargets );
+			result.Populate(
+				filter,
+				searchTarget,
+				runTargets,
+				userOnly,
+				ignoreDuplicates,
+				listener );
 
-				host.SearchModules(
-					dir.FullName + "\\" + filter,
-					CFIXCTL_SEARCH_FLAG_RECURSIVE,
-					userOnly
-						? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
-						: UInt32.MaxValue,
-					target.GetArchitectureMask(),
-					new Loader( target, result, listener, ignoreDuplicates ) );
-
-				return result;
-			}
-			catch ( COMException x )
-			{
-				throw loadTarget.WrapException( x );
-			}
-			finally
-			{
-				if ( host != null )
-				{
-					loadTarget.ReleaseObject( host );
-				}
-
-				loadTarget.Dispose();
-			}
+			return result;
 		}
 
 	}
 }
+

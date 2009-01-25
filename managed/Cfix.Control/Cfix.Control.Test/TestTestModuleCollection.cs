@@ -10,11 +10,12 @@ namespace Cfix.Control.Test
 	[TestFixture]
 	public class TestTestModuleCollection
 	{
-		private Target target;
+		private Target ooProcTarget;
+		private Target inProcTarget;
 		private MultiTarget multiTarget;
 		private String testdataDir;
 
-		private class Listener : TestModuleCollection.SearchListener
+		private class Listener : TestModuleCollection.ISearchListener
 		{
 			public uint Invalids;
 
@@ -27,12 +28,15 @@ namespace Cfix.Control.Test
 		[SetUp]
 		public void Setup()
 		{
-			this.target = Target.CreateLocalTarget(
+			this.ooProcTarget = Target.CreateLocalTarget(
 				Architecture.I386,
 				false );
+			this.inProcTarget = Target.CreateLocalTarget(
+				Architecture.I386,
+				true );
 
 			this.multiTarget = new MultiTarget();
-			this.multiTarget.AddArchitecture( target );
+			this.multiTarget.AddArchitecture( ooProcTarget );
 
 			String binDir = new FileInfo(
 				Assembly.GetExecutingAssembly().FullName ).Directory.FullName;
@@ -45,26 +49,32 @@ namespace Cfix.Control.Test
 		[TearDown]
 		public void TearDown()
 		{
-			if ( this.target != null )
+			if ( this.ooProcTarget != null )
 			{
-				this.target.Dispose();
+				this.ooProcTarget.Dispose();
+			}
+
+			if ( this.inProcTarget != null )
+			{
+				this.inProcTarget.Dispose();
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnsupportedArchitectureException ) )]
 		public void SearchWithNoTargets()
 		{
 			MultiTarget tgt = new MultiTarget();
 			Listener lst = new Listener();
-			TestModuleCollection.Search(
+			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
+				inProcTarget,
 				tgt,
 				true,
 				true,
 				lst );
 			Assert.AreEqual( 0, lst.Invalids );
+			Assert.AreEqual( 0, coll.ItemCount );
 		}
 
 		[Test]
@@ -74,6 +84,7 @@ namespace Cfix.Control.Test
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"simple.dll",
+				inProcTarget,
 				this.multiTarget,
 				true,
 				true,
@@ -94,6 +105,7 @@ namespace Cfix.Control.Test
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
+				inProcTarget,
 				this.multiTarget,
 				true,
 				true,
@@ -102,11 +114,6 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
-			Assert.AreEqual( 1, coll.ItemCount );
-			Assert.IsInstanceOfType( typeof( TestModuleCollection ), coll );
-
-			coll = ( TestModuleCollection ) coll.GetItem( 0 );
-
 			Assert.AreEqual( 2, coll.ItemCount );
 
 			Assert.IsNotNull( coll.GetItem( 0 ) );
@@ -123,6 +130,7 @@ namespace Cfix.Control.Test
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir + "\\dummy" ),
 				"*",
+				inProcTarget,
 				this.multiTarget,
 				true,
 				true,
@@ -139,6 +147,7 @@ namespace Cfix.Control.Test
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
+				inProcTarget,
 				this.multiTarget,
 				true,
 				true,
@@ -147,11 +156,6 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
-			Assert.AreEqual( 1, coll.ItemCount );
-			Assert.IsInstanceOfType( typeof( TestModuleCollection ), coll );
-
-			coll = ( TestModuleCollection ) coll.GetItem( 0 );
-
 			Assert.AreEqual( 2, coll.ItemCount );
 
 			Assert.IsNotNull( coll.GetItem( 0 ) );
@@ -168,12 +172,15 @@ namespace Cfix.Control.Test
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir + "\\.." ),
 				"*",
+				inProcTarget,
 				this.multiTarget,
 				true,
 				true,
 				lst );
 
 			Assert.AreEqual( 1, lst.Invalids );
+
+			Assert.AreEqual( "testdata", coll.Name );
 			Assert.AreEqual( 1, coll.ItemCount );
 			ITestItem item = coll.GetItem( 0 );
 
