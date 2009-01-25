@@ -29,6 +29,8 @@
 #include <strsafe.h>
 #pragma warning( pop )
 
+//#define COM_TRACE_ADDREF_AND_RELEASE
+
 #define ASSERT _ASSERTE
 
 #define DECLARE_NOT_COPYABLE( ClassName )								\
@@ -122,7 +124,11 @@ public:
 	STDMETHOD_( ULONG, AddRef )()
 	{
 		ULONG Refs = InterlockedIncrement( &this->ReferenceCount );
+
+#ifdef COM_TRACE_ADDREF_AND_RELEASE
 		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
+#endif
+
 		return Refs;
 	}
 
@@ -134,7 +140,10 @@ public:
 			delete this;
 		}
 
+#ifdef COM_TRACE_ADDREF_AND_RELEASE
 		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
+#endif
+
 		return Refs;
 	}
 };

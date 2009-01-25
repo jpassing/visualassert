@@ -100,7 +100,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix LocalAgent",
 		L"Cfix.Control.LocalAgent",
 		L"Cfix.Control.LocalAgent.1",
-		L"free"
+		L"both"
 	},
 	{
 		NULL,
@@ -108,7 +108,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix MessageResolver",
 		L"Cfix.Control.MessageResolver",
 		L"Cfix.Control.MessageResolver.1",
-		L"free"
+		L"both"
 	}
 };
 

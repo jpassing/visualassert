@@ -795,15 +795,20 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 				//
 				// Wait for a new registration.
 				//
-				DWORD WaitRes = WaitForSingleObject( 
-					this->NewRegistrationEvent, Timeout );
-				if ( WaitRes == WAIT_TIMEOUT )
+				DWORD IndexUnused;
+				Hr = CoWaitForMultipleHandles(
+					COWAIT_WAITALL,
+					Timeout,
+					1,
+					&this->NewRegistrationEvent, 
+					&IndexUnused );
+				if ( Hr == RPC_S_CALLPENDING  )
 				{
 					return HRESULT_FROM_WIN32( ERROR_TIMEOUT );
 				}
-				else if ( WaitRes != WAIT_OBJECT_0 )
+				else if ( FAILED( Hr ) )
 				{
-					return HRESULT_FROM_WIN32( GetLastError() );
+					return Hr;
 				}
 				else
 				{
