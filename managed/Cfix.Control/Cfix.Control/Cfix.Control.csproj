@@ -63,6 +63,7 @@
     <Compile Include="ITestItemCollection.cs" />
     <Compile Include="Native\MultiTarget.cs" />
     <Compile Include="Native\NativeAction.cs" />
+    <Compile Include="RundownLock.cs" />
     <Compile Include="SequenceAction.cs" />
     <Compile Include="GenericTestItemCollection.cs" />
     <Compile Include="IAction.cs" />

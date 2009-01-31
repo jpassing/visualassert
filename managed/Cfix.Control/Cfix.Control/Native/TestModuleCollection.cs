@@ -7,11 +7,27 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class TestModuleCollection : GenericTestItemCollection
+	public class TestModuleCollection : 
+		GenericTestItemCollection, IAbortableTestItemCollection
 	{
 		private const uint CFIXCTL_SEARCH_FLAG_RECURSIVE = 1;
-		
+
+		private class LoadAbortException : COMException
+		{
+		}
+
 		private readonly DirectoryInfo dirInfo;
+		private readonly String filter;
+		private readonly Target searchTarget;
+		private readonly MultiTarget runTargets;
+		private readonly bool userOnly;
+		private readonly bool ignoreDuplicates;
+		private readonly ISearchListener listener;
+
+		private readonly Object loadLock = new Object();
+
+		private bool currentLoadAborted = false;
+		private Loader currentLoader = null;
 
 		public interface ISearchListener
 		{
@@ -27,32 +43,36 @@ namespace Cfix.Control.Native
 
 		private class Loader : ICfixSearchModulesCallback
 		{
-			private readonly ISearchListener listener;
-			private readonly bool ignoreDuplicates;
-			private readonly MultiTarget target;
+			private readonly TestModuleCollection collection;
 			private readonly Stack<TestModuleCollection> collectionStack =
 				new Stack<TestModuleCollection>();
 
+			private bool abort = false;
 			private bool firstCallback = true;
 
-			public Loader( 
-				MultiTarget target,
-				TestModuleCollection current,
-				ISearchListener listener,
-				bool ignoreDuplicates
+			public Loader(
+				TestModuleCollection collection
 				)
 			{
-				this.target = target;
-				this.listener = listener;
-				this.ignoreDuplicates = ignoreDuplicates;
+				this.collection = collection;
 
-				this.collectionStack.Push( current );
+				this.collectionStack.Push( collection );
+			}
+
+			public void Abort()
+			{
+				this.abort = true;
 			}
 
 			public void EnterDirectory( 
 				String path 
 				)
 			{
+				if ( this.abort )
+				{
+					throw new LoadAbortException();
+				}
+
 				if ( firstCallback )
 				{
 					firstCallback = false;
@@ -69,7 +89,12 @@ namespace Cfix.Control.Native
 
 					TestModuleCollection nested = new TestModuleCollection(
 						new DirectoryInfo( path ),
-						this.target );
+						this.collection.filter,
+						this.collection.searchTarget,
+						this.collection.runTargets,
+						this.collection.userOnly,
+						this.collection.ignoreDuplicates,
+						this.collection.listener );
 
 					Debug.Print( "Enter: " + path );
 
@@ -89,19 +114,19 @@ namespace Cfix.Control.Native
 						this.collectionStack.Peek().dirInfo.Name ) );
 
 				Architecture arch = ( Architecture ) nativeArch;
-				if ( this.target.IsArchitectureSupported( arch ) )
+				if ( this.collection.runTargets.IsArchitectureSupported( arch ) )
 				{
 					try
 					{
 						this.collectionStack.Peek().Add(
 							TestModule.LoadModule(
-								target.GetTarget( arch ),
+								this.collection.runTargets.GetTarget( arch ),
 								path,
-								this.ignoreDuplicates ) );
+								this.collection.ignoreDuplicates ) );
 					}
 					catch ( Exception x )
 					{
-						this.listener.InvalidModule( path, x.Message );
+						this.collection.listener.InvalidModule( path, x.Message );
 					}
 				}
 			}
@@ -140,38 +165,53 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		private void Populate(
-			String filter,
-			Target searchTarget,
-			MultiTarget runTargets,
-			bool userOnly,
-			bool ignoreDuplicates,
-			ISearchListener listener
-			)
+		private void Populate()
 		{
-			ICfixHost host = null;
-			try
+			lock ( this.loadLock )
 			{
-				host = searchTarget.CreateHost();
+				Debug.Assert( this.currentLoader == null );
 
-				host.SearchModules(
-					this.dirInfo.FullName + "\\" + filter,
-					CFIXCTL_SEARCH_FLAG_RECURSIVE,
-					userOnly
-						? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
-						: UInt32.MaxValue,
-					runTargets.GetArchitectureMask(),
-					new Loader( runTargets, this, listener, ignoreDuplicates ) );
-			}
-			catch ( COMException x )
-			{
-				throw searchTarget.WrapException( x );
-			}
-			finally
-			{
-				if ( host != null )
+				this.currentLoadAborted = false;
+				this.currentLoader = new Loader( this );
+
+				ICfixHost host = null;
+				try
 				{
-					searchTarget.ReleaseObject( host );
+					host = searchTarget.CreateHost();
+
+					host.SearchModules(
+						this.dirInfo.FullName + "\\" + filter,
+						CFIXCTL_SEARCH_FLAG_RECURSIVE,
+						userOnly
+							? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
+							: UInt32.MaxValue,
+						runTargets.GetArchitectureMask(),
+						this.currentLoader );
+				}
+				catch ( COMException x )
+				{
+					if ( this.currentLoadAborted )
+					{
+						//
+						// Load has been aborted - not a true error.
+						// Note that thanks to marvelous Interop, we cannot rely 
+						// on the exception's HRESULT.
+						//
+					}
+					else
+					{
+						throw searchTarget.WrapException( x );
+					}
+				}
+				finally
+				{
+					if ( host != null )
+					{
+						searchTarget.ReleaseObject( host );
+					}
+
+					this.currentLoadAborted = false;
+					this.currentLoader = null;
 				}
 			}
 		}
@@ -182,10 +222,22 @@ namespace Cfix.Control.Native
 
 		private TestModuleCollection( 
 			DirectoryInfo dir, 
-			MultiTarget target )
+			String filter,
+			Target searchTarget,
+			MultiTarget runTargets,
+			bool userOnly,
+			bool ignoreDuplicates,
+			ISearchListener listener
+			)
 			: base( dir.Name )
 		{
 			this.dirInfo = dir;
+			this.filter = filter;
+			this.searchTarget = searchTarget;
+			this.runTargets = runTargets;
+			this.userOnly = userOnly;
+			this.ignoreDuplicates = ignoreDuplicates;
+			this.listener = listener;
 		}
 
 		/*--------------------------------------------------------------
@@ -194,9 +246,25 @@ namespace Cfix.Control.Native
 
 		public override void Refresh()
 		{
-			lock ( this.listLock )
+			//
+			// N.B. Population of list is already guarded by 
+			// this.listlock and this.loadLock. 
+			//
+			Clear();
+			Populate();
+		}
+
+		/*--------------------------------------------------------------
+		 * IAbortableTestItemCollection.
+		 */
+
+		public void AbortRefresh()
+		{
+			Loader cur = this.currentLoader;
+			if ( cur != null )
 			{
-				Clear();
+				this.currentLoadAborted = true;
+				cur.Abort();
 			}
 		}
 		
@@ -204,6 +272,11 @@ namespace Cfix.Control.Native
 		 * Statics.
 		 */
 
+		/*++
+		 * Create a TestModuleCollection for the giveb directory.
+		 * The caller has to invoke Refresh() to actually load the
+		 * children.
+		 --*/
 		public static TestModuleCollection Search(
 			DirectoryInfo dir,
 			String filter, 
@@ -215,9 +288,7 @@ namespace Cfix.Control.Native
 			)
 		{
 			TestModuleCollection result = new TestModuleCollection(
-					dir,
-					runTargets );
-			result.Populate(
+				dir,
 				filter,
 				searchTarget,
 				runTargets,

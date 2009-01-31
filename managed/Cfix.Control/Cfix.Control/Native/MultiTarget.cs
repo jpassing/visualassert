@@ -4,10 +4,32 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class MultiTarget
+	public class MultiTarget : IDisposable
 	{
 		private Target[] targets =
 			new Target[ ( int ) Architecture.Max ];
+
+		~MultiTarget()
+		{
+			Dispose( false );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			foreach ( Target tgt in this.targets )
+			{
+				if ( tgt != null )
+				{
+					tgt.Dispose();
+				}
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
 
 		public void AddArchitecture( Target target )
 		{

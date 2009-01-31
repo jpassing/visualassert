@@ -178,23 +178,35 @@ namespace Cfix.Control.Test
 				true,
 				lst );
 
-			Assert.AreEqual( 1, lst.Invalids );
+			for ( int i = 0; i < 3; i++ )
+			{
+				Assert.AreEqual( i + 1, lst.Invalids );
 
-			Assert.AreEqual( "testdata", coll.Name );
-			Assert.AreEqual( 1, coll.ItemCount );
-			ITestItem item = coll.GetItem( 0 );
+				Assert.AreEqual( "testdata", coll.Name );
+				Assert.AreEqual( 1, coll.ItemCount );
+				ITestItem item = coll.GetItem( 0 );
 
-			Assert.IsInstanceOfType( typeof( TestModuleCollection ), item );
-			Assert.AreEqual( "i386", item.Name );
+				Assert.IsInstanceOfType( typeof( TestModuleCollection ), item );
+				Assert.AreEqual( "i386", item.Name );
 
-			coll = ( TestModuleCollection ) coll.GetItem( 0 );
-			Assert.AreEqual( 2, coll.ItemCount );
+				TestModuleCollection subColl = ( TestModuleCollection ) coll.GetItem( 0 );
+				Assert.AreEqual( 2, subColl.ItemCount );
 
-			Assert.IsNotNull( coll.GetItem( 0 ) );
-			Assert.IsNotNull( coll.GetItem( 1 ) );
+				Assert.IsNotNull( subColl.GetItem( 0 ) );
+				Assert.IsNotNull( subColl.GetItem( 1 ) );
 
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 0 ) );
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 1 ) );
+				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 0 ) );
+				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 1 ) );
+
+				if ( i == 0 )
+				{
+					coll.Refresh();
+				}
+				else
+				{
+					subColl.Refresh();
+				}
+			}
 		}
 	}
 }

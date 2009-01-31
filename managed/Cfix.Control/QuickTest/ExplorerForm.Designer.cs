@@ -34,6 +34,7 @@ namespace QuickTest
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
 			this.explorer = new Cfix.Control.Ui.Explorer.Explorer();
 			this.currentNodeLabel = new System.Windows.Forms.Label();
+			this.abortBtn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// refresh
@@ -51,12 +52,11 @@ namespace QuickTest
 			// 
 			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
 			this.progressLabel.AutoSize = true;
-			this.progressLabel.Location = new System.Drawing.Point( 141, 234 );
+			this.progressLabel.Location = new System.Drawing.Point( 12, 262 );
 			this.progressLabel.Name = "progressLabel";
 			this.progressLabel.Size = new System.Drawing.Size( 139, 13 );
 			this.progressLabel.TabIndex = 2;
 			this.progressLabel.Text = "                                            ";
-			this.progressLabel.Click += new System.EventHandler( this.progressLabel_Click );
 			// 
 			// timer1
 			// 
@@ -82,13 +82,23 @@ namespace QuickTest
 			this.currentNodeLabel.Size = new System.Drawing.Size( 139, 13 );
 			this.currentNodeLabel.TabIndex = 2;
 			this.currentNodeLabel.Text = "                                            ";
-			this.currentNodeLabel.Click += new System.EventHandler( this.progressLabel_Click );
+			// 
+			// abortBtn
+			// 
+			this.abortBtn.Location = new System.Drawing.Point( 82, 235 );
+			this.abortBtn.Name = "abortBtn";
+			this.abortBtn.Size = new System.Drawing.Size( 75, 23 );
+			this.abortBtn.TabIndex = 3;
+			this.abortBtn.Text = "Abort";
+			this.abortBtn.UseVisualStyleBackColor = true;
+			this.abortBtn.Click += new System.EventHandler( this.abortBtn_Click );
 			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 292, 284 );
+			this.Controls.Add( this.abortBtn );
 			this.Controls.Add( this.currentNodeLabel );
 			this.Controls.Add( this.progressLabel );
 			this.Controls.Add( this.refresh );
@@ -107,5 +117,6 @@ namespace QuickTest
 		private System.Windows.Forms.Label progressLabel;
 		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.Label currentNodeLabel;
+		private System.Windows.Forms.Button abortBtn;
 	}
 }

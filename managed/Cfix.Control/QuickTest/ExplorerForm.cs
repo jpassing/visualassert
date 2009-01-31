@@ -49,9 +49,12 @@ namespace QuickTest
 			}
 		}
 
-		private void progressLabel_Click( object sender, EventArgs e )
+		private void abortBtn_Click( object sender, EventArgs e )
 		{
-
+			this.explorer.AbortRefreshSession();
 		}
+
+
+
 	}
 }

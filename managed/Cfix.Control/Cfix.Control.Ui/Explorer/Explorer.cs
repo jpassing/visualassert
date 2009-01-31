@@ -31,6 +31,12 @@ namespace Cfix.Control.Ui.Explorer
 
 		private readonly Object refreshLock = new Object();
 
+		//
+		// Lock that needs to be acquired by async operations to protect
+		// from the control being torn down prematurely.
+		//
+		private RundownLock rundownLock = new RundownLock();
+
 		public delegate void ExplorerNodeEventHandler(
 			Object sender,
 			ExplorerNodeEventArgs args
@@ -80,11 +86,16 @@ namespace Cfix.Control.Ui.Explorer
 			{
 				HandleException( x );
 			}
+			finally
+			{
+				this.rundownLock.Release();
+			}
 		}
 
 		/*----------------------------------------------------------------------
 		 * Events.
 		 */
+
 		private void treeView_AfterSelect(
 			Object sender,
 			TreeViewEventArgs e
@@ -115,6 +126,19 @@ namespace Cfix.Control.Ui.Explorer
 			( ( AbstractExplorerNode ) e.Node ).AfterCollapse();
 		}
 
+		private void this_Disposed(
+			Object sender,
+			EventArgs e
+			)
+		{
+			if ( this.session != null )
+			{
+				this.session.Dispose();
+			}
+
+			this.rundownLock.Rundown();
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -126,6 +150,8 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.AfterSelect += treeView_AfterSelect;
 			this.treeView.BeforeExpand += treeView_BeforeExpand;
 			this.treeView.AfterCollapse += treeView_AfterCollapse;
+
+			this.Disposed += this_Disposed;
 		}
 
 		public ISession Session
@@ -152,6 +178,16 @@ namespace Cfix.Control.Ui.Explorer
 			RefreshSession( async );
 		}
 
+		public void AbortRefreshSession()
+		{
+			IAbortableTestItemCollection abort =
+				this.session.Tests as IAbortableTestItemCollection;
+			if ( abort != null )
+			{
+				abort.AbortRefresh();
+			}
+		}
+
 		public void RefreshSession( bool async )
 		{
 			if ( async )
@@ -160,6 +196,7 @@ namespace Cfix.Control.Ui.Explorer
 				// N.B. Refreshing involves I/O and may block.
 				//
 				AsyncVoidDelegate refresh = RefreshSession;
+				this.rundownLock.Acquire();
 				refresh.BeginInvoke( 
 					false,
 					AsyncVoidCompletionCallback,
@@ -172,7 +209,8 @@ namespace Cfix.Control.Ui.Explorer
 					if ( this.treeView.Nodes.Count == 0 )
 					{
 						//
-						// Populate tree.
+						// Create initial tree mode -- children will
+						// follow via events.
 						//
 						AbstractExplorerNode childNode =
 							NodeFactory.CreateNode(
@@ -191,10 +229,11 @@ namespace Cfix.Control.Ui.Explorer
 							this.treeView.Nodes.Add( childNode );
 						}
 					}
-					else
-					{
-						this.session.Tests.Refresh();
-					}
+
+					//
+					// (Re-) load children.
+					//
+					this.session.Tests.Refresh();
 				}
 			}
 		}
@@ -210,7 +249,4 @@ namespace Cfix.Control.Ui.Explorer
 		}
 	}
 
-	
-
-	
 }

@@ -19,4 +19,11 @@ namespace Cfix.Control
 		void Refresh();
 	}
 
+	/*++
+	 * TestItemCollection that supports refreshs to be aborted.
+	 --*/
+	public interface IAbortableTestItemCollection : ITestItemCollection
+	{
+		void AbortRefresh();
+	}
 }

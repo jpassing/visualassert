@@ -37,21 +37,25 @@ namespace QuickTest
 			//GenericTestItemCollection cont = new GenericTestItemCollection( "Cont" );
 			//cont.Add( mod );
 
-			MultiTarget multiTarget = new MultiTarget();
-			multiTarget.AddArchitecture( ooTarget);
+			using ( MultiTarget multiTarget = new MultiTarget() )
+			{
+				multiTarget.AddArchitecture( ooTarget );
 
-			TestModuleCollection cont = TestModuleCollection.Search(
-				new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl\bin\" ),
-				"*",
-				inTarget,
-				multiTarget,
-				true,
-				true,
-				new Listener() );
+				TestModuleCollection cont = TestModuleCollection.Search(
+					new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl" ),
+					"*",
+					inTarget,
+					multiTarget,
+					true,
+					true,
+					new Listener() );
 
-			ExplorerForm f = new ExplorerForm();
-			f.Explorer.SetSession( new GenericSession( cont ), true );
-			Application.Run( f );
+				using ( ExplorerForm f = new ExplorerForm() )
+				{
+					f.Explorer.SetSession( new GenericSession( cont ), true );
+					Application.Run( f );
+				}
+			}
 		}
 	}
 }
