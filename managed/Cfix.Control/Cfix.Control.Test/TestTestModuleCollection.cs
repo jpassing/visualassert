@@ -119,13 +119,25 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
-			Assert.AreEqual( 2, coll.ItemCount );
+			Assert.AreEqual( 3, coll.ItemCount );
 
 			Assert.IsNotNull( coll.GetItem( 0 ) );
 			Assert.IsNotNull( coll.GetItem( 1 ) );
 
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 0 ) );
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 1 ) );
+			int invalids = 0;
+			foreach ( ITestItem item in coll )
+			{
+				if ( item is InvalidModule )
+				{
+					invalids++;
+				}
+				else
+				{
+					Assert.IsInstanceOfType( typeof( TestModule ), item );
+				}
+			}
+
+			Assert.AreEqual( 1, invalids );
 		}
 
 		[Test]
@@ -163,13 +175,25 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
-			Assert.AreEqual( 2, coll.ItemCount );
+			Assert.AreEqual( 3, coll.ItemCount );
 
 			Assert.IsNotNull( coll.GetItem( 0 ) );
 			Assert.IsNotNull( coll.GetItem( 1 ) );
 
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 0 ) );
-			Assert.IsInstanceOfType( typeof( TestModule ), coll.GetItem( 1 ) );
+			int invalids = 0;
+			foreach ( ITestItem item in coll )
+			{
+				if ( item is InvalidModule )
+				{
+					invalids++;
+				}
+				else
+				{
+					Assert.IsInstanceOfType( typeof( TestModule ), item );
+				}
+			}
+
+			Assert.AreEqual( 1, invalids );
 		}
 
 		[Test]
@@ -200,14 +224,26 @@ namespace Cfix.Control.Test
 				TestModuleCollection subColl = ( TestModuleCollection ) coll.GetItem( 0 );
 				Assert.AreSame( subColl.Parent, coll );
 
-				Assert.AreEqual( 2, subColl.ItemCount );
+				Assert.AreEqual( 3, subColl.ItemCount );
+
+				int invalids = 0;
+				foreach ( ITestItem subitem in subColl )
+				{
+					if ( subitem is InvalidModule )
+					{
+						invalids++;
+					}
+					else
+					{
+						Assert.IsInstanceOfType( typeof( TestModule ), subitem );
+					}
+				}
+
+				Assert.AreEqual( 1, invalids );
 
 				Assert.IsNotNull( subColl.GetItem( 0 ) );
 				Assert.IsNotNull( subColl.GetItem( 1 ) );
 				Assert.AreSame( subColl.GetItem( 0 ).Parent.Parent, coll );
-
-				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 0 ) );
-				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 1 ) );
 
 				if ( i == 0 )
 				{

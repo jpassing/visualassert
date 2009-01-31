@@ -26,7 +26,9 @@ namespace Cfix.Control.Ui.Explorer
 		internal const int TestContainerIconSelectedIndex = 3;
 		internal const int TestItemIconIndex = 4;
 		internal const int TestItemIconSelectedIndex = 4;
-
+		internal const int InvalidModuleIconIndex = 5;
+		internal const int InvalidModuleIconSelectedIndex = 5;
+		
 		private ISession session;
 
 		private readonly Object refreshLock = new Object();

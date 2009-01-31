@@ -18,6 +18,18 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
+		private class InvalidModuleExplorerNode : AbstractExplorerNode
+		{
+			public InvalidModuleExplorerNode( InvalidModule item )
+				: base(
+					item,
+					Explorer.InvalidModuleIconIndex,
+					Explorer.InvalidModuleIconSelectedIndex )
+			{
+				this.ToolTipText = item.InvalidityCause.Message;
+			}
+		}
+
 		private class TestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
 			public TestItemCollectionExplorerNode( TreeView treeView, ITestItemCollection item )
@@ -130,6 +142,11 @@ namespace Cfix.Control.Ui.Explorer
 				return new ModuleExplorerNode( 
 					treeView,
 					( TestModule ) item );
+			}
+			else if ( item is InvalidModule )
+			{
+				return new InvalidModuleExplorerNode(
+					( InvalidModule ) item );
 			}
 			else if ( item is GenericTestItemCollection )
 			{

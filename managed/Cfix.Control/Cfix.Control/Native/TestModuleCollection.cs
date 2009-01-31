@@ -128,6 +128,12 @@ namespace Cfix.Control.Native
 					}
 					catch ( Exception x )
 					{
+						this.collectionStack.Peek().Add(
+							new InvalidModule(
+								this.collectionStack.Peek(),
+								new DirectoryInfo( path ).Name,
+								x ) );
+						
 						this.collection.listener.InvalidModule( path, x.Message );
 					}
 				}

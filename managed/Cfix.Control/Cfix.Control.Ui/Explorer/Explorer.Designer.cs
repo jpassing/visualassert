@@ -43,6 +43,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.Location = new System.Drawing.Point( 0, 0 );
 			this.treeView.Name = "treeView";
 			this.treeView.SelectedImageIndex = 0;
+			this.treeView.ShowNodeToolTips = true;
 			this.treeView.Size = new System.Drawing.Size( 265, 303 );
 			this.treeView.StateImageList = this.imageList;
 			this.treeView.TabIndex = 0;
@@ -56,6 +57,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.imageList.Images.SetKeyName( 2, "VSObject_Assembly.bmp" );
 			this.imageList.Images.SetKeyName( 3, "VSObject_Class.bmp" );
 			this.imageList.Images.SetKeyName( 4, "VSObject_Method.bmp" );
+			this.imageList.Images.SetKeyName( 5, "VSObject_InvalidAssembly.bmp" );
 			// 
 			// Explorer
 			// 

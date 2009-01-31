@@ -11,4 +11,16 @@
     <StartArguments>/resetaddin Cfix.Addin.Connect</StartArguments>
     <StartAction>Program</StartAction>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <StartProgram>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\devenv.exe</StartProgram>
+    <StartWorkingDirectory>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\</StartWorkingDirectory>
+    <StartArguments>/resetaddin Cfix.Addin.Connect</StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <StartProgram>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\devenv.exe</StartProgram>
+    <StartWorkingDirectory>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\</StartWorkingDirectory>
+    <StartArguments>/resetaddin Cfix.Addin.Connect</StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
 </Project>

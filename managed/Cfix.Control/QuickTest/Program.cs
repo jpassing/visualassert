@@ -46,7 +46,7 @@ namespace QuickTest
 					"*",
 					inTarget,
 					multiTarget,
-					true,
+					false,
 					true,
 					new Listener() );
 

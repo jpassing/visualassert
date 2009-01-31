@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Native\InvalidModule.cs" />
     <Compile Include="Native\TestModuleCollection.cs" />
     <Compile Include="GenericSession.cs" />
     <Compile Include="ITestItemCollection.cs" />
