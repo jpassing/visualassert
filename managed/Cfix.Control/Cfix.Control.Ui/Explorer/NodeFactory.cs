@@ -65,8 +65,8 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				LoadChildren( treeView );
 
-				item.ItemAdded += new TestItemChangedEventHandler( item_ItemAdded );
-				item.ItemRemoved += new TestItemChangedEventHandler( item_ItemRemoved );
+				item.ItemAdded += new EventHandler< TestItemEventArgs >( item_ItemAdded );
+				item.ItemRemoved += new EventHandler< TestItemEventArgs >( item_ItemRemoved );
 			}
 
 			private void item_ItemAdded( 

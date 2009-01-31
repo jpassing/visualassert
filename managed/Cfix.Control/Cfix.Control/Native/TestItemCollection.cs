@@ -210,8 +210,8 @@ namespace Cfix.Control.Native
 		 * ITestItemContainer.
 		 */
 
-		public event TestItemChangedEventHandler ItemAdded;
-		public event TestItemChangedEventHandler ItemRemoved;
+		public event EventHandler< TestItemEventArgs > ItemAdded;
+		public event EventHandler< TestItemEventArgs > ItemRemoved;
 
 		public ITestItem GetItem( uint ordinal )
 		{

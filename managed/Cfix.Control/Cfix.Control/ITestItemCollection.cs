@@ -18,15 +18,15 @@ namespace Cfix.Control
 		}
 	}
 
-	public delegate void TestItemChangedEventHandler(
+	public delegate void EventHandler< TestItemEventArgs >(
 			object sender,
 			TestItemEventArgs args
 			);
 
 	public interface ITestItemCollection : ITestItem, IEnumerable<ITestItem>
 	{
-		event TestItemChangedEventHandler ItemAdded;
-		event TestItemChangedEventHandler ItemRemoved;
+		event EventHandler< TestItemEventArgs > ItemAdded;
+		event EventHandler< TestItemEventArgs > ItemRemoved;
 
 		ITestItem GetItem( uint ordinal );
 		uint ItemCount { get; }
