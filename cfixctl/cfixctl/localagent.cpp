@@ -95,6 +95,10 @@ public:
 	/*------------------------------------------------------------------
 	 * ICfixHost methods.
 	 */
+	STDMETHOD( GetHostPath )(
+		__in CfixTestModuleArch Arch,
+		__out BSTR *Path
+		);
 	
 	STDMETHOD( CreateHost )( 
 		__in CfixTestModuleArch Arch,
@@ -454,6 +458,7 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
  * Class Implementation.
  *
  */
+
 LocalAgent::LocalAgent() : Registration( NULL ), NewRegistrationEvent( NULL )
 {
 }
@@ -499,6 +504,43 @@ STDMETHODIMP_( void ) LocalAgent::ClearRegistrations()
 	LeaveCriticalSection( &this->RegistrationLock );
 }
 
+
+/*------------------------------------------------------------------
+ * 
+ * ICfixAgent Implementation.
+ *
+ */
+
+STDMETHODIMP LocalAgent::GetHostPath(
+	__in CfixTestModuleArch Arch,
+	__out BSTR *Path
+	)
+{
+	if ( ! Path )
+	{
+		return E_INVALIDARG;
+	}
+	else
+	{
+		*Path = NULL;
+	}
+
+	WCHAR Buffer[ MAX_PATH ];
+	HRESULT Hr = CfixctlsFindHostImage(
+		Arch,
+		_countof( Buffer ),
+		Buffer );
+	if ( SUCCEEDED( Hr ) )
+	{
+		*Path = SysAllocString( Buffer );
+		if ( *Path == NULL )
+		{
+			return E_OUTOFMEMORY;
+		}
+	}
+
+	return Hr;
+}
 
 STDMETHODIMP LocalAgent::CreateProcessHost(
 	__in CfixTestModuleArch Arch,

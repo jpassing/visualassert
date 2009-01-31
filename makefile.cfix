@@ -1,0 +1,151 @@
+#----------------------------------------------------------------------
+#
+# Purpose:
+# 		Main makefile. Named makefile.cfix in order not to interfere with
+#		building process, which is driven by build.exe
+# 
+# Copyright:
+# 		2009, Johannes Passing (passing at users.sourceforge.net)
+# 
+#----------------------------------------------------------------------
+
+!IF [cscript /nologo buildnum.vbs > __buildnum.inc]
+!ENDIF
+!INCLUDE __buildnum.inc
+
+VERSION=1.0.0.$(BUILDNUMBER)
+CUSTOMSYMSTORE=D:\XSYMBOLS\Custom
+CFIX_CLAGS=-f -z
+
+!if ( "$(DDKBUILDENV)" != "" ) 
+!ERROR Build environment found. Execute this command in a normal shell, not in a WDK shell.
+!endif
+
+!if ( "$(CFIX_TREE)" == "" ) 
+!ERROR CFIX_TREE not set.
+!endif
+
+!if ( "$(SDKBASE)" == "" )
+!MESSAGE WARNING: SDKBASE not set. Set to base directory of Windows SDK.
+!MESSAGE WARNING: Note that the path must not contain any spaces - required by build.exe
+!endif
+
+#----------------------------------------------------------------------
+#
+# Binaries. Build process is driven by build.exe.
+#
+#----------------------------------------------------------------------
+
+build: chk fre symadd
+
+symadd:
+	symstore add /r /f bin\chk\i386\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
+	symstore add /r /f bin\chk\amd64\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
+	symstore add /r /f bin\fre\i386\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
+	symstore add /r /f bin\fre\amd64\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
+	
+version:
+	rcstamp cfixctl\cfixctl\cfixctl.rc $(VERSION)
+	rcstamp cfixctl\cfixhost\cfixhost.rc $(VERSION)
+	
+i386chk: version
+	cmd /C ddkbuild -WNETW2K checked . -cZ
+	devenv managed\Cfix.Control\Cfix.Control.sln /rebuild "Debug|x86"
+	devenv managed\Cfix.Addin\Cfix.Addin.sln /rebuild "Debug|x86"
+	
+i386fre: version
+	cmd /C ddkbuild -WNETW2K free . -cZ
+	devenv managed\Cfix.Control\Cfix.Control.sln /rebuild "Release|x86"
+	devenv managed\Cfix.Addin\Cfix.Addin.sln /rebuild "Release|x86"
+	
+amd64chk: version
+	cmd /C ddkbuild -WLHNETA64 checked . -cZ
+	
+amd64fre: version
+	cmd /C ddkbuild -WLHNETA64 free . -cZ	
+	
+chk: i386chk amd64chk
+
+fre: i386fre amd64fre
+
+i386: i386chk i386fre
+
+amd64: amd64chk amd64fre
+
+cleantemps:
+	-1 for /f "delims=" %%i in ('dir /ad/s/b obj*') do @rd /S /Q  %%i
+	-1 for /f "delims=" %%i in ('dir /s/b *.log') do @del  %%i
+	-1 for /f "delims=" %%i in ('dir /s/b *.err') do @del  %%i
+	-1 for /f "delims=" %%i in ('dir /s/b *.wrn') do @del  %%i
+	
+clean: cleantemps
+	if exist bin\chk rd /S /Q bin\chk
+	if exist bin\fre rd /S /Q bin\fre
+	
+#----------------------------------------------------------------------
+#
+# Unit tests.
+#
+#----------------------------------------------------------------------
+
+# helper macro, invoked indirectly
+__cfixtests:
+	$(CFIX_CMD) $(CFIX_FLAGS) testctl.dll
+
+testi386chk:
+	echo i386 checked
+
+	copy $(CFIX_TREE)\bin\chk\i386\cfix.dll 	bin\chk\i386
+	copy $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
+	copy $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
+	
+	cd bin\chk\i386
+	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\chk\i386\cfix32.exe __cfixtests
+	cd ..\..\..
+	
+	gallio.echo bin\chk\i386\Cfix.Control.Test.dll
+
+testi386fre:
+	echo i386 free
+	
+	copy $(CFIX_TREE)\bin\fre\i386\cfix.dll 	bin\fre\i386
+	copy $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
+	copy $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
+	
+	cd bin\fre\i386
+	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\fre\i386\cfix32.exe __cfixtests
+	cd ..\..\..
+
+	gallio.echo bin\fre\i386\Cfix.Control.Test.dll
+
+testamd64chk:
+	echo amd64 checked
+	
+	copy $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
+	copy $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
+	copy $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
+	
+	cd bin\chk\amd64
+	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\chk\amd64\cfix64.exe __cfixtests
+	cd ..\..\..
+	
+testamd64fre:
+	echo amd64 free
+	
+	copy $(CFIX_TREE)\bin\fre\amd64\cfix.dll	bin\fre\amd64
+	copy $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
+	copy $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
+	                                              
+	cd bin\fre\amd64
+	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\fre\amd64\cfix64.exe __cfixtests
+	cd ..\..\..
+	
+!if ( "$(ARCH)" == "AMD64" )	
+testchk: testi386chk testamd64chk
+testfre: testi386fre testamd64fre
+!else
+testchk: testi386chk
+testfre: testi386fre
+!endif
+
+test: testchk testfre

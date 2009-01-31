@@ -110,6 +110,7 @@ STDMETHODIMP MessageResolver::FinalConstruct()
 	PWSTR Dlls[] = { 
 		L"cfixctl.dll",
 		L"cfix.dll",
+		L"cfixkl.dll",
 		L"cdiag.dll"
 	};
 
@@ -184,7 +185,7 @@ STDMETHODIMP MessageResolver::ResolveMessage(
 		return E_INVALIDARG;
 	}
 	
-	WCHAR Buffer[ 256 ];
+	WCHAR Buffer[ 256 ] = { 0 };
 
 	HRESULT Hr = this->Resolver->ResolveMessage(
 		this->Resolver,

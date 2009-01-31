@@ -119,6 +119,11 @@ namespace Cfix.Control.Test
 			return new MockHost( this.module );
 		}
 
+		public string GetHostPath( CfixTestModuleArch Arch )
+		{
+			throw new NotImplementedException();
+		}
+
 		public void RegisterHost( uint Cookie, ICfixHost Host )
 		{
 			throw new NotImplementedException();

@@ -31,11 +31,13 @@ DEBUG_CRTS=1
 C_DEFINES = $(C_DEFINES) /D_DEBUG
 !endif
 
+USER_C_FLAGS=/wd4505
+
 #
 # N.B. No /SafeSEH due to oleaut32.lib.
 #
 !if "$(TARGET_DIRECTORY)"=="i386"
-USER_C_FLAGS=/analyze
+USER_C_FLAGS=$(USER_C_FLAGS) /analyze
 !endif
 
 LINKER_FLAGS=/nxcompat /dynamicbase

@@ -170,6 +170,25 @@ public:
 		CloseHandle( Thread );
 	}
 
+	void GetHostPath()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIXCC_ASSERT( Agent );
+		__assume( Agent );
+
+		BSTR HostPath = NULL;
+		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+			CFIXCTL_OWN_ARCHITECTURE,
+			&HostPath ) );
+		CFIXCC_ASSERT( HostPath );
+
+		CFIX_ASSERT( GetFileAttributes( HostPath ) != INVALID_FILE_ATTRIBUTES );
+
+		Agent->Release();
+	}
+
 	void SpawnSameArch()
 	{
 		ICfixAgent *Agent;
@@ -192,6 +211,41 @@ public:
 
 			CFIX_ASSUME( Host );
 			Host->Release();
+		}
+
+		Agent->Release();
+	}
+
+	void SpawnAllArchs()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			CfixTestModuleArch Archs[] = {
+				CfixTestModuleArchI386,
+				CfixTestModuleArchAmd64
+			};
+
+			for ( ULONG Arch = 0; Arch < _countof( Archs ); Arch++ )
+			{
+				ICfixHost *Host;
+				CFIXCC_ASSERT_OK( Agent->CreateHost(
+					Archs[ Arch ],
+					CLSCTX_LOCAL_SERVER,
+					FlagSets[ Flags ],
+					INFINITE,
+					NULL,
+					&Host ) );
+
+				CFIX_ASSUME( Host );
+				Host->Release();
+			}
 		}
 
 		Agent->Release();
@@ -225,6 +279,8 @@ COM_EXPORTS TestLocalAgent::Exports;
 CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( RegisterAndObtainWithoutWaiting )
 	CFIXCC_METHOD( RegisterAndObtainWithWaiting )
+	CFIXCC_METHOD( GetHostPath )
 	CFIXCC_METHOD( SpawnSameArch )
+	CFIXCC_METHOD( SpawnAllArchs )
 	CFIXCC_METHOD( ResolveMessage )
 CFIXCC_END_CLASS()

@@ -214,6 +214,16 @@ library Cfixctl
 	{
 		/*++
 			Method Description:
+				Locate the path to the host image for the given
+				atchitecture.
+		--*/
+		HRESULT GetHostPath(
+			[in] CfixTestModuleArch Arch,
+			[out, retval] BSTR *Path
+			);
+
+		/*++
+			Method Description:
 				Create a new Host object.
 
 			Arguments:
