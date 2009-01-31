@@ -104,6 +104,14 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public virtual ITestItemCollection Parent
+		{
+			get
+			{
+				return this.parent;
+			}
+		}
+
 		public IAction CreateAction( SchedulingOptions flags )
 		{
 			ICfixTestItem ctlItem = this.NativeItem;

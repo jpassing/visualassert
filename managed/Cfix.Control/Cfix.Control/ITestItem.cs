@@ -7,6 +7,8 @@ namespace Cfix.Control
         String Name { get; }
         uint Ordinal { get; }
 
+		ITestItemCollection Parent { get; }
+
 		IAction CreateAction( SchedulingOptions flags );
 	}
 }

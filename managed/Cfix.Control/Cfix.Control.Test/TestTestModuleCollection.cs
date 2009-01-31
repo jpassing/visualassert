@@ -73,6 +73,8 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
+
 			Assert.AreEqual( 0, lst.Invalids );
 			Assert.AreEqual( 0, coll.ItemCount );
 		}
@@ -89,6 +91,7 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
 
 			Assert.AreEqual( 0, lst.Invalids );
 			Assert.AreEqual( 1, coll.ItemCount );
@@ -96,6 +99,7 @@ namespace Cfix.Control.Test
 			ITestItem item = coll.GetItem( 0 );
 			Assert.IsNotNull( item );
 			Assert.AreEqual( "simple", item.Name );
+			Assert.AreSame( item.Parent, coll );
 		}
 
 		[Test]
@@ -110,6 +114,7 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
 
 			Assert.AreEqual( 1, lst.Invalids );
 
@@ -135,6 +140,7 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
 
 			Assert.AreEqual( 0, lst.Invalids );
 			Assert.AreEqual( 0, coll.ItemCount );
@@ -152,6 +158,7 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
 
 			Assert.AreEqual( 1, lst.Invalids );
 
@@ -177,6 +184,7 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
+			coll.Refresh();
 
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -190,10 +198,13 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( "i386", item.Name );
 
 				TestModuleCollection subColl = ( TestModuleCollection ) coll.GetItem( 0 );
+				Assert.AreSame( subColl.Parent, coll );
+
 				Assert.AreEqual( 2, subColl.ItemCount );
 
 				Assert.IsNotNull( subColl.GetItem( 0 ) );
 				Assert.IsNotNull( subColl.GetItem( 1 ) );
+				Assert.AreSame( subColl.GetItem( 0 ).Parent.Parent, coll );
 
 				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 0 ) );
 				Assert.IsInstanceOfType( typeof( TestModule ), subColl.GetItem( 1 ) );

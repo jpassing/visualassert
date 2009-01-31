@@ -88,6 +88,7 @@ namespace Cfix.Control.Native
 						this.collectionStack.Peek().dirInfo.Name ) );
 
 					TestModuleCollection nested = new TestModuleCollection(
+						this.collectionStack.Peek(),
 						new DirectoryInfo( path ),
 						this.collection.filter,
 						this.collection.searchTarget,
@@ -120,6 +121,7 @@ namespace Cfix.Control.Native
 					{
 						this.collectionStack.Peek().Add(
 							TestModule.LoadModule(
+								this.collectionStack.Peek(),
 								this.collection.runTargets.GetTarget( arch ),
 								path,
 								this.collection.ignoreDuplicates ) );
@@ -221,6 +223,7 @@ namespace Cfix.Control.Native
 		 */
 
 		private TestModuleCollection( 
+			ITestItemCollection parent,
 			DirectoryInfo dir, 
 			String filter,
 			Target searchTarget,
@@ -229,7 +232,7 @@ namespace Cfix.Control.Native
 			bool ignoreDuplicates,
 			ISearchListener listener
 			)
-			: base( dir.Name )
+			: base( parent, dir.Name )
 		{
 			this.dirInfo = dir;
 			this.filter = filter;
@@ -273,7 +276,7 @@ namespace Cfix.Control.Native
 		 */
 
 		/*++
-		 * Create a TestModuleCollection for the giveb directory.
+		 * Create a TestModuleCollection for the given directory.
 		 * The caller has to invoke Refresh() to actually load the
 		 * children.
 		 --*/
@@ -288,6 +291,7 @@ namespace Cfix.Control.Native
 			)
 		{
 			TestModuleCollection result = new TestModuleCollection(
+				null,
 				dir,
 				filter,
 				searchTarget,

@@ -13,9 +13,17 @@ namespace Cfix.Control.Native
 		private readonly String path;
 		private readonly Target target;
 
+		//
+		// N.B. We have to use a separate parent (rather than relying
+		// on base.parent) to allow arbitrary objects implementing 
+		// ITestItemCollection to serve as parent.
+		//
+		private readonly ITestItemCollection parentCollection;
+
 		private CfixTestModuleType type = 0;
 
 		private TestModule(
+			ITestItemCollection parentCollection,
 			String path,
 			Target target,
 			ICfixTestModule ctlModule,
@@ -23,6 +31,7 @@ namespace Cfix.Control.Native
 			)
 			: base( null, 0, ctlModule, ignoreDuplicates )
 		{
+			this.parentCollection = parentCollection;
 			this.path = path;
 			this.target = target;
 		}
@@ -74,6 +83,14 @@ namespace Cfix.Control.Native
 		public override void Refresh()
 		{
 			Update();
+		}
+
+		public override ITestItemCollection Parent
+		{
+			get
+			{
+				return this.parentCollection;
+			}
 		}
 
 		/*--------------------------------------------------------------
@@ -140,6 +157,16 @@ namespace Cfix.Control.Native
 			bool ignoreDuplicates
 			)
 		{
+			return LoadModule( null, target, path, ignoreDuplicates );
+		}
+
+		public static TestModule LoadModule(
+			ITestItemCollection parentCollection,
+			Target target,
+			String path,
+			bool ignoreDuplicates
+			)
+		{
 			if ( target == null || path == null )
 			{
 				throw new ArgumentException( "" );
@@ -149,6 +176,7 @@ namespace Cfix.Control.Native
 			try
 			{
 				TestModule mod = new TestModule(
+					parentCollection,
 					path,
 					target,
 					ctlModule,

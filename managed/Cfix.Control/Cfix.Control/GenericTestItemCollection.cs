@@ -11,12 +11,14 @@ namespace Cfix.Control
 	/// </summary>
 	public class GenericTestItemCollection : ITestItemCollection
 	{
+		private readonly ITestItemCollection parent;
 		private readonly String name;
 		protected readonly Object listLock = new Object();
 		protected readonly List<ITestItem> list = new List<ITestItem>();
 
-		public GenericTestItemCollection( String name )
+		public GenericTestItemCollection( ITestItemCollection parent, String name )
 		{
+			this.parent = parent;
 			this.name = name;
 		}
 
@@ -122,6 +124,14 @@ namespace Cfix.Control
 			return new SequenceAction( this, actions );
 		}
 
+		public ITestItemCollection Parent
+		{
+			get
+			{
+				return this.parent;
+			}
+		}
+
 		/*--------------------------------------------------------------
 		 * ITestItemCollection.
 		 */
@@ -181,6 +191,7 @@ namespace Cfix.Control
 			{
 				foreach ( ITestItem item in this.list )
 				{
+					OnItemRemoved( item );
 					item.Dispose();
 				}
 

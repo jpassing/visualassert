@@ -45,11 +45,15 @@ namespace Cfix.Control.Ui.Explorer
 				// Children always available, so load them.
 				//
 				LoadChildren( treeView );
+
+				this.ToolTipText = item.Path;
 			}
 		}
 
 		private class GenericTestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
+			private delegate void VoidDelegate();
+
 			public GenericTestItemCollectionExplorerNode( TreeView treeView, GenericTestItemCollection item )
 				: base(
 					item,
@@ -60,6 +64,41 @@ namespace Cfix.Control.Ui.Explorer
 				// Children always available, so load them.
 				//
 				LoadChildren( treeView );
+
+				item.ItemAdded += new TestItemChangedEventHandler( item_ItemAdded );
+				item.ItemRemoved += new TestItemChangedEventHandler( item_ItemRemoved );
+			}
+
+			private void item_ItemAdded( ITestItemCollection sender, ITestItem item )
+			{
+				if ( this.TreeView.InvokeRequired )
+				{
+					this.TreeView.Invoke( ( VoidDelegate ) delegate()
+					{
+						this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, item ) );
+						this.Expand();
+					} );
+				}
+				else
+				{
+					this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, item ) );
+					this.Expand();
+				}
+			}
+
+			private void item_ItemRemoved( ITestItemCollection sender, ITestItem item )
+			{
+				if ( this.TreeView.InvokeRequired )
+				{
+					this.TreeView.Invoke( ( VoidDelegate ) delegate()
+					{
+						this.Nodes.RemoveByKey( item.Name );
+					} );
+				}
+				else
+				{
+					this.Nodes.RemoveByKey( item.Name );
+				}
 			}
 
 			public override void BeforeExpand()

@@ -85,6 +85,7 @@ namespace QuickTest
 			// 
 			// abortBtn
 			// 
+			this.abortBtn.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
 			this.abortBtn.Location = new System.Drawing.Point( 82, 235 );
 			this.abortBtn.Name = "abortBtn";
 			this.abortBtn.Size = new System.Drawing.Size( 75, 23 );

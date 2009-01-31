@@ -18,6 +18,11 @@ namespace Cfix.Control.Ui.Explorer
 		{
 			this.defaultImageIndex = imageIndex;
 			this.testItem = testItem;
+
+			//
+			// Assign name to make RemoveByKey work.
+			//
+			this.Name = testItem.Name;
 		}
 
 		public ITestItem Item
