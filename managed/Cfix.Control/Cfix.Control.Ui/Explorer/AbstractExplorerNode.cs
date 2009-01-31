@@ -7,7 +7,6 @@ namespace Cfix.Control.Ui.Explorer
 	internal abstract class AbstractExplorerNode : TreeNode
 	{
 		private readonly ITestItem testItem;
-		private int defaultImageIndex;
 
 		public AbstractExplorerNode(
 			ITestItem testItem,
@@ -16,7 +15,6 @@ namespace Cfix.Control.Ui.Explorer
 			)
 			: base( testItem.Name, imageIndex, selectedImageIndex )
 		{
-			this.defaultImageIndex = imageIndex;
 			this.testItem = testItem;
 
 			//

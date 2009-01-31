@@ -23,7 +23,7 @@ namespace QuickTest
 		{
 			InitializeComponent();
 
-			this.explorer.AfterSelect += delegate(
+			this.explorer.AfterSelected += delegate(
 				Object sender,
 				Explorer.ExplorerNodeEventArgs args
 				)

@@ -246,7 +246,7 @@ namespace Cfix.Control.Native
 		{
 			if ( ItemAdded != null )
 			{
-				ItemAdded( this, item );
+				ItemAdded( this, new TestItemEventArgs( item ) );
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace Cfix.Control.Native
 		{
 			if ( ItemRemoved != null )
 			{
-				ItemRemoved( this, item );
+				ItemRemoved( this, new TestItemEventArgs( item ) );
 			}
 		}
 	}

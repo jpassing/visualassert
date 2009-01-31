@@ -3,9 +3,24 @@ using System.Collections.Generic;
 
 namespace Cfix.Control
 {
+	public class TestItemEventArgs : EventArgs
+	{
+		private ITestItem item;
+
+		public TestItemEventArgs( ITestItem item )
+		{
+			this.item = item;
+		}
+
+		public ITestItem Item
+		{
+			get { return this.item; }
+		}
+	}
+
 	public delegate void TestItemChangedEventHandler(
-			ITestItemCollection sender,
-			ITestItem item
+			object sender,
+			TestItemEventArgs args
 			);
 
 	public interface ITestItemCollection : ITestItem, IEnumerable<ITestItem>

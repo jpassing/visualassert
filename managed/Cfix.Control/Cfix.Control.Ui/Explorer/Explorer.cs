@@ -37,17 +37,13 @@ namespace Cfix.Control.Ui.Explorer
 		//
 		private RundownLock rundownLock = new RundownLock();
 
-		public delegate void ExplorerNodeEventHandler(
-			Object sender,
-			ExplorerNodeEventArgs args
-			);
-
-		public ExplorerNodeEventHandler AfterSelect;
+		public event EventHandler< ExplorerNodeEventArgs > AfterSelected;
 
 		/*----------------------------------------------------------------------
 		 * Events.
 		 */
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible" )]
 		public class ExplorerNodeEventArgs : EventArgs
 		{
 			private readonly ITestItem item;
@@ -68,13 +64,14 @@ namespace Cfix.Control.Ui.Explorer
 		 * Private.
 		 */
 
-		private void HandleException( Exception x )
+		private static void HandleException( Exception x )
 		{
 			MessageBox.Show( x.Message );
 		}
 
 		private delegate void AsyncVoidDelegate( bool async );
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		private void AsyncVoidCompletionCallback( IAsyncResult ar )
 		{
 			try
@@ -101,9 +98,9 @@ namespace Cfix.Control.Ui.Explorer
 			TreeViewEventArgs e
 			)
 		{
-			if ( this.AfterSelect != null )
+			if ( this.AfterSelected != null )
 			{
-				this.AfterSelect(
+				this.AfterSelected(
 					this,
 					new ExplorerNodeEventArgs(
 						( ( AbstractExplorerNode ) e.Node ).Item ) );
@@ -162,15 +159,16 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
-		public void SetSession( ISession session, bool async )
+		public void SetSession( ISession sess, bool async )
 		{
 			if ( this.session != null )
 			{
 				this.session.Dispose();
 			}
+
 			this.treeView.Nodes.Clear();
 
-			this.session = session;
+			this.session = sess;
 
 			//
 			// Populate tree.

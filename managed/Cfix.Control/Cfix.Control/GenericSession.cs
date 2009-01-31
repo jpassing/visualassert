@@ -13,14 +13,25 @@ namespace Cfix.Control
 			this.tests = tests;
 		}
 
+		~GenericSession()
+		{
+			Dispose( false );
+		}
+
 		public ITestItemCollection Tests
 		{
 			get { return this.tests; }
 		}
 
-		public void Dispose()
+		protected virtual void Dispose( bool disposing )
 		{
 			this.tests.Dispose();
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
 		}
 	}
 }

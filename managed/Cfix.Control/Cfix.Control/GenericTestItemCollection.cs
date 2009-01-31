@@ -13,13 +13,18 @@ namespace Cfix.Control
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
-		protected readonly Object listLock = new Object();
-		protected readonly List<ITestItem> list = new List<ITestItem>();
+		private readonly Object listLock = new Object();
+		private readonly List<ITestItem> list = new List<ITestItem>();
 
 		public GenericTestItemCollection( ITestItemCollection parent, String name )
 		{
 			this.parent = parent;
 			this.name = name;
+		}
+
+		~GenericTestItemCollection()
+		{
+			Dispose( false );
 		}
 
 		/*--------------------------------------------------------------
@@ -30,7 +35,7 @@ namespace Cfix.Control
 		{
 			if ( this.ItemAdded != null )
 			{
-				this.ItemAdded( this, item );
+				this.ItemAdded( this, new TestItemEventArgs( item ) );
 			}
 		}
 
@@ -38,7 +43,7 @@ namespace Cfix.Control
 		{
 			if ( this.ItemRemoved != null )
 			{
-				this.ItemRemoved( this, item );
+				this.ItemRemoved( this, new TestItemEventArgs( item ) );
 			}
 		}
 
@@ -139,7 +144,6 @@ namespace Cfix.Control
 		public event TestItemChangedEventHandler ItemAdded;
 		public event TestItemChangedEventHandler ItemRemoved;
 
-
 		public ITestItem GetItem( uint ordinal )
 		{
 			lock ( this.listLock )
@@ -174,17 +178,6 @@ namespace Cfix.Control
 			}
 		}
 
-		public void Dispose()
-		{
-			lock ( this.listLock )
-			{
-				foreach ( ITestItem item in this.list )
-				{
-					item.Dispose();
-				}
-			}
-		}
-
 		public void Clear()
 		{
 			lock ( this.listLock )
@@ -198,5 +191,23 @@ namespace Cfix.Control
 				this.list.Clear();
 			}
 		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.Dispose();
+				}
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
 	}
 }

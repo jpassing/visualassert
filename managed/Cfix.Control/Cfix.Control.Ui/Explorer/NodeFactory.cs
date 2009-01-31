@@ -69,35 +69,41 @@ namespace Cfix.Control.Ui.Explorer
 				item.ItemRemoved += new TestItemChangedEventHandler( item_ItemRemoved );
 			}
 
-			private void item_ItemAdded( ITestItemCollection sender, ITestItem item )
+			private void item_ItemAdded( 
+				object sender, 
+				TestItemEventArgs e 
+				)
 			{
 				if ( this.TreeView.InvokeRequired )
 				{
 					this.TreeView.Invoke( ( VoidDelegate ) delegate()
 					{
-						this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, item ) );
+						this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, e.Item ) );
 						this.Expand();
 					} );
 				}
 				else
 				{
-					this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, item ) );
+					this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, e.Item ) );
 					this.Expand();
 				}
 			}
 
-			private void item_ItemRemoved( ITestItemCollection sender, ITestItem item )
+			private void item_ItemRemoved(
+				object sender, 
+				TestItemEventArgs e 
+				)
 			{
 				if ( this.TreeView.InvokeRequired )
 				{
 					this.TreeView.Invoke( ( VoidDelegate ) delegate()
 					{
-						this.Nodes.RemoveByKey( item.Name );
+						this.Nodes.RemoveByKey( e.Item.Name );
 					} );
 				}
 				else
 				{
-					this.Nodes.RemoveByKey( item.Name );
+					this.Nodes.RemoveByKey( e.Item.Name );
 				}
 			}
 
@@ -114,6 +120,7 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily" )]
 		internal static AbstractExplorerNode CreateNode( 
 			TreeView treeView, 
 			ITestItem item )

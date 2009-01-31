@@ -24,12 +24,12 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 0, item.Ordinal );
 			Assert.AreEqual( "foo", item.Name );
 
-			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemRemoved += delegate( object sender, TestItemEventArgs e )
 			{
 				Assert.Fail( "Should not be called " );
 			};
 
-			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemAdded += delegate( object sender, TestItemEventArgs e )
 			{
 				Assert.Fail( "Should not be called " );
 			};
@@ -61,12 +61,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemRemoved += delegate( object sender, TestItemEventArgs e )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemAdded += delegate( object sender, TestItemEventArgs e )
 			{
 				additions++;
 			};
@@ -124,12 +124,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemRemoved += delegate( object sender, TestItemEventArgs e )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemAdded += delegate( object sender, TestItemEventArgs e )
 			{
 				additions++;
 			};
@@ -170,12 +170,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemRemoved += delegate( object sender, TestItemEventArgs e )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemAdded += delegate( object sender, TestItemEventArgs e )
 			{
 				additions++;
 			};
@@ -233,12 +233,12 @@ namespace Cfix.Control.Test
 			int deletions = 0;
 			int additions = 0;
 
-			mod.ItemRemoved += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemRemoved += delegate( object sender, TestItemEventArgs e )
 			{
 				deletions++;
 			};
 
-			mod.ItemAdded += delegate( ITestItemCollection sender, ITestItem it )
+			mod.ItemAdded += delegate( object sender, TestItemEventArgs e )
 			{
 				additions++;
 			};
