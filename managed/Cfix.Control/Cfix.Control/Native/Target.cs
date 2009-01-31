@@ -55,6 +55,11 @@ namespace Cfix.Control.Native
 		{
 			Debug.Assert( agent != null );
 
+			if ( agent == null )
+			{
+				throw new ArgumentException( "null", "agent" );
+			}
+
 			this.agent = agent;
 			this.arch = arch;
 			this.flags = flags;
@@ -152,6 +157,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)" )]
 		public String ResolveMessage( int code )
 		{
 			try

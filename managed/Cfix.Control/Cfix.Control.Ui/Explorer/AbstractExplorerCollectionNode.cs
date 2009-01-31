@@ -43,9 +43,9 @@ namespace Cfix.Control.Ui.Explorer
 			this.testItemCollection = testItemCollection;
 		}
 
-		public ITestItemCollection ItemCollection
-		{
-			get { return this.testItemCollection; }
-		}
+		//public ITestItemCollection ItemCollection
+		//{
+		//    get { return this.testItemCollection; }
+		//}
 	}
 }

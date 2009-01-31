@@ -61,6 +61,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.InvalidOperationException.#ctor(System.String)" )]
 		public void Stop()
 		{
 			if ( ! this.started )

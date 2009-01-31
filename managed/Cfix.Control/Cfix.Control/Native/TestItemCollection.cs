@@ -6,6 +6,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
 	public class TestItemCollection : TestItem, ITestItemCollection
 	{
 		/// <summary>

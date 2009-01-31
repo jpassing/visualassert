@@ -7,6 +7,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
 	public class TestModuleCollection : 
 		GenericTestItemCollection, IAbortableTestItemCollection
 	{
@@ -26,8 +27,8 @@ namespace Cfix.Control.Native
 
 		private readonly Object loadLock = new Object();
 
-		private bool currentLoadAborted = false;
-		private Loader currentLoader = null;
+		private bool currentLoadAborted;
+		private Loader currentLoader;
 
 		public interface ISearchListener
 		{
@@ -47,7 +48,7 @@ namespace Cfix.Control.Native
 			private readonly Stack<TestModuleCollection> collectionStack =
 				new Stack<TestModuleCollection>();
 
-			private bool abort = false;
+			private bool abort;
 			private bool firstCallback = true;
 
 			public Loader(
@@ -103,6 +104,7 @@ namespace Cfix.Control.Native
 				}
 			}
 
+			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 			public void FoundModule(
 				String path, 
 				CfixTestModuleType type,

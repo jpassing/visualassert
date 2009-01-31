@@ -33,6 +33,11 @@ namespace Cfix.Control.Native
 
 		public void AddArchitecture( Target target )
 		{
+			if ( target == null )
+			{
+				throw new ArgumentException( "null", "target" );
+			}
+
 			Architecture arch = target.Architecture;
 			Debug.Assert( this.targets[ ( int ) arch ] == null );
 			this.targets[ ( int ) arch ] = target;

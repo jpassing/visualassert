@@ -46,6 +46,11 @@ namespace Cfix.Control.Native
 			this.name = item.GetName();
 		}
 
+		~TestItem()
+		{
+			Dispose( false );
+		}
+
 		internal virtual TestModule Module
 		{
 			get
@@ -131,8 +136,14 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		protected virtual void Dispose( bool disposing )
+		{
+		}
+
 		public void Dispose()
 		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
 		}
 	}
 }

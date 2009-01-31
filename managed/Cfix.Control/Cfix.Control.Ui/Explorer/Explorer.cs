@@ -39,6 +39,7 @@ namespace Cfix.Control.Ui.Explorer
 		//
 		private RundownLock rundownLock = new RundownLock();
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1713:EventsShouldNotHaveBeforeOrAfterPrefix" )]
 		public event EventHandler< ExplorerNodeEventArgs > AfterSelected;
 
 		/*----------------------------------------------------------------------

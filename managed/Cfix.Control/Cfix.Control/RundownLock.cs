@@ -11,7 +11,7 @@ namespace Cfix.Control
 	public class RundownLock
 	{
 		private readonly Object rundownCondVar = new Object();
-		private int referenceCount = 0;
+		private int referenceCount;
 
 		public void Acquire()
 		{

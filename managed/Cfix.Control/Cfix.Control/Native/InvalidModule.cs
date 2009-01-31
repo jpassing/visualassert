@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cfix.Control.Native
 {
-	public class InvalidModule : ITestItem
+	public sealed class InvalidModule : ITestItem
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
@@ -50,7 +50,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public virtual ITestItemCollection Parent
+		public ITestItemCollection Parent
 		{
 			get
 			{
