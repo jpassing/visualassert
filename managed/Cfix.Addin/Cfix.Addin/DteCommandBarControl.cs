@@ -12,9 +12,6 @@ namespace Cfix.Addin
 {
 	internal abstract class DteCommandBarControl
 	{
-		protected readonly String name;
-		protected readonly String caption;
-
 		protected readonly DteConnect connect;
 
 		protected readonly CommandBarControl control = null;
@@ -46,11 +43,6 @@ namespace Cfix.Addin
 
 		public virtual void Delete()
 		{
-			foreach( DteCommand item in this.commands )
-			{
-				item.Delete();
-			}
-
 			if ( this.control != null )
 			{
 				try

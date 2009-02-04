@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Drawing;
 using System.Reflection;
 using System.Resources;
 using Extensibility;
@@ -87,10 +88,23 @@ namespace Cfix.Addin
 		 * Public.
 		 */
 
-		public void Add( DteCommand item )
+		public void Add( 
+			DteCommand item, 
+			int ordinal, 
+			Image icon, 
+			Image maskIcon 
+			)
 		{
-			// TODO: ordinal.
-			item.Command.AddControl( this.popup.CommandBar, 1 );
+			CommandBarButton buttonCtl = ( CommandBarButton ) 
+				item.Command.AddControl(
+					this.popup.CommandBar, 
+					ordinal );
+
+			//
+			// N.B. See KB555417 for details on icon handling.
+			//
+			buttonCtl.Picture = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( icon );
+			buttonCtl.Mask = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( maskIcon );
 			this.commands.Add( item );
 		}
 

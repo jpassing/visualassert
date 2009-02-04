@@ -117,6 +117,12 @@ namespace Cfix.Addin
 		public void Delete()
 		{
 			this.connect.UnregisterCommand( this.name );
+
+			//
+			// XXX:# Do not delete the command
+			// (this.command.Delete();) as this would destroy
+			// keybindings.
+			//
 			this.command.Delete();
 		}
 

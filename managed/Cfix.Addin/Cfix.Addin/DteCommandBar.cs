@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
@@ -12,7 +13,6 @@ namespace Cfix.Addin
 {
 	internal class DteCommandBar
 	{
-		protected readonly String name;
 		protected readonly DteConnect connect;
 		private readonly CommandBar control;
 
@@ -74,37 +74,30 @@ namespace Cfix.Addin
 			get { return this.control; }
 		}
 
-		public CommandBarButton Add( DteCommand cmd )
-		{
-			// TODO: position.
-			return ( CommandBarButton ) cmd.Command.AddControl( this.control, 1 );
-		}
-
-		public DteCommandBarControl AddButton( DteCommand cmd )
+		public DteCommandBarControl AddButton( 
+			DteCommand cmd, 
+			int ordinal, 
+			Image icon, 
+			Image maskIcon,
+			MsoButtonStyle style
+			)
 		{
 			CommandBarButton buttonCtl =
-				( CommandBarButton ) cmd.Command.AddControl( this.control, 1 );
+				( CommandBarButton ) cmd.Command.AddControl( this.control, ordinal );
 
+			//
+			// N.B. See KB555417 for details on icon handling.
+			//
+			buttonCtl.Picture = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( icon );
+			buttonCtl.Mask = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( maskIcon );
+			buttonCtl.Style = style;
 			DteCommandBarButton button = new DteCommandBarButton(
-				this.connect, buttonCtl, cmd );
+				this.connect, 
+				buttonCtl, 
+				cmd );
 			this.controls.Add( button );
 
 			return button;
 		}
-		
-		//public DteCommandBarButton AddButton(
-		//    String name,
-		//    String caption
-		//    )
-		//{
-		//    DteCommand cmd = new DteCommand(
-		//        this.connect, name, caption );
-
-		//    // TODO: position.
-		//    CommandBarButton button = ( CommandBarButton )
-		//        cmd.Command.AddControl( this.control, 1 );
-
-		//    return new DteCommandBarButton( button );
-		//}
 	}
 }
