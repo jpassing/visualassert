@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using EnvDTE;
 using EnvDTE80;
 
@@ -22,7 +23,8 @@ namespace Cfix.Addin
 			DteConnect connect,
 			String caption,
 			Guid positionGuid,
-			Type userControlType
+			Type userControlType,
+			Image tabIcon
 			)
 		{
 			Windows2 win = ( Windows2 ) connect.DTE.Windows;
@@ -35,7 +37,9 @@ namespace Cfix.Addin
 				caption,
 				"{" + positionGuid.ToString() + "}",
 				ref userControl );
-
+			toolWin.SetTabPicture(
+				IconUtil.GetIPictureDispFromImage( tabIcon ) );
+			
 			return new DteToolWindow( toolWin, userControl );
 		}
 
