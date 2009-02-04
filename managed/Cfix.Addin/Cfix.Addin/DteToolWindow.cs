@@ -9,14 +9,46 @@ namespace Cfix.Addin
 	{
 		private Window window;
 		private Object userControl;
+		private WindowEvents events;
+
+		public delegate void WindowClosingDelegate();
+		public event WindowClosingDelegate WindowClosing;
+
+		private void WindowCreatedEvent( Window affectedWnd )
+		{ }
+
+		private void WindowActivateEvent( Window gotFocus, Window lostFocus )
+		{ }
+
+		private void WindowMovedEvent( Window window, int top, int left, int width, int height )
+		{ }
+		
+		private void WindowClosingEvent( Window affectedWnd )
+		{
+			if ( ReferenceEquals( this.window, affectedWnd ) )
+			{
+				if ( WindowClosing != null )
+				{
+					WindowClosing();
+				}
+			}
+		}
 
 		private DteToolWindow(
+			DteConnect connect,
 			Window window,
 			Object userControl
 			)
 		{
 			this.window = window;
 			this.userControl = userControl;
+
+			this.events = connect.Events.get_WindowEvents( null );
+
+			this.events.WindowClosing += WindowClosingEvent;
+			this.events.WindowActivated += WindowActivateEvent;
+			this.events.WindowCreated += WindowCreatedEvent;
+			this.events.WindowMoved += WindowMovedEvent;
 		}
 
 		public static DteToolWindow Create(
@@ -30,17 +62,17 @@ namespace Cfix.Addin
 			Windows2 win = ( Windows2 ) connect.DTE.Windows;
 			object userControl = null;
 
-			Window toolWin = win.CreateToolWindow2(
+			Window wnd = win.CreateToolWindow2(
 				connect.Addin,
 				userControlType.Assembly.Location,
 				userControlType.FullName,
 				caption,
 				"{" + positionGuid.ToString() + "}",
 				ref userControl );
-			toolWin.SetTabPicture(
+			wnd.SetTabPicture(
 				IconUtil.GetIPictureDispFromImage( tabIcon ) );
-			
-			return new DteToolWindow( toolWin, userControl );
+
+			return new DteToolWindow( connect, wnd, userControl ); ;
 		}
 
 		public Window Window

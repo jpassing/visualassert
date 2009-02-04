@@ -60,6 +60,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="DteCommandBar.cs" />
     <Compile Include="DteCommandBarButton.cs" />
     <Compile Include="DteCommandBarControl.cs" />
@@ -71,6 +72,11 @@
     </Compile>
     <Compile Include="DteMainMenu.cs" />
     <Compile Include="DteToolWindow.cs" />
+    <Compile Include="Icons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Icons.resx</DependentUpon>
+    </Compile>
     <Compile Include="SampleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -84,6 +90,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Icons.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SampleControl.resx">
       <SubType>Designer</SubType>
@@ -126,11 +134,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Results.bmp" />
+    <None Include="Icons\ExplorerMask.bmp" />
+    <None Include="Icons\Explorer.bmp" />
+    <None Include="Icons\ResultsMask.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>
-    <PreBuildEvent>md $(OutDir)\Icons
-copy /Y $(ProjectDir)\Icons $(OutDir)\Icons</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
