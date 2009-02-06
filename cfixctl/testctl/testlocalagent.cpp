@@ -23,6 +23,38 @@
 
 #include <testctlp.h>
 
+static DWORD LaunchHostAndWait( 
+	PCWSTR HostPath,
+	PWSTR CommandLine )
+{
+	PROCESS_INFORMATION ProcessInfo;
+	STARTUPINFO StartupInfo;
+	ZeroMemory( &StartupInfo, sizeof( STARTUPINFO ) );
+	StartupInfo.cb = sizeof( STARTUPINFO );
+
+	CFIX_ASSERT( CreateProcess(
+		HostPath,
+		CommandLine,
+		NULL,
+		NULL,
+		FALSE,
+		0,
+		NULL,
+		NULL,
+		&StartupInfo,
+		&ProcessInfo ) );
+	CFIXCC_ASSERT_EQUALS( WAIT_OBJECT_0, WaitForSingleObject(
+		ProcessInfo.hProcess, INFINITE ) );
+
+	DWORD ExitCode;
+	CFIX_ASSERT( GetExitCodeProcess( ProcessInfo.hProcess, &ExitCode ) );
+
+	CloseHandle( ProcessInfo.hThread );
+	CloseHandle( ProcessInfo.hProcess );
+
+	return ExitCode;
+}
+
 class TestLocalAgent : public cfixcc::TestFixture
 {
 private:
@@ -272,6 +304,92 @@ public:
 		Resolver->Release();
 		Agent->Release();
 	}
+
+	void SpawnWithoutMoniker()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIXCC_ASSERT( Agent );
+		__assume( Agent );
+
+		BSTR HostPath = NULL;
+		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+			CFIXCTL_OWN_ARCHITECTURE,
+			&HostPath ) );
+		CFIXCC_ASSERT( HostPath );
+
+		CFIX_ASSERT( GetFileAttributes( HostPath ) != INVALID_FILE_ATTRIBUTES );
+
+		Agent->Release();
+
+		//
+		// Missing moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			E_INVALIDARG,
+			( HRESULT ) LaunchHostAndWait(
+				HostPath,
+				L"" ) );
+
+		SysFreeString( HostPath );
+	}
+
+	void SpawnWithWrongMoniker()
+	{
+		ICfixAgent *Agent;
+		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIXCC_ASSERT( Agent );
+		__assume( Agent );
+
+		BSTR HostPath = NULL;
+		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+			CFIXCTL_OWN_ARCHITECTURE,
+			&HostPath ) );
+		CFIXCC_ASSERT( HostPath );
+
+		CFIX_ASSERT( GetFileAttributes( HostPath ) != INVALID_FILE_ATTRIBUTES );
+
+		Agent->Release();
+
+		
+		//
+		// Create moniker to agentfactory rather than to agent.
+		//
+
+		IMoniker *AgentMk = NULL;
+		CFIXCC_ASSERT_OK( CreateObjrefMoniker( AgentFactory, &AgentMk ) );
+		
+		IBindCtx *BindCtx = NULL;
+		CFIXCC_ASSERT_OK( CreateBindCtx( 0, &BindCtx ) );
+		
+		LPOLESTR DisplayName = NULL;
+		CFIXCC_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
+
+		SIZE_T CmdLineLen = wcslen( DisplayName ) * sizeof( WCHAR ) + 32;
+		PWSTR CmdLine = new WCHAR[ CmdLineLen ];
+		CFIXCC_ASSERT_OK( StringCchPrintf( 
+			CmdLine,
+			CmdLineLen,
+			L"cfixhost %s",
+			DisplayName ) );
+
+		//
+		// Missing moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			E_NOINTERFACE,
+			( HRESULT ) LaunchHostAndWait(
+				HostPath,
+				CmdLine ) );
+
+		delete [] CmdLine;
+		SysFreeString( HostPath );
+		CoTaskMemFree( DisplayName );
+		AgentMk->Release();
+		BindCtx->Release();
+	}
 };
 
 COM_EXPORTS TestLocalAgent::Exports;
@@ -283,4 +401,6 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( SpawnSameArch )
 	CFIXCC_METHOD( SpawnAllArchs )
 	CFIXCC_METHOD( ResolveMessage )
+	CFIXCC_METHOD( SpawnWithoutMoniker )
+	CFIXCC_METHOD( SpawnWithWrongMoniker )
 CFIXCC_END_CLASS()

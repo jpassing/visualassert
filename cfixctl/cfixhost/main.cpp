@@ -127,11 +127,6 @@ int wWinMain(
 
 	if ( ! CmdLine || wcslen( CmdLine ) == 0 )
 	{
-		MessageBox( 
-			NULL, 
-			L"Expected OBJREF moniker",
-			L"CfixHost",
-			MB_OK | MB_ICONERROR );
 		return E_INVALIDARG;
 	}
 
@@ -170,11 +165,14 @@ int wWinMain(
 	//
 	( VOID ) WaitForSingleObject( CfixhostsShutdownEvent, INFINITE );
 
+	Hr = S_OK;
+
 Cleanup:
 	//
 	// Shutdown.
 	//
 	CloseHandle( CfixhostsShutdownEvent );
 	CoUninitialize();
-	return S_OK;
+	
+	return Hr;
 }
