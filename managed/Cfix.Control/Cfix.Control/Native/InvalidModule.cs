@@ -10,6 +10,10 @@ namespace Cfix.Control.Native
 		private readonly String name;
 		private Exception invalidityCause;
 
+		private bool disposed;
+
+		public event EventHandler Disposed;
+
 		/*--------------------------------------------------------------
 		 * Publics.
 		 */
@@ -33,6 +37,11 @@ namespace Cfix.Control.Native
 		/*--------------------------------------------------------------
 		 * ITestItem.
 		 */
+
+		public bool IsDisposed
+		{
+			get { return this.disposed; }
+		}
 
 		public String Name
 		{
@@ -65,6 +74,15 @@ namespace Cfix.Control.Native
 
 		public void Dispose()
 		{
+			if ( ! this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
+			}
 		}
 	}
 }

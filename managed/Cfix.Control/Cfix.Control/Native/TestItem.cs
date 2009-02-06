@@ -10,6 +10,10 @@ namespace Cfix.Control.Native
 		private readonly uint ordinal;
 		private readonly String name;
 
+		private bool disposed;
+
+		public event EventHandler Disposed;
+
 		internal static ITestItem Wrap(
 			TestItemCollection parent,
 			uint ordinal,
@@ -62,6 +66,11 @@ namespace Cfix.Control.Native
 		/*--------------------------------------------------------------
 		 * ITestItem.
 		 */
+
+		public bool IsDisposed
+		{
+			get { return this.disposed; }
+		}
 
 		public virtual ICfixTestItem NativeItem
 		{
@@ -138,6 +147,15 @@ namespace Cfix.Control.Native
 
 		protected virtual void Dispose( bool disposing )
 		{
+			if ( ! this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
+			}
 		}
 
 		public void Dispose()

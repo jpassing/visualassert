@@ -16,6 +16,10 @@ namespace Cfix.Control
 		private readonly Object listLock = new Object();
 		private readonly List<ITestItem> list = new List<ITestItem>();
 
+		private bool disposed;
+
+		public event EventHandler Disposed;
+
 		public GenericTestItemCollection( ITestItemCollection parent, String name )
 		{
 			this.parent = parent;
@@ -98,6 +102,11 @@ namespace Cfix.Control
 		/*--------------------------------------------------------------
 		 * ITestItem.
 		 */
+
+		public bool IsDisposed
+		{
+			get { return this.disposed; }
+		}
 
 		public String Name 
 		{
@@ -200,6 +209,16 @@ namespace Cfix.Control
 				{
 					item.Dispose();
 				}
+			}
+
+			if ( ! this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
 			}
 		}
 
