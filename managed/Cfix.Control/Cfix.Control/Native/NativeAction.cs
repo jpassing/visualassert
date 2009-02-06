@@ -23,6 +23,14 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public uint TestCaseCount
+		{
+			get
+			{
+				return this.action.GetTestCaseCount();
+			}
+		}
+
 		public void Run( ICfixEventSink sink )
 		{
 			try

@@ -11,6 +11,7 @@ namespace Cfix.Control
 	public interface IAction : IDisposable
 	{
 		ITestItem TestItem { get; }
+		uint TestCaseCount { get; }
 		void Run( ICfixEventSink sink );
 		void Stop();
 	}

@@ -453,6 +453,10 @@ void RunFixturesFromTestlib10()
 			CFIXCC_ASSERT_OK( Hr );
 		}
 
+		ULONG TestCases;
+		CFIXCC_ASSERT_OK( ModuleAction->GetTestCaseCount( &TestCases ) );
+		CFIXCC_ASSERT_EQUALS( 2UL, TestCases );
+
 		ModuleAction->Release();
 
 		if ( Flags == 0 )

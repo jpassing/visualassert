@@ -173,6 +173,15 @@ library Cfixctl
 				Any failure HRESULT.
 		--*/
 		HRESULT Stop();
+
+		/*++
+			Method Description:
+				Count the number of testcases that will be run
+				as part of this action.
+		--*/
+		HRESULT GetTestCaseCount(
+			[out, retval] ULONG *Count 
+			);
 	}
 
 	[

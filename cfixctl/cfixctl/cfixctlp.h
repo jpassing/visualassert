@@ -196,7 +196,8 @@ ICfixExecutionActionInternal : public ICfixAction
 {
 	STDMETHOD( Initialize )(
 		__in ICfixTestModule *Module,
-		__in PCFIX_ACTION Action
+		__in PCFIX_ACTION Action,
+		__in ULONG TestCaseCount
 		) PURE;
 };
 

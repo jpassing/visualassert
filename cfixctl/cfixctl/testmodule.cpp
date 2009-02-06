@@ -226,11 +226,13 @@ IClassFactory& CfixctlpGetTestModuleFactory()
 static HRESULT CfixctlsCreateModuleExecutionAction(
 	__in PCFIX_TEST_MODULE Module,
 	__in ULONG Flags,
-	__out PCFIX_ACTION *Action
+	__out PCFIX_ACTION *Action,
+	__out PULONG TestCaseCount
 	)
 {
 	ASSERT( Module );
 	ASSERT( Action );
+	ASSERT( TestCaseCount );
 
 	PCFIX_ACTION SeqAction = NULL;
 	HRESULT Hr;
@@ -240,6 +242,8 @@ static HRESULT CfixctlsCreateModuleExecutionAction(
 	{
 		return Hr;
 	}
+
+	*TestCaseCount = 0;
 
 	for ( ULONG Index = 0; Index < Module->FixtureCount; Index++ )
 	{
@@ -261,6 +265,8 @@ static HRESULT CfixctlsCreateModuleExecutionAction(
 		{
 			break;
 		}
+
+		( *TestCaseCount ) += Module->Fixtures[ Index ]->TestCaseCount;
 	}
 
 	if ( SUCCEEDED( Hr ) )
@@ -660,13 +666,20 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 	PCFIX_ACTION ExecAction = NULL;
 	ICfixExecutionActionInternal *ActionObject = NULL;
 	HRESULT Hr;
+	ULONG TestCaseCount;
 
 	if ( FixtureOrdinal == CFIXCTL_EXECUTE_ALL )
 	{
 		Hr = CfixctlsCreateModuleExecutionAction(
 			this->Module,
 			SchedulingFlags,
-			&ExecAction );
+			&ExecAction,
+			&TestCaseCount );
+
+		if ( FAILED( Hr ) )
+		{
+			goto Cleanup;
+		}
 	}
 	else
 	{
@@ -674,11 +687,13 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 			this->Module->Fixtures[ FixtureOrdinal ],
 			SchedulingFlags,
 			&ExecAction );
-	}
 
-	if ( FAILED( Hr ) )
-	{
-		goto Cleanup;
+		if ( FAILED( Hr ) )
+		{
+			goto Cleanup;
+		}
+
+		TestCaseCount = this->Module->Fixtures[ FixtureOrdinal ]->TestCaseCount;
 	}
 
 	//
@@ -695,7 +710,8 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 
 	Hr = ActionObject->Initialize(
 		static_cast< ICfixTestModule* >( this ),
-		ExecAction );
+		ExecAction,
+		TestCaseCount );
 	if ( FAILED( Hr ) )
 	{
 		goto Cleanup;

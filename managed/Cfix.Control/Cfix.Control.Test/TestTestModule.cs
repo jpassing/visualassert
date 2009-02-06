@@ -77,7 +77,10 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 0, fixture.ItemCount );
 
 			DefaultEventSink sink = new DefaultEventSink();
-			mod.CreateAction( SchedulingOptions.None ).Run( sink );
+			IAction action = mod.CreateAction( SchedulingOptions.None );
+			Assert.AreEqual( 0, action.TestCaseCount );
+			
+			action.Run( sink );
 
 			Assert.AreEqual( 1, sink.FixtureStarts );
 			Assert.AreEqual( 1, sink.FixtureFinishs );

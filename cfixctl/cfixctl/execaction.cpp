@@ -42,6 +42,7 @@ class ExecutionAction :
 private:
 	ICfixTestModule *Module;
 	PCFIX_ACTION Action;
+	ULONG TestCaseCount;
 	
 	//
 	// When a run is active, CurrentAdapter (guarded by
@@ -78,13 +79,18 @@ public:
 
 	STDMETHOD( Stop )();
 
+	STDMETHOD( GetTestCaseCount )(
+		__out ULONG* Count 
+		);
+
 	/*------------------------------------------------------------------
 	 * ICfixExecutionActionInternal methods.
 	 */
 
 	STDMETHOD( Initialize )(
 		__in ICfixTestModule *Module,
-		__in PCFIX_ACTION Action
+		__in PCFIX_ACTION Action,
+		__in ULONG TestCaseCount
 		);
 };
 
@@ -111,6 +117,7 @@ ExecutionAction::ExecutionAction()
 	: Module( NULL )
 	, Action( NULL )
 	, CurrentAdapter( NULL )
+	, TestCaseCount( 0 )
 {
 	InitializeCriticalSection( &this->CurrentAdapterLock );
 }
@@ -264,13 +271,29 @@ STDMETHODIMP ExecutionAction::Stop()
 	return Hr;
 }
 
+STDMETHODIMP ExecutionAction::GetTestCaseCount(
+	__out ULONG* Count 
+	)
+{
+	if ( ! Count )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Count = this->TestCaseCount;
+		return S_OK;
+	}
+}
+
 /*----------------------------------------------------------------------
  * ICfixExecutionActionInternal methods.
  */
 
 STDMETHODIMP ExecutionAction::Initialize(
 	__in ICfixTestModule *Module,
-	__in PCFIX_ACTION Action
+	__in PCFIX_ACTION Action,
+	__in ULONG TestCaseCount
 	)
 {
 	if ( ! Module || ! Action )
@@ -288,6 +311,7 @@ STDMETHODIMP ExecutionAction::Initialize(
 
 	this->Module			= Module;
 	this->Action			= Action;
+	this->TestCaseCount		= TestCaseCount;
 
 	return S_OK;
 }
