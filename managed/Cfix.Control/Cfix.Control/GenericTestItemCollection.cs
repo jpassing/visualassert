@@ -124,18 +124,18 @@ namespace Cfix.Control
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions flags )
+		public IAction CreateAction( SchedulingOptions schedulingOptions )
 		{
 			IList<IAction> actions = new List<IAction>();
 			lock ( this.listLock )
 			{
 				foreach ( ITestItem item in this.list )
 				{
-					actions.Add( item.CreateAction( flags ) );
+					actions.Add( item.CreateAction( schedulingOptions ) );
 				}
 			}
 
-			return new SequenceAction( this, actions );
+			return new SequenceAction( actions );
 		}
 
 		public ITestItemCollection Parent
@@ -152,6 +152,24 @@ namespace Cfix.Control
 
 		public event EventHandler< TestItemEventArgs > ItemAdded;
 		public event EventHandler< TestItemEventArgs > ItemRemoved;
+
+		public void CreateAction(
+			ICompositeAction actionToComposeWith,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.CreateAction(
+						actionToComposeWith,
+						schedulingOptions,
+						compositionOptions );
+				}
+			}
+		}
 
 		public ITestItem GetItem( uint ordinal )
 		{

@@ -4,7 +4,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	internal class NativeAction : IAction
+	internal class NativeAction : IComponentAction
 	{
 		private TestItem item;
 		private ICfixAction action;
@@ -28,6 +28,14 @@ namespace Cfix.Control.Native
 			get
 			{
 				return this.action.GetTestCaseCount();
+			}
+		}
+
+		public Architecture Architecture
+		{
+			get
+			{
+				return this.item.Module.Architecture;
 			}
 		}
 

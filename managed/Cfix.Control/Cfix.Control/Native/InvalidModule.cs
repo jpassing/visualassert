@@ -72,6 +72,15 @@ namespace Cfix.Control.Native
 			throw new CfixException( "Invalid" );
 		}
 
+		public void CreateAction(
+			ICompositeAction actionToComposeWith,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
+		{
+			throw new CfixException( "Invalid" );
+		}
+
 		public void Dispose()
 		{
 			if ( ! this.disposed )

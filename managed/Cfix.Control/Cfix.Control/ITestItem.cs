@@ -2,7 +2,23 @@ using System;
 
 namespace Cfix.Control
 {
-    public interface ITestItem : IDisposable
+	[Flags]
+	public enum SchedulingOptions
+	{
+		None = 0
+	}
+
+	[Flags]
+	public enum CompositionOptions
+	{
+		//
+		// Prefer fine-grained components i.o. to allow more flexible
+		// scheduling.
+		//
+		FineGrained = 1
+	}
+
+	public interface ITestItem : IDisposable
     {
 		event EventHandler Disposed;
 		bool IsDisposed { get; }
@@ -12,6 +28,14 @@ namespace Cfix.Control
 
 		ITestItemCollection Parent { get; }
 
-		IAction CreateAction( SchedulingOptions flags );
+		IAction CreateAction( 
+			SchedulingOptions schedulingOptions 
+			);
+
+		void CreateAction( 
+			ICompositeAction actionToComposeWith,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			);
 	}
 }

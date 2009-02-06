@@ -11,7 +11,6 @@ namespace Cfix.Control
 	/// </summary>
 	internal class SequenceAction : IAction
 	{
-		private readonly ITestItem item;
 		private readonly IList<IAction> actions;
 
 		private volatile bool started = false;
@@ -22,18 +21,9 @@ namespace Cfix.Control
 		private volatile bool stopped = false;
 		private volatile IAction currentAction = null;
 
-		public SequenceAction( ITestItem item, IList<IAction> actions )
+		public SequenceAction( IList<IAction> actions )
 		{
-			this.item = item;
 			this.actions = actions;
-		}
-
-		public ITestItem TestItem 
-		{ 
-			get
-			{
-				return this.item;
-			} 
 		}
 
 		public uint TestCaseCount

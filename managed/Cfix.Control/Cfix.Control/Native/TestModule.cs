@@ -113,6 +113,14 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		internal Architecture Architecture
+		{
+			get
+			{
+				return this.target.Architecture;
+			}
+		}
+
 		public void Update()
 		{
 			if ( this.target == null )

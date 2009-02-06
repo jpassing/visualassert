@@ -36,6 +36,25 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		private NativeAction CreateNativeAction( SchedulingOptions flags )
+		{
+			ICfixTestItem ctlItem = this.NativeItem;
+			try
+			{
+				return new NativeAction(
+					this,
+					ctlItem.CreateExecutionAction( ( uint ) flags, 0 ) );
+			}
+			catch ( COMException x )
+			{
+				throw this.Module.Target.WrapException( x );
+			}
+			finally
+			{
+				this.Module.Target.ReleaseObject( ctlItem );
+			}
+		}
+
 		/*--------------------------------------------------------------
 		 * Publics.
 		 */
@@ -126,23 +145,18 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions flags )
+		public IAction CreateAction( SchedulingOptions schedulingOptions )
 		{
-			ICfixTestItem ctlItem = this.NativeItem;
-			try
-			{
-				return new NativeAction( 
-					this, 
-					ctlItem.CreateExecutionAction( ( uint ) flags, 0 ) );
-			}
-			catch ( COMException x )
-			{
-				throw this.Module.Target.WrapException( x );
-			}
-			finally
-			{
-				this.Module.Target.ReleaseObject( ctlItem );
-			}
+			return CreateNativeAction( schedulingOptions );
+		}
+
+		public virtual void CreateAction( 
+			ICompositeAction actionToComposeWith,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
+		{
+			actionToComposeWith.add( CreateNativeAction( schedulingOptions ) );
 		}
 
 		protected virtual void Dispose( bool disposing )

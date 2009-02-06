@@ -211,8 +211,38 @@ namespace Cfix.Control.Native
 		 * ITestItemContainer.
 		 */
 
-		public event EventHandler< TestItemEventArgs > ItemAdded;
-		public event EventHandler< TestItemEventArgs > ItemRemoved;
+		public event EventHandler<TestItemEventArgs> ItemAdded;
+		public event EventHandler<TestItemEventArgs> ItemRemoved;
+
+		public override void CreateAction(
+			ICompositeAction actionToComposeWith,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
+		{
+			if ( ( compositionOptions & CompositionOptions.FineGrained ) ==
+				 CompositionOptions.FineGrained )
+			{
+				//
+				// Recurse and add items individually - this will result in 
+				// multiple small actions rather than few SequenceActions.
+				//
+				foreach ( ITestItem item in this.subItems )
+				{
+					item.CreateAction(
+						actionToComposeWith,
+						schedulingOptions,
+						compositionOptions );
+				}
+			}
+			else
+			{
+				base.CreateAction( 
+					actionToComposeWith, 
+					schedulingOptions, 
+					compositionOptions );
+			}
+		}
 
 		public ITestItem GetItem( uint ordinal )
 		{
