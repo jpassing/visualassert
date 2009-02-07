@@ -8,6 +8,7 @@ namespace Cfix.Control
 		public event EventHandler<LogEventArgs> Log;
 		public event EventHandler<ThreadEventArgs> ThreadStarted;
 		public event EventHandler<ThreadEventArgs> ThreadFinished;
+		
 		public event EventHandler StatusChanged;
 		public event EventHandler<NotificationEventArgs> Notification;
 

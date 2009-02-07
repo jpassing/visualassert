@@ -13,7 +13,7 @@ namespace Cfix.Control.Native
 		  IResultItemCollection, 
 		  ICfixTestÌtemContainerEventSink
 	{
-		private readonly IRun run;
+		private readonly Run run;
 
 		private IList<IResultItem> subItems;
 		private volatile bool subItemFailed;
@@ -27,23 +27,32 @@ namespace Cfix.Control.Native
 		{
 			Debug.Assert( parent != null );
 			Debug.Assert( item is ITestItemCollection );
-			this.run = parent.Run;
+			Debug.Assert( parent.InternalRun != null );
+
+			this.run = parent.InternalRun;
 		}
 
 		private TestItemCollectionResult(
-			IRun run,
+			Run run,
 			ITestItem item,
 			ExecutionStatus status
 			)
 			: base( null, item, status )
 		{
 			Debug.Assert( item is ITestItemCollection );
+			Debug.Assert( run != null );
+
 			this.run = run;
 		}
 
-		internal void OnItemFailed( AbstractResultItem item )
+		internal void OnItemFailed()
 		{
 			this.subItemFailed = true;
+		}
+
+		internal override Run InternalRun
+		{
+			get { return this.run; }
 		}
 
 		/*----------------------------------------------------------------------
@@ -62,6 +71,16 @@ namespace Cfix.Control.Native
 		public ITestItemCollection ItemCollection
 		{
 			get { return ( ITestItemCollection ) Item; }
+		}
+
+		public uint ItemCount 
+		{
+			get { return ( uint ) this.subItems.Count; }
+		}
+
+		public IResultItem GetItem( uint ordinal )
+		{
+			return this.subItems[ ( int ) ordinal ];
 		}
 
 		/*----------------------------------------------------------------------
@@ -155,7 +174,7 @@ namespace Cfix.Control.Native
 		 */
 
 		private static TestItemCollectionResult CreateResult(
-			IRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItemCollection itemColl,
 			ExecutionStatus status
@@ -163,10 +182,22 @@ namespace Cfix.Control.Native
 		{
 			Debug.Assert( ( run == null ) != ( parent == null ) );
 
-			TestItemCollectionResult result = new TestItemCollectionResult(
-				run,
-				itemColl,
-				status );
+			TestItemCollectionResult result;
+			if ( run != null )
+			{
+				result = new TestItemCollectionResult(
+					run,
+					itemColl,
+					status );
+			}
+			else
+			{
+				result = new TestItemCollectionResult(
+					parent,
+					itemColl,
+					status );
+			}
+
 			IList<IResultItem> children = new List<IResultItem>( 
 				( int ) itemColl.ItemCount );
 
@@ -190,7 +221,7 @@ namespace Cfix.Control.Native
 		}
 
 		internal static TestItemCollectionResult CreateResult(
-			IRun run,
+			Run run,
 			ITestItemCollection itemColl,
 			ExecutionStatus status
 			)

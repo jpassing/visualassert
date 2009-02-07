@@ -11,5 +11,9 @@ namespace Cfix.Control
 		// still available.
 		//
 		ITestItemCollection ItemCollection { get; }
+
+		uint ItemCount { get; }
+		IResultItem GetItem( uint ordinal );
+
 	}
 }

@@ -15,7 +15,7 @@ namespace Cfix.Control.Native
 		private volatile ExecutionStatus status;
 
 		private readonly String itemName;
-		private readonly TestItemCollectionResult parent;
+		protected readonly TestItemCollectionResult parent;
 
 		private readonly Object failuresLock = new Object();
 		private ICollection<Failure> failures;
@@ -65,14 +65,11 @@ namespace Cfix.Control.Native
 				}
 
 				this.failures.Add( failure );
+
+				this.parent.OnItemFailed();
 			}
 		}
-
-		internal Run InternalRun
-		{
-			get { return parent.InternalRun; }
-		}
-
+		
 		public int FailureCount
 		{
 			get
@@ -110,6 +107,9 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		internal abstract Run InternalRun { get; }
+
+
 		/*----------------------------------------------------------------------
 		 * IResultItem.
 		 */
@@ -132,7 +132,14 @@ namespace Cfix.Control.Native
 		public ExecutionStatus Status
 		{
 			get { return this.status; }
-			set { this.status = value; }
+			set 
+			{
+				if ( value != this.status )
+				{
+					this.status = value;
+					this.InternalRun.OnStatusChanged( this );
+				}
+			}
 		}
 
 		public abstract IRun Run { get; }

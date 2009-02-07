@@ -18,6 +18,11 @@ namespace Cfix.Control.Native
 			Debug.Assert( ! ( item is ITestItemCollection ) );
 		}
 
+		internal override Run InternalRun
+		{
+			get { return this.parent.InternalRun; }
+		}
+
 		/*----------------------------------------------------------------------
 		 * IResultItem.
 		 */
