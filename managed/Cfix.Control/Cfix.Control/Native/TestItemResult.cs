@@ -61,9 +61,10 @@ namespace Cfix.Control.Native
 		 * Factory.
 		 */
 
-		internal static TestItemResult CreateTentativeResult( 
+		internal static TestItemResult CreateResult( 
 			TestItemCollectionResult parent,
-			ITestItem item 
+			ITestItem item,
+			ExecutionStatus status
 			)
 		{
 			Debug.Assert( ! ( item is ITestItemCollection ) );
@@ -71,7 +72,7 @@ namespace Cfix.Control.Native
 			return new TestItemResult(
 				parent,
 				item,
-				ExecutionStatus.Pending );
+				status );
 		}
 
 	}

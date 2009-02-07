@@ -5,17 +5,21 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class that may represent a module or a fixture.
+	 --*/
 	internal class TestItemCollectionResult 
-		: AbstractResultItem, IResultItemCollection, ICfixTestÌtemContainerEventSink
+		: AbstractResultItem, 
+		  IResultItemCollection, 
+		  ICfixTestÌtemContainerEventSink
 	{
 		private readonly IRun run;
 
-		private IList<TestItemResult> subItems;
+		private IList<IResultItem> subItems;
 		private volatile bool subItemFailed;
 
 		private TestItemCollectionResult( 
 			TestItemCollectionResult parent,
-			IList<TestItemResult> subItems,
 			ITestItem item,
 			ExecutionStatus status
 			)
@@ -23,20 +27,17 @@ namespace Cfix.Control.Native
 		{
 			Debug.Assert( parent != null );
 			Debug.Assert( item is ITestItemCollection );
-			this.subItems = subItems;
 			this.run = parent.Run;
 		}
 
 		private TestItemCollectionResult(
 			IRun run,
-			IList<TestItemResult> subItems,
 			ITestItem item,
 			ExecutionStatus status
 			)
 			: base( null, item, status )
 		{
 			Debug.Assert( item is ITestItemCollection );
-			this.subItems = subItems;
 			this.run = run;
 		}
 
@@ -51,7 +52,7 @@ namespace Cfix.Control.Native
 
 		public override IRun Run
 		{
-			get { return this.Run; }
+			get { return this.run; }
 		}
 
 		/*----------------------------------------------------------------------
@@ -69,7 +70,7 @@ namespace Cfix.Control.Native
 
 		public IEnumerator<IResultItem> GetEnumerator()
 		{
-			return ( IEnumerator<IResultItem> ) this.subItems.GetEnumerator();
+			return this.subItems.GetEnumerator();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -79,6 +80,8 @@ namespace Cfix.Control.Native
 
 		/*----------------------------------------------------------------------
 		 * ICfixTestÌtemContainerEventSink.
+		 * 
+		 * Only applies if this object represents a fixture.
 		 */
 
 		public void BeforeFixtureStart()
@@ -141,7 +144,58 @@ namespace Cfix.Control.Native
 			uint threadId 
 			)
 		{
-			return this.subItems[ ( int ) testCaseOrdinal ];
+			IResultItem item = this.subItems[ ( int ) testCaseOrdinal ];
+			Debug.Assert( item is TestItemResult );
+
+			return ( ICfixTestÌtemEventSink ) item;
+		}
+
+		/*--------------------------------------------------------------
+		 * Factory.
+		 */
+
+		private static TestItemCollectionResult CreateResult(
+			IRun run,
+			TestItemCollectionResult parent,
+			ITestItemCollection itemColl,
+			ExecutionStatus status
+			)
+		{
+			Debug.Assert( ( run == null ) != ( parent == null ) );
+
+			TestItemCollectionResult result = new TestItemCollectionResult(
+				run,
+				itemColl,
+				status );
+			IList<IResultItem> children = new List<IResultItem>( 
+				( int ) itemColl.ItemCount );
+
+			foreach ( ITestItem item in itemColl )
+			{
+				ITestItemCollection childColl = item as ITestItemCollection;
+				if ( childColl != null )
+				{
+					children.Add( 
+						CreateResult( null, result, childColl, status ) );
+				}
+				else
+				{
+					children.Add( TestItemResult.CreateResult(
+						result, item, status ) );
+				}
+			}
+
+			result.subItems = children;
+			return result;
+		}
+
+		internal static TestItemCollectionResult CreateResult(
+			IRun run,
+			ITestItemCollection itemColl,
+			ExecutionStatus status
+			)
+		{
+			return CreateResult( run, null, itemColl, status );
 		}
 
 	}

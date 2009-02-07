@@ -34,13 +34,30 @@ namespace Cfix.Control
 		}
 	}
 
+	public class NotificationEventArgs : EventArgs
+	{
+		private readonly int hr;
+
+		public NotificationEventArgs( int hr )
+		{
+			this.hr = hr;
+		}
+
+		public int Hresult
+		{
+			get { return hr; }
+		}
+	}
+
 	public interface IRun
 	{
 		event EventHandler<LogEventArgs> Log;
 		event EventHandler<ThreadEventArgs> ThreadStarted;
 		event EventHandler<ThreadEventArgs> ThreadFinished;
 		event EventHandler StatusChanged;
+		event EventHandler<NotificationEventArgs> Notification;
 
-		IResultItemCollection Root { get; }
+		ITestItemCollection RootItem { get; }
+		IResultItemCollection RootResult { get; }
 	}
 }

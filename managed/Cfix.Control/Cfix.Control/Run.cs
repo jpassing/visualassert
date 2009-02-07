@@ -1,20 +1,29 @@
 using System;
+using Cfix.Control.Native;
 
-namespace Cfix.Control.Native
+namespace Cfix.Control
 {
-	internal class Run : IRun
+	public class Run : IRun
 	{
 		public event EventHandler<LogEventArgs> Log;
 		public event EventHandler<ThreadEventArgs> ThreadStarted;
 		public event EventHandler<ThreadEventArgs> ThreadFinished;
 		public event EventHandler StatusChanged;
+		public event EventHandler<NotificationEventArgs> Notification;
 
 		private readonly IDispositionPolicy dispositionPolicy;
-		private readonly IResultItemCollection rootItem;
+		private readonly ITestItemCollection rootItem;
+		private readonly IResultItemCollection rootResult;
 
-		public Run( IDispositionPolicy policy )
+		public Run( 
+			IDispositionPolicy policy,
+			ITestItemCollection rootItem 
+			)
 		{
 			this.dispositionPolicy = policy;
+			this.rootItem = rootItem;
+			this.rootResult = TestItemCollectionResult.CreateResult(
+				this, rootItem, ExecutionStatus.Pending );
 		}
 
 
@@ -22,9 +31,14 @@ namespace Cfix.Control.Native
 		 * IRun.
 		 */
 
-		public IResultItemCollection Root 
+		public ITestItemCollection RootItem 
 		{ 
 			get { return this.rootItem; }
+		}
+
+		public IResultItemCollection RootResult 
+		{
+			get { return this.rootResult; }
 		}
 
 		/*--------------------------------------------------------------
@@ -60,6 +74,14 @@ namespace Cfix.Control.Native
 			if ( StatusChanged != null )
 			{
 				StatusChanged( item, EventArgs.Empty );
+			}
+		}
+
+		internal void OnNotification( IResultItem item, int hr )
+		{
+			if ( Notification != null )
+			{
+				Notification( item, new NotificationEventArgs( hr ) );
 			}
 		}
 

@@ -43,6 +43,7 @@ namespace Cfix.Control.Test
 		{
 			return ( uint ) Children.Count;
 		}
+
 	}
 
 	internal class MockModule : MockContainer, ICfixTestModule

@@ -288,5 +288,16 @@ namespace Cfix.Control.Native
 				ItemRemoved( this, new TestItemEventArgs( item ) );
 			}
 		}
+
+
+		protected override void Dispose( bool disposing )
+		{
+			foreach ( ITestItem item in this.subItems )
+			{
+				item.Dispose();
+			}
+
+			base.Dispose( disposing );
+		}
 	}
 }
