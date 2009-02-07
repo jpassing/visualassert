@@ -156,7 +156,7 @@ namespace Cfix.Control.Native
 			CompositionOptions compositionOptions
 			)
 		{
-			actionToComposeWith.add( CreateNativeAction( schedulingOptions ) );
+			actionToComposeWith.Add( CreateNativeAction( schedulingOptions ) );
 		}
 
 		protected virtual void Dispose( bool disposing )

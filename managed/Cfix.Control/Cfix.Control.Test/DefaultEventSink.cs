@@ -6,8 +6,8 @@ namespace Cfix.Control.Test
 	internal class DefaultEventSink : 
 		ICfixEventSink, 
 		ICfixProcessEventSink,
-		ICfixFixtureEventSink,
-		ICfixTestCaseEventSink
+		ICfixTestÌtemContainerEventSink,
+		ICfixTestÌtemEventSink
 	{
 		public uint Notifications;
 
@@ -29,7 +29,7 @@ namespace Cfix.Control.Test
 			return this;
 		}
 
-		public virtual ICfixFixtureEventSink GetFixtureEventSink(
+		public virtual ICfixTestÌtemContainerEventSink GetTestÌtemContainerEventSink(
 			ICfixTestModule Module,
 			uint FixtureOrdinal
 			)
@@ -84,7 +84,7 @@ namespace Cfix.Control.Test
 			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
 		}
 
-		public virtual ICfixTestCaseEventSink GetTestCaseEventSink( uint TestCaseOrdinal, uint ThreadId )
+		public virtual ICfixTestÌtemEventSink GetTestItemEventSink( uint TestCaseOrdinal, uint ThreadId )
 		{
 			return this;
 		}

@@ -552,7 +552,7 @@ library Cfixctl
 	  version( 1.0 ),
 	  oleautomation
 	]
-	interface ICfixTestCaseEventSink : ICfixReportEventSink
+	interface ICfixTestÌtemEventSink : ICfixReportEventSink
 	{
 		HRESULT BeforeTestCaseStart();
 
@@ -567,7 +567,7 @@ library Cfixctl
 	  version( 1.0 ),
 	  oleautomation
 	]
-	interface ICfixFixtureEventSink : ICfixReportEventSink
+	interface ICfixTestÌtemContainerEventSink : ICfixReportEventSink
 	{
 		HRESULT BeforeFixtureStart();
 
@@ -575,10 +575,10 @@ library Cfixctl
 			[in] BOOL RanToCompletion
 			);
 
-		HRESULT GetTestCaseEventSink(
+		HRESULT GetTestItemEventSink(
 			[in] ULONG TestCaseOrdinal,
 			[in] ULONG ThreadId,
-			[out, retval] ICfixTestCaseEventSink **Sink
+			[out, retval] ICfixTestÌtemEventSink **Sink
 			);
 	}
 
@@ -594,10 +594,10 @@ library Cfixctl
 			[in] HRESULT Hr
 			);
 
-		HRESULT GetFixtureEventSink(
+		HRESULT GetTestÌtemContainerEventSink(
 			[in] ICfixTestModule *Module,
 			[in] ULONG FixtureOrdinal,
-			[out, retval] ICfixFixtureEventSink **Sink
+			[out, retval] ICfixTestÌtemContainerEventSink **Sink
 			);
 	}
 

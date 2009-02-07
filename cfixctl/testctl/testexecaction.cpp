@@ -28,8 +28,8 @@
 #pragma warning( disable: 4100 ) // Unreferenced argument.
 
 class EventSink : 
-	public ICfixTestCaseEventSink,
-	public ICfixFixtureEventSink,
+	public ICfixTestÌtemEventSink,
+	public ICfixTestÌtemContainerEventSink,
 	public ICfixProcessEventSink,
 	public ICfixEventSink
 {
@@ -66,16 +66,16 @@ public:
 		HRESULT Hr;
 
 		if ( InlineIsEqualGUID( Iid, IID_IUnknown ) ||
-			 InlineIsEqualGUID( Iid, IID_ICfixTestCaseEventSink ) )
+			 InlineIsEqualGUID( Iid, IID_ICfixTestÌtemEventSink ) )
 		{
-			*Ptr = static_cast< ICfixTestCaseEventSink* >( this );
+			*Ptr = static_cast< ICfixTestÌtemEventSink* >( this );
 			Hr = S_OK;
 
 			this->AddRef();
 		}
-		else if ( InlineIsEqualGUID( Iid, IID_ICfixFixtureEventSink ) )
+		else if ( InlineIsEqualGUID( Iid, IID_ICfixTestÌtemContainerEventSink ) )
 		{
-			*Ptr = static_cast< ICfixFixtureEventSink* >( this );
+			*Ptr = static_cast< ICfixTestÌtemContainerEventSink* >( this );
 			Hr = S_OK;
 
 			this->AddRef();
@@ -222,7 +222,7 @@ public:
 	}
 
 	/*------------------------------------------------------------------
-	 * ICfixTestCaseEventSink.
+	 * ICfixTestÌtemEventSink.
 	 */
 
 	STDMETHOD( BeforeTestCaseStart )()
@@ -243,7 +243,7 @@ public:
 	}
 
 	/*------------------------------------------------------------------
-	 * ICfixFixtureEventSink.
+	 * ICfixTestÌtemContainerEventSink.
 	 */
 
 	STDMETHOD( BeforeFixtureStart )()
@@ -263,10 +263,10 @@ public:
 		return S_OK;
 	}
 
-	STDMETHOD( GetTestCaseEventSink )(
+	STDMETHOD( GetTestItemEventSink )(
 		__in ULONG TestCaseOrdinal,
 		__in ULONG ThreadId,
-		__out ICfixTestCaseEventSink **Sink
+		__out ICfixTestÌtemEventSink **Sink
 		)
 	{
 		this->AddRef();
@@ -287,10 +287,10 @@ public:
 		return S_OK;
 	}
 
-	STDMETHOD( GetFixtureEventSink )(
+	STDMETHOD( GetTestÌtemContainerEventSink )(
 		__in ICfixTestModule *Module,
 		__in ULONG FixtureOrdinal,
-		__out ICfixFixtureEventSink **Sink
+		__out ICfixTestÌtemContainerEventSink **Sink
 		)
 	{
 		CFIX_ASSERT( Module );

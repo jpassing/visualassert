@@ -46,8 +46,8 @@ typedef struct _CFIXCTLP_EXEC_CONTEXT
 	ICfixTestModule *Module;
 
 	ICfixProcessEventSink *ProcessSink;
-	ICfixFixtureEventSink *FixtureSink;		// May be NULL.
-	ICfixTestCaseEventSink *TestCaseSink;	// May be NULL.
+	ICfixTestÌtemContainerEventSink *FixtureSink;		// May be NULL.
+	ICfixTestÌtemEventSink *TestCaseSink;	// May be NULL.
 
 	volatile BOOL IssueAbort;
 } CFIXCTLP_EXEC_CONTEXT, *PCFIXCTLP_EXEC_CONTEXT;
@@ -323,7 +323,7 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 	//
 	// Obtain new fixture sink.
 	//
-	if ( SUCCEEDED( Context->ProcessSink->GetFixtureEventSink(
+	if ( SUCCEEDED( Context->ProcessSink->GetTestÌtemContainerEventSink(
 		Context->Module,
 		CfixctlsGetFixtureOrdinal( Fixture ),
 		&Context->FixtureSink ) ) )
@@ -362,7 +362,7 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 	//
 	// Obtain new testcase sink.
 	//
-	if ( SUCCEEDED( Context->FixtureSink->GetTestCaseEventSink(
+	if ( SUCCEEDED( Context->FixtureSink->GetTestItemEventSink(
 		CfixctlsGetTestCaseOrdinal( TestCase ),
 		MainThreadId,
 		&Context->TestCaseSink ) ) )

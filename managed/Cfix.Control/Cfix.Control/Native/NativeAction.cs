@@ -15,6 +15,10 @@ namespace Cfix.Control.Native
 			this.action = action;
 		}
 
+		/*----------------------------------------------------------------------
+		 * IComponentAction.
+		 */ 
+
 		public ITestItem TestItem
 		{
 			get

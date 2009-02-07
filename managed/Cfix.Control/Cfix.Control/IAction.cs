@@ -25,6 +25,6 @@ namespace Cfix.Control
 	--*/
 	public interface ICompositeAction : IAction
 	{
-		void add( IComponentAction action );
+		void Add( IComponentAction action );
 	}
 }

@@ -62,12 +62,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Architecture.cs" />
+    <Compile Include="Failure.cs" />
+    <Compile Include="IDispositionPolicy.cs" />
+    <Compile Include="IResultItemCollection.cs" />
+    <Compile Include="Native\AbstractResultItem.cs" />
     <Compile Include="Native\InvalidModule.cs" />
+    <Compile Include="Native\StackTrace.cs" />
+    <Compile Include="Native\TestItemCollectionResult.cs" />
+    <Compile Include="Native\TestItemResult.cs" />
     <Compile Include="Native\TestModuleCollection.cs" />
     <Compile Include="GenericSession.cs" />
     <Compile Include="ITestItemCollection.cs" />
     <Compile Include="Native\MultiTarget.cs" />
     <Compile Include="Native\NativeAction.cs" />
+    <Compile Include="IResultItem.cs" />
+    <Compile Include="ExecutionStatus.cs" />
+    <Compile Include="IRun.cs" />
+    <Compile Include="Native\Run.cs" />
     <Compile Include="RundownLock.cs" />
     <Compile Include="SequenceAction.cs" />
     <Compile Include="GenericTestItemCollection.cs" />
@@ -81,6 +92,8 @@
     <Compile Include="Native\TestItem.cs" />
     <Compile Include="Native\TestItemCollection.cs" />
     <Compile Include="ISession.cs" />
+    <Compile Include="IStackTrace.cs" />
+    <Compile Include="StandardDispositionPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Cfixctl">

@@ -67,7 +67,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions flags )
+		public IAction CreateAction( SchedulingOptions schedulingOptions )
 		{
 			throw new CfixException( "Invalid" );
 		}
