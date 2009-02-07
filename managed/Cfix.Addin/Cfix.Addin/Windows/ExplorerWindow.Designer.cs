@@ -28,36 +28,41 @@ namespace Cfix.Addin.Windows
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
+			this.abortLoadingButton = new System.Windows.Forms.ToolStripButton();
+			this.toolbar.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolbar
 			// 
-			this.toolbar.Location = new System.Drawing.Point( 0, 0 );
+			this.toolbar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.abortLoadingButton} );
+			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
-			this.toolbar.Size = new System.Drawing.Size( 282, 25 );
-			this.toolbar.TabIndex = 0;
-			this.toolbar.Text = "toolStrip1";
 			// 
 			// explorer
 			// 
-			this.explorer.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.explorer.Location = new System.Drawing.Point( 0, 25 );
+			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
-			this.explorer.Size = new System.Drawing.Size( 282, 331 );
-			this.explorer.TabIndex = 1;
+			// 
+			// abortLoadingButton
+			// 
+			this.abortLoadingButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.abortLoadingButton.Image = global::Cfix.Addin.Icons.StopHS;
+			resources.ApplyResources( this.abortLoadingButton, "abortLoadingButton" );
+			this.abortLoadingButton.Name = "abortLoadingButton";
 			// 
 			// ExplorerWindow
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
+			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add( this.explorer );
 			this.Controls.Add( this.toolbar );
 			this.Name = "ExplorerWindow";
-			this.Size = new System.Drawing.Size( 282, 359 );
+			this.toolbar.ResumeLayout( false );
+			this.toolbar.PerformLayout();
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -67,5 +72,6 @@ namespace Cfix.Addin.Windows
 
 		private System.Windows.Forms.ToolStrip toolbar;
 		private Cfix.Control.Ui.Explorer.TestExplorer explorer;
+		private System.Windows.Forms.ToolStripButton abortLoadingButton;
 	}
 }

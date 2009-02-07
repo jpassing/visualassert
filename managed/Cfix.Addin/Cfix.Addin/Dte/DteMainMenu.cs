@@ -22,7 +22,7 @@ namespace Cfix.Addin.Dte
 					new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
 
 				ResourceManager resourceManager = new ResourceManager(
-					"Cfix.Addin.CommandBar", Assembly.GetExecutingAssembly() );
+					"Cfix.Addin.VSStrings", Assembly.GetExecutingAssembly() );
 				String name = resourceManager.GetString( resourceName );
 
 				CommandBar menuBarCommandBar = 

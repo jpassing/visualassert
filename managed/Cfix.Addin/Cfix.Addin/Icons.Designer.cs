@@ -94,5 +94,12 @@ namespace Cfix.Addin {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap StopHS {
+            get {
+                object obj = ResourceManager.GetObject("StopHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

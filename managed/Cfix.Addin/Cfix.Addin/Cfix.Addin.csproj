@@ -60,6 +60,11 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VSStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VSStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Dte\DteCommandBar.cs" />
     <Compile Include="Dte\DteCommandBarButton.cs" />
@@ -78,12 +83,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
-    <Compile Include="SampleControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SampleControl.Designer.cs">
-      <DependentUpon>SampleControl.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ToolWindows.cs" />
     <Compile Include="Windows\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,17 +92,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommandBar.resx">
+    <EmbeddedResource Include="VSStrings.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VSStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Icons.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SampleControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>SampleControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ExplorerWindow.resx">
       <SubType>Designer</SubType>
@@ -145,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\StopHS.bmp" />
+    <None Include="Resources\Stop.bmp" />
     <None Include="Icons\Results.bmp" />
     <None Include="Icons\ExplorerMask.bmp" />
     <None Include="Icons\Explorer.bmp" />

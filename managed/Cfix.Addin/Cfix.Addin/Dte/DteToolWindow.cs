@@ -5,10 +5,10 @@ using EnvDTE80;
 
 namespace Cfix.Addin.Dte
 {
-	internal class DteToolWindow
+	internal class DteToolWindow< ControlT >
 	{
 		private Window window;
-		private Object userControl;
+		private ControlT userControl;
 		private WindowEvents events;
 
 		public delegate void WindowClosingDelegate();
@@ -37,7 +37,7 @@ namespace Cfix.Addin.Dte
 		private DteToolWindow(
 			DteConnect connect,
 			Window window,
-			Object userControl
+			ControlT userControl
 			)
 		{
 			this.window = window;
@@ -51,17 +51,18 @@ namespace Cfix.Addin.Dte
 			this.events.WindowMoved += WindowMovedEvent;
 		}
 
-		public static DteToolWindow Create(
+		public static DteToolWindow<ControlT> Create(
 			DteConnect connect,
 			String caption,
 			Guid positionGuid,
-			Type userControlType,
 			Image tabIcon
 			)
 		{
 			Windows2 win = ( Windows2 ) connect.DTE.Windows;
 			object userControl = null;
 
+			Type userControlType = typeof( ControlT );
+			
 			Window wnd = win.CreateToolWindow2(
 				connect.Addin,
 				userControlType.Assembly.Location,
@@ -72,23 +73,43 @@ namespace Cfix.Addin.Dte
 			wnd.SetTabPicture(
 				IconUtil.GetIPictureDispFromImage( tabIcon ) );
 
-			return new DteToolWindow( connect, wnd, userControl ); ;
+			return new DteToolWindow<ControlT>( 
+				connect, 
+				wnd, 
+				( ControlT ) userControl ); ;
 		}
 
 		public Window Window
 		{
-			get { return window; }
+			get { return this.window; }
 		}
 
 		public Object UserControl
 		{
-			get { return userControl; }
+			get { return this.userControl; }
 		}
 
 		public bool Visible
 		{
 			get { return this.window.Visible; }
 			set { this.window.Visible = value; }
+		}
+
+		public bool ToggleVisibility()
+		{
+			bool newState = !this.window.Visible;
+			this.window.Visible = newState;
+			return newState;
+		}
+
+		public void Activate()
+		{
+			this.window.Activate();
+		}
+
+		public void Close()
+		{
+			this.window.Close( vsSaveChanges.vsSaveChangesYes );
 		}
 	}
 }
