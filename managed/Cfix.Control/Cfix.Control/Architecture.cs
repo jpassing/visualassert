@@ -3,6 +3,7 @@ using Cfixctl;
 
 namespace Cfix.Control
 {
+	[Flags]
 	public enum Architecture
 	{
 		I386 = CfixTestModuleArch.CfixTestModuleArchI386,

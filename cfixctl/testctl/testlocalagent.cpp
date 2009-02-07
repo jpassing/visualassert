@@ -395,10 +395,10 @@ public:
 COM_EXPORTS TestLocalAgent::Exports;
 
 CFIXCC_BEGIN_CLASS( TestLocalAgent )
+	CFIXCC_METHOD( SpawnSameArch )
 	CFIXCC_METHOD( RegisterAndObtainWithoutWaiting )
 	CFIXCC_METHOD( RegisterAndObtainWithWaiting )
 	CFIXCC_METHOD( GetHostPath )
-	CFIXCC_METHOD( SpawnSameArch )
 	CFIXCC_METHOD( SpawnAllArchs )
 	CFIXCC_METHOD( ResolveMessage )
 	CFIXCC_METHOD( SpawnWithoutMoniker )

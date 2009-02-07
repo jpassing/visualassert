@@ -52,9 +52,9 @@ library Cfixctl
 		version( 1.0 )
 	]
 	enum CfixTestModuleArch {
-		CfixTestModuleArchI386		= 0,
-		CfixTestModuleArchAmd64		= 1,
-		CfixTestModuleArchMax		= 1
+		CfixTestModuleArchI386		= 1,
+		CfixTestModuleArchAmd64		= 2,
+		CfixTestModuleArchMax		= 2
 	} CfixTestModuleArch;
 
 	[
@@ -134,14 +134,14 @@ library Cfixctl
 				PathFilter	- Path or filter expression, e.g. c:\*.dll.
 				Flags		- CFIXCTL_SEARCH_FLAG_*.
 				Type		- CfixTestModuleType or -1 to search all.
-				Arch		- CfixTestModuleArch or -1 to search all.
+				Arch		- One or more CfixTestModuleArchs.
 				Callback	- Object to receive events.
 		--*/
 		HRESULT SearchModules(
 			[in] const BSTR PathFilter,
 			[in] ULONG Flags,
 			[in] ULONG Type,
-			[in] ULONG Architecture,
+			[in] ULONG Architectures,
 			[in] ICfixSearchModulesCallback *Callback
 			);
 	}

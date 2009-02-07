@@ -53,6 +53,9 @@
  *
  */
 
+#define CfixcrlpIsValidArch( Arch )										\
+	( ( Arch ) >= CfixTestModuleArchI386 && ( Arch ) <= CfixTestModuleArchMax )
+
 class CfixctlServerLock
 {
 public:

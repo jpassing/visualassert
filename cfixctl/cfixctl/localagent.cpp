@@ -65,6 +65,13 @@ private:
 	RegistrationEntry *Registration;
 	HANDLE NewRegistrationEvent;
 
+	STDMETHOD( WaitForHostConnectionAndProcess )(
+		__in DWORD Cookie,
+		__in ULONG Timeout,
+		__in_opt HANDLE ProcessHandle,
+		__out ICfixHost** Host
+		);
+
 protected:
 	LocalAgent();
 
@@ -550,7 +557,19 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	__out ICfixHost **Result
 	)
 {
-	ASSERT( Result );
+	if ( ! Result )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Result = NULL;
+	}
+
+	if ( ! CfixcrlpIsValidArch( Arch ) )
+	{
+		return E_INVALIDARG;
+	}
 
 	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
 
@@ -581,9 +600,10 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 		//
 		// Wait for it to register and obtain its Host object.
 		//
-		Hr = WaitForHostConnection(
+		Hr = WaitForHostConnectionAndProcess(
 			Cookie,
 			Timeout,
+			ProcessOrJob,
 			&RemoteHost );
 	}
 
@@ -778,9 +798,10 @@ STDMETHODIMP LocalAgent::RegisterHost(
 	return Hr;
 }
 
-STDMETHODIMP LocalAgent::WaitForHostConnection(
+STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 	__in DWORD Cookie,
 	__in ULONG Timeout,
+	__in_opt HANDLE ProcessHandle,
 	__out ICfixHost** Host
 	)
 {
@@ -799,7 +820,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 	}
 
 	HRESULT Hr = E_FAIL;
-	BOOL KeepSpinning = FALSE;
+	BOOL KeepSpinning = TRUE;
 	do
 	{
 		EnterCriticalSection( &this->RegistrationLock );
@@ -825,7 +846,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 
 		LeaveCriticalSection( &this->RegistrationLock );
 
-		if ( *Host == NULL )
+		if ( KeepSpinning && *Host == NULL )
 		{
 			if ( Timeout == 0 )
 			{
@@ -837,13 +858,15 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 				//
 				// Wait for a new registration.
 				//
-				DWORD IndexUnused;
+				DWORD Index;
+				HANDLE WaitObjects[] = { 
+					this->NewRegistrationEvent, ProcessHandle };
 				Hr = CoWaitForMultipleHandles(
-					COWAIT_WAITALL,
+					0,	// Wait any.
 					Timeout,
-					1,
-					&this->NewRegistrationEvent, 
-					&IndexUnused );
+					ProcessHandle == NULL ? 1 : 2,
+					WaitObjects, 
+					&Index );
 				if ( Hr == RPC_S_CALLPENDING  )
 				{
 					return HRESULT_FROM_WIN32( ERROR_TIMEOUT );
@@ -852,12 +875,33 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 				{
 					return Hr;
 				}
-				else
+				else if ( Index == 0 )
 				{
 					//
-					// Search again.
+					// New regsitration - Search again.
 					//
-					KeepSpinning = TRUE;
+				}
+				else if ( Index == 1 )
+				{
+					ASSERT( ProcessHandle );
+
+					//
+					// Process has died. The exit code should be the
+					// failure HRESULT.
+					//
+					DWORD ExitCode;
+					if ( ! GetExitCodeProcess( ProcessHandle, &ExitCode ) )
+					{
+						return CFIXCTL_E_HOST_DIED_PREMATURELY;
+					}
+					else
+					{
+						return ( HRESULT ) ExitCode;
+					}
+				}
+				else
+				{
+					ASSERT( !"Unexpected wait result" );
 				}
 			}
 		}
@@ -866,6 +910,19 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 
 	ASSERT( SUCCEEDED( Hr ) == ( *Host != NULL ) );
 	return Hr;
+}
+
+STDMETHODIMP LocalAgent::WaitForHostConnection(
+	__in DWORD Cookie,
+	__in ULONG Timeout,
+	__out ICfixHost** Host
+	)
+{
+	return WaitForHostConnectionAndProcess(
+		Cookie,
+		Timeout,
+		NULL,
+		Host );
 }
 
 

@@ -195,7 +195,7 @@ namespace Cfix.Control.Native
 						userOnly
 							? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
 							: UInt32.MaxValue,
-						runTargets.GetArchitectureMask(),
+						( uint ) runTargets.GetArchitectures(),
 						this.currentLoader );
 				}
 				catch ( COMException x )

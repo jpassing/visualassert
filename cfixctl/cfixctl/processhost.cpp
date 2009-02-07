@@ -230,7 +230,7 @@ STDMETHODIMP ProcessHost::SearchModules(
 	__in const BSTR PathFilter,
 	__in ULONG Flags,
 	__in ULONG Type,
-	__in ULONG Arch,
+	__in ULONG Archs,
 	__in ICfixSearchModulesCallback *Callback
 	)
 {
@@ -241,7 +241,7 @@ STDMETHODIMP ProcessHost::SearchModules(
 	else
 	{
 		return Host->SearchModules( 
-			PathFilter, Flags, Type, Arch, Callback );
+			PathFilter, Flags, Type, Archs, Callback );
 	}
 }
 

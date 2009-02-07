@@ -11,9 +11,8 @@ namespace Cfix.Control
 	}
 
 	/*++
-		Interface Description:
-			Non-composite action referring to fixtures/testcases
-			of a single module, and thus, of a single architecture.
+	 *	Non-composite action referring to fixtures/testcases
+	 *	of a single module, and thus, of a single architecture.
 	--*/
 	public interface IComponentAction : IAction
 	{
@@ -21,9 +20,8 @@ namespace Cfix.Control
 	}
 
 	/*++
-		Interface Description:
-			Composite containing one or more IComponentAction that may
-			differ in their architecture.
+	 *	Composite containing one or more IComponentAction that may
+	 *	differ in their architecture.
 	--*/
 	public interface ICompositeAction : IAction
 	{

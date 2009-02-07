@@ -100,3 +100,11 @@ SymbolicName	= CFIXCTL_E_HOST_IMAGE_NOT_FOUND
 Language		= English
 The host image could not be located.
 .
+
+MessageId		= 0xB008
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_HOST_DIED_PREMATURELY
+Language		= English
+The host image terminated prematurely and its exit code could not be determined.
+.

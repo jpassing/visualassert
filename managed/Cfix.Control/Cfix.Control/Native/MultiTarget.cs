@@ -61,25 +61,18 @@ namespace Cfix.Control.Native
 			return this.targets[ ( int ) arch ] != null;
 		}
 
-		internal uint GetArchitectureMask()
+		internal Architecture GetArchitectures()
 		{
-			uint mask = 0;
+			Architecture arch = 0;
 			for ( int i = 0; i < this.targets.Length; i++ )
 			{
 				if ( this.targets[ i ] != null )
 				{
-					if ( mask > 0 )
-					{
-						return UInt32.MaxValue;
-					}
-					else
-					{
-						mask = ( uint ) this.targets[ i ].Architecture;
-					}
+					arch |= this.targets[ i ].Architecture;
 				}
 			}
 
-			return mask;
+			return arch;
 		}
 
 	}
