@@ -7,12 +7,10 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.CommandBars;
 
-namespace Cfix.Addin
+namespace Cfix.Addin.Dte
 {
 	internal class DteCommand
 	{
-		public static readonly String CommandPrefix = typeof( DteConnect ).FullName + ".";
-		
 		private readonly String name;
 		private readonly String caption;
 
@@ -53,7 +51,7 @@ namespace Cfix.Addin
 			String name
 			)
 		{
-			name = CommandPrefix + name;
+			name = connect.CommandPrefix + name;
 			foreach ( Command cmd in connect.DTE.Commands )
 			{
 				if ( cmd.Name == name )

@@ -1,6 +1,6 @@
 namespace Cfix.Control.Ui.Explorer
 {
-	partial class Explorer
+	partial class TestExplorer
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -29,7 +29,7 @@ namespace Cfix.Control.Ui.Explorer
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( Explorer ) );
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( TestExplorer ) );
 			this.treeView = new System.Windows.Forms.TreeView();
 			this.imageList = new System.Windows.Forms.ImageList( this.components );
 			this.SuspendLayout();
@@ -59,12 +59,12 @@ namespace Cfix.Control.Ui.Explorer
 			this.imageList.Images.SetKeyName( 4, "VSObject_Method.bmp" );
 			this.imageList.Images.SetKeyName( 5, "VSObject_InvalidAssembly.bmp" );
 			// 
-			// Explorer
+			// TestExplorer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add( this.treeView );
-			this.Name = "Explorer";
+			this.Name = "TestExplorer";
 			this.Size = new System.Drawing.Size( 265, 303 );
 			this.ResumeLayout( false );
 

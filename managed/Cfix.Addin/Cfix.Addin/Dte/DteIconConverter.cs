@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using stdole;
 
-namespace Cfix.Addin
+namespace Cfix.Addin.Dte
 {
 	internal static class IconUtil
 	{

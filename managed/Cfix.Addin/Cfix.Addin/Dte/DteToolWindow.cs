@@ -3,7 +3,7 @@ using System.Drawing;
 using EnvDTE;
 using EnvDTE80;
 
-namespace Cfix.Addin
+namespace Cfix.Addin.Dte
 {
 	internal class DteToolWindow
 	{

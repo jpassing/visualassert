@@ -11,7 +11,7 @@ namespace QuickTest
 {
 	public partial class ExplorerForm : Form
 	{
-		public Explorer Explorer
+		public TestExplorer Explorer
 		{
 			get
 			{
@@ -25,7 +25,7 @@ namespace QuickTest
 
 			this.explorer.AfterSelected += delegate(
 				Object sender,
-				Explorer.ExplorerNodeEventArgs args
+				TestExplorer.ExplorerNodeEventArgs args
 				)
 			{
 				this.currentNodeLabel.Text = args.Item.Name;

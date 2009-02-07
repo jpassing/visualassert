@@ -49,11 +49,12 @@ namespace Cfix.Control
 			)
 			: base( String.Format( "[0x{0:X}]", exceptionCode ), stackTrace )
 		{
+			this.exceptionCode = exceptionCode;
 		}
 
 		public uint ExceptionCode
 		{
-			get { return exceptionCode; }
+			get { return this.exceptionCode; }
 		} 
 
 	}

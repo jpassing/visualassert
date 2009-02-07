@@ -2,3 +2,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", Scope = "member", Target = "Cfix.Control.TestItemContainer.Update(Cfixctl.ICfixTestContainer):System.Void", MessageId = "System.String.Format(System.String,System.Object)" )]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2209:AssembliesShouldDeclareMinimumSecurity" )]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Scope = "member", Target = "Cfix.Control.Native.TestItem.CreateAction(Cfix.Control.ICompositeAction,Cfix.Control.SchedulingOptions,Cfix.Control.CompositionOptions):System.Void" )]

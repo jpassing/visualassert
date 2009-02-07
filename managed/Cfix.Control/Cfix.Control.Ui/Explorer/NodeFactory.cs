@@ -12,8 +12,8 @@ namespace Cfix.Control.Ui.Explorer
 			public TestItemExplorerNode( ITestItem item )
 				: base(
 					item,
-					Explorer.TestItemIconIndex,
-					Explorer.TestItemIconSelectedIndex )
+					TestExplorer.TestItemIconIndex,
+					TestExplorer.TestItemIconSelectedIndex )
 			{
 			}
 		}
@@ -23,8 +23,8 @@ namespace Cfix.Control.Ui.Explorer
 			public InvalidModuleExplorerNode( InvalidModule item )
 				: base(
 					item,
-					Explorer.InvalidModuleIconIndex,
-					Explorer.InvalidModuleIconSelectedIndex )
+					TestExplorer.InvalidModuleIconIndex,
+					TestExplorer.InvalidModuleIconSelectedIndex )
 			{
 				this.ToolTipText = item.InvalidityCause.Message;
 			}
@@ -35,8 +35,8 @@ namespace Cfix.Control.Ui.Explorer
 			public TestItemCollectionExplorerNode( TreeView treeView, ITestItemCollection item )
 				: base(
 					item,
-					Explorer.TestContainerIconIndex,
-					Explorer.TestContainerIconSelectedIndex )
+					TestExplorer.TestContainerIconIndex,
+					TestExplorer.TestContainerIconSelectedIndex )
 			{
 				//
 				// Children always available, so load them.
@@ -50,8 +50,8 @@ namespace Cfix.Control.Ui.Explorer
 			public ModuleExplorerNode( TreeView treeView, TestModule item )
 				: base(
 					item,
-					Explorer.ModuleIconIndex,
-					Explorer.ModuleIconSelectedIndex )
+					TestExplorer.ModuleIconIndex,
+					TestExplorer.ModuleIconSelectedIndex )
 			{
 				//
 				// Children always available, so load them.
@@ -69,8 +69,8 @@ namespace Cfix.Control.Ui.Explorer
 			public GenericTestItemCollectionExplorerNode( TreeView treeView, GenericTestItemCollection item )
 				: base(
 					item,
-					Explorer.ContainerIconIndex,
-					Explorer.ContainerIconIndex )
+					TestExplorer.ContainerIconIndex,
+					TestExplorer.ContainerIconIndex )
 			{
 				//
 				// Children always available, so load them.
@@ -121,14 +121,14 @@ namespace Cfix.Control.Ui.Explorer
 
 			public override void BeforeExpand()
 			{
-				this.ImageIndex = Explorer.ContainerIconExpandedIndex;
-				this.SelectedImageIndex = Explorer.ContainerIconExpandedIndex;
+				this.ImageIndex = TestExplorer.ContainerIconExpandedIndex;
+				this.SelectedImageIndex = TestExplorer.ContainerIconExpandedIndex;
 			}
 
 			public override void AfterCollapse()
 			{
-				this.ImageIndex = Explorer.ContainerIconIndex;
-				this.SelectedImageIndex = Explorer.ContainerIconIndex;
+				this.ImageIndex = TestExplorer.ContainerIconIndex;
+				this.SelectedImageIndex = TestExplorer.ContainerIconIndex;
 			}
 		}
 

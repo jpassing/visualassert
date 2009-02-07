@@ -32,7 +32,7 @@ namespace QuickTest
 			this.refresh = new System.Windows.Forms.Button();
 			this.progressLabel = new System.Windows.Forms.Label();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
-			this.explorer = new Cfix.Control.Ui.Explorer.Explorer();
+			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.currentNodeLabel = new System.Windows.Forms.Label();
 			this.abortBtn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
@@ -113,7 +113,7 @@ namespace QuickTest
 
 		#endregion
 
-		private Cfix.Control.Ui.Explorer.Explorer explorer;
+		private Cfix.Control.Ui.Explorer.TestExplorer explorer;
 		private System.Windows.Forms.Button refresh;
 		private System.Windows.Forms.Label progressLabel;
 		private System.Windows.Forms.Timer timer1;

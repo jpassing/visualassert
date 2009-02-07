@@ -61,17 +61,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration.cs" />
-    <Compile Include="DteCommandBar.cs" />
-    <Compile Include="DteCommandBarButton.cs" />
-    <Compile Include="DteCommandBarControl.cs" />
-    <Compile Include="DteCommand.cs" />
-    <Compile Include="DteConnect.cs">
+    <Compile Include="Dte\DteCommandBar.cs" />
+    <Compile Include="Dte\DteCommandBarButton.cs" />
+    <Compile Include="Dte\DteCommandBarControl.cs" />
+    <Compile Include="Dte\DteCommand.cs" />
+    <Compile Include="Main.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DteIconConverter.cs">
+    <Compile Include="Dte\DteConnect.cs" />
+    <Compile Include="Dte\DteIconConverter.cs">
     </Compile>
-    <Compile Include="DteMainMenu.cs" />
-    <Compile Include="DteToolWindow.cs" />
+    <Compile Include="Dte\DteMainMenu.cs" />
+    <Compile Include="Dte\DteToolWindow.cs" />
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,6 +83,12 @@
     </Compile>
     <Compile Include="SampleControl.Designer.cs">
       <DependentUpon>SampleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ExplorerWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\ExplorerWindow.Designer.cs">
+      <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +103,10 @@
     <EmbeddedResource Include="SampleControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SampleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ExplorerWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +149,12 @@
     <None Include="Icons\ExplorerMask.bmp" />
     <None Include="Icons\Explorer.bmp" />
     <None Include="Icons\ResultsMask.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cfix.Control\Cfix.Control.Ui\Cfix.Control.Ui.csproj">
+      <Project>{FD67630D-9595-452C-8097-A1F34E321FCC}</Project>
+      <Name>Cfix.Control.Ui</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

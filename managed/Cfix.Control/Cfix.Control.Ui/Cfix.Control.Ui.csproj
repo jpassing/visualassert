@@ -45,19 +45,19 @@
   <ItemGroup>
     <Compile Include="Explorer\AbstractExplorerCollectionNode.cs" />
     <Compile Include="Explorer\AbstractExplorerNode.cs" />
-    <Compile Include="Explorer\Explorer.cs">
+    <Compile Include="Explorer\TestExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Explorer\Explorer.Designer.cs">
-      <DependentUpon>Explorer.cs</DependentUpon>
+    <Compile Include="Explorer\TestExplorer.Designer.cs">
+      <DependentUpon>TestExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="Explorer\NodeFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Explorer\Explorer.resx">
+    <EmbeddedResource Include="Explorer\TestExplorer.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>Explorer.cs</DependentUpon>
+      <DependentUpon>TestExplorer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

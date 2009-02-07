@@ -9,7 +9,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.CommandBars;
 
-namespace Cfix.Addin
+namespace Cfix.Addin.Dte
 {
 	internal class DteCommandBar
 	{

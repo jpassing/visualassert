@@ -10,7 +10,7 @@ using Cfix.Control.Native;
 
 namespace Cfix.Control.Ui.Explorer
 {
-	public partial class Explorer : UserControl
+	public partial class TestExplorer : UserControl
 	{
 		private delegate void VoidDelegate();
 		
@@ -143,7 +143,7 @@ namespace Cfix.Control.Ui.Explorer
 		 * Public.
 		 */
 
-		public Explorer()
+		public TestExplorer()
 		{
 			InitializeComponent();
 
