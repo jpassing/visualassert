@@ -14,6 +14,8 @@ namespace Cfix.Control
 		//
 		ITestItem Item { get; }
 
+		ICollection<Failure> Failures { get; }
+
 		String Name { get; }
 		ExecutionStatus Status { get; }
 

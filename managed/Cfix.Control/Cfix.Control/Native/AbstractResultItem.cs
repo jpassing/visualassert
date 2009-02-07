@@ -65,8 +65,6 @@ namespace Cfix.Control.Native
 				}
 
 				this.failures.Add( failure );
-
-				this.parent.OnItemFailed();
 			}
 		}
 		
@@ -124,6 +122,11 @@ namespace Cfix.Control.Native
 			get { return this.item; }
 		}
 
+		public ICollection<Failure> Failures
+		{
+			get { return this.failures; }
+		}
+
 		public string Name
 		{
 			get { return this.itemName; }
@@ -178,7 +181,10 @@ namespace Cfix.Control.Native
 				routine,
 				StackTrace.Wrap( stackTrace ),
 				lastError );
+
 			AddFailure( ass );
+			this.parent.OnItemFailed();
+
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				InternalRun.DispositionPolicy.FailedAssertion( ass );
 		}
@@ -206,7 +212,10 @@ namespace Cfix.Control.Native
 				routine,
 				StackTrace.Wrap( stackTrace ),
 				lastError );
+
 			AddFailure( fr );
+			this.parent.OnItemFailed();
+
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				InternalRun.DispositionPolicy.FailedAssertion( fr );
 		}
@@ -248,7 +257,10 @@ namespace Cfix.Control.Native
 			UnhandledExceptionFailure u = new UnhandledExceptionFailure(
 				exceptionCode,
 				StackTrace.Wrap( stackTrace ) );
+			
 			AddFailure( u );
+			this.parent.OnItemFailed();
+
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				InternalRun.DispositionPolicy.UnhandledException( u );
 		}

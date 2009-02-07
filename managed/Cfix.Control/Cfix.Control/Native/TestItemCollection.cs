@@ -294,7 +294,10 @@ namespace Cfix.Control.Native
 		{
 			foreach ( ITestItem item in this.subItems )
 			{
-				item.Dispose();
+				if ( item != null )
+				{
+					item.Dispose();
+				}
 			}
 
 			base.Dispose( disposing );
