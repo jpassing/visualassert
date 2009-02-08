@@ -23,6 +23,8 @@ namespace Cfix.Addin.Windows
 		{
 			InitializeComponent();
 			this.workspace = null;
+
+			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
 		}
 
 		public void SetWorkspace( Workspace ws )
@@ -32,12 +34,31 @@ namespace Cfix.Addin.Windows
 
 			this.explorer.SetSession( ws.Session, false );
 			this.explorer.ExceptionRaised += new EventHandler<Cfix.Control.Ui.Explorer.ExceptionEventArgs>( explorer_ExceptionRaised );
+			this.explorer.RefreshStarted += new EventHandler( explorer_RefreshStarted );
+			this.explorer.RefreshFinished += new EventHandler( explorer_RefreshFinished );
 		}
 
 		/*----------------------------------------------------------------------
 		 * Various events.
 		 */
 
+		private void explorer_RefreshFinished( object sender, EventArgs e )
+		{
+			this.throbberPic.Visible = false;
+			this.statusText.Text = "";
+		}
+
+		private void explorer_RefreshStarted( object sender, EventArgs e )
+		{
+			this.throbberPic.Visible = true;
+			this.statusText.Text = Strings.Searching;
+		}
+
+		private void statusText_GotFocus( object sender, EventArgs e )
+		{
+			this.explorer.Focus();
+		}
+		
 		private void explorer_ExceptionRaised( 
 			object sender, 
 			Cfix.Control.Ui.Explorer.ExceptionEventArgs e 

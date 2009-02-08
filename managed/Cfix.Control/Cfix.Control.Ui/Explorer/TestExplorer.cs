@@ -40,8 +40,10 @@ namespace Cfix.Control.Ui.Explorer
 		private RundownLock rundownLock = new RundownLock();
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1713:EventsShouldNotHaveBeforeOrAfterPrefix" )]
-		public event EventHandler< ExplorerNodeEventArgs > AfterSelected;
+		public event EventHandler<ExplorerNodeEventArgs> AfterSelected;
 		public event EventHandler<ExceptionEventArgs> ExceptionRaised;
+		public event EventHandler RefreshStarted;
+		public event EventHandler RefreshFinished;
 
 		/*----------------------------------------------------------------------
 		 * Private.
@@ -72,6 +74,14 @@ namespace Cfix.Control.Ui.Explorer
 			finally
 			{
 				this.rundownLock.Release();
+
+				this.treeView.Invoke( ( VoidDelegate ) delegate()
+				{
+					if ( this.RefreshFinished != null )
+					{
+						this.RefreshFinished( this, EventArgs.Empty );
+					}
+				} );
 			}
 		}
 
@@ -241,6 +251,17 @@ namespace Cfix.Control.Ui.Explorer
 						else
 						{
 							this.treeView.Nodes.Add( childNode );
+						}
+					}
+
+					if ( this.RefreshStarted != null )
+					{
+						if ( this.treeView.InvokeRequired )
+						{
+							this.treeView.Invoke( ( VoidDelegate ) delegate()
+							{
+								this.RefreshStarted( this, EventArgs.Empty );
+							} );
 						}
 					}
 

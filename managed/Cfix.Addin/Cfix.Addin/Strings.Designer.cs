@@ -70,6 +70,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Searching....
+        /// </summary>
+        internal static string Searching {
+            get {
+                return ResourceManager.GetString("Searching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a test library or a folder to explore..
         /// </summary>
         internal static string SelectFileOrFolder {

@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Resources\Csearch_00.gif" />
     <None Include="Icons\Ffwd.bmp" />
     <None Include="Icons\Delete.bmp" />
     <None Include="Icons\Start.bmp" />

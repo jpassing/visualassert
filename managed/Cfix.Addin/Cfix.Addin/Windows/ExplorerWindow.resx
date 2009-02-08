@@ -121,43 +121,88 @@
     <value>0, 0</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
-        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
-        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
-        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
-        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
-        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
-        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
-        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
-        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
-        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
-        zRn9p97gAAAAAElFTkSuQmCC
-</value>
+  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
-  </data>
-  <data name="selectDirModeButton.Text" xml:space="preserve">
-    <value>Explore Directory</value>
+  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>282, 25</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="selectSlnModeButton.Enabled" type="System.Boolean, mscorlib">
+  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolbar.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
+    <value>toolbar</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="explorer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="explorer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>282, 308</value>
+  </data>
+  <data name="explorer.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;explorer.Name" xml:space="preserve">
+    <value>explorer</value>
+  </data>
+  <data name="&gt;&gt;explorer.Type" xml:space="preserve">
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;explorer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="throbberPic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="throbberPic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="throbberPic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 339</value>
+  </data>
+  <data name="throbberPic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="throbberPic.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="throbberPic.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
+  <data name="&gt;&gt;throbberPic.Name" xml:space="preserve">
+    <value>throbberPic</value>
   </data>
-  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
+  <data name="&gt;&gt;throbberPic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="selectSlnModeButton.Text" xml:space="preserve">
-    <value>Current Solution</value>
+  <data name="&gt;&gt;throbberPic.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;throbberPic.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -183,6 +228,43 @@
   <data name="selectModeButton.Text" xml:space="preserve">
     <value>Select exploration mode</value>
   </data>
+  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
+        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
+        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
+        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
+        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
+        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
+        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
+        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
+        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
+        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
+        zRn9p97gAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectDirModeButton.Text" xml:space="preserve">
+    <value>Explore Directory</value>
+  </data>
+  <data name="selectSlnModeButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectSlnModeButton.Text" xml:space="preserve">
+    <value>Current Solution</value>
+  </data>
   <data name="refreshButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -192,8 +274,14 @@
   <data name="refreshButton.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+  <data name="toolStripDropDownButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="toolStripDropDownButton2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="toolStripDropDownButton2.Text" xml:space="preserve">
+    <value>toolStripDropDownButton2</value>
   </data>
   <data name="startDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
@@ -213,14 +301,14 @@
   <data name="startWithoutDebuggingToolStripMenuItem.Text" xml:space="preserve">
     <value>Start Without Debugging</value>
   </data>
-  <data name="toolStripDropDownButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="toolStripDropDownButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="toolStripDropDownButton2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripDropDownButton1.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 22</value>
   </data>
-  <data name="toolStripDropDownButton2.Text" xml:space="preserve">
-    <value>toolStripDropDownButton2</value>
+  <data name="toolStripDropDownButton1.Text" xml:space="preserve">
+    <value>toolStripDropDownButton1</value>
   </data>
   <data name="abortToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
@@ -240,62 +328,28 @@
   <data name="terminateToolStripMenuItem.Text" xml:space="preserve">
     <value>Terminate</value>
   </data>
-  <data name="toolStripDropDownButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
+  <data name="statusText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
-  <data name="toolStripDropDownButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
+  <data name="statusText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 339</value>
   </data>
-  <data name="toolStripDropDownButton1.Text" xml:space="preserve">
-    <value>toolStripDropDownButton1</value>
+  <data name="statusText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 13</value>
   </data>
-  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="statusText.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 25</value>
+  <data name="&gt;&gt;statusText.Name" xml:space="preserve">
+    <value>statusText</value>
   </data>
-  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;statusText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolbar.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
-    <value>toolbar</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
+  <data name="&gt;&gt;statusText.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="explorer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="explorer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 331</value>
-  </data>
-  <data name="explorer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;explorer.Name" xml:space="preserve">
-    <value>explorer</value>
-  </data>
-  <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;explorer.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;statusText.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -306,6 +360,12 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 359</value>
+  </data>
+  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
+    <value>separator1</value>
+  </data>
+  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
     <value>selectModeButton</value>
@@ -330,12 +390,6 @@
   </data>
   <data name="&gt;&gt;refreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
-    <value>separator1</value>
-  </data>
-  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripDropDownButton2.Name" xml:space="preserve">
     <value>toolStripDropDownButton2</value>

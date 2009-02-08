@@ -136,5 +136,12 @@ namespace Cfix.Addin {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap Throb {
+            get {
+                object obj = ResourceManager.GetObject("Throb", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

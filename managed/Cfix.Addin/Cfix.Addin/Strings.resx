@@ -120,6 +120,9 @@
   <data name="ExplorerWindowCaption" xml:space="preserve">
     <value>cfix Test Explorer</value>
   </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
   <data name="SelectFileOrFolder" xml:space="preserve">
     <value>Please select a test library or a folder to explore.</value>
   </data>
