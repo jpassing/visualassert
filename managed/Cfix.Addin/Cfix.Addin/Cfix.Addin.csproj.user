@@ -16,6 +16,7 @@
     <StartWorkingDirectory>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\</StartWorkingDirectory>
     <StartArguments>/resetaddin Cfix.Addin.Connect</StartArguments>
     <StartAction>Program</StartAction>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <StartProgram>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\devenv.exe</StartProgram>

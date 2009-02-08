@@ -121,7 +121,7 @@
     <value>0, 0</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="directoryExplorerToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
@@ -137,22 +137,26 @@
         zRn9p97gAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="directoryExplorerToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="directoryExplorerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 22</value>
   </data>
-  <data name="directoryExplorerToolStripMenuItem.Text" xml:space="preserve">
+  <data name="selectDirModeButton.Text" xml:space="preserve">
     <value>Explore Directory</value>
   </data>
-  <data name="currentSolutionToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="selectSlnModeButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="currentSolutionToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 22</value>
   </data>
-  <data name="currentSolutionToolStripMenuItem.Text" xml:space="preserve">
+  <data name="selectSlnModeButton.Text" xml:space="preserve">
     <value>Current Solution</value>
   </data>
   <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -251,7 +255,6 @@
   <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 25</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -304,28 +307,22 @@
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 359</value>
   </data>
-  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
-    <value>separator1</value>
-  </data>
-  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
     <value>selectModeButton</value>
   </data>
   <data name="&gt;&gt;selectModeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;directoryExplorerToolStripMenuItem.Name" xml:space="preserve">
-    <value>directoryExplorerToolStripMenuItem</value>
+  <data name="&gt;&gt;selectDirModeButton.Name" xml:space="preserve">
+    <value>selectDirModeButton</value>
   </data>
-  <data name="&gt;&gt;directoryExplorerToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;selectDirModeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;currentSolutionToolStripMenuItem.Name" xml:space="preserve">
-    <value>currentSolutionToolStripMenuItem</value>
+  <data name="&gt;&gt;selectSlnModeButton.Name" xml:space="preserve">
+    <value>selectSlnModeButton</value>
   </data>
-  <data name="&gt;&gt;currentSolutionToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;selectSlnModeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;refreshButton.Name" xml:space="preserve">
@@ -333,6 +330,12 @@
   </data>
   <data name="&gt;&gt;refreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
+    <value>separator1</value>
+  </data>
+  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripDropDownButton2.Name" xml:space="preserve">
     <value>toolStripDropDownButton2</value>

@@ -48,9 +48,9 @@ namespace Cfix.Control.Native
 			this.run = run;
 		}
 
-		private void SetItems( IList<IResultItem> subItems )
+		private void SetItems( IList<IResultItem> items )
 		{
-			this.subItems = subItems;
+			this.subItems = items;
 		}
 
 		internal void OnChildStarted()

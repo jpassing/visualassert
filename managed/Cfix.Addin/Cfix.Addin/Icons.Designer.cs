@@ -60,13 +60,6 @@ namespace Cfix.Addin {
             }
         }
         
-        internal static System.Drawing.Icon cfix_ico {
-            get {
-                object obj = ResourceManager.GetObject("cfix.ico", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap Delete {
             get {
                 object obj = ResourceManager.GetObject("Delete", resourceCulture);

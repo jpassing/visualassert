@@ -30,18 +30,18 @@ namespace Cfix.Addin.Windows
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
-			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.directoryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.currentSolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.selectSlnModeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.refreshButton = new System.Windows.Forms.ToolStripButton();
+			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.startDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.startWithoutDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.abortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.terminateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.toolbar.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -56,35 +56,26 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
 			// 
-			// separator1
-			// 
-			this.separator1.Name = "separator1";
-			resources.ApplyResources( this.separator1, "separator1" );
-			// 
-			// explorer
-			// 
-			resources.ApplyResources( this.explorer, "explorer" );
-			this.explorer.Name = "explorer";
-			// 
 			// selectModeButton
 			// 
 			this.selectModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.selectModeButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.directoryExplorerToolStripMenuItem,
-            this.currentSolutionToolStripMenuItem} );
+            this.selectDirModeButton,
+            this.selectSlnModeButton} );
 			resources.ApplyResources( this.selectModeButton, "selectModeButton" );
 			this.selectModeButton.Name = "selectModeButton";
 			// 
-			// directoryExplorerToolStripMenuItem
+			// selectDirModeButton
 			// 
-			resources.ApplyResources( this.directoryExplorerToolStripMenuItem, "directoryExplorerToolStripMenuItem" );
-			this.directoryExplorerToolStripMenuItem.Name = "directoryExplorerToolStripMenuItem";
+			resources.ApplyResources( this.selectDirModeButton, "selectDirModeButton" );
+			this.selectDirModeButton.Name = "selectDirModeButton";
+			this.selectDirModeButton.Click += new System.EventHandler( this.selectDirModeButton_Click );
 			// 
-			// currentSolutionToolStripMenuItem
+			// selectSlnModeButton
 			// 
-			this.currentSolutionToolStripMenuItem.Image = global::Cfix.Addin.Icons.Solution;
-			resources.ApplyResources( this.currentSolutionToolStripMenuItem, "currentSolutionToolStripMenuItem" );
-			this.currentSolutionToolStripMenuItem.Name = "currentSolutionToolStripMenuItem";
+			resources.ApplyResources( this.selectSlnModeButton, "selectSlnModeButton" );
+			this.selectSlnModeButton.Image = global::Cfix.Addin.Icons.Solution;
+			this.selectSlnModeButton.Name = "selectSlnModeButton";
 			// 
 			// refreshButton
 			// 
@@ -92,6 +83,11 @@ namespace Cfix.Addin.Windows
 			this.refreshButton.Image = global::Cfix.Addin.Icons.Refresh;
 			resources.ApplyResources( this.refreshButton, "refreshButton" );
 			this.refreshButton.Name = "refreshButton";
+			// 
+			// separator1
+			// 
+			this.separator1.Name = "separator1";
+			resources.ApplyResources( this.separator1, "separator1" );
 			// 
 			// toolStripDropDownButton2
 			// 
@@ -137,6 +133,11 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.terminateToolStripMenuItem, "terminateToolStripMenuItem" );
 			this.terminateToolStripMenuItem.Name = "terminateToolStripMenuItem";
 			// 
+			// explorer
+			// 
+			resources.ApplyResources( this.explorer, "explorer" );
+			this.explorer.Name = "explorer";
+			// 
 			// ExplorerWindow
 			// 
 			resources.ApplyResources( this, "$this" );
@@ -157,8 +158,8 @@ namespace Cfix.Addin.Windows
 		private Cfix.Control.Ui.Explorer.TestExplorer explorer;
 		private System.Windows.Forms.ToolStripButton refreshButton;
 		private System.Windows.Forms.ToolStripDropDownButton selectModeButton;
-		private System.Windows.Forms.ToolStripMenuItem directoryExplorerToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem currentSolutionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem selectDirModeButton;
+		private System.Windows.Forms.ToolStripMenuItem selectSlnModeButton;
 		private System.Windows.Forms.ToolStripSeparator separator1;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
 		private System.Windows.Forms.ToolStripMenuItem abortToolStripMenuItem;
