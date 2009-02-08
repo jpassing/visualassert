@@ -16,7 +16,10 @@ namespace Cfix.Control.Native
 		private readonly Run run;
 
 		private IList<IResultItem> subItems;
+
+		private volatile int subItemsFinished;
 		private volatile bool subItemFailed;
+		private volatile bool subItemInconclusive;
 
 		private TestItemCollectionResult( 
 			TestItemCollectionResult parent,
@@ -45,9 +48,108 @@ namespace Cfix.Control.Native
 			this.run = run;
 		}
 
-		internal void OnItemFailed()
+		private void SetItems( IList<IResultItem> subItems )
 		{
-			this.subItemFailed = true;
+			this.subItems = subItems;
+		}
+
+		internal void OnChildStarted()
+		{
+			if ( this.Status == ExecutionStatus.Pending )
+			{
+				this.Status = ExecutionStatus.Running;
+				this.parent.OnChildStarted();
+			}
+		}
+
+		internal void OnChildFinished( ExecutionStatus status, bool childIsLeaf )
+		{
+			if ( status == ExecutionStatus.Failed )
+			{
+				this.subItemFailed = true;
+			}
+			else if ( status == ExecutionStatus.Inconclusive ||
+				status == ExecutionStatus.SucceededWithInconclusiveParts )
+			{
+				this.subItemInconclusive = true;
+			}
+
+			subItemsFinished++;
+
+			//
+			// N.B. For leaf children, we do need to track how many children
+			// have finished as this object will get a AfterFixtureFinish
+			// callback.
+			//
+			if ( ! childIsLeaf && subItemsFinished == this.subItems.Count )
+			{
+				OnFinished( true );
+			}
+		}
+
+		private void OnFinished( bool ranToCompletion )
+		{
+#if DEBUG
+			if ( ranToCompletion )
+			{
+				foreach ( AbstractResultItem child in this.subItems )
+				{
+					Debug.Assert( child.Completed );
+				}
+			}
+#endif
+
+			if ( !ranToCompletion )
+			{
+				Debug.Assert( this.Status != ExecutionStatus.Succeeded );
+
+				//
+				// Adjust states of children that have been skipped.
+				//
+				foreach ( AbstractResultItem child in this.subItems )
+				{
+					if ( child.Status == ExecutionStatus.Pending )
+					{
+						child.Status = ExecutionStatus.Skipped;
+					}
+				}
+			}
+
+			//
+			// Update status and notify parent.
+			//
+			if ( this.subItemFailed )
+			{
+				Status = ExecutionStatus.Failed;
+			}
+			else if ( this.IsInconclusive )
+			{
+				Debug.Assert( this.FailureCount > 0 );
+				this.Status = ExecutionStatus.Inconclusive;
+			}
+			else if ( this.FailureCount > 0 )
+			{
+				//
+				// Setup/Teardown failed.
+				//
+				Status = ExecutionStatus.Failed;
+			}
+			else if ( this.subItemInconclusive )
+			{
+				//
+				// Largely successful, but some inconclusive.
+				//
+				this.Status = ExecutionStatus.SucceededWithInconclusiveParts;
+			}
+			else
+			{
+				this.Status = ExecutionStatus.Succeeded;
+			}
+
+			if ( this.parent != null )
+			{
+				this.parent.OnChildFinished( this.Status, false );
+			}
 		}
 
 		internal override Run InternalRun
@@ -111,51 +213,7 @@ namespace Cfix.Control.Native
 
 		public void AfterFixtureFinish( int ranToCompletionInt )
 		{
-			bool ranToCompletion = ( ranToCompletionInt != 0 );
-			
-#if DEBUG
-			if ( ranToCompletion )
-			{
-				foreach ( AbstractResultItem child in this.subItems )
-				{
-					Debug.Assert( child.Completed );
-				}
-			}
-#endif
-
-			if ( !ranToCompletion )
-			{
-				Debug.Assert( this.Status != ExecutionStatus.Succeeded );
-
-				//
-				// Adjust states of children that have been skipped.
-				//
-				foreach ( AbstractResultItem child in this.subItems )
-				{
-					if ( child.Status == ExecutionStatus.Pending )
-					{
-						child.Status = ExecutionStatus.Skipped;
-					}
-				}
-			}
-
-			if ( this.subItemFailed )
-			{
-				Status = ExecutionStatus.Failed;
-			}
-			else if ( this.IsInconclusive )
-			{
-				Debug.Assert( this.FailureCount > 0 );
-				this.Status = ExecutionStatus.Inconclusive;
-			}
-			else if ( this.FailureCount > 0 )
-			{
-				this.Status = ExecutionStatus.Failed;
-			}
-			else
-			{
-				this.Status = ExecutionStatus.Succeeded;
-			}
+			OnFinished( ranToCompletionInt != 0 );
 		}
 
 		public ICfixTestÌtemEventSink GetTestItemEventSink( 
@@ -167,6 +225,105 @@ namespace Cfix.Control.Native
 			Debug.Assert( item is TestItemResult );
 
 			return ( ICfixTestÌtemEventSink ) item;
+		}
+
+		public override CFIXCTL_REPORT_DISPOSITION FailedAssertion(
+			string expression,
+			string routine,
+			string file,
+			string message,
+			uint line,
+			uint lastError,
+			uint flags,
+			uint reserved,
+			ICfixStackTrace stackTrace
+			)
+		{
+			CFIXCTL_REPORT_DISPOSITION disp = base.FailedAssertion(
+				expression, routine, file, message,
+				line, lastError, flags, reserved, stackTrace );
+
+			if ( this.subItemsFinished == 0 )
+			{
+				//
+				// Setup failure. There will not be any further callbacks, 
+				// thus finish now.
+				//
+				OnFinished( false );
+				Debug.Assert( Status == ExecutionStatus.Failed );
+			}
+
+			return disp;
+		}
+
+		public override CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
+			CFIXCTL_RELATE_OPERATOR op,
+			object expectedValue,
+			object actualValue,
+			string routine,
+			string file,
+			string message,
+			uint line,
+			uint lastError,
+			uint flags,
+			uint reserved,
+			ICfixStackTrace stackTrace )
+		{
+			CFIXCTL_REPORT_DISPOSITION disp = base.FailedRelateAssertion(
+				op, expectedValue, actualValue, routine, file, message,
+				line, lastError, flags, reserved, stackTrace );
+
+			if ( this.subItemsFinished == 0 )
+			{
+				//
+				// Setup failure. There will not be any further callbacks, 
+				// thus finish now.
+				//
+				OnFinished( false );
+				Debug.Assert( Status == ExecutionStatus.Failed );
+			}
+
+			return disp;
+		}
+
+		public override CFIXCTL_REPORT_DISPOSITION UnhandledException(
+			uint exceptionCode,
+			uint reserved,
+			ICfixStackTrace stackTrace )
+		{
+			CFIXCTL_REPORT_DISPOSITION disp = base.UnhandledException(
+				exceptionCode, reserved, stackTrace );
+
+			if ( this.subItemsFinished == 0 )
+			{
+				//
+				// Setup failure. There will not be any further callbacks, 
+				// thus finish now.
+				//
+				OnFinished( false );
+				Debug.Assert( Status == ExecutionStatus.Failed );
+			}
+
+			return disp;
+		}
+
+		public override void Inconclusive(
+			string reason,
+			uint reserved,
+			ICfixStackTrace stackTrace
+			)
+		{
+			base.Inconclusive( reason, reserved, stackTrace );
+
+			if ( this.subItemsFinished == 0 )
+			{
+				//
+				// Setup failure. There will not be any further callbacks, 
+				// thus finish now.
+				//
+				OnFinished( false );
+				Debug.Assert( Status == ExecutionStatus.Inconclusive );
+			}
 		}
 
 		/*--------------------------------------------------------------
@@ -216,7 +373,7 @@ namespace Cfix.Control.Native
 				}
 			}
 
-			result.subItems = children;
+			result.SetItems( children );
 			return result;
 		}
 

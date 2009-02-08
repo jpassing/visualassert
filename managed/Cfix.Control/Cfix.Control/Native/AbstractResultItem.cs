@@ -95,6 +95,7 @@ namespace Cfix.Control.Native
 				switch ( this.status )
 				{
 					case ExecutionStatus.Succeeded:
+					case ExecutionStatus.SucceededWithInconclusiveParts:
 					case ExecutionStatus.Failed:
 					case ExecutionStatus.Inconclusive:
 						return true;
@@ -161,7 +162,7 @@ namespace Cfix.Control.Native
 			InternalRun.OnThreadFinished( this, threadId );
 		}
 
-		public CFIXCTL_REPORT_DISPOSITION FailedAssertion(
+		public virtual CFIXCTL_REPORT_DISPOSITION FailedAssertion(
 			string expression,
 			string routine,
 			string file,
@@ -183,13 +184,12 @@ namespace Cfix.Control.Native
 				lastError );
 
 			AddFailure( ass );
-			this.parent.OnItemFailed();
 
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				InternalRun.DispositionPolicy.FailedAssertion( ass );
 		}
 
-		public CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
+		public virtual CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
 			CFIXCTL_RELATE_OPERATOR op,
 			object expectedValue,
 			object actualValue,
@@ -214,13 +214,27 @@ namespace Cfix.Control.Native
 				lastError );
 
 			AddFailure( fr );
-			this.parent.OnItemFailed();
 
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				InternalRun.DispositionPolicy.FailedAssertion( fr );
 		}
 
-		public void Inconclusive(
+		public virtual CFIXCTL_REPORT_DISPOSITION UnhandledException(
+			uint exceptionCode,
+			uint reserved,
+			ICfixStackTrace stackTrace )
+		{
+			UnhandledExceptionFailure u = new UnhandledExceptionFailure(
+				exceptionCode,
+				StackTrace.Wrap( stackTrace ) );
+
+			AddFailure( u );
+
+			return ( CFIXCTL_REPORT_DISPOSITION )
+				InternalRun.DispositionPolicy.UnhandledException( u );
+		}
+
+		public virtual void Inconclusive(
 			string reason,
 			uint reserved,
 			ICfixStackTrace stackTrace
@@ -249,20 +263,5 @@ namespace Cfix.Control.Native
 				InternalRun.DispositionPolicy.DefaultUnhandledExceptionDisposition;
 		}
 
-		public CFIXCTL_REPORT_DISPOSITION UnhandledException(
-			uint exceptionCode,
-			uint reserved,
-			ICfixStackTrace stackTrace )
-		{
-			UnhandledExceptionFailure u = new UnhandledExceptionFailure(
-				exceptionCode,
-				StackTrace.Wrap( stackTrace ) );
-			
-			AddFailure( u );
-			this.parent.OnItemFailed();
-
-			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.UnhandledException( u );
-		}
 	}
 }

@@ -141,6 +141,9 @@ namespace Cfix.Control.Test
 			Assert.AreEqual(
 				ExecutionStatus.Succeeded,
 				fixture.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Succeeded,
+				run.RootResult.Status );
 		}
 
 		[Test]
@@ -202,10 +205,13 @@ namespace Cfix.Control.Test
 				ExecutionStatus.Skipped,
 				fixture.GetItem( 2 ).Status );
 
-			Assert.AreEqual( 5, statusChanges );
+			Assert.AreEqual( 6, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Failed,
 				fixture.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
 
 			Assert.AreEqual( 1, fixture.Failures.Count );
 		}
@@ -322,7 +328,7 @@ namespace Cfix.Control.Test
 			//
 
 			fixSink.AfterFixtureFinish( 0 );
-			Assert.AreEqual( 7, statusChanges );
+			Assert.AreEqual( 8, statusChanges );
 
 			Assert.AreEqual(
 				ExecutionStatus.Skipped,
@@ -330,12 +336,15 @@ namespace Cfix.Control.Test
 			Assert.AreEqual(
 				ExecutionStatus.Failed,
 				fixture.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
 
 			Assert.IsNull( fixture.Failures );
 		}
 
 		[Test]
-		public void testFixtureWithInconclisiveTest()
+		public void testFixtureWithInconclusiveTest()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer testFixture = new MockContainer( "fixture" );
@@ -391,17 +400,262 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, fixture.GetItem( 0 ).Failures.Count );
 
 			fixSink.AfterFixtureFinish( 1 );
-			Assert.AreEqual( 4, statusChanges );
+			Assert.AreEqual( 5, statusChanges );
 
 			Assert.AreEqual(
 				ExecutionStatus.Inconclusive,
 				fixture.GetItem( 0 ).Status );
 			Assert.AreEqual(
-				ExecutionStatus.Succeeded,
+				ExecutionStatus.SucceededWithInconclusiveParts,
 				fixture.Status );
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithInconclusiveParts,
+				run.RootResult.Status );
+
 
 			Assert.IsNull( fixture.Failures );
 		}
 
+		private IRun runTest(
+			ExecutionStatus fixSetup,
+			ExecutionStatus[] testCases,
+			int testCasesToExecute,
+			ExecutionStatus fixTeardown
+			)
+		{
+			MockModule module = new MockModule( "foo.dll" );
+			MockContainer testFixture = new MockContainer( "fixture" );
+			for ( int i = 0; i < testCases.Length; i++ )
+			{
+				testFixture.Children.Add( new MockItem( "test" + i ) );
+			}
+			module.Children.Add( testFixture );
+
+			Target target = new MockTarget( module );
+			TestModule mod = TestModule.LoadModule(
+				target, module.GetPath(), false );
+
+			IRun run = new Run( this.policy, mod );
+
+			IResultItemCollection fixture =
+				( IResultItemCollection ) run.RootResult.GetItem( 0 );
+			Cfixctl.ICfixTestÌtemContainerEventSink fixSink =
+				( Cfixctl.ICfixTestÌtemContainerEventSink ) fixture;
+
+			fixSink.BeforeFixtureStart();
+			if ( fixSetup == ExecutionStatus.Inconclusive )
+			{
+				fixSink.Inconclusive( null, 0, null );
+			}
+			else if ( fixSetup == ExecutionStatus.Failed )
+			{
+				fixSink.UnhandledException( 0, 0, null );
+			}
+			else
+			{
+				for ( uint i = 0; i < testCasesToExecute; i++ )
+				{
+					Cfixctl.ICfixTestÌtemEventSink tcSink =
+						( Cfixctl.ICfixTestÌtemEventSink ) fixture.GetItem( i );
+					tcSink.BeforeTestCaseStart();
+
+					if ( testCases[ i ] == ExecutionStatus.Inconclusive )
+					{
+						tcSink.Inconclusive( null, 0, null );
+						tcSink.AfterTestCaseFinish( 0 );
+					}
+					else if ( testCases[ i ] == ExecutionStatus.Failed )
+					{
+						tcSink.UnhandledException( 0, 0, null );
+						tcSink.AfterTestCaseFinish( 0 );
+					}
+					else
+					{
+						tcSink.Log( null, 0, null );
+						tcSink.AfterTestCaseFinish( 1 );
+					}
+				}
+
+				if ( fixTeardown == ExecutionStatus.Inconclusive )
+				{
+					fixSink.Inconclusive( null, 0, null );
+				}
+				else if ( fixTeardown == ExecutionStatus.Failed )
+				{
+					fixSink.UnhandledException( 0, 0, null );
+				}
+
+				fixSink.AfterFixtureFinish(
+					testCases.Length == testCasesToExecute ? 1 : 0 );
+			}
+
+			return run;
+		}
+
+		[Test]
+		public void succeedEmptyFixture()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[ 0 ],
+				0,
+				ExecutionStatus.Succeeded );
+
+			Assert.AreEqual( 
+				ExecutionStatus.Succeeded, 
+				run.RootResult.Status );
+			Assert.AreEqual( 
+				ExecutionStatus.Succeeded, 
+				run.RootResult.GetItem( 0 ).Status );
+		}
+
+		[Test]
+		public void failingSetup()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Failed,
+				new ExecutionStatus[] { ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Succeeded );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Skipped,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+		}
+
+		[Test]
+		public void inconcSetup()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Inconclusive,
+				new ExecutionStatus[] { ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Succeeded );
+
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithInconclusiveParts,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Inconclusive,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Skipped,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+		}
+
+		[Test]
+		public void failingTeardown()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Failed );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Succeeded,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+		}
+
+		[Test]
+		public void inconcTeardown()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Inconclusive );
+
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithInconclusiveParts,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Inconclusive,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Succeeded,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+		}
+
+		[Test]
+		public void shortcutAfterFirstFailure()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Succeeded );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Skipped,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 1 ).Status );
+		}
+
+		[Test]
+		public void shortcutAfterFirstFailureWithInconcTeardown()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Inconclusive );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Skipped,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 1 ).Status );
+		}
+
+		[Test]
+		public void continueAfterFirstFailure()
+		{
+			IRun run = runTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
+				2,
+				ExecutionStatus.Inconclusive );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Succeeded,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 1 ).Status );
+		}
 	}
 }

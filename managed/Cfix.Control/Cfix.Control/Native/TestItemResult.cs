@@ -8,6 +8,8 @@ namespace Cfix.Control.Native
 	internal class TestItemResult 
 		: AbstractResultItem, ICfixTestÌtemEventSink
 	{
+		private volatile int executions;
+
 		private TestItemResult( 
 			TestItemCollectionResult parent,
 			ITestItem item,
@@ -38,8 +40,14 @@ namespace Cfix.Control.Native
 
 		public void BeforeTestCaseStart()
 		{
-			Debug.Assert( this.Status == ExecutionStatus.Pending );
+			//
+			// N.B. This method may be called twice in case of ambiguous
+			// test case names.
+			//
+			Debug.Assert( ( executions == 0 ) == ( this.Status == ExecutionStatus.Pending ) );
 			this.Status = ExecutionStatus.Running;
+
+			this.executions++;
 		}
 
 		public void AfterTestCaseFinish( int ranToCompletion )
@@ -60,6 +68,8 @@ namespace Cfix.Control.Native
 			{
 				this.Status = ExecutionStatus.Succeeded;
 			}
+
+			this.parent.OnChildFinished( this.Status, true );
 		}
 
 		/*--------------------------------------------------------------

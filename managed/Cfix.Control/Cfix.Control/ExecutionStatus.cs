@@ -10,6 +10,7 @@ namespace Cfix.Control
 		Running,
 		Skipped,
 		Succeeded,
+		SucceededWithInconclusiveParts,
 		Failed,
 		Inconclusive
 	}
