@@ -61,11 +61,29 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cfix Test Explorer.
+        /// </summary>
+        internal static string ExplorerWindowCaption {
+            get {
+                return ResourceManager.GetString("ExplorerWindowCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a test library or a folder to explore..
         /// </summary>
         internal static string SelectFileOrFolder {
             get {
                 return ResourceManager.GetString("SelectFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported processor architecture..
+        /// </summary>
+        internal static string UnsupportedArchitecture {
+            get {
+                return ResourceManager.GetString("UnsupportedArchitecture", resourceCulture);
             }
         }
     }

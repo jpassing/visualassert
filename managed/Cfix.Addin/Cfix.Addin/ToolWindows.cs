@@ -6,18 +6,18 @@ namespace Cfix.Addin
 {
 	internal class ToolWindows
 	{
-		private readonly DteConnect connect;
+		private readonly CfixPlus addin;
 		private DteToolWindow<ExplorerWindow> explorer;
 
-		internal ToolWindows( DteConnect connect )
+		internal ToolWindows( CfixPlus addin )
 		{
-			this.connect = connect;
+			this.addin = addin;
 		}
 
 		public void RestoreWindowState()
 		{
-			if ( this.connect.DTE.Globals.get_VariableExists( "Explorer" )
-				&& this.connect.DTE.Globals[ "Explorer" ].ToString() == "1" )
+			if ( this.addin.DTE.Globals.get_VariableExists( "Explorer" )
+				&& this.addin.DTE.Globals[ "Explorer" ].ToString() == "1" )
 			{
 				Explorer.Visible = true;
 			}
@@ -27,8 +27,8 @@ namespace Cfix.Addin
 		{
 			if ( this.explorer != null && this.explorer.Visible )
 			{
-				this.connect.DTE.Globals[ "Explorer" ] = "1";
-				this.connect.DTE.Globals.set_VariablePersists( "Explorer", true );
+				this.addin.DTE.Globals[ "Explorer" ] = "1";
+				this.addin.DTE.Globals.set_VariablePersists( "Explorer", true );
 			}
 				
 		}
@@ -40,10 +40,14 @@ namespace Cfix.Addin
 				if ( this.explorer == null )
 				{
 					this.explorer = DteToolWindow<ExplorerWindow>.Create(
-						this.connect,
-						"Explorer",
+						this.addin,
+						Strings.ExplorerWindowCaption,
 						ExplorerWindow.Guid,
 						Icons.Explorer );
+					this.explorer.UserControl.SetWorkspace( this.addin.Workspace );
+					this.explorer.Visible = true;
+					this.explorer.Height = 400;
+					this.explorer.Width = 300;
 				}
 
 				return this.explorer;

@@ -135,8 +135,11 @@ namespace Cfix.Control.Native
 								this.collectionStack.Peek(),
 								new DirectoryInfo( path ).Name,
 								x ) );
-						
-						this.collection.listener.InvalidModule( path, x.Message );
+
+						if ( this.collection.listener != null )
+						{
+							this.collection.listener.InvalidModule( path, x.Message );
+						}
 					}
 				}
 			}

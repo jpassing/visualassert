@@ -84,7 +84,7 @@ namespace Cfix.Addin.Dte
 			get { return this.window; }
 		}
 
-		public Object UserControl
+		public ControlT UserControl
 		{
 			get { return this.userControl; }
 		}
@@ -101,6 +101,19 @@ namespace Cfix.Addin.Dte
 			this.window.Visible = newState;
 			return newState;
 		}
+
+		public int Height
+		{
+			get { return this.window.Height; }
+			set { this.window.Height = value; }
+		}
+
+		public int Width
+		{
+			get { return this.window.Width; }
+			set { this.window.Width = value; }
+		}
+
 
 		public void Activate()
 		{

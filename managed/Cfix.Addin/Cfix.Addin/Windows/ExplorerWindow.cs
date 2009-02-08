@@ -3,27 +3,83 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Cfix.Addin.ShellBrowse;
+using Cfix.Control.Native;
 
 namespace Cfix.Addin.Windows
 {
 	public partial class ExplorerWindow : UserControl
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
+		private const bool UserModulesOnly = true;
 		private readonly String[] SupportedExtensions = new String[] { "DLL" };
+
+		private Workspace workspace;
 
 		public ExplorerWindow()
 		{
 			InitializeComponent();
+			this.workspace = null;
 		}
+
+		public void SetWorkspace( Workspace ws )
+		{
+			Debug.Assert( this.workspace == null );
+			this.workspace = ws;
+
+			this.explorer.SetSession( ws.Session, false );
+			this.explorer.ExceptionRaised += new EventHandler<Cfix.Control.Ui.Explorer.ExceptionEventArgs>( explorer_ExceptionRaised );
+		}
+
+		/*----------------------------------------------------------------------
+		 * Various events.
+		 */
+
+		private void explorer_ExceptionRaised( 
+			object sender, 
+			Cfix.Control.Ui.Explorer.ExceptionEventArgs e 
+			)
+		{
+			CfixPlus.HandleError( e.Exception );
+		}
+
+		/*----------------------------------------------------------------------
+		 * Session updating.
+		 */
 
 		private void Explore( String path )
 		{
-			MessageBox.Show( path );
+			Debug.Assert( this.workspace != null );
 
+			DirectoryInfo dir;
+			String filter;
 
+			if ( Directory.Exists( path ) )
+			{
+				dir = new DirectoryInfo( path );
+				filter = "*";
+			}
+			else
+			{
+				FileInfo info = new FileInfo( path );
+				dir = info.Directory;
+				filter = info.Name;
+			}
+
+			Debug.Print( "Search for " + filter + " in " + dir );
+
+			this.workspace.Session.Tests =
+				TestModuleCollection.Search(
+					dir,
+					filter,
+					this.workspace.SearchTarget,
+					this.workspace.RunTarget,
+					UserModulesOnly,
+					true,
+					null );
 		}
 
 		/*----------------------------------------------------------------------

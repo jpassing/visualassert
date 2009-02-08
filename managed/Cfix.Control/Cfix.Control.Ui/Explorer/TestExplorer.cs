@@ -41,27 +41,7 @@ namespace Cfix.Control.Ui.Explorer
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1713:EventsShouldNotHaveBeforeOrAfterPrefix" )]
 		public event EventHandler< ExplorerNodeEventArgs > AfterSelected;
-
-		/*----------------------------------------------------------------------
-		 * Events.
-		 */
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible" )]
-		public class ExplorerNodeEventArgs : EventArgs
-		{
-			private readonly ITestItem item;
-
-			internal ExplorerNodeEventArgs( ITestItem item )
-			{
-				this.item = item;
-			}
-
-			public ITestItem Item
-			{
-				get { return item; }
-			} 
-		}
-
+		public event EventHandler<ExceptionEventArgs> ExceptionRaised;
 
 		/*----------------------------------------------------------------------
 		 * Private.
@@ -84,7 +64,10 @@ namespace Cfix.Control.Ui.Explorer
 			}
 			catch ( Exception x )
 			{
-				HandleException( x );
+				if ( ExceptionRaised != null )
+				{
+					ExceptionRaised( this, new ExceptionEventArgs( x ) );
+				}
 			}
 			finally
 			{
@@ -154,6 +137,10 @@ namespace Cfix.Control.Ui.Explorer
 			this.Disposed += this_Disposed;
 		}
 
+		/*----------------------------------------------------------------------
+		 * Session switching.
+		 */
+
 		public ISession Session
 		{
 			get
@@ -173,11 +160,37 @@ namespace Cfix.Control.Ui.Explorer
 
 			this.session = sess;
 
+			sess.BeforeSetTests += new EventHandler( sess_BeforeSetTests );
+			sess.AfterSetTests += new EventHandler( sess_AfterSetTests );
+
 			//
 			// Populate tree.
 			//
-			RefreshSession( async );
+			if ( sess.Tests != null )
+			{
+				RefreshSession( async );
+			}
 		}
+
+		private void sess_AfterSetTests( object sender, EventArgs e )
+		{
+			//
+			// Load new.
+			//
+			RefreshSession( true );
+		}
+
+		private void sess_BeforeSetTests( object sender, EventArgs e )
+		{
+			//
+			// Clear old.
+			//
+			this.treeView.Nodes.Clear();
+		}
+
+		/*----------------------------------------------------------------------
+		 * Session refreshing.
+		 */
 
 		public void AbortRefreshSession()
 		{
@@ -249,5 +262,37 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 	}
+
+	public class ExplorerNodeEventArgs : EventArgs
+	{
+		private readonly ITestItem item;
+
+		internal ExplorerNodeEventArgs( ITestItem item )
+		{
+			this.item = item;
+		}
+
+		public ITestItem Item
+		{
+			get { return item; }
+		}
+	}
+
+	public class ExceptionEventArgs : EventArgs
+	{
+		private readonly Exception exception;
+
+		internal ExceptionEventArgs( Exception exception )
+		{
+			this.exception = exception;
+		}
+
+		public Exception Exception
+		{
+			get { return exception; }
+		}
+	}
+
+
 
 }

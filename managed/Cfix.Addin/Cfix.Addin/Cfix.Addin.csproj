@@ -60,6 +60,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CfixAddinException.cs" />
+    <Compile Include="Native.cs" />
     <Compile Include="ShellBrowse\FilterByExtension.cs" />
     <Compile Include="ShellBrowse\IFolderFilter.cs" />
     <Compile Include="ShellBrowse\IFolderFilterSite.cs" />
@@ -84,7 +86,7 @@
     <Compile Include="Dte\DteCommandBarButton.cs" />
     <Compile Include="Dte\DteCommandBarControl.cs" />
     <Compile Include="Dte\DteCommand.cs" />
-    <Compile Include="Main.cs">
+    <Compile Include="CfixPlus.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dte\DteConnect.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Windows\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">
@@ -178,6 +181,10 @@
     <ProjectReference Include="..\..\Cfix.Control\Cfix.Control.Ui\Cfix.Control.Ui.csproj">
       <Project>{FD67630D-9595-452C-8097-A1F34E321FCC}</Project>
       <Name>Cfix.Control.Ui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cfix.Control\Cfix.Control\Cfix.Control.csproj">
+      <Project>{C48FD013-1C86-4C95-B4BA-126C8749E008}</Project>
+      <Name>Cfix.Control</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />

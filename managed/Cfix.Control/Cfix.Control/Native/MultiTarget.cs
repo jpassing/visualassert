@@ -7,7 +7,7 @@ namespace Cfix.Control.Native
 	public class MultiTarget : IDisposable
 	{
 		private Target[] targets =
-			new Target[ ( int ) Architecture.Max ];
+			new Target[ ( int ) Architecture.Max + 1 ];
 
 		~MultiTarget()
 		{

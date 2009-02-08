@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ExplorerWindowCaption" xml:space="preserve">
+    <value>cfix Test Explorer</value>
+  </data>
   <data name="SelectFileOrFolder" xml:space="preserve">
     <value>Please select a test library or a folder to explore.</value>
+  </data>
+  <data name="UnsupportedArchitecture" xml:space="preserve">
+    <value>Unsupported processor architecture.</value>
   </data>
 </root>
