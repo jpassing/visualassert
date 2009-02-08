@@ -16,5 +16,6 @@ namespace Cfix.Addin.Windows
 		{
 			InitializeComponent();
 		}
+
 	}
 }

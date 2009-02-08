@@ -143,8 +143,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Ffwd.bmp" />
+    <None Include="Icons\Delete.bmp" />
+    <None Include="Icons\Start.bmp" />
+    <None Include="Icons\Folder.bmp" />
+    <None Include="Icons\Solution.bmp" />
+    <None Include="Icons\Refresh.bmp" />
     <None Include="Icons\StopHS.bmp" />
-    <None Include="Resources\Stop.bmp" />
     <None Include="Icons\Results.bmp" />
     <None Include="Icons\ExplorerMask.bmp" />
     <None Include="Icons\Explorer.bmp" />

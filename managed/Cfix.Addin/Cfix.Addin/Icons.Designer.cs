@@ -67,6 +67,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap Delete {
+            get {
+                object obj = ResourceManager.GetObject("Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Explorer {
             get {
                 object obj = ResourceManager.GetObject("Explorer", resourceCulture);
@@ -81,6 +88,27 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap Ffwd {
+            get {
+                object obj = ResourceManager.GetObject("Ffwd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Folder {
+            get {
+                object obj = ResourceManager.GetObject("Folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Refresh {
+            get {
+                object obj = ResourceManager.GetObject("Refresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Results {
             get {
                 object obj = ResourceManager.GetObject("Results", resourceCulture);
@@ -91,6 +119,20 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap ResultsMask {
             get {
                 object obj = ResourceManager.GetObject("ResultsMask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Solution {
+            get {
+                object obj = ResourceManager.GetObject("Solution", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Start {
+            get {
+                object obj = ResourceManager.GetObject("Start", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

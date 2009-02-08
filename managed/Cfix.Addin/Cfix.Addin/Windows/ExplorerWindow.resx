@@ -118,17 +118,132 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="toolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>0, 0</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="abortLoadingButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="directoryExplorerToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
+        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
+        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
+        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
+        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
+        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
+        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
+        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
+        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
+        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
+        zRn9p97gAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="directoryExplorerToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="abortLoadingButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="directoryExplorerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="directoryExplorerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Explore Directory</value>
+  </data>
+  <data name="currentSolutionToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="currentSolutionToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="currentSolutionToolStripMenuItem.Text" xml:space="preserve">
+    <value>Current Solution</value>
+  </data>
+  <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAehJREFUOE/Nkt1P
+        UnEch/1/6q47r7uwmdrypq211os1l2WZzMoa9iZTK+Z6kdnMFyTWMpskzk20jIEQBkqR0NnAJkrZZMEM
+        Dig8cQ4TvIizddfZPjvbb/s85/n+zres7L9+Hg5O0NU7ys1uI3UtWo41auTUnlVz8PgVFOUf9JnIZmFr
+        e5ukmGYlEkVY/iHncyCMyxuivLq+CLF/FHg96SwcXOscIJFMEYsnWN+Iy6X5XEmKdf4rKs0Q+ypOFQGG
+        sTm+BL9j84Tw+COK6habj0u3+4qAkWkPr8zvkN4dw2Yutj/j+YRbUb1B3ZsH5NXn2BA3iQFCIoPeGeTI
+        +U5m3Ssl1euvP8kDpK8GwuvyhaVzieQA9p8ZusYXGBoxyZclzSxlt7pUlgHtPS9YTW7J5c1MmuWYyOw3
+        EZ11jQNHL2N15YtSxmcW2VEvjNBvnOZtKEpIBN+vFB/W4rzx/0ZtdFFeeZqrHQaa7gzIudD2lB31wghW
+        h5vWfjOW1RSWcBZTMIV2Ksjhhvvcaj0ha5ZKYZFGJ62caRvkht6BSjdD1blu7rVUEF3SMPxo179WWr2A
+        IDA2ZcPy3smC10v1oUocur1E/XcxPD6pvLZ/Ay99clFTU4W9Zw/Ndfv/HSBBfYtOVM1NvNRrSwL+AEpb
+        2yAp3gTfAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="selectModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>White</value>
+  </data>
+  <data name="selectModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="selectModeButton.Text" xml:space="preserve">
+    <value>Select exploration mode</value>
+  </data>
+  <data name="refreshButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="refreshButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
   </data>
-  <data name="abortLoadingButton.Text" xml:space="preserve">
+  <data name="refreshButton.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="startDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="startDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="startDebuggingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start Debugging</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start Without Debugging</value>
+  </data>
+  <data name="toolStripDropDownButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="toolStripDropDownButton2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="toolStripDropDownButton2.Text" xml:space="preserve">
+    <value>toolStripDropDownButton2</value>
+  </data>
+  <data name="abortToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="abortToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 22</value>
+  </data>
+  <data name="abortToolStripMenuItem.Text" xml:space="preserve">
     <value>Abort</value>
+  </data>
+  <data name="terminateToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="terminateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 22</value>
+  </data>
+  <data name="terminateToolStripMenuItem.Text" xml:space="preserve">
+    <value>Terminate</value>
+  </data>
+  <data name="toolStripDropDownButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="toolStripDropDownButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="toolStripDropDownButton1.Text" xml:space="preserve">
+    <value>toolStripDropDownButton1</value>
   </data>
   <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -189,11 +304,71 @@
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 359</value>
   </data>
-  <data name="&gt;&gt;abortLoadingButton.Name" xml:space="preserve">
-    <value>abortLoadingButton</value>
+  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
+    <value>separator1</value>
   </data>
-  <data name="&gt;&gt;abortLoadingButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
+    <value>selectModeButton</value>
+  </data>
+  <data name="&gt;&gt;selectModeButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;directoryExplorerToolStripMenuItem.Name" xml:space="preserve">
+    <value>directoryExplorerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;directoryExplorerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;currentSolutionToolStripMenuItem.Name" xml:space="preserve">
+    <value>currentSolutionToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;currentSolutionToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.Name" xml:space="preserve">
+    <value>refreshButton</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton2.Name" xml:space="preserve">
+    <value>toolStripDropDownButton2</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;startDebuggingToolStripMenuItem.Name" xml:space="preserve">
+    <value>startDebuggingToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;startDebuggingToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;startWithoutDebuggingToolStripMenuItem.Name" xml:space="preserve">
+    <value>startWithoutDebuggingToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;startWithoutDebuggingToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton1.Name" xml:space="preserve">
+    <value>toolStripDropDownButton1</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;abortToolStripMenuItem.Name" xml:space="preserve">
+    <value>abortToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;abortToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;terminateToolStripMenuItem.Name" xml:space="preserve">
+    <value>terminateToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;terminateToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ExplorerWindow</value>
