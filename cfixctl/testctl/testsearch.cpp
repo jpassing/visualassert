@@ -289,7 +289,7 @@ public:
 				Path,
 				FlagSets[ Index ],
 				( ULONG ) -1,
-				( ULONG ) -1,
+				CfixTestModuleArchI386 | CfixTestModuleArchAmd64,
 				&Cb ) );
 			SysFreeString( Path );
 

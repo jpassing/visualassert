@@ -352,8 +352,11 @@ static HRESULT CfixctlsFileCallback(
 	}
 
 	if ( Context->Architecture != ( ULONG ) -1 && 
-		 Context->Architecture != ( ULONG ) Arch )
+		 ! ( Context->Architecture & Arch ) )
 	{
+		//
+		// Ignore.
+		//
 		return S_OK;
 	}
 
@@ -414,7 +417,8 @@ STDMETHODIMP LocalHost::SearchModules(
 {
 	if ( PathFilter == NULL ||
 		 Type != ( ULONG ) -1 && Type > CfixTestModuleTypeMax ||
-		 Arch != ( ULONG ) -1 && Arch > CfixTestModuleArchMax ||
+		 Arch != ( ULONG ) -1 && Arch > 
+		     ( CfixTestModuleArchI386 | CfixTestModuleArchAmd64 ) ||
 		 Callback == NULL )
 	{
 		return E_INVALIDARG;
