@@ -143,5 +143,19 @@ namespace Cfix.Addin {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap VSObject_Solution {
+            get {
+                object obj = ResourceManager.GetObject("VSObject_Solution", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap VSObject_VCProject {
+            get {
+                object obj = ResourceManager.GetObject("VSObject_VCProject", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

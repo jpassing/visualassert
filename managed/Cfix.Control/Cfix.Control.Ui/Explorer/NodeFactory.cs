@@ -5,7 +5,7 @@ using Cfix.Control.Native;
 
 namespace Cfix.Control.Ui.Explorer
 {
-	internal static class NodeFactory
+	public class NodeFactory
 	{
 		private class TestItemExplorerNode : AbstractExplorerNode
 		{
@@ -32,8 +32,13 @@ namespace Cfix.Control.Ui.Explorer
 
 		private class TestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
-			public TestItemCollectionExplorerNode( TreeView treeView, ITestItemCollection item )
+			public TestItemCollectionExplorerNode(
+				NodeFactory factory,
+				TreeView treeView, 
+				ITestItemCollection item 
+				)
 				: base(
+					factory,
 					item,
 					TestExplorer.TestContainerIconIndex,
 					TestExplorer.TestContainerIconSelectedIndex )
@@ -47,8 +52,13 @@ namespace Cfix.Control.Ui.Explorer
 
 		private class ModuleExplorerNode : AbstractExplorerCollectionNode
 		{
-			public ModuleExplorerNode( TreeView treeView, TestModule item )
+			public ModuleExplorerNode(
+				NodeFactory factory,
+				TreeView treeView, 
+				TestModule item 
+				)
 				: base(
+					factory,
 					item,
 					TestExplorer.ModuleIconIndex,
 					TestExplorer.ModuleIconSelectedIndex )
@@ -66,8 +76,13 @@ namespace Cfix.Control.Ui.Explorer
 		{
 			private delegate void VoidDelegate();
 
-			public GenericTestItemCollectionExplorerNode( TreeView treeView, GenericTestItemCollection item )
+			public GenericTestItemCollectionExplorerNode(
+				NodeFactory factory,
+				TreeView treeView, 
+				GenericTestItemCollection item 
+				)
 				: base(
+					factory,
 					item,
 					TestExplorer.ContainerIconIndex,
 					TestExplorer.ContainerIconIndex )
@@ -90,13 +105,13 @@ namespace Cfix.Control.Ui.Explorer
 				{
 					this.TreeView.Invoke( ( VoidDelegate ) delegate()
 					{
-						this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, e.Item ) );
+						this.Nodes.Add( this.nodeFactory.CreateNode( this.TreeView, e.Item ) );
 						this.Expand();
 					} );
 				}
 				else
 				{
-					this.Nodes.Add( NodeFactory.CreateNode( this.TreeView, e.Item ) );
+					this.Nodes.Add( this.nodeFactory.CreateNode( this.TreeView, e.Item ) );
 					this.Expand();
 				}
 			}
@@ -133,13 +148,14 @@ namespace Cfix.Control.Ui.Explorer
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily" )]
-		internal static AbstractExplorerNode CreateNode( 
+		public virtual AbstractExplorerNode CreateNode( 
 			TreeView treeView, 
 			ITestItem item )
 		{
 			if ( item is TestModule )
 			{
 				return new ModuleExplorerNode( 
+					this,
 					treeView,
 					( TestModule ) item );
 			}
@@ -151,12 +167,14 @@ namespace Cfix.Control.Ui.Explorer
 			else if ( item is GenericTestItemCollection )
 			{
 				return new GenericTestItemCollectionExplorerNode(
+					this,
 					treeView,
 					( GenericTestItemCollection ) item );
 			}
 			else if ( item is ITestItemCollection )
 			{
 				return new TestItemCollectionExplorerNode(
+					this, 
 					treeView,
 					( ITestItemCollection ) item );
 			}

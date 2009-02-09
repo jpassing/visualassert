@@ -4,7 +4,7 @@ using Cfix.Control;
 
 namespace Cfix.Control.Ui.Explorer
 {
-	internal abstract class AbstractExplorerNode : TreeNode
+	public abstract class AbstractExplorerNode : TreeNode
 	{
 		private readonly ITestItem testItem;
 

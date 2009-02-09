@@ -17,11 +17,33 @@ namespace Cfix.Addin.Windows
 		private const bool UserModulesOnly = true;
 		private readonly String[] SupportedExtensions = new String[] { "DLL" };
 
+		private readonly int SolutionIconIndex;
+		private readonly int SolutionIconSelectedIndex;
+		private readonly int ProjectIconIndex;
+		private readonly int ProjectIconSelectedIndex;
+
 		private Workspace workspace;
 
 		public ExplorerWindow()
 		{
 			InitializeComponent();
+
+			//
+			// Add icons for VS object nodes.
+			//
+			this.SolutionIconIndex = this.explorer.ImageList.Images.Add(
+				Icons.VSObject_Solution, Color.Magenta );
+			this.ProjectIconIndex = this.explorer.ImageList.Images.Add(
+				Icons.VSObject_VCProject, Color.Magenta );
+
+			this.SolutionIconSelectedIndex = this.SolutionIconIndex;
+			this.ProjectIconSelectedIndex = this.ProjectIconIndex;
+
+			//
+			// Switch NodeFactory s.t. we can use our own nodes.
+			//
+			this.explorer.NodeFactory = new VSNodeFactory();
+
 			this.workspace = null;
 
 			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
@@ -46,12 +68,16 @@ namespace Cfix.Addin.Windows
 		{
 			this.throbberPic.Visible = false;
 			this.statusText.Text = "";
+
+			this.refreshButton.Enabled = true;
 		}
 
 		private void explorer_RefreshStarted( object sender, EventArgs e )
 		{
 			this.throbberPic.Visible = true;
 			this.statusText.Text = Strings.Searching;
+
+			this.refreshButton.Enabled = false;
 		}
 
 		private void statusText_GotFocus( object sender, EventArgs e )
@@ -74,6 +100,8 @@ namespace Cfix.Addin.Windows
 		private void Explore( String path )
 		{
 			Debug.Assert( this.workspace != null );
+
+			this.refreshButton.Enabled = false;
 
 			DirectoryInfo dir;
 			String filter;
@@ -104,7 +132,7 @@ namespace Cfix.Addin.Windows
 		}
 
 		/*----------------------------------------------------------------------
-		 * File/Folder selection.
+		 * File/Folder mode events.
 		 */
 
 		private void selectDirModeButton_Click( object sender, EventArgs e )
@@ -172,6 +200,21 @@ namespace Cfix.Addin.Windows
 
 				sender.EnableOk( args.hwnd, false );
 			}
+		}
+
+		private void refreshButton_Click( object sender, EventArgs e )
+		{
+			this.explorer.RefreshSession( true );
+		}
+
+
+		/*----------------------------------------------------------------------
+		 * Solution mode events.
+		 */
+
+		private void selectSlnModeButton_Click( object sender, EventArgs e )
+		{
+			this.refreshButton.Enabled = false;
 		}
 
 	}

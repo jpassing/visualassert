@@ -6,6 +6,7 @@ namespace Cfix.Control.Ui.Explorer
 {
 	internal class AbstractExplorerCollectionNode : AbstractExplorerNode
 	{
+		protected readonly NodeFactory nodeFactory;
 		private readonly ITestItemCollection testItemCollection;
 		private delegate void VoidDelegate();
 
@@ -16,7 +17,7 @@ namespace Cfix.Control.Ui.Explorer
 				if ( child != null )
 				{
 					AbstractExplorerNode childNode =
-						NodeFactory.CreateNode( treeView, child );
+						this.nodeFactory.CreateNode( treeView, child );
 
 					if ( treeView.InvokeRequired )
 					{
@@ -34,12 +35,14 @@ namespace Cfix.Control.Ui.Explorer
 		}
 
 		public AbstractExplorerCollectionNode(
+			NodeFactory factory,
 			ITestItemCollection testItemCollection,
 			int imageIndex,
 			int selectedImageIndex
 			)
 			: base( testItemCollection, imageIndex, selectedImageIndex )
 		{
+			this.nodeFactory = factory;
 			this.testItemCollection = testItemCollection;
 		}
 

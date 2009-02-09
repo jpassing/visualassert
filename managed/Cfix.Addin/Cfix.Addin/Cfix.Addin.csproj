@@ -106,6 +106,7 @@
     <Compile Include="Windows\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\VSNodeFactory.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\VSObject_VCProject.bmp" />
+    <None Include="Icons\VSObject_Solution.bmp" />
+    <None Include="Icons\CppProject.bmp" />
     <None Include="Resources\Csearch_00.gif" />
     <None Include="Icons\Ffwd.bmp" />
     <None Include="Icons\Delete.bmp" />

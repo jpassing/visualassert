@@ -28,7 +28,8 @@ namespace Cfix.Control.Ui.Explorer
 		internal const int TestItemIconSelectedIndex = 4;
 		internal const int InvalidModuleIconIndex = 5;
 		internal const int InvalidModuleIconSelectedIndex = 5;
-		
+
+		private NodeFactory nodeFactory = new NodeFactory();
 		private ISession session;
 
 		private readonly Object refreshLock = new Object();
@@ -145,6 +146,17 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.AfterCollapse += treeView_AfterCollapse;
 
 			this.Disposed += this_Disposed;
+		}
+
+		public ImageList ImageList
+		{
+			get { return this.imageList; }
+		}
+
+		public NodeFactory NodeFactory
+		{
+			get { return nodeFactory; }
+			set { nodeFactory = value; }
 		}
 
 		/*----------------------------------------------------------------------
