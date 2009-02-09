@@ -7,9 +7,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Cfix.Addin.ShellBrowse;
+using Cfix.Control;
+using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
 
-namespace Cfix.Addin.Windows
+namespace Cfix.Addin.Windows.Explorer
 {
 	public partial class ExplorerWindow : UserControl
 	{
@@ -55,21 +57,40 @@ namespace Cfix.Addin.Windows
 			this.workspace = ws;
 
 			this.explorer.SetSession( ws.Session, false );
-			this.explorer.ExceptionRaised += new EventHandler<Cfix.Control.Ui.Explorer.ExceptionEventArgs>( explorer_ExceptionRaised );
+			this.explorer.ExceptionRaised += new EventHandler<ExceptionEventArgs>( explorer_ExceptionRaised );
 			this.explorer.RefreshStarted += new EventHandler( explorer_RefreshStarted );
 			this.explorer.RefreshFinished += new EventHandler( explorer_RefreshFinished );
+			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
 		}
 
 		/*----------------------------------------------------------------------
-		 * Various events.
+		 * Refreshing.
 		 */
+
+		private void UpdateRefreshButtonStatus()
+		{
+			ITestItem selItem = this.explorer.SelectedItem;
+			bool enable = ( selItem == null || selItem is ITestItemCollection );
+			this.refreshButton.Enabled = enable;
+		}
+
+		private void DisableRefresh()
+		{
+			this.refreshButton.Enabled = false;
+		}
+
+
+		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
+		{
+			UpdateRefreshButtonStatus();
+		}
 
 		private void explorer_RefreshFinished( object sender, EventArgs e )
 		{
 			this.throbberPic.Visible = false;
 			this.statusText.Text = "";
 
-			this.refreshButton.Enabled = true;
+			UpdateRefreshButtonStatus();
 		}
 
 		private void explorer_RefreshStarted( object sender, EventArgs e )
@@ -77,8 +98,17 @@ namespace Cfix.Addin.Windows
 			this.throbberPic.Visible = true;
 			this.statusText.Text = Strings.Searching;
 
-			this.refreshButton.Enabled = false;
+			DisableRefresh();
 		}
+
+		private void refreshButton_Click( object sender, EventArgs e )
+		{
+			this.explorer.RefreshSession( true, true );
+		}
+
+		/*----------------------------------------------------------------------
+		 * Various events.
+		 */
 
 		private void statusText_GotFocus( object sender, EventArgs e )
 		{
@@ -101,8 +131,7 @@ namespace Cfix.Addin.Windows
 		{
 			Debug.Assert( this.workspace != null );
 
-			this.refreshButton.Enabled = false;
-
+			DisableRefresh();
 			DirectoryInfo dir;
 			String filter;
 
@@ -202,19 +231,13 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
-		private void refreshButton_Click( object sender, EventArgs e )
-		{
-			this.explorer.RefreshSession( true );
-		}
-
-
+		
 		/*----------------------------------------------------------------------
 		 * Solution mode events.
 		 */
 
 		private void selectSlnModeButton_Click( object sender, EventArgs e )
 		{
-			this.refreshButton.Enabled = false;
 		}
 
 	}

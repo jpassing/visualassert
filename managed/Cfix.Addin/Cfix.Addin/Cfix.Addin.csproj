@@ -100,13 +100,14 @@
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="ToolWindows.cs" />
-    <Compile Include="Windows\ExplorerWindow.cs">
+    <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\ExplorerWindow.Designer.cs">
+    <Compile Include="Windows\Explorer\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\VSNodeFactory.cs" />
+    <Compile Include="Windows\Explorer\SolutionTestCollection.cs" />
+    <Compile Include="Windows\Explorer\VSNodeFactory.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,7 +126,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\ExplorerWindow.resx">
+    <EmbeddedResource Include="Windows\Explorer\ExplorerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </EmbeddedResource>

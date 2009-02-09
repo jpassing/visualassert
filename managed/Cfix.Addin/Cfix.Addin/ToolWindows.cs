@@ -1,6 +1,6 @@
 using System;
 using Cfix.Addin.Dte;
-using Cfix.Addin.Windows;
+using Cfix.Addin.Windows.Explorer;
 
 namespace Cfix.Addin
 {

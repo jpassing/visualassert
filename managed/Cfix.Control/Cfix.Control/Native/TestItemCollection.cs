@@ -266,7 +266,15 @@ namespace Cfix.Control.Native
 
 		public virtual void Refresh()
 		{
-			Update( ( ICfixTestContainer ) NativeItem );
+			ICfixTestItem item = NativeItem;
+			try
+			{
+				Update( ( ICfixTestContainer ) item );
+			}
+			finally
+			{
+				this.Module.Target.ReleaseObject( item );
+			}
 		}
 
 		/*--------------------------------------------------------------

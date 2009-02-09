@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Data;
 using System.Text;
@@ -55,14 +56,14 @@ namespace Cfix.Control.Ui.Explorer
 			MessageBox.Show( x.Message );
 		}
 
-		private delegate void AsyncVoidDelegate( bool async );
+		private delegate void RefreshDelegate( bool async, bool selectionOnly );
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		private void AsyncVoidCompletionCallback( IAsyncResult ar )
 		{
 			try
 			{
-				AsyncVoidDelegate dlg = ( AsyncVoidDelegate ) ar.AsyncState;
+				RefreshDelegate dlg = ( RefreshDelegate ) ar.AsyncState;
 				dlg.EndInvoke( ar );
 			}
 			catch ( Exception x )
@@ -190,7 +191,7 @@ namespace Cfix.Control.Ui.Explorer
 			//
 			if ( sess.Tests != null )
 			{
-				RefreshSession( async );
+				RefreshSession( async, false );
 			}
 		}
 
@@ -199,7 +200,7 @@ namespace Cfix.Control.Ui.Explorer
 			//
 			// Load new.
 			//
-			RefreshSession( true );
+			RefreshSession( true, false );
 		}
 
 		private void sess_BeforeSetTests( object sender, EventArgs e )
@@ -224,17 +225,18 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
-		public void RefreshSession( bool async )
+		public void RefreshSession( bool async, bool selectionOnly )
 		{
 			if ( async )
 			{
 				//
 				// N.B. Refreshing involves I/O and may block.
 				//
-				AsyncVoidDelegate refresh = RefreshSession;
+				RefreshDelegate refresh = RefreshSession;
 				this.rundownLock.Acquire();
 				refresh.BeginInvoke( 
 					false,
+					selectionOnly,
 					AsyncVoidCompletionCallback,
 					refresh );
 			}
@@ -266,13 +268,17 @@ namespace Cfix.Control.Ui.Explorer
 						}
 					}
 
-					if ( this.RefreshStarted != null )
+					ITestItem selectedItem = null;
+
+					if ( this.treeView.InvokeRequired )
 					{
-						if ( this.treeView.InvokeRequired )
+						if ( this.RefreshStarted != null )
 						{
 							this.treeView.Invoke( ( VoidDelegate ) delegate()
 							{
 								this.RefreshStarted( this, EventArgs.Empty );
+
+								selectedItem = this.SelectedItem;
 							} );
 						}
 					}
@@ -280,7 +286,27 @@ namespace Cfix.Control.Ui.Explorer
 					//
 					// (Re-) load children.
 					//
-					this.session.Tests.Refresh();
+					if ( selectionOnly )
+					{
+						//
+						// Refresh currently selected node only.
+						//
+						Debug.Assert( selectedItem != null );
+						ITestItemCollection selectedItemColl =
+							selectedItem as ITestItemCollection;
+
+						if ( selectedItemColl != null )
+						{
+							selectedItemColl.Refresh();
+						}
+					}
+					else
+					{
+						//
+						// Refresh entire tree.
+						//
+						this.session.Tests.Refresh();
+					}
 				}
 			}
 		}
@@ -291,7 +317,14 @@ namespace Cfix.Control.Ui.Explorer
 			{
 				AbstractExplorerNode curNode =
 					( AbstractExplorerNode ) this.treeView.SelectedNode;
-				return curNode.Item;
+				if ( curNode == null )
+				{
+					return null;
+				}
+				else
+				{
+					return curNode.Item;
+				}
 			}
 		}
 	}

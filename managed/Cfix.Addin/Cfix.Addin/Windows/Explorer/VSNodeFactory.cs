@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 
-namespace Cfix.Addin.Windows
+namespace Cfix.Addin.Windows.Explorer
 {
 	public class VSNodeFactory : NodeFactory
 	{
