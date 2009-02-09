@@ -44,7 +44,9 @@ namespace Cfix.Addin
 						Strings.ExplorerWindowCaption,
 						ExplorerWindow.Guid,
 						Icons.Explorer );
-					this.explorer.UserControl.SetWorkspace( this.addin.Workspace );
+					this.explorer.UserControl.Initialize( 
+						this.addin.Workspace,
+						this.addin.DTE );
 					this.explorer.Visible = true;
 					this.explorer.Height = 400;
 					this.explorer.Width = 300;

@@ -6,6 +6,8 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using EnvDTE;
+using EnvDTE80;
 using Cfix.Addin.ShellBrowse;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
@@ -19,42 +21,31 @@ namespace Cfix.Addin.Windows.Explorer
 		private const bool UserModulesOnly = true;
 		private readonly String[] SupportedExtensions = new String[] { "DLL" };
 
-		private readonly int SolutionIconIndex;
-		private readonly int SolutionIconSelectedIndex;
-		private readonly int ProjectIconIndex;
-		private readonly int ProjectIconSelectedIndex;
-
 		private Workspace workspace;
+		private DTE2 dte;
 
 		public ExplorerWindow()
 		{
 			InitializeComponent();
 
 			//
-			// Add icons for VS object nodes.
-			//
-			this.SolutionIconIndex = this.explorer.ImageList.Images.Add(
-				Icons.VSObject_Solution, Color.Magenta );
-			this.ProjectIconIndex = this.explorer.ImageList.Images.Add(
-				Icons.VSObject_VCProject, Color.Magenta );
-
-			this.SolutionIconSelectedIndex = this.SolutionIconIndex;
-			this.ProjectIconSelectedIndex = this.ProjectIconIndex;
-
-			//
 			// Switch NodeFactory s.t. we can use our own nodes.
 			//
-			this.explorer.NodeFactory = new VSNodeFactory();
+			this.explorer.NodeFactory = new VSNodeFactory( this.explorer );
 
 			this.workspace = null;
 
 			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
+			this.selectModeButton.DropDownOpening += new EventHandler( selectModeButton_DropDownOpening );
 		}
 
-		public void SetWorkspace( Workspace ws )
+		public void Initialize( Workspace ws, DTE2 dte )
 		{
 			Debug.Assert( this.workspace == null );
+			Debug.Assert( this.dte == null );
+			
 			this.workspace = ws;
+			this.dte = dte;
 
 			this.explorer.SetSession( ws.Session, false );
 			this.explorer.ExceptionRaised += new EventHandler<ExceptionEventArgs>( explorer_ExceptionRaised );
@@ -110,6 +101,15 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Various events.
 		 */
 
+		private void selectModeButton_DropDownOpening( object sender, EventArgs e )
+		{
+			//
+			// Enable button only when a solution is open.
+			//
+			Solution curSolution = this.dte.Solution;
+			this.selectSlnModeButton.Enabled = curSolution.FileName.Length > 0;
+		}
+
 		private void statusText_GotFocus( object sender, EventArgs e )
 		{
 			this.explorer.Focus();
@@ -127,7 +127,7 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Session updating.
 		 */
 
-		private void Explore( String path )
+		private void ExploreDirectoryOrFile( String path )
 		{
 			Debug.Assert( this.workspace != null );
 
@@ -160,6 +160,17 @@ namespace Cfix.Addin.Windows.Explorer
 					null );
 		}
 
+		private void ExploreSolution()
+		{
+			Debug.Assert( this.workspace != null );
+
+			DisableRefresh();
+
+			Solution curSolution = this.dte.Solution;
+			this.workspace.Session.Tests = new SolutionTestCollection(
+				( Solution2 ) curSolution );
+		}
+
 		/*----------------------------------------------------------------------
 		 * File/Folder mode events.
 		 */
@@ -185,7 +196,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 			if ( ! dialog.Canceled )
 			{
-				Explore( dialog.FullName );
+				ExploreDirectoryOrFile( dialog.FullName );
 			}
 		}
 
@@ -238,6 +249,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void selectSlnModeButton_Click( object sender, EventArgs e )
 		{
+			ExploreSolution();
 		}
 
 	}

@@ -146,10 +146,6 @@
   <data name="selectDirModeButton.Text" xml:space="preserve">
     <value>Explore Directory</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="selectSlnModeButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -183,6 +179,7 @@
   <data name="selectModeButton.Text" xml:space="preserve">
     <value>Select exploration mode</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="refreshButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Explorer
 {
-	internal class AbstractExplorerCollectionNode : AbstractExplorerNode
+	public class AbstractExplorerCollectionNode : AbstractExplorerNode
 	{
 		protected readonly NodeFactory nodeFactory;
 		private readonly ITestItemCollection testItemCollection;

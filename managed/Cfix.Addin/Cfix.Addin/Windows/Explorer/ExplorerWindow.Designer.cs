@@ -29,6 +29,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,8 +77,8 @@ namespace Cfix.Addin.Windows.Explorer
 			// 
 			// selectSlnModeButton
 			// 
-			resources.ApplyResources( this.selectSlnModeButton, "selectSlnModeButton" );
 			this.selectSlnModeButton.Image = global::Cfix.Addin.Icons.Solution;
+			resources.ApplyResources( this.selectSlnModeButton, "selectSlnModeButton" );
 			this.selectSlnModeButton.Name = "selectSlnModeButton";
 			this.selectSlnModeButton.Click += new System.EventHandler( this.selectSlnModeButton_Click );
 			// 
@@ -142,6 +143,7 @@ namespace Cfix.Addin.Windows.Explorer
 			// 
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
+			this.explorer.NodeFactory = nodeFactory1;
 			// 
 			// throbberPic
 			// 
