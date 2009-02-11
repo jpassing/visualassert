@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="CfixAddinException.cs" />
     <Compile Include="Native.cs" />
+    <Compile Include="ProjectKinds.cs" />
     <Compile Include="ShellBrowse\FilterByExtension.cs" />
     <Compile Include="ShellBrowse\IFolderFilter.cs" />
     <Compile Include="ShellBrowse\IFolderFilterSite.cs" />

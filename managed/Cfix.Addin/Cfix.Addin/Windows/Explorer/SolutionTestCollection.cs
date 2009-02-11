@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Collections.Generic;
 using EnvDTE;
 using EnvDTE80;
 using Cfix.Control;
@@ -10,12 +12,24 @@ namespace Cfix.Addin.Windows.Explorer
 		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
 
+		private bool IsVcProject( Project prj )
+		{
+			return prj.Kind == ProjectKinds.VcProject;
+		}
+
+		private void AddProject( Project prj )
+		{
+			if ( IsVcProject( prj ) )
+			{
+				Add( new VCProjectTestCollection( prj ) );
+			}
+		}
+
 		private void LoadProjects()
 		{
 			foreach ( Project project in this.solution.Projects )
 			{
-				//TODO: filter VCprojs
-				Add( new VCProjectTestCollection( project ) );
+				AddProject( project );
 			}
 		}
 
@@ -38,19 +52,58 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Events.
 		 */
 
-		private void solutionEvents_ProjectAdded( Project Project )
+		private void solutionEvents_ProjectAdded( 
+			Project project 
+			)
 		{
-			Refresh();
+			AddProject( project );
 		}
 
-		private void solutionEvents_ProjectRenamed( Project Project, string OldName )
+		private void solutionEvents_ProjectRenamed( 
+			Project project, 
+			string oldName 
+			)
 		{
-			Refresh();
+			if ( project != null && ! IsVcProject( project ) )
+			{
+				return;
+			}
+
+			lock ( listLock )
+			{
+				//
+				// Rebuild list.
+				//
+				List<ITestItem> oldList = new List<ITestItem>( this.list );
+				this.list.Clear();
+
+				foreach ( ITestItem oldItem in oldList )
+				{
+					if ( oldItem.Name == oldName )
+					{
+						OnItemRemoved( oldItem );
+						oldItem.Dispose();
+
+						if ( project != null )
+						{
+							AddProject( project );
+						}
+					}
+					else
+					{
+						this.list.Add( oldItem );
+					}
+				}
+				Debug.Assert( ItemCount <= oldList.Count );
+				Debug.Assert( ItemCount >= oldList.Count - 1 );
+			}
 		}
 
-		private void solutionEvents_ProjectRemoved( Project Project )
+		private void solutionEvents_ProjectRemoved( 
+			Project project 
+			)
 		{
-			Refresh();
+			solutionEvents_ProjectRenamed( null, project.Name );
 		}
 
 		/*----------------------------------------------------------------------
@@ -59,19 +112,23 @@ namespace Cfix.Addin.Windows.Explorer
 
 		protected override void Dispose( bool disposing )
 		{
-			this.solutionEvents.ProjectAdded -= new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
-			this.solutionEvents.ProjectRemoved -= new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
-			this.solutionEvents.ProjectRenamed -= new _dispSolutionEvents_ProjectRenamedEventHandler( solutionEvents_ProjectRenamed );
+			if ( disposing )
+			{
+				this.solutionEvents.ProjectAdded -= new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
+				this.solutionEvents.ProjectRemoved -= new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
+				this.solutionEvents.ProjectRenamed -= new _dispSolutionEvents_ProjectRenamedEventHandler( solutionEvents_ProjectRenamed );
+			}
 
 			base.Dispose( disposing );
 		}
 
 		public override void Refresh()
 		{
-			Clear();
-			LoadProjects();
+			//
+			// Assume DTE notifications are reliable, so just refresh
+			// children.
+			//
+			base.Refresh();
 		}
-
-
 	}
 }

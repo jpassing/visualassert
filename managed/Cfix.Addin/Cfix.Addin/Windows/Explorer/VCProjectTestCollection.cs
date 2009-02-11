@@ -10,7 +10,7 @@ namespace Cfix.Addin.Windows.Explorer
 		public VCProjectTestCollection(
 			Project project
 			)
-			: base( null, project.FileName )
+			: base( null, project.Name )
 		{
 		}
 

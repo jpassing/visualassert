@@ -16,13 +16,14 @@ namespace Cfix.Addin.Windows.Explorer
 		private class SolutionNode : AbstractExplorerCollectionNode
 		{
 			public SolutionNode(
-				NodeFactory factory,
 				TreeView treeView,
+				NodeFactory factory,
 				SolutionTestCollection sln,
 				int iconIndex,
 				int iconSelectedIndex
 				)
 				: base(
+					treeView,
 					factory,
 					sln,
 					iconIndex,
@@ -31,20 +32,21 @@ namespace Cfix.Addin.Windows.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren( treeView );
+				LoadChildren();
 			}
 		}
 
 		private class VCProjectNode : AbstractExplorerCollectionNode
 		{
 			public VCProjectNode(
-				NodeFactory factory,
 				TreeView treeView,
+				NodeFactory factory,
 				VCProjectTestCollection prj,
 				int iconIndex,
 				int iconSelectedIndex
 				)
 				: base(
+					treeView,
 					factory,
 					prj,
 					iconIndex,
@@ -53,7 +55,7 @@ namespace Cfix.Addin.Windows.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren( treeView );
+				LoadChildren();
 			}
 		}
 		
@@ -78,8 +80,8 @@ namespace Cfix.Addin.Windows.Explorer
 			if ( item is SolutionTestCollection )
 			{
 				return new SolutionNode(
-					this,
 					treeView,
+					this,
 					( SolutionTestCollection ) item,
 					this.SolutionIconIndex,
 					this.SolutionIconSelectedIndex );
@@ -87,8 +89,8 @@ namespace Cfix.Addin.Windows.Explorer
 			else if ( item is VCProjectTestCollection )
 			{
 				return new VCProjectNode(
-					this,
 					treeView,
+					this,
 					( VCProjectTestCollection ) item,
 					this.ProjectIconIndex,
 					this.ProjectIconSelectedIndex );

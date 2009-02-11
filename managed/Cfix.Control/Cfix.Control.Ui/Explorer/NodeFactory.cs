@@ -33,11 +33,12 @@ namespace Cfix.Control.Ui.Explorer
 		private class TestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
 			public TestItemCollectionExplorerNode(
+				TreeView treeView,
 				NodeFactory factory,
-				TreeView treeView, 
 				ITestItemCollection item 
 				)
 				: base(
+					treeView,
 					factory,
 					item,
 					TestExplorer.TestContainerIconIndex,
@@ -46,18 +47,19 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren( treeView );
+				LoadChildren();
 			}
 		}
 
 		private class ModuleExplorerNode : AbstractExplorerCollectionNode
 		{
 			public ModuleExplorerNode(
+				TreeView treeView,
 				NodeFactory factory,
-				TreeView treeView, 
 				TestModule item 
 				)
 				: base(
+					treeView,
 					factory,
 					item,
 					TestExplorer.ModuleIconIndex,
@@ -66,7 +68,7 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren( treeView );
+				LoadChildren();
 
 				this.ToolTipText = item.Path;
 			}
@@ -77,11 +79,12 @@ namespace Cfix.Control.Ui.Explorer
 			private delegate void VoidDelegate();
 
 			public GenericTestItemCollectionExplorerNode(
+				TreeView treeView,
 				NodeFactory factory,
-				TreeView treeView, 
 				GenericTestItemCollection item 
 				)
 				: base(
+					treeView,
 					factory,
 					item,
 					TestExplorer.ContainerIconIndex,
@@ -90,48 +93,7 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				// Children always available, so load them.
 				//
-				LoadChildren( treeView );
-
-				item.ItemAdded += new EventHandler< TestItemEventArgs >( item_ItemAdded );
-				item.ItemRemoved += new EventHandler< TestItemEventArgs >( item_ItemRemoved );
-			}
-
-			private void item_ItemAdded( 
-				object sender, 
-				TestItemEventArgs e 
-				)
-			{
-				if ( this.TreeView.InvokeRequired )
-				{
-					this.TreeView.Invoke( ( VoidDelegate ) delegate()
-					{
-						this.Nodes.Add( this.nodeFactory.CreateNode( this.TreeView, e.Item ) );
-						this.Expand();
-					} );
-				}
-				else
-				{
-					this.Nodes.Add( this.nodeFactory.CreateNode( this.TreeView, e.Item ) );
-					this.Expand();
-				}
-			}
-
-			private void item_ItemRemoved(
-				object sender, 
-				TestItemEventArgs e 
-				)
-			{
-				if ( this.TreeView.InvokeRequired )
-				{
-					this.TreeView.Invoke( ( VoidDelegate ) delegate()
-					{
-						this.Nodes.RemoveByKey( e.Item.Name );
-					} );
-				}
-				else
-				{
-					this.Nodes.RemoveByKey( e.Item.Name );
-				}
+				LoadChildren();
 			}
 
 			public override void BeforeExpand()
@@ -154,9 +116,9 @@ namespace Cfix.Control.Ui.Explorer
 		{
 			if ( item is TestModule )
 			{
-				return new ModuleExplorerNode( 
-					this,
+				return new ModuleExplorerNode(
 					treeView,
+					this,
 					( TestModule ) item );
 			}
 			else if ( item is InvalidModule )
@@ -167,15 +129,15 @@ namespace Cfix.Control.Ui.Explorer
 			else if ( item is GenericTestItemCollection )
 			{
 				return new GenericTestItemCollectionExplorerNode(
-					this,
 					treeView,
+					this,
 					( GenericTestItemCollection ) item );
 			}
 			else if ( item is ITestItemCollection )
 			{
 				return new TestItemCollectionExplorerNode(
-					this, 
 					treeView,
+					this, 
 					( ITestItemCollection ) item );
 			}
 			else if ( item is ITestItem )

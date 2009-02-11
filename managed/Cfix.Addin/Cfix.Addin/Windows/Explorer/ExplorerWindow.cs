@@ -107,7 +107,7 @@ namespace Cfix.Addin.Windows.Explorer
 			// Enable button only when a solution is open.
 			//
 			Solution curSolution = this.dte.Solution;
-			this.selectSlnModeButton.Enabled = curSolution.FileName.Length > 0;
+			this.selectSlnModeButton.Enabled = curSolution.Projects.Count > 0;
 		}
 
 		private void statusText_GotFocus( object sender, EventArgs e )
