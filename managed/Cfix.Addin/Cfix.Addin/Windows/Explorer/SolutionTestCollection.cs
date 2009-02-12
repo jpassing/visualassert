@@ -9,6 +9,8 @@ namespace Cfix.Addin.Windows.Explorer
 {
 	internal class SolutionTestCollection : GenericTestItemCollection
 	{
+		public event EventHandler Closed;
+
 		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
 
@@ -44,6 +46,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.solutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
 			this.solutionEvents.ProjectRemoved += new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
 			this.solutionEvents.ProjectRenamed += new _dispSolutionEvents_ProjectRenamedEventHandler( solutionEvents_ProjectRenamed );
+			this.solutionEvents.AfterClosing += new _dispSolutionEvents_AfterClosingEventHandler( solutionEvents_AfterClosing );
 
 			LoadProjects();
 		}
@@ -51,6 +54,14 @@ namespace Cfix.Addin.Windows.Explorer
 		/*----------------------------------------------------------------------
 		 * Events.
 		 */
+
+		private void solutionEvents_AfterClosing()
+		{
+			if ( this.Closed != null )
+			{
+				this.Closed( this, EventArgs.Empty );
+			}
+		}
 
 		private void solutionEvents_ProjectAdded( 
 			Project project 
@@ -117,6 +128,7 @@ namespace Cfix.Addin.Windows.Explorer
 				this.solutionEvents.ProjectAdded -= new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
 				this.solutionEvents.ProjectRemoved -= new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
 				this.solutionEvents.ProjectRenamed -= new _dispSolutionEvents_ProjectRenamedEventHandler( solutionEvents_ProjectRenamed );
+				this.solutionEvents.AfterClosing -= new _dispSolutionEvents_AfterClosingEventHandler( solutionEvents_AfterClosing );
 			}
 
 			base.Dispose( disposing );

@@ -30,7 +30,6 @@ namespace Cfix.Addin
 				this.addin.DTE.Globals[ "Explorer" ] = "1";
 				this.addin.DTE.Globals.set_VariablePersists( "Explorer", true );
 			}
-				
 		}
 
 		public DteToolWindow<ExplorerWindow> Explorer
@@ -43,13 +42,19 @@ namespace Cfix.Addin
 						this.addin,
 						Strings.ExplorerWindowCaption,
 						ExplorerWindow.Guid,
-						Icons.Explorer );
+						Icons.cfix );
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
 						this.addin.DTE );
 					this.explorer.Visible = true;
-					this.explorer.Height = 400;
-					this.explorer.Width = 300;
+
+					try
+					{
+						this.explorer.Height = 400;
+						this.explorer.Width = 300;
+					}
+					catch ( Exception )
+					{ }
 				}
 
 				return this.explorer;
@@ -61,6 +66,7 @@ namespace Cfix.Addin
 			if ( this.explorer != null )
 			{
 				this.explorer.Close();
+				this.explorer.UserControl.Dispose();
 			}
 		}
 	}

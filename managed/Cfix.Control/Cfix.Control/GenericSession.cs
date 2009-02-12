@@ -38,15 +38,15 @@ namespace Cfix.Control
 						this.tests.Dispose();
 					}
 
+					if ( this.BeforeSetTests != null )
+					{
+						this.BeforeSetTests( this, EventArgs.Empty );
+					}
+
+					this.tests = value;
+
 					if ( value != null )
 					{
-						if ( this.BeforeSetTests != null )
-						{
-							this.BeforeSetTests( this, EventArgs.Empty );
-						}
-
-						this.tests = value;
-
 						if ( this.AfterSetTests != null )
 						{
 							this.AfterSetTests( this, EventArgs.Empty );

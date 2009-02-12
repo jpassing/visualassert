@@ -114,6 +114,10 @@ namespace Cfix.Addin.Dte
 			set { this.window.Width = value; }
 		}
 
+		public bool IsFloating
+		{
+			get { return this.window.IsFloating; }
+		}
 
 		public void Activate()
 		{

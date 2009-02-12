@@ -60,6 +60,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap cfix {
+            get {
+                object obj = ResourceManager.GetObject("cfix", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Delete {
             get {
                 object obj = ResourceManager.GetObject("Delete", resourceCulture);

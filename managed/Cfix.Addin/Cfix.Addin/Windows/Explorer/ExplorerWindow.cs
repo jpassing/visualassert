@@ -23,6 +23,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private Workspace workspace;
 		private DTE2 dte;
+		private SolutionEvents solutionEvents;
 
 		public ExplorerWindow()
 		{
@@ -37,6 +38,8 @@ namespace Cfix.Addin.Windows.Explorer
 
 			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
 			this.selectModeButton.DropDownOpening += new EventHandler( selectModeButton_DropDownOpening );
+
+			this.Disposed += new EventHandler( ExplorerWindow_Disposed );
 		}
 
 		public void Initialize( Workspace ws, DTE2 dte )
@@ -46,12 +49,15 @@ namespace Cfix.Addin.Windows.Explorer
 			
 			this.workspace = ws;
 			this.dte = dte;
+			this.solutionEvents = dte.Events.SolutionEvents;
 
 			this.explorer.SetSession( ws.Session, false );
 			this.explorer.ExceptionRaised += new EventHandler<ExceptionEventArgs>( explorer_ExceptionRaised );
 			this.explorer.RefreshStarted += new EventHandler( explorer_RefreshStarted );
 			this.explorer.RefreshFinished += new EventHandler( explorer_RefreshFinished );
 			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
+
+			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
 		}
 
 		/*----------------------------------------------------------------------
@@ -79,6 +85,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void explorer_RefreshFinished( object sender, EventArgs e )
 		{
 			this.throbberPic.Visible = false;
+			this.selectModeButton.Enabled = true;
 			this.statusText.Text = "";
 
 			UpdateRefreshButtonStatus();
@@ -87,6 +94,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void explorer_RefreshStarted( object sender, EventArgs e )
 		{
 			this.throbberPic.Visible = true;
+			this.selectModeButton.Enabled = false;
 			this.statusText.Text = Strings.Searching;
 
 			DisableRefresh();
@@ -94,20 +102,54 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void refreshButton_Click( object sender, EventArgs e )
 		{
-			this.explorer.RefreshSession( true, true );
+			try
+			{
+				this.explorer.RefreshSession( true, true );
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
 		}
 
 		/*----------------------------------------------------------------------
 		 * Various events.
 		 */
 
+		private void solutionEvents_Opened()
+		{
+			try
+			{
+				if ( this.workspace.Session.Tests == null )
+				{
+					ExploreSolution();
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void ExplorerWindow_Disposed( object sender, EventArgs e )
+		{
+			this.solutionEvents.Opened -= new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
+		}
+
 		private void selectModeButton_DropDownOpening( object sender, EventArgs e )
 		{
-			//
-			// Enable button only when a solution is open.
-			//
-			Solution curSolution = this.dte.Solution;
-			this.selectSlnModeButton.Enabled = curSolution.Projects.Count > 0;
+			try
+			{
+				//
+				// Enable button only when a solution is open.
+				//
+				Solution curSolution = this.dte.Solution;
+				this.selectSlnModeButton.Enabled = curSolution.Projects.Count > 0;
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
 		}
 
 		private void statusText_GotFocus( object sender, EventArgs e )
@@ -167,8 +209,15 @@ namespace Cfix.Addin.Windows.Explorer
 			DisableRefresh();
 
 			Solution curSolution = this.dte.Solution;
-			this.workspace.Session.Tests = new SolutionTestCollection(
+			SolutionTestCollection slnCollection = new SolutionTestCollection(
 				( Solution2 ) curSolution );
+			slnCollection.Closed += new EventHandler( slnCollection_Closed );
+			this.workspace.Session.Tests = slnCollection;
+		}
+
+		private void slnCollection_Closed( object sender, EventArgs e )
+		{
+			this.workspace.Session.Tests = null;
 		}
 
 		/*----------------------------------------------------------------------
@@ -177,26 +226,33 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void selectDirModeButton_Click( object sender, EventArgs e )
 		{
-			ShellBrowseForFolderDialog dialog = new ShellBrowseForFolderDialog();
-			dialog.hwndOwner = this.Handle;
-
-			dialog.Filter = new FilterByExtension( SupportedExtensions );
-			dialog.DetailsFlags = 
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NONEWFOLDERBUTTON |
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_BROWSEINCLUDEFILES |
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NEWDIALOGSTYLE |
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_STATUSTEXT |
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_USENEWUI |
-				ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_VALIDATE;
-			dialog.OnSelChanged +=
-				new ShellBrowseForFolderDialog.SelChangedHandler(dialog_OnSelChanged);
-
-			dialog.Title = Strings.SelectFileOrFolder;
-			dialog.ShowDialog();
-
-			if ( ! dialog.Canceled )
+			try
 			{
-				ExploreDirectoryOrFile( dialog.FullName );
+				ShellBrowseForFolderDialog dialog = new ShellBrowseForFolderDialog();
+				dialog.hwndOwner = this.Handle;
+
+				dialog.Filter = new FilterByExtension( SupportedExtensions );
+				dialog.DetailsFlags = 
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NONEWFOLDERBUTTON |
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_BROWSEINCLUDEFILES |
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NEWDIALOGSTYLE |
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_STATUSTEXT |
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_USENEWUI |
+					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_VALIDATE;
+				dialog.OnSelChanged +=
+					new ShellBrowseForFolderDialog.SelChangedHandler(dialog_OnSelChanged);
+
+				dialog.Title = Strings.SelectFileOrFolder;
+				dialog.ShowDialog();
+
+				if ( ! dialog.Canceled )
+				{
+					ExploreDirectoryOrFile( dialog.FullName );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 
@@ -205,40 +261,47 @@ namespace Cfix.Addin.Windows.Explorer
 			ShellBrowseForFolderDialog.SelChangedEventArgs args
 			)
 		{
-			//
-			// Filter stuff that the built-in filtering ignores.
-			//
-			string path;
-			IShellFolder isf = ShellFunctions.GetDesktopFolder();
-			ShellApi.STRRET ptrDisplayName;
-			isf.GetDisplayNameOf( 
-				args.pidl, 
-				( uint ) ShellApi.SHGNO.SHGDN_NORMAL | ( uint ) ShellApi.SHGNO.SHGDN_FORPARSING, 
-				out ptrDisplayName );
-			ShellApi.StrRetToBSTR( ref ptrDisplayName, ( IntPtr ) 0, out path );
+			try
+			{
+				//
+				// Filter stuff that the built-in filtering ignores.
+				//
+				string path;
+				IShellFolder isf = ShellFunctions.GetDesktopFolder();
+				ShellApi.STRRET ptrDisplayName;
+				isf.GetDisplayNameOf( 
+					args.pidl, 
+					( uint ) ShellApi.SHGNO.SHGDN_NORMAL | ( uint ) ShellApi.SHGNO.SHGDN_FORPARSING, 
+					out ptrDisplayName );
+				ShellApi.StrRetToBSTR( ref ptrDisplayName, ( IntPtr ) 0, out path );
 
-			if ( Directory.Exists( path ) )
-			{
-				//
-				// Ok.
-				//
-				sender.EnableOk( args.hwnd, true );
-			}
-			else
-			{
-				//
-				// Re-check extension.
-				//
-				foreach ( String ext in this.SupportedExtensions )
+				if ( Directory.Exists( path ) )
 				{
-					if ( path.ToUpper().EndsWith( ext ) )
-					{
-						sender.EnableOk( args.hwnd, true );
-						return;
-					}
+					//
+					// Ok.
+					//
+					sender.EnableOk( args.hwnd, true );
 				}
+				else
+				{
+					//
+					// Re-check extension.
+					//
+					foreach ( String ext in this.SupportedExtensions )
+					{
+						if ( path.ToUpper().EndsWith( ext ) )
+						{
+							sender.EnableOk( args.hwnd, true );
+							return;
+						}
+					}
 
-				sender.EnableOk( args.hwnd, false );
+					sender.EnableOk( args.hwnd, false );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 
@@ -249,7 +312,14 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void selectSlnModeButton_Click( object sender, EventArgs e )
 		{
-			ExploreSolution();
+			try
+			{
+				ExploreSolution();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
 		}
 
 	}

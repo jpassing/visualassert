@@ -286,12 +286,11 @@ namespace Cfix.Control.Ui.Explorer
 					//
 					// (Re-) load children.
 					//
-					if ( selectionOnly )
+					if ( selectionOnly && selectedItem != null )
 					{
 						//
 						// Refresh currently selected node only.
 						//
-						Debug.Assert( selectedItem != null );
 						ITestItemCollection selectedItemColl =
 							selectedItem as ITestItemCollection;
 
