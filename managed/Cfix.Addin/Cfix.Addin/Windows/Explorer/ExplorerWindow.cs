@@ -24,6 +24,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private Workspace workspace;
 		private DTE2 dte;
 		private SolutionEvents solutionEvents;
+		private BuildEvents buildEvents;
 
 		public ExplorerWindow()
 		{
@@ -50,6 +51,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.workspace = ws;
 			this.dte = dte;
 			this.solutionEvents = dte.Events.SolutionEvents;
+			this.buildEvents = dte.Events.BuildEvents;
 
 			this.explorer.SetSession( ws.Session, false );
 			this.explorer.ExceptionRaised += new EventHandler<ExceptionEventArgs>( explorer_ExceptionRaised );
@@ -58,8 +60,11 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
 
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
+			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
+			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 		}
 
+		
 		/*----------------------------------------------------------------------
 		 * Refreshing.
 		 */
@@ -125,6 +130,60 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
+		private void buildEvents_OnBuildProjConfigDone( 
+			string project, 
+			string projectConfig, 
+			string platform, 
+			string solutionConfig, 
+			bool success )
+		{
+			SolutionTestCollection slnColl =
+				this.explorer.Session.Tests as SolutionTestCollection;
+			if ( !success || 
+				 !this.autoRefreshButton.Checked ||
+				 slnColl == null )
+			{
+				//
+				// N.B. We do not refresh in case we are in directory mode
+				// as this would lead to redundant refreshed in case the
+				// SLN has more than one project that is being built.
+				//
+				return;
+			}
+
+			//
+			// Project build done, refresh it.
+			//
+			try
+			{
+				slnColl.RefreshProject( project );
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void buildEvents_OnBuildDone( vsBuildScope Scope, vsBuildAction Action )
+		{
+			ITestItemCollection coll = this.explorer.Session.Tests;
+			SolutionTestCollection slnColl = coll as SolutionTestCollection;
+			if ( !this.autoRefreshButton.Checked ||
+				 coll == null ||
+				 slnColl != null )
+			{
+				return;
+			}
+
+			try
+			{
+				this.explorer.RefreshSession( true, true );
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
 
 		/*----------------------------------------------------------------------
 		 * Various events.
@@ -148,6 +207,9 @@ namespace Cfix.Addin.Windows.Explorer
 		private void ExplorerWindow_Disposed( object sender, EventArgs e )
 		{
 			this.solutionEvents.Opened -= new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
+			this.buildEvents.OnBuildProjConfigDone -= new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
+			this.buildEvents.OnBuildDone -= new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
+		
 		}
 
 		private void selectModeButton_DropDownOpening( object sender, EventArgs e )
@@ -188,7 +250,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Debug.Assert( this.workspace != null );
 
 			DisableRefresh();
-			this.autoRefreshButton.Enabled = false;
+			this.autoRefreshButton.Enabled = true;
 
 			DirectoryInfo dir;
 			String filter;

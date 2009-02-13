@@ -142,5 +142,29 @@ namespace Cfix.Addin.Windows.Explorer
 			//
 			base.Refresh();
 		}
+
+		/*----------------------------------------------------------------------
+		 * Public.
+		 */
+
+		public void RefreshProject( string name )
+		{
+			//
+			// N.B. Assume project collection is small.
+			//
+			lock ( listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					VCProjectTestCollection vcPrj =
+						( VCProjectTestCollection ) item;
+					if ( vcPrj.UniqueName == name )
+					{
+						vcPrj.Refresh();
+						break;
+					}
+				}
+			}
+		}
 	}
 }

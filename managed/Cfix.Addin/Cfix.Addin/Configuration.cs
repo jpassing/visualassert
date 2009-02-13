@@ -17,20 +17,6 @@ namespace Cfix.Addin
 			return new Configuration();
 		}
 
-		internal String IconsDirectory
-		{
-			get
-			{
-				if ( this.iconDirectory == null )
-				{
-					this.iconDirectory = Path.Combine(
-						new FileInfo(
-							Assembly.GetExecutingAssembly().Location ).Directory.FullName,
-							"Icons" );
-				}
-
-				return this.iconDirectory;
-			}
-		}
+		
 	}
 }
