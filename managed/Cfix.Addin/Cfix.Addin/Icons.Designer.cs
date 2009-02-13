@@ -60,6 +60,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap AbortRefresh {
+            get {
+                object obj = ResourceManager.GetObject("AbortRefresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap cfix {
             get {
                 object obj = ResourceManager.GetObject("cfix", resourceCulture);
@@ -105,6 +112,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap Refresh {
             get {
                 object obj = ResourceManager.GetObject("Refresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap RefreshOnBuild {
+            get {
+                object obj = ResourceManager.GetObject("RefreshOnBuild", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

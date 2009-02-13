@@ -75,15 +75,24 @@ namespace Cfix.Control.Ui.Explorer
 			}
 			finally
 			{
-				this.rundownLock.Release();
-
-				this.treeView.Invoke( ( VoidDelegate ) delegate()
+				if ( this.Disposing || this.treeView.Disposing )
 				{
-					if ( this.RefreshFinished != null )
+					//
+					// Do not touch UI.
+					//
+				}
+				else
+				{
+					this.treeView.Invoke( ( VoidDelegate ) delegate()
 					{
-						this.RefreshFinished( this, EventArgs.Empty );
-					}
-				} );
+						if ( this.RefreshFinished != null )
+						{
+							this.RefreshFinished( this, EventArgs.Empty );
+						}
+					} );
+				}
+
+				this.rundownLock.Release();
 			}
 		}
 
@@ -126,12 +135,22 @@ namespace Cfix.Control.Ui.Explorer
 			EventArgs e
 			)
 		{
+			//
+			// Wait for async operations to complete.
+			//
+
+			AbortRefreshSession();
+			this.rundownLock.Rundown();
+
+			//
+			// Now that async operations have been completed, it is safe
+			// to tear down the data structure.
+			//
+
 			if ( this.session != null )
 			{
 				this.session.Dispose();
 			}
-
-			this.rundownLock.Rundown();
 		}
 
 		/*----------------------------------------------------------------------

@@ -69,13 +69,14 @@ namespace Cfix.Addin.Windows.Explorer
 			ITestItem selItem = this.explorer.SelectedItem;
 			bool enable = ( selItem == null || selItem is ITestItemCollection );
 			this.refreshButton.Enabled = enable;
+			this.abortRefreshButton.Enabled = ! enable;
 		}
 
 		private void DisableRefresh()
 		{
 			this.refreshButton.Enabled = false;
+			this.abortRefreshButton.Enabled = true;
 		}
-
 
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
@@ -111,6 +112,19 @@ namespace Cfix.Addin.Windows.Explorer
 				CfixPlus.HandleError( x );
 			}
 		}
+
+		private void abortRefreshButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				this.explorer.AbortRefreshSession();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
 
 		/*----------------------------------------------------------------------
 		 * Various events.
@@ -174,6 +188,8 @@ namespace Cfix.Addin.Windows.Explorer
 			Debug.Assert( this.workspace != null );
 
 			DisableRefresh();
+			this.autoRefreshButton.Enabled = false;
+
 			DirectoryInfo dir;
 			String filter;
 
@@ -207,6 +223,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Debug.Assert( this.workspace != null );
 
 			DisableRefresh();
+			this.autoRefreshButton.Enabled = true;
 
 			Solution curSolution = this.dte.Solution;
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
@@ -322,5 +339,6 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
+		
 	}
 }
