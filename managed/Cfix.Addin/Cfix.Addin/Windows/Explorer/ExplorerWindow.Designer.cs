@@ -216,6 +216,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuRefreshButton.Image = global::Cfix.Addin.Icons.Refresh;
 			resources.ApplyResources( this.ctxMenuRefreshButton, "ctxMenuRefreshButton" );
 			this.ctxMenuRefreshButton.Name = "ctxMenuRefreshButton";
+
 			// 
 			// ExplorerWindow
 			// 

@@ -113,7 +113,7 @@ namespace Cfix.Control.Ui.Explorer
 				this.AfterSelected(
 					this,
 					new ExplorerNodeEventArgs(
-						( ( AbstractExplorerNode ) e.Node ).Item ) );
+						( AbstractExplorerNode ) e.Node ) );
 			}
 		}
 
@@ -208,7 +208,7 @@ namespace Cfix.Control.Ui.Explorer
 				{
 					this.BeforeContextMenuPopup( 
 						this,
-						new ExplorerNodeEventArgs( explNode.Item ) );
+						new ExplorerNodeEventArgs( explNode ) );
 				}
 
 				this.nodeContextMenu.Show( this.treeView, new Point( e.X, e.Y ) );
@@ -385,16 +385,24 @@ namespace Cfix.Control.Ui.Explorer
 
 	public class ExplorerNodeEventArgs : EventArgs
 	{
+		private readonly AbstractExplorerNode node;
 		private readonly ITestItem item;
 
-		internal ExplorerNodeEventArgs( ITestItem item )
+		internal ExplorerNodeEventArgs(
+			AbstractExplorerNode node 
+			)
 		{
-			this.item = item;
+			this.node = node;
 		}
+
+		public AbstractExplorerNode Node
+		{
+			get { return node; }
+		} 
 
 		public ITestItem Item
 		{
-			get { return item; }
+			get { return this.node.Item; }
 		}
 	}
 

@@ -4,7 +4,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class TestItem : ITestItem
+	public class TestItem : ITestItem, IComponentActionSource
 	{
 		private readonly TestItemCollection parent;
 		private readonly uint ordinal;
@@ -145,7 +145,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions schedulingOptions )
+		public IComponentAction CreateAction( SchedulingOptions schedulingOptions )
 		{
 			return CreateNativeAction( schedulingOptions );
 		}

@@ -26,6 +26,8 @@ namespace Cfix.Addin.Windows.Explorer
 		private SolutionEvents solutionEvents;
 		private BuildEvents buildEvents;
 
+		private AbstractExplorerNode contextMenuReferenceNode;
+
 		public ExplorerWindow()
 		{
 			InitializeComponent();
@@ -39,6 +41,9 @@ namespace Cfix.Addin.Windows.Explorer
 
 			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
 			this.selectModeButton.DropDownOpening += new EventHandler( selectModeButton_DropDownOpening );
+			
+			this.explorer.NodeContextMenu = this.ctxMenu;
+			this.ctxMenuRefreshButton.Click += new EventHandler( ctxMenuRefreshButton_Click );
 
 			this.Disposed += new EventHandler( ExplorerWindow_Disposed );
 		}
@@ -63,12 +68,34 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer.RefreshStarted += new EventHandler( explorer_RefreshStarted );
 			this.explorer.RefreshFinished += new EventHandler( explorer_RefreshFinished );
 			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
-
+			this.explorer.BeforeContextMenuPopup += new EventHandler<ExplorerNodeEventArgs>( explorer_BeforeContextMenuPopup );
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
 			this.autoRefreshButton.Checked = this.config.AutoRefreshAfterBuild;
+		}
+
+		/*----------------------------------------------------------------------
+		 * Context Menu.
+		 */
+
+		void explorer_BeforeContextMenuPopup( 
+			object sender, 
+			ExplorerNodeEventArgs e )
+		{
+			this.ctxMenuDebugButton.Enabled = e.Item is IComponentActionSource;
+			this.ctxMenuRefreshButton.Enabled = this.refreshButton.Enabled;
+
+			this.contextMenuReferenceNode = e.Node;
+		}
+
+		private void ctxMenuRefreshButton_Click( object sender, EventArgs e )
+		{
+			if ( this.contextMenuReferenceNode != null )
+			{
+			}
+
 		}
 
 		/*----------------------------------------------------------------------
@@ -418,8 +445,5 @@ namespace Cfix.Addin.Windows.Explorer
 				CfixPlus.HandleError( x );
 			}
 		}
-
-		
-		
 	}
 }
