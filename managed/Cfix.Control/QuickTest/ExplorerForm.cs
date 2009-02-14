@@ -25,7 +25,7 @@ namespace QuickTest
 
 			this.explorer.AfterSelected += delegate(
 				Object sender,
-				TestExplorer.ExplorerNodeEventArgs args
+				ExplorerNodeEventArgs args
 				)
 			{
 				this.currentNodeLabel.Text = args.Item.Name;
@@ -34,7 +34,7 @@ namespace QuickTest
 
 		private void refresh_Click( object sender, EventArgs e )
 		{
-			Explorer.RefreshSession( true );
+			Explorer.RefreshSession( true, true );
 		}
 
 		private void timer1_Tick( object sender, EventArgs e )

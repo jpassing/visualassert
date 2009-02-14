@@ -16,8 +16,7 @@ namespace Cfix.Addin
 
 		public void RestoreWindowState()
 		{
-			if ( this.addin.DTE.Globals.get_VariableExists( "Explorer" )
-				&& this.addin.DTE.Globals[ "Explorer" ].ToString() == "1" )
+			if ( this.addin.Configuration.ExplorerWindowVisible )
 			{
 				Explorer.Visible = true;
 			}
@@ -27,8 +26,7 @@ namespace Cfix.Addin
 		{
 			if ( this.explorer != null && this.explorer.Visible )
 			{
-				this.addin.DTE.Globals[ "Explorer" ] = "1";
-				this.addin.DTE.Globals.set_VariablePersists( "Explorer", true );
+				this.addin.Configuration.ExplorerWindowVisible = true;
 			}
 		}
 
@@ -45,6 +43,7 @@ namespace Cfix.Addin
 						Icons.cfix );
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
+						this.addin.Configuration,
 						this.addin.DTE );
 					this.explorer.Visible = true;
 

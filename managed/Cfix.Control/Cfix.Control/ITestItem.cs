@@ -28,10 +28,6 @@ namespace Cfix.Control
 
 		ITestItemCollection Parent { get; }
 
-		IAction CreateAction( 
-			SchedulingOptions schedulingOptions 
-			);
-
 		void CreateAction( 
 			ICompositeAction actionToComposeWith,
 			SchedulingOptions schedulingOptions,

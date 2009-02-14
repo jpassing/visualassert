@@ -124,20 +124,6 @@ namespace Cfix.Control
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions schedulingOptions )
-		{
-			IList<IAction> actions = new List<IAction>();
-			lock ( this.listLock )
-			{
-				foreach ( ITestItem item in this.list )
-				{
-					actions.Add( item.CreateAction( schedulingOptions ) );
-				}
-			}
-
-			return new SequenceAction( actions );
-		}
-
 		public ITestItemCollection Parent
 		{
 			get

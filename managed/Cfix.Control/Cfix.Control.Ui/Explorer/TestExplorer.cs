@@ -46,6 +46,9 @@ namespace Cfix.Control.Ui.Explorer
 		public event EventHandler<ExceptionEventArgs> ExceptionRaised;
 		public event EventHandler RefreshStarted;
 		public event EventHandler RefreshFinished;
+		public event EventHandler<ExplorerNodeEventArgs> BeforeContextMenuPopup;
+		
+		private ContextMenuStrip nodeContextMenu;
 
 		/*----------------------------------------------------------------------
 		 * Private.
@@ -164,6 +167,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.AfterSelect += treeView_AfterSelect;
 			this.treeView.BeforeExpand += treeView_BeforeExpand;
 			this.treeView.AfterCollapse += treeView_AfterCollapse;
+			this.treeView.MouseDown += new MouseEventHandler( treeView_MouseDown );
 
 			this.Disposed += this_Disposed;
 		}
@@ -179,6 +183,38 @@ namespace Cfix.Control.Ui.Explorer
 			set { nodeFactory = value; }
 		}
 
+		/*----------------------------------------------------------------------
+		 * Context Menu.
+		 */
+
+		public ContextMenuStrip NodeContextMenu
+		{
+			get { return this.nodeContextMenu; }
+			set { this.nodeContextMenu = value; }
+		}
+
+		private void treeView_MouseDown( object sender, MouseEventArgs e )
+		{
+			if ( this.nodeContextMenu == null || e.Button != MouseButtons.Right )
+			{
+				return;
+			}
+
+			TreeNode nodeHit = this.treeView.HitTest( e.X, e.Y ).Node;
+			if ( nodeHit != null )
+			{
+				AbstractExplorerNode explNode = nodeHit as AbstractExplorerNode;
+				if ( explNode != null && this.BeforeContextMenuPopup != null )
+				{
+					this.BeforeContextMenuPopup( 
+						this,
+						new ExplorerNodeEventArgs( explNode.Item ) );
+				}
+
+				this.nodeContextMenu.Show( this.treeView, new Point( e.X, e.Y ) );
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * Session switching.
 		 */

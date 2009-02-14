@@ -28,25 +28,25 @@ namespace Cfix.Addin.Windows.Explorer
 		/// </summary>
 		private void InitializeComponent()
 		{
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
-			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
-			this.statusText = new System.Windows.Forms.TextBox();
-			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectSlnModeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.refreshButton = new System.Windows.Forms.ToolStripButton();
 			this.abortRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.autoRefreshButton = new System.Windows.Forms.ToolStripButton();
+			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.startDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.startWithoutDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.abortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.terminateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
+			this.statusText = new System.Windows.Forms.TextBox();
+			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.toolbar.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
 			this.SuspendLayout();
@@ -63,34 +63,6 @@ namespace Cfix.Addin.Windows.Explorer
             this.toolStripDropDownButton1} );
 			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
-			// 
-			// separator1
-			// 
-			this.separator1.Name = "separator1";
-			resources.ApplyResources( this.separator1, "separator1" );
-			// 
-			// explorer
-			// 
-			resources.ApplyResources( this.explorer, "explorer" );
-			this.explorer.Name = "explorer";
-			this.explorer.NodeFactory = nodeFactory2;
-			// 
-			// statusText
-			// 
-			resources.ApplyResources( this.statusText, "statusText" );
-			this.statusText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.statusText.HideSelection = false;
-			this.statusText.Name = "statusText";
-			this.statusText.ReadOnly = true;
-			this.statusText.ShortcutsEnabled = false;
-			// 
-			// throbberPic
-			// 
-			resources.ApplyResources( this.throbberPic, "throbberPic" );
-			this.throbberPic.Image = global::Cfix.Addin.Icons.Throb;
-			this.throbberPic.InitialImage = null;
-			this.throbberPic.Name = "throbberPic";
-			this.throbberPic.TabStop = false;
 			// 
 			// selectModeButton
 			// 
@@ -138,6 +110,11 @@ namespace Cfix.Addin.Windows.Explorer
 			this.autoRefreshButton.Image = global::Cfix.Addin.Icons.RefreshOnBuild;
 			this.autoRefreshButton.Name = "autoRefreshButton";
 			// 
+			// separator1
+			// 
+			this.separator1.Name = "separator1";
+			resources.ApplyResources( this.separator1, "separator1" );
+			// 
 			// toolStripDropDownButton2
 			// 
 			this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -181,6 +158,30 @@ namespace Cfix.Addin.Windows.Explorer
 			this.terminateToolStripMenuItem.Image = global::Cfix.Addin.Icons.Delete;
 			resources.ApplyResources( this.terminateToolStripMenuItem, "terminateToolStripMenuItem" );
 			this.terminateToolStripMenuItem.Name = "terminateToolStripMenuItem";
+			// 
+			// explorer
+			// 
+			resources.ApplyResources( this.explorer, "explorer" );
+			this.explorer.Name = "explorer";
+			this.explorer.NodeContextMenu = null;
+			this.explorer.NodeFactory = nodeFactory1;
+			// 
+			// statusText
+			// 
+			resources.ApplyResources( this.statusText, "statusText" );
+			this.statusText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.statusText.HideSelection = false;
+			this.statusText.Name = "statusText";
+			this.statusText.ReadOnly = true;
+			this.statusText.ShortcutsEnabled = false;
+			// 
+			// throbberPic
+			// 
+			resources.ApplyResources( this.throbberPic, "throbberPic" );
+			this.throbberPic.Image = global::Cfix.Addin.Icons.Throb;
+			this.throbberPic.InitialImage = null;
+			this.throbberPic.Name = "throbberPic";
+			this.throbberPic.TabStop = false;
 			// 
 			// ExplorerWindow
 			// 

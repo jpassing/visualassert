@@ -27,4 +27,11 @@ namespace Cfix.Control
 	{
 		void Add( IComponentAction action );
 	}
+
+	public interface IComponentActionSource
+	{
+		IComponentAction CreateAction(
+			SchedulingOptions schedulingOptions
+			);
+	}
 }

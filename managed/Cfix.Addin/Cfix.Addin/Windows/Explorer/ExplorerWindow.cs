@@ -18,10 +18,10 @@ namespace Cfix.Addin.Windows.Explorer
 	public partial class ExplorerWindow : UserControl
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
-		private const bool UserModulesOnly = true;
 		private readonly String[] SupportedExtensions = new String[] { "DLL" };
 
 		private Workspace workspace;
+		private Configuration config;
 		private DTE2 dte;
 		private SolutionEvents solutionEvents;
 		private BuildEvents buildEvents;
@@ -43,13 +43,18 @@ namespace Cfix.Addin.Windows.Explorer
 			this.Disposed += new EventHandler( ExplorerWindow_Disposed );
 		}
 
-		public void Initialize( Workspace ws, DTE2 dte )
+		public void Initialize( 
+			Workspace ws, 
+			Configuration config,
+			DTE2 dte )
 		{
 			Debug.Assert( this.workspace == null );
+			Debug.Assert( this.config == null );
 			Debug.Assert( this.dte == null );
 			
 			this.workspace = ws;
 			this.dte = dte;
+			this.config = config;
 			this.solutionEvents = dte.Events.SolutionEvents;
 			this.buildEvents = dte.Events.BuildEvents;
 
@@ -275,7 +280,7 @@ namespace Cfix.Addin.Windows.Explorer
 					filter,
 					this.workspace.SearchTarget,
 					this.workspace.RunTarget,
-					UserModulesOnly,
+					! this.config.KernelModeFeaturesEnabled,
 					true,
 					null );
 		}

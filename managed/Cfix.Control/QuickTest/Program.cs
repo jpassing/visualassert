@@ -52,7 +52,8 @@ namespace QuickTest
 
 				using ( ExplorerForm f = new ExplorerForm() )
 				{
-					f.Explorer.SetSession( new GenericSession( cont ), true );
+					f.Explorer.SetSession( new GenericSession(), true );
+					f.Explorer.Session.Tests = cont;
 					Application.Run( f );
 				}
 			}
