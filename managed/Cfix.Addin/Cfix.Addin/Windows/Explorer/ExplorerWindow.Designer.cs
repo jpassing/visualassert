@@ -28,6 +28,7 @@ namespace Cfix.Addin.Windows.Explorer
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
 			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
@@ -47,8 +48,13 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.statusText = new System.Windows.Forms.TextBox();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
+			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
+			this.ctxMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolbar
@@ -184,6 +190,33 @@ namespace Cfix.Addin.Windows.Explorer
 			this.throbberPic.Name = "throbberPic";
 			this.throbberPic.TabStop = false;
 			// 
+			// ctxMenu
+			// 
+			this.ctxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuDebugButton,
+            this.ctxMenuRunButton,
+            this.ctxMenuRefreshButton} );
+			this.ctxMenu.Name = "ctxMenu";
+			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
+			// 
+			// ctxMenuDebugButton
+			// 
+			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
+			resources.ApplyResources( this.ctxMenuDebugButton, "ctxMenuDebugButton" );
+			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
+			// 
+			// ctxMenuRunButton
+			// 
+			this.ctxMenuRunButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			resources.ApplyResources( this.ctxMenuRunButton, "ctxMenuRunButton" );
+			this.ctxMenuRunButton.Name = "ctxMenuRunButton";
+			// 
+			// ctxMenuRefreshButton
+			// 
+			this.ctxMenuRefreshButton.Image = global::Cfix.Addin.Icons.Refresh;
+			resources.ApplyResources( this.ctxMenuRefreshButton, "ctxMenuRefreshButton" );
+			this.ctxMenuRefreshButton.Name = "ctxMenuRefreshButton";
+			// 
 			// ExplorerWindow
 			// 
 			resources.ApplyResources( this, "$this" );
@@ -196,6 +229,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.toolbar.ResumeLayout( false );
 			this.toolbar.PerformLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).EndInit();
+			this.ctxMenu.ResumeLayout( false );
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -220,5 +254,9 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.TextBox statusText;
 		private System.Windows.Forms.ToolStripButton abortRefreshButton;
 		private System.Windows.Forms.ToolStripButton autoRefreshButton;
+		private System.Windows.Forms.ContextMenuStrip ctxMenu;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuDebugButton;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunButton;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRefreshButton;
 	}
 }

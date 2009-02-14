@@ -301,7 +301,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -326,7 +326,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;explorer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="statusText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -350,7 +350,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;statusText.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="throbberPic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -380,7 +380,46 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;throbberPic.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <metadata name="ctxMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>86, 0</value>
+  </metadata>
+  <data name="ctxMenuDebugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="ctxMenuDebugButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="ctxMenuDebugButton.Text" xml:space="preserve">
+    <value>Start Debugging</value>
+  </data>
+  <data name="ctxMenuRunButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="ctxMenuRunButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="ctxMenuRunButton.Text" xml:space="preserve">
+    <value>Start Without Debugging</value>
+  </data>
+  <data name="ctxMenuRefreshButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="ctxMenuRefreshButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="ctxMenuRefreshButton.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 92</value>
+  </data>
+  <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
+    <value>ctxMenu</value>
+  </data>
+  <data name="&gt;&gt;ctxMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -467,6 +506,24 @@
     <value>terminateToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;terminateToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuDebugButton.Name" xml:space="preserve">
+    <value>ctxMenuDebugButton</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuDebugButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunButton.Name" xml:space="preserve">
+    <value>ctxMenuRunButton</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRefreshButton.Name" xml:space="preserve">
+    <value>ctxMenuRefreshButton</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
