@@ -12,10 +12,15 @@ namespace Cfix.Control
 	public enum CompositionOptions
 	{
 		//
+		// Disallow composition.
+		//
+		NonComposite = 1,
+
+		//
 		// Prefer fine-grained components i.o. to allow more flexible
 		// scheduling.
 		//
-		FineGrained = 1
+		FineGrained = 2
 	}
 
 	public interface ITestItem : IDisposable

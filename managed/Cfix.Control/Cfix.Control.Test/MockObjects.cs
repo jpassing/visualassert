@@ -87,6 +87,11 @@ namespace Cfix.Control.Test
 			return this.module;
 		}
 
+		public uint GetHostProcessId()
+		{
+			return 42;
+		}
+
 		public void Terminate()
 		{
 		}

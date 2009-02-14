@@ -19,6 +19,7 @@ namespace Cfix.Control
 	{
 		Architecture Architecture { get; }
 		uint HostProcessId { get; }
+		void TerminateHost();
 	}
 
 	/*++

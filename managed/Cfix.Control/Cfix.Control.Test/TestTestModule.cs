@@ -88,6 +88,34 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
+		public void LoadTestlibAndTerminate()
+		{
+			TestModule mod = TestModule.LoadModule(
+				target, this.testdataDir + "\\simple.dll", true );
+
+			Assert.AreEqual( 0, mod.Ordinal );
+			Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
+
+			Assert.AreEqual( 1, mod.ItemCount );
+
+			ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+			Assert.AreEqual( 0, fixture.Ordinal );
+			Assert.AreEqual( "SampleFixture", fixture.Name );
+
+			Assert.AreEqual( 0, fixture.ItemCount );
+
+			DefaultEventSink sink = new DefaultEventSink();
+			IComponentAction action = mod.CreateAction( SchedulingOptions.None );
+			Assert.AreEqual( 0, action.TestCaseCount );
+
+			action.TerminateHost();
+
+			Assert.AreEqual( 1, sink.FixtureStarts );
+			Assert.AreEqual( 1, sink.FixtureFinishs );
+			Assert.AreEqual( 0, sink.TestCaseStarts );
+		}
+
+		[Test]
 		[ExpectedException( typeof(  CfixException ) )]
 		public void LoadTestlibWithInvalidFixtureName()
 		{

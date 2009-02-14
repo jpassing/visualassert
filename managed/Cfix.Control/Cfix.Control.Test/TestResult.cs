@@ -444,10 +444,19 @@ namespace Cfix.Control.Test
 
 			IRun run = new Run( this.policy, mod );
 
+			int spawns = 0;
+			run.HostSpawned += delegate( object sender, HostEventArgs e )
+			{
+				Assert.AreEqual( 1234, e.HostProcessId );
+				spawns++;
+			};
+
+			Cfixctl.ICfixEventSink sink = ( Cfixctl.ICfixEventSink ) run;
+			Cfixctl.ICfixTestÌtemContainerEventSink fixSink = 
+				sink.GetProcessEventSink( 1234 ).GetTestÌtemContainerEventSink( module, 0 );
+
 			IResultItemCollection fixture =
 				( IResultItemCollection ) run.RootResult.GetItem( 0 );
-			Cfixctl.ICfixTestÌtemContainerEventSink fixSink =
-				( Cfixctl.ICfixTestÌtemContainerEventSink ) fixture;
 
 			fixSink.BeforeFixtureStart();
 			if ( fixSetup == ExecutionStatus.Inconclusive )
@@ -495,6 +504,8 @@ namespace Cfix.Control.Test
 				fixSink.AfterFixtureFinish(
 					testCases.Length == testCasesToExecute ? 1 : 0 );
 			}
+
+			Assert.AreEqual( 1, spawns );
 
 			return run;
 		}

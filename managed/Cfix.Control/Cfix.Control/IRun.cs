@@ -49,8 +49,47 @@ namespace Cfix.Control
 		}
 	}
 
-	public interface IRun
+	public class HostEventArgs : EventArgs
 	{
+		private readonly uint pid;
+
+		public HostEventArgs( uint pid )
+		{
+			this.pid = pid;
+		}
+
+		public uint HostProcessId
+		{
+			get { return this.pid; }
+		}
+	}
+
+	public class FailEventArgs : EventArgs
+	{
+		private readonly Exception exception;
+
+		public FailEventArgs( Exception x )
+		{
+			this.exception = x;
+		}
+
+		public Exception Exception
+		{
+			get { return this.exception; }
+		}
+	}
+
+	public interface IRun : IDisposable
+	{
+		//
+		// N.B. Eents may be raised on a worker thread.
+		//
+
+		event EventHandler Started;
+		event EventHandler Succeeded;
+		event EventHandler<FailEventArgs> Failed;
+		event EventHandler<HostEventArgs> HostSpawned;
+		
 		event EventHandler<LogEventArgs> Log;
 		event EventHandler<ThreadEventArgs> ThreadStarted;
 		event EventHandler<ThreadEventArgs> ThreadFinished;
@@ -59,5 +98,10 @@ namespace Cfix.Control
 
 		ITestItemCollection RootItem { get; }
 		IResultItemCollection RootResult { get; }
+
+		void Start(
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			);
 	}
 }

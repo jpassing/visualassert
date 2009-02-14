@@ -8,6 +8,7 @@ namespace Cfix.Control.Native
 	{
 		private TestItem item;
 		private ICfixAction action;
+		private ICfixHost host;
 
 		public NativeAction( TestItem item, ICfixAction action )
 		{
@@ -31,7 +32,7 @@ namespace Cfix.Control.Native
 
 		public uint HostProcessId
 		{
-			get { return this.action.GetHostProcessId(); }
+			get { return this.host.GetHostProcessId(); }
 		}
 
 		public Architecture Architecture
@@ -63,12 +64,32 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public void TerminateHost()
+		{
+			try
+			{
+				this.host.Terminate();
+				this.host = null;
+				this.action = null;
+			}
+			catch ( COMException x )
+			{
+				throw this.item.Module.Target.WrapException( x );
+			}
+		}
+
 		protected virtual void Dispose( bool disposing )
 		{
 			if ( this.action != null )
 			{
 				this.item.Module.Target.ReleaseObject( this.action );
 				this.action = null;
+			}
+
+			if ( this.host != null )
+			{
+				this.item.Module.Target.ReleaseObject( this.host );
+				this.host = null;
 			}
 		}
 
