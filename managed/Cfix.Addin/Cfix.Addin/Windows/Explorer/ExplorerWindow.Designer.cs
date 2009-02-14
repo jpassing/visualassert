@@ -109,6 +109,7 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.autoRefreshButton, "autoRefreshButton" );
 			this.autoRefreshButton.Image = global::Cfix.Addin.Icons.RefreshOnBuild;
 			this.autoRefreshButton.Name = "autoRefreshButton";
+			this.autoRefreshButton.Click += new System.EventHandler( this.autoRefreshButton_Click );
 			// 
 			// separator1
 			// 

@@ -67,9 +67,10 @@ namespace Cfix.Addin.Windows.Explorer
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
+
+			this.autoRefreshButton.Checked = this.config.AutoRefreshAfterBuild;
 		}
 
-		
 		/*----------------------------------------------------------------------
 		 * Refreshing.
 		 */
@@ -183,6 +184,18 @@ namespace Cfix.Addin.Windows.Explorer
 			try
 			{
 				this.explorer.RefreshSession( true, true );
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void autoRefreshButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				this.config.AutoRefreshAfterBuild = this.autoRefreshButton.Checked;
 			}
 			catch ( Exception x )
 			{
@@ -406,6 +419,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
+		
 		
 	}
 }

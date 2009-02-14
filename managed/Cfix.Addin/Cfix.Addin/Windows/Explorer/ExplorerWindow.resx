@@ -121,6 +121,40 @@
     <value>0, 0</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
+        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
+        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
+        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
+        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
+        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
+        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
+        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
+        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
+        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
+        zRn9p97gAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectDirModeButton.Text" xml:space="preserve">
+    <value>Explore Directory</value>
+  </data>
+  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectSlnModeButton.Text" xml:space="preserve">
+    <value>Current Solution</value>
+  </data>
   <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -185,6 +219,24 @@
   <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
+  <data name="startDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="startDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="startDebuggingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start Debugging</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="startWithoutDebuggingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start Without Debugging</value>
+  </data>
   <data name="toolStripDropDownButton2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -196,6 +248,24 @@
   </data>
   <data name="toolStripDropDownButton2.Text" xml:space="preserve">
     <value>toolStripDropDownButton2</value>
+  </data>
+  <data name="abortToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="abortToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 22</value>
+  </data>
+  <data name="abortToolStripMenuItem.Text" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="terminateToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="terminateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 22</value>
+  </data>
+  <data name="terminateToolStripMenuItem.Text" xml:space="preserve">
+    <value>Terminate</value>
   </data>
   <data name="toolStripDropDownButton1.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -312,76 +382,6 @@
   <data name="&gt;&gt;throbberPic.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
-        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
-        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
-        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
-        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
-        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
-        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
-        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
-        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
-        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
-        zRn9p97gAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
-  </data>
-  <data name="selectDirModeButton.Text" xml:space="preserve">
-    <value>Explore Directory</value>
-  </data>
-  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
-  </data>
-  <data name="selectSlnModeButton.Text" xml:space="preserve">
-    <value>Current Solution</value>
-  </data>
-  <data name="startDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="startDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 22</value>
-  </data>
-  <data name="startDebuggingToolStripMenuItem.Text" xml:space="preserve">
-    <value>Start Debugging</value>
-  </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 22</value>
-  </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.Text" xml:space="preserve">
-    <value>Start Without Debugging</value>
-  </data>
-  <data name="abortToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="abortToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
-  </data>
-  <data name="abortToolStripMenuItem.Text" xml:space="preserve">
-    <value>Abort</value>
-  </data>
-  <data name="terminateToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="terminateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
-  </data>
-  <data name="terminateToolStripMenuItem.Text" xml:space="preserve">
-    <value>Terminate</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -390,12 +390,6 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 359</value>
-  </data>
-  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
-    <value>separator1</value>
-  </data>
-  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
     <value>selectModeButton</value>
@@ -432,6 +426,12 @@
   </data>
   <data name="&gt;&gt;autoRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator1.Name" xml:space="preserve">
+    <value>separator1</value>
+  </data>
+  <data name="&gt;&gt;separator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripDropDownButton2.Name" xml:space="preserve">
     <value>toolStripDropDownButton2</value>
