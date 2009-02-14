@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
@@ -10,10 +11,16 @@ namespace Cfix.Control.Native
 		private ICfixAction action;
 		private ICfixHost host;
 
-		public NativeAction( TestItem item, ICfixAction action )
+		public NativeAction( 
+			TestItem item, 
+			ICfixHost host,
+			ICfixAction action )
 		{
 			this.item = item;
+			this.host = host;
 			this.action = action;
+
+			Debug.Assert( host.GetHostProcessId() > 0 );
 		}
 
 		/*----------------------------------------------------------------------

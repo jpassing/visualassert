@@ -83,6 +83,11 @@ public:
 		__in ICfixSearchModulesCallback *Callback
 		);
 
+	
+	STDMETHOD( GetHostProcessId )(
+		__out ULONG *Pid
+		);
+
 	/*------------------------------------------------------------------
 	 * IID_ICfixProcessHostInternal methods.
 	 */
@@ -242,6 +247,20 @@ STDMETHODIMP ProcessHost::SearchModules(
 	{
 		return Host->SearchModules( 
 			PathFilter, Flags, Type, Archs, Callback );
+	}
+}
+
+STDMETHODIMP ProcessHost::GetHostProcessId(
+	__out ULONG *Pid
+	)
+{
+	if ( ! this->Host )
+	{
+		return E_UNEXPECTED;
+	}
+	else
+	{
+		return Host->GetHostProcessId( Pid );
 	}
 }
 

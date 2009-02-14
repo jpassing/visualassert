@@ -110,8 +110,8 @@ namespace Cfix.Control.Test
 
 			action.TerminateHost();
 
-			Assert.AreEqual( 1, sink.FixtureStarts );
-			Assert.AreEqual( 1, sink.FixtureFinishs );
+			Assert.AreEqual( 0, sink.FixtureStarts );
+			Assert.AreEqual( 0, sink.FixtureFinishs );
 			Assert.AreEqual( 0, sink.TestCaseStarts );
 		}
 

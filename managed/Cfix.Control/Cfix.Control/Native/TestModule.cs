@@ -36,19 +36,14 @@ namespace Cfix.Control.Native
 			this.target = target;
 		}
 
-		private static ICfixTestModule Connect( Target target, String path )
+		private static NativeConnection Connect( Target target, String path )
 		{
 			try
 			{
 				ICfixHost host = target.CreateHost();
-				try
-				{
-					return host.LoadModule( path );
-				}
-				finally
-				{
-					target.ReleaseObject( host );
-				}
+				return new NativeConnection(
+					host,
+					host.LoadModule( path ) );
 			}
 			catch ( FileNotFoundException x )
 			{
@@ -63,7 +58,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		private ICfixTestModule Connect()
+		private NativeConnection Connect()
 		{
 			return Connect( this.target, this.path );
 		}
@@ -72,7 +67,7 @@ namespace Cfix.Control.Native
 		 * Overrides.
 		 */
 
-		public override ICfixTestItem NativeItem
+		internal override NativeConnection NativeConnection
 		{
 			get
 			{
@@ -125,14 +120,15 @@ namespace Cfix.Control.Native
 				throw new ArgumentException();
 			}
 
-			ICfixTestModule ctlModule = Connect();
+			NativeConnection connection = Connect();
 			try
 			{
-				Update( ctlModule );
+				Update( ( ICfixTestModule ) connection.Item );
 			}
 			finally
 			{
-				this.target.ReleaseObject( ctlModule );
+				this.target.ReleaseObject( connection.Item );
+				this.target.ReleaseObject( connection.Host );
 			}
 		}
 
@@ -174,9 +170,11 @@ namespace Cfix.Control.Native
 				throw new ArgumentException( "" );
 			}
 
-			ICfixTestModule ctlModule = Connect( target, path );
+			NativeConnection connection = Connect( target, path );
 			try
 			{
+				ICfixTestModule ctlModule = ( ICfixTestModule ) connection.Item;
+
 				TestModule mod = new TestModule(
 					parentCollection,
 					path,
@@ -190,7 +188,8 @@ namespace Cfix.Control.Native
 			}
 			finally
 			{
-				target.ReleaseObject( ctlModule );
+				target.ReleaseObject( connection.Item );
+				target.ReleaseObject( connection.Host );
 			}
 		}
 	}

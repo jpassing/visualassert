@@ -75,6 +75,10 @@ public:
 		__in ULONG Architectures,
 		__in ICfixSearchModulesCallback *Callback
 		);
+
+	STDMETHOD( GetHostProcessId )(
+		__out ULONG *Pid
+		);
 };
 
 /*------------------------------------------------------------------
@@ -434,4 +438,19 @@ STDMETHODIMP LocalHost::SearchModules(
 		Flags & CFIXCTL_SEARCH_FLAG_RECURSIVE,
 		CfixctlsSearchCallback,
 		&Context );
+}
+
+STDMETHODIMP LocalHost::GetHostProcessId(
+	__out ULONG *Pid
+	)
+{
+	if ( ! Pid )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Pid = GetCurrentProcessId();
+		return S_OK;
+	}
 }

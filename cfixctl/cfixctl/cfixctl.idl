@@ -144,6 +144,14 @@ library Cfixctl
 			[in] ULONG Architectures,
 			[in] ICfixSearchModulesCallback *Callback
 			);
+		
+		/*++
+			Method Description:
+				Obtain process id of the host.
+		--*/
+		HRESULT GetHostProcessId(
+			[out, retval] ULONG *Pid
+			);
 	}
 
 	[

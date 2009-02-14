@@ -38,11 +38,13 @@ namespace Cfix.Control.Native
 
 		private NativeAction CreateNativeAction( SchedulingOptions flags )
 		{
-			ICfixTestItem ctlItem = this.NativeItem;
+			NativeConnection connection = this.NativeConnection;
+			ICfixTestItem ctlItem = connection.Item;
 			try
 			{
 				return new NativeAction(
 					this,
+					connection.Host,
 					ctlItem.CreateExecutionAction( ( uint ) flags, 0 ) );
 			}
 			catch ( COMException x )
@@ -91,12 +93,15 @@ namespace Cfix.Control.Native
 			get { return this.disposed; }
 		}
 
-		public virtual ICfixTestItem NativeItem
+		internal virtual NativeConnection NativeConnection
 		{
 			get
 			{
+				NativeConnection parentConnection =
+					parent.NativeConnection;
+
 				ICfixTestContainer parentContainer =
-					( ICfixTestContainer ) parent.NativeItem;
+					( ICfixTestContainer ) parentConnection.Item;
 
 				try
 				{
@@ -108,7 +113,9 @@ namespace Cfix.Control.Native
 						throw new TestItemDisappearedException();
 					}
 
-					return parentContainer.GetItem( this.ordinal );
+					return new NativeConnection(
+						parentConnection.Host,
+						parentContainer.GetItem( this.ordinal ) );
 				}
 				catch ( COMException x )
 				{
@@ -178,4 +185,20 @@ namespace Cfix.Control.Native
 			GC.SuppressFinalize( this );
 		}
 	}
+
+	internal class NativeConnection
+	{
+		public readonly ICfixHost Host;
+		public readonly ICfixTestItem Item;
+
+		public NativeConnection(
+			ICfixHost host,
+			ICfixTestItem item
+			)
+		{
+			this.Host = host;
+			this.Item = item;
+		}
+	}
+
 }

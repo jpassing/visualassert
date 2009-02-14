@@ -266,14 +266,15 @@ namespace Cfix.Control.Native
 
 		public virtual void Refresh()
 		{
-			ICfixTestItem item = NativeItem;
+			NativeConnection connection = NativeConnection;
 			try
 			{
-				Update( ( ICfixTestContainer ) item );
+				Update( ( ICfixTestContainer ) connection.Item );
 			}
 			finally
 			{
-				this.Module.Target.ReleaseObject( item );
+				this.Module.Target.ReleaseObject( connection.Item );
+				this.Module.Target.ReleaseObject( connection.Host );
 			}
 		}
 
