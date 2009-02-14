@@ -21,26 +21,22 @@ namespace Cfix.Control.Native
 
 		public ITestItem TestItem
 		{
-			get
-			{
-				return this.item;
-			}
+			get { return this.item; }
 		}
 
 		public uint TestCaseCount
 		{
-			get
-			{
-				return this.action.GetTestCaseCount();
-			}
+			get { return this.action.GetTestCaseCount(); }
+		}
+
+		public uint HostProcessId
+		{
+			get { return this.action.GetHostProcessId(); }
 		}
 
 		public Architecture Architecture
 		{
-			get
-			{
-				return this.item.Module.Architecture;
-			}
+			get { return this.item.Module.Architecture; }
 		}
 
 		public void Run( ICfixEventSink sink )

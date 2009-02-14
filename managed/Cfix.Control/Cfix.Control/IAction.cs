@@ -12,11 +12,13 @@ namespace Cfix.Control
 
 	/*++
 	 *	Non-composite action referring to fixtures/testcases
-	 *	of a single module, and thus, of a single architecture.
+	 *	of a single module, and thus, of a single architecture and
+	 *  a single process.
 	--*/
 	public interface IComponentAction : IAction
 	{
 		Architecture Architecture { get; }
+		uint HostProcessId { get; }
 	}
 
 	/*++

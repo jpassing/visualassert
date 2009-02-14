@@ -113,12 +113,9 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		internal Architecture Architecture
+		public Architecture Architecture
 		{
-			get
-			{
-				return this.target.Architecture;
-			}
+			get { return this.target.Architecture; }
 		}
 
 		public void Update()
@@ -141,10 +138,7 @@ namespace Cfix.Control.Native
 
 		public CfixTestModuleType Type
 		{
-			get
-			{
-				return this.type;
-			}
+			get { return this.type; }
 		}
 
 		public String Path

@@ -78,7 +78,7 @@
     <Compile Include="IResultItem.cs" />
     <Compile Include="ExecutionStatus.cs" />
     <Compile Include="IRun.cs" />
-    <Compile Include="Run.cs" />
+    <Compile Include="Native\Run.cs" />
     <Compile Include="RundownLock.cs" />
     <Compile Include="SequenceAction.cs" />
     <Compile Include="GenericTestItemCollection.cs" />

@@ -34,7 +34,7 @@ namespace QuickTest
 
 		private void refresh_Click( object sender, EventArgs e )
 		{
-			Explorer.RefreshSession( true, true );
+			Explorer.RefreshSession( true );
 		}
 
 		private void timer1_Tick( object sender, EventArgs e )

@@ -337,10 +337,10 @@ namespace Cfix.Control.Native
 			ExecutionStatus status
 			)
 		{
-			Debug.Assert( ( run == null ) != ( parent == null ) );
+			Debug.Assert( run != null );
 
 			TestItemCollectionResult result;
-			if ( run != null )
+			if ( parent == null )
 			{
 				result = new TestItemCollectionResult(
 					run,
@@ -355,6 +355,8 @@ namespace Cfix.Control.Native
 					status );
 			}
 
+			run.OnItemAdded( result );
+
 			IList<IResultItem> children = new List<IResultItem>( 
 				( int ) itemColl.ItemCount );
 
@@ -364,12 +366,14 @@ namespace Cfix.Control.Native
 				if ( childColl != null )
 				{
 					children.Add( 
-						CreateResult( null, result, childColl, status ) );
+						CreateResult( run, result, childColl, status ) );
 				}
 				else
 				{
-					children.Add( TestItemResult.CreateResult(
-						result, item, status ) );
+					TestItemResult itemResult = TestItemResult.CreateResult(
+						result, item, status );
+					run.OnItemAdded( itemResult );
+					children.Add( itemResult );
 				}
 			}
 

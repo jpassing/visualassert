@@ -94,8 +94,10 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			if ( this.contextMenuReferenceNode != null )
 			{
+				this.explorer.RefreshSession(
+					true,
+					this.contextMenuReferenceNode.Item );
 			}
-
 		}
 
 		/*----------------------------------------------------------------------
@@ -143,7 +145,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			try
 			{
-				this.explorer.RefreshSession( true, true );
+				this.explorer.RefreshSession( true, this.explorer.SelectedItem );
 			}
 			catch ( Exception x )
 			{
@@ -210,7 +212,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 			try
 			{
-				this.explorer.RefreshSession( true, true );
+				this.explorer.RefreshSession( true );
 			}
 			catch ( Exception x )
 			{

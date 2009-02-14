@@ -59,7 +59,7 @@ namespace Cfix.Control.Ui.Explorer
 			MessageBox.Show( x.Message );
 		}
 
-		private delegate void RefreshDelegate( bool async, bool selectionOnly );
+		private delegate void RefreshDelegate( bool async, ITestItem item );
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		private void AsyncVoidCompletionCallback( IAsyncResult ar )
@@ -246,7 +246,7 @@ namespace Cfix.Control.Ui.Explorer
 			//
 			if ( sess.Tests != null )
 			{
-				RefreshSession( async, false );
+				RefreshSession( async );
 			}
 		}
 
@@ -255,7 +255,7 @@ namespace Cfix.Control.Ui.Explorer
 			//
 			// Load new.
 			//
-			RefreshSession( true, false );
+			RefreshSession( true );
 		}
 
 		private void sess_BeforeSetTests( object sender, EventArgs e )
@@ -280,7 +280,12 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
-		public void RefreshSession( bool async, bool selectionOnly )
+		public void RefreshSession( bool async )
+		{
+			RefreshSession( async, null );
+		}
+
+		public void RefreshSession( bool async, ITestItem item )
 		{
 			if ( async )
 			{
@@ -291,7 +296,7 @@ namespace Cfix.Control.Ui.Explorer
 				this.rundownLock.Acquire();
 				refresh.BeginInvoke( 
 					false,
-					selectionOnly,
+					item,
 					AsyncVoidCompletionCallback,
 					refresh );
 			}
@@ -323,8 +328,6 @@ namespace Cfix.Control.Ui.Explorer
 						}
 					}
 
-					ITestItem selectedItem = null;
-
 					if ( this.treeView.InvokeRequired )
 					{
 						if ( this.RefreshStarted != null )
@@ -332,22 +335,20 @@ namespace Cfix.Control.Ui.Explorer
 							this.treeView.Invoke( ( VoidDelegate ) delegate()
 							{
 								this.RefreshStarted( this, EventArgs.Empty );
-
-								selectedItem = this.SelectedItem;
 							} );
 						}
 					}
-
+					
 					//
 					// (Re-) load children.
 					//
-					if ( selectionOnly && selectedItem != null )
+					if ( item != null )
 					{
 						//
 						// Refresh currently selected node only.
 						//
 						ITestItemCollection selectedItemColl =
-							selectedItem as ITestItemCollection;
+							item as ITestItemCollection;
 
 						if ( selectedItemColl != null )
 						{

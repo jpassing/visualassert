@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Win32;
+using Cfix.Control;
 
 namespace Cfix.Addin
 {
@@ -91,6 +92,54 @@ namespace Cfix.Addin
 				this.key.SetValue(
 					"ExplorerWindowVisible",
 					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public Disposition DefaultFailedAssertionDisposition
+		{
+			get
+			{
+				Disposition val = ( Disposition ) this.key.GetValue( 
+					"DefaultFailedAssertionDisposition", Disposition.Break );
+				if ( Enum.IsDefined( typeof( Disposition ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return Disposition.Break;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"DefaultFailedAssertionDisposition",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public Disposition DefaultUnhandledExceptionDisposition
+		{
+			get
+			{
+				Disposition val = ( Disposition ) this.key.GetValue( 
+					"DefaultUnhandledExceptionDisposition", Disposition.Continue );
+				if ( Enum.IsDefined( typeof( Disposition ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return Disposition.Continue;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"DefaultUnhandledExceptionDisposition",
+					value,
 					RegistryValueKind.DWord );
 			}
 		}

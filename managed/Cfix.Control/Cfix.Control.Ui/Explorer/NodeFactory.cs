@@ -70,7 +70,10 @@ namespace Cfix.Control.Ui.Explorer
 				//
 				LoadChildren();
 
-				this.ToolTipText = item.Path;
+				this.ToolTipText = String.Format(
+					"{0} ({1})",
+					item.Path,
+					item.Architecture );
 			}
 		}
 

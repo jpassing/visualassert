@@ -78,6 +78,13 @@ namespace Cfix.Control.Test
 				{
 					Assert.IsNull( item.Item );
 				} );
+
+			Cfixctl.ICfixProcessEventSink procSink =
+				( Cfixctl.ICfixProcessEventSink ) run;
+			Cfixctl.ICfixTestÌtemContainerEventSink conSink =
+				procSink.GetTestÌtemContainerEventSink(
+					module, 0 );
+			Assert.AreSame( conSink, run.RootResult.GetItem( 0 ) );
 		}
 
 		[Test]

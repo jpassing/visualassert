@@ -1,9 +1,10 @@
 using System;
-using Cfix.Control.Native;
+using System.Collections.Generic;
+using Cfixctl;
 
-namespace Cfix.Control
+namespace Cfix.Control.Native
 {
-	public class Run : IRun
+	public class Run : IRun, ICfixProcessEventSink
 	{
 		public event EventHandler<LogEventArgs> Log;
 		public event EventHandler<ThreadEventArgs> ThreadStarted;
@@ -16,6 +17,12 @@ namespace Cfix.Control
 		private readonly ITestItemCollection rootItem;
 		private readonly IResultItemCollection rootResult;
 
+		//
+		// Map between module paths and module result objects.
+		//
+		private readonly IDictionary<String, TestItemCollectionResult> modules =
+			new Dictionary<String, TestItemCollectionResult>();
+
 		public Run( 
 			IDispositionPolicy policy,
 			ITestItemCollection rootItem 
@@ -27,6 +34,23 @@ namespace Cfix.Control
 				this, rootItem, ExecutionStatus.Pending );
 		}
 
+		/*--------------------------------------------------------------
+		 * ICfixProcessEventSink.
+		 */
+
+		ICfixTestÌtemContainerEventSink ICfixProcessEventSink.GetTestÌtemContainerEventSink( 
+			ICfixTestModule module, 
+			uint fixtureOrdinal 
+			)
+		{
+			return ( ICfixTestÌtemContainerEventSink )
+				this.modules[ module.GetPath() ].GetItem( fixtureOrdinal );
+		}
+
+		void ICfixProcessEventSink.Notification( int hr )
+		{
+			OnNotification( this.rootResult, hr );
+		}
 
 		/*--------------------------------------------------------------
 		 * IRun.
@@ -45,6 +69,18 @@ namespace Cfix.Control
 		/*--------------------------------------------------------------
 		 * Internal.
 		 */
+
+		internal void OnItemAdded( IResultItem item )
+		{
+			//
+			// Remember this module for use as event sink.
+			//
+			TestModule module = item.Item as TestModule;
+			if ( module != null )
+			{
+				this.modules[ module.Path ] = ( TestItemCollectionResult ) item;
+			}
+		}
 
 		internal void OnLog( IResultItem item, String message )
 		{
