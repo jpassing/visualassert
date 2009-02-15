@@ -238,24 +238,7 @@ public:
 		StubActionFactory Factory;
 		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
 
-		IOleItemContainer *Container;
-		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
-			IID_IOleItemContainer, ( PVOID* ) &Container ) );
-
-		WCHAR Name[] = L"test";
-		CFIXCC_ASSERT_OK( Container->IsRunning( Name ) );
-		
-		WCHAR EmptyName[] = L"";
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->IsRunning( EmptyName ) );
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->IsRunning( NULL ) );
-
-		ICfixTestItem *Item;
-		CFIXCC_ASSERT_OK( Container->GetObject( 
-			Name, 0, NULL, IID_ICfixTestItem, ( PVOID* ) &Item ) );
-		Item->Release();
-		
 		Fixture->Release();
-		Container->Release();
 	}
 
 	void TestEnumObjectsEmpty()
@@ -277,12 +260,12 @@ public:
 		StubActionFactory Factory;
 		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
 		
-		IOleItemContainer *Container;
+		ICfixTestContainer *Container;
 		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
-			IID_IOleItemContainer, ( PVOID* ) &Container ) );
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumObjects( 0, &Enum ) );
+		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Fixture->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.
@@ -329,12 +312,12 @@ public:
 		StubActionFactory Factory;
 		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition.Fixture, 0, &Factory ) );
 		
-		IOleItemContainer *Container;
+		ICfixTestContainer *Container;
 		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
-			IID_IOleItemContainer, ( PVOID* ) &Container ) );
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumObjects( 0, &Enum ) );
+		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Fixture->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.

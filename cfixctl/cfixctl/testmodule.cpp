@@ -37,8 +37,7 @@ class TestModuleEumerator;
 class TestModule : 
 	public ComObjectBase, 
 	public ICfixTestModuleInternal,
-	public ICfixActionFactory,
-	public IOleItemContainer
+	public ICfixActionFactory
 {
 	DECLARE_NOT_COPYABLE( TestModule );
 
@@ -79,53 +78,6 @@ public:
 		__out PVOID* Ptr );
 
 	/*------------------------------------------------------------------
-	 * IParseDisplayName methods.
-	 */
-
-	STDMETHOD( ParseDisplayName )( 
-		__in IBindCtx *Context,
-		__in LPOLESTR DisplayName,
-		__out ULONG *Eaten,
-		__out IMoniker **Moniker
-		);
-
-	/*------------------------------------------------------------------
-	 * IOleContainer methods.
-	 */
-
-	STDMETHOD( EnumObjects )( 
-		__in DWORD Flags,
-		__out IEnumUnknown **Enum
-		);
-
-	STDMETHOD( LockContainer )( 
-		__in BOOL Lock
-		);
-
-	/*------------------------------------------------------------------
-	 * IOleItemContainer methods.
-	 */
-
-	STDMETHOD( GetObject )( 
-		__in LPOLESTR Item,
-		__in DWORD SpeedNeeded,
-		__in IBindCtx *Context,
-		__in REFIID Iid,
-		__out PVOID *Object
-		);
-
-	STDMETHOD( GetObjectStorage )( 
-		__in LPOLESTR Item,
-		__in IBindCtx *Context,
-		__in REFIID Iid,
-		__out PVOID *Storage
-		);
-
-	STDMETHOD( IsRunning )( 
-		__in LPOLESTR Item 
-		);
-
-	/*------------------------------------------------------------------
 	 * ICfixTestContainer methods.
 	 */
 	
@@ -136,6 +88,11 @@ public:
 	STDMETHOD( GetItem )(
 		__in ULONG Ordinal,
 		__out ICfixTestItem **Item
+		);
+
+	STDMETHOD( EnumItems )( 
+		__in DWORD Flags,
+		__out IEnumUnknown **Enum
 		);
 
 	/*------------------------------------------------------------------
@@ -383,21 +340,6 @@ STDMETHODIMP TestModule::QueryInterface(
 		*Ptr = static_cast< ICfixTestContainer* >( this );
 		Hr = S_OK;
 	}
-	else if ( InlineIsEqualGUID( Iid, IID_IOleContainer ) )
-	{
-		*Ptr = static_cast< IOleContainer* >( this );
-		Hr = S_OK;
-	}
-	else if ( InlineIsEqualGUID( Iid, IID_IOleItemContainer ) )
-	{
-		*Ptr = static_cast< IOleItemContainer* >( this );
-		Hr = S_OK;
-	}
-	else if ( InlineIsEqualGUID( Iid, IID_IParseDisplayName ) )
-	{
-		*Ptr = static_cast< IParseDisplayName* >( this );
-		Hr = S_OK;
-	}
 	else
 	{
 		*Ptr = NULL;
@@ -410,145 +352,6 @@ STDMETHODIMP TestModule::QueryInterface(
 	}
 
 	return Hr;
-}
-
-/*------------------------------------------------------------------
- * IParseDisplayName methods.
- */
-
-STDMETHODIMP TestModule::ParseDisplayName( 
-	__in IBindCtx *Context,
-	__in LPOLESTR DisplayName,
-	__out ULONG *Eaten,
-	__out IMoniker **Moniker
-	)
-{
-	UNREFERENCED_PARAMETER( Context );
-	UNREFERENCED_PARAMETER( DisplayName );
-	UNREFERENCED_PARAMETER( Eaten );
-	UNREFERENCED_PARAMETER( Moniker );
-	return E_NOTIMPL;
-}
-
-/*------------------------------------------------------------------
- * IOleContainer methods.
- */
-
-STDMETHODIMP TestModule::EnumObjects( 
-	__in DWORD Flags,
-	__out IEnumUnknown **Enum
-	)
-{
-	UNREFERENCED_PARAMETER( Flags );
-
-	*Enum = new TestModuleEnumerator( this );
-
-	if ( *Enum == NULL )
-	{
-		return E_OUTOFMEMORY;
-	}
-	else
-	{
-		return S_OK;
-	}
-}
-
-STDMETHODIMP TestModule::LockContainer( 
-	__in BOOL Lock
-	)
-{
-	UNREFERENCED_PARAMETER( Lock );
-	ASSERT( !"Not applicable" );
-	return E_FAIL;
-}
-
-/*------------------------------------------------------------------
- * IOleItemContainer methods.
- */
-
-STDMETHODIMP TestModule::GetObject( 
-	__in LPOLESTR Item,
-	__in DWORD SpeedNeeded,
-	__in IBindCtx *Context,
-	__in REFIID Iid,
-	__out PVOID *Object
-	)
-{
-	if ( ! Object )
-	{
-		return E_POINTER;
-	}
-	else
-	{
-		*Object = NULL;
-	}
-
-	if ( Item == NULL )
-	{
-		return MK_E_NOOBJECT;
-	}
-
-	UNREFERENCED_PARAMETER( SpeedNeeded );
-	UNREFERENCED_PARAMETER( Context );
-
-	for ( ULONG Index = 0; Index < this->Module->FixtureCount; Index++ )
-	{
-		if ( 0 == wcscmp( Item, this->Module->Fixtures[ Index ]->Name ) )
-		{
-			//
-			// Create object for this.
-			//
-			return GetFixture( Index, Iid, Object );
-		}
-	}
-
-	return MK_E_NOOBJECT;
-}
-
-STDMETHODIMP TestModule::GetObjectStorage( 
-	__in LPOLESTR Item,
-	__in IBindCtx *Context,
-	__in REFIID Iid,
-	__out PVOID *Storage
-	)
-{
-	UNREFERENCED_PARAMETER( Item );
-	UNREFERENCED_PARAMETER( Context );
-	UNREFERENCED_PARAMETER( Iid );
-	UNREFERENCED_PARAMETER( Storage );
-	ASSERT( !"Not applicable" );
-	
-	if ( Storage )
-	{
-		*Storage = NULL;
-	}
-
-	return MK_E_NOSTORAGE;
-}
-
-STDMETHODIMP TestModule::IsRunning( 
-	__in LPOLESTR Item 
-	)
-{
-	if ( Item == NULL )
-	{
-		return MK_E_NOOBJECT;
-	}
-
-	//
-	// Check if we know this item.
-	//
-	BOOL Found = FALSE;
-	for ( ULONG Index = 0; Index < this->Module->FixtureCount; Index++ )
-	{
-		if ( 0 == wcscmp( Item, this->Module->Fixtures[ Index ]->Name ) )
-		{
-			Found = TRUE;
-			break;
-		}
-	}
-
-	return Found ? S_OK : MK_E_NOOBJECT;
 }
 
 /*------------------------------------------------------------------
@@ -576,6 +379,25 @@ STDMETHODIMP TestModule::GetItem(
 	)
 {
 	return GetFixture( Ordinal, IID_ICfixTestItem, ( PVOID* ) Item );
+}
+
+STDMETHODIMP TestModule::EnumItems( 
+	__in DWORD Flags,
+	__out IEnumUnknown **Enum
+	)
+{
+	UNREFERENCED_PARAMETER( Flags );
+
+	*Enum = new TestModuleEnumerator( this );
+
+	if ( *Enum == NULL )
+	{
+		return E_OUTOFMEMORY;
+	}
+	else
+	{
+		return S_OK;
+	}
 }
 
 /*------------------------------------------------------------------

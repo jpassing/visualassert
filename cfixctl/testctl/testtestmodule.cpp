@@ -199,49 +199,6 @@ public:
 		Container->Release();
 	}
 
-	void TestGetObject()
-	{
-		ICfixTestModuleInternal *Module;
-		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
-			NULL, IID_ICfixTestModuleInternal, ( PVOID* ) &Module ) );
-
-		CFIXCC_ASSERT_OK( Module->Initialize( 
-			L"path", 
-			CfixTestModuleTypeUser, 
-			CfixTestModuleArchAmd64,
-			&SampleModule ) );
-
-		IOleItemContainer *Container;
-		CFIXCC_ASSERT_OK( Module->QueryInterface( 
-			IID_IOleItemContainer, ( PVOID* ) &Container ) );
-
-		WCHAR Name[] = L"Sample";
-		WCHAR WrongName[] = L"Xxx";
-		WCHAR EmptyName[] = L"";
-		
-		CFIXCC_ASSERT_OK( Container->IsRunning( Name ) );
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->IsRunning( WrongName ) );
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->IsRunning( EmptyName ) );
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->IsRunning( NULL ) );
-
-		ICfixTestItem *Item;
-		CFIXCC_ASSERT_OK( Container->GetObject( 
-			Name, 0, NULL, IID_ICfixTestItem, ( PVOID* ) &Item ) );
-		BSTR FixtureName;
-		CFIXCC_ASSERT_OK( Item->GetName( &FixtureName ) );
-		CFIXCC_ASSERT_EQUALS( Name, FixtureName );
-		SysFreeString( FixtureName );
-		Item->Release();
-		
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->GetObject( 
-			WrongName, 0, NULL, IID_ICfixTestItem, ( PVOID* ) &Item ) );
-		CFIXCC_ASSERT_EQUALS( MK_E_NOOBJECT, Container->GetObject( 
-			EmptyName, 0, NULL, IID_ICfixTestItem, ( PVOID* ) &Item ) );
-
-		Module->Release();
-		Container->Release();
-	}
-
 	void TestEnumObjects()
 	{
 		ICfixTestModuleInternal *Module;
@@ -254,12 +211,12 @@ public:
 			CfixTestModuleArchAmd64,
 			&SampleModule ) );
 
-		IOleItemContainer *Container;
+		ICfixTestContainer *Container;
 		CFIXCC_ASSERT_OK( Module->QueryInterface( 
-			IID_IOleItemContainer, ( PVOID* ) &Container ) );
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumObjects( 0, &Enum ) );
+		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Module->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.
@@ -311,6 +268,5 @@ CFIXCC_BEGIN_CLASS( TestModule )
 	CFIXCC_METHOD( TestUnknown )
 	CFIXCC_METHOD( TestBasics )
 	CFIXCC_METHOD( TestGetItem )
-	CFIXCC_METHOD( TestGetObject )
 	CFIXCC_METHOD( TestEnumObjects )	
 CFIXCC_END_CLASS()

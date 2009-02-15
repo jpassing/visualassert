@@ -112,7 +112,7 @@ public:
 		__in DWORD Clsctx,
 		__in ULONG Flags,
 		__in ULONG Timeout,
-		__in BSTR CurrentDirectory,
+		__in const BSTR CurrentDirectory,
 		__out ICfixHost** Host
 		);
 
@@ -701,7 +701,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in DWORD Clsctx,
 	__in ULONG Flags,
 	__in ULONG Timeout,
-	__in BSTR CurrentDirectory,
+	__in const BSTR CurrentDirectory,
 	__out ICfixHost** Host
 	)
 {
