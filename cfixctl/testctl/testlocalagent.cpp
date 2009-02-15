@@ -233,6 +233,18 @@ public:
 		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
 		{
 			ICfixHost *Host;
+			BSTR WorkingDir = SysAllocString( L"c:\\idonotexist" );
+			CFIXCC_ASSERT_EQUALS( 
+				HRESULT_FROM_WIN32( ERROR_DIRECTORY ), 
+				Agent->CreateHost(
+					CFIXCTL_OWN_ARCHITECTURE,
+					CLSCTX_LOCAL_SERVER,
+					FlagSets[ Flags ],
+					INFINITE,
+					WorkingDir,
+					&Host ) );
+			SysFreeString( WorkingDir );
+
 			CFIXCC_ASSERT_OK( Agent->CreateHost(
 				CFIXCTL_OWN_ARCHITECTURE,
 				CLSCTX_LOCAL_SERVER,
@@ -240,6 +252,14 @@ public:
 				INFINITE,
 				NULL,
 				&Host ) );
+
+			CfixTestModuleArch Arch;
+			CFIXCC_ASSERT_OK( Host->GetArchitecture( &Arch ) );
+			CFIXCC_ASSERT_EQUALS( TESTCTLP_OWN_ARCHITECTURE, Arch );
+
+			ULONG Pid;
+			CFIXCC_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
+			CFIXCC_ASSERT_NOT_EQUALS( GetCurrentProcessId(), Pid );
 
 			CFIX_ASSUME( Host );
 			Host->Release();
@@ -293,7 +313,17 @@ public:
 		ICfixMessageResolver *Resolver;
 		CFIXCC_ASSERT_OK( Agent->CreateMessageResolver( &Resolver ) );
 
+		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Resolver->ResolveMessage( 
+			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
+			0, 
+			NULL ) );
+		
 		BSTR Message;
+		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Resolver->ResolveMessage( 
+			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
+			1, 
+			&Message ) );
+		
 		CFIXCC_ASSERT_OK( Resolver->ResolveMessage( 
 			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
 			0, 

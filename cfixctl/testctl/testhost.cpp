@@ -68,6 +68,14 @@ public:
 			NULL,
 			&Host ) );
 
+		CfixTestModuleArch Arch;
+		CFIXCC_ASSERT_OK( Host->GetArchitecture( &Arch ) );
+		CFIXCC_ASSERT_EQUALS( TESTCTLP_OWN_ARCHITECTURE, Arch );
+
+		ULONG Pid;
+		CFIXCC_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
+		CFIXCC_ASSERT_EQUALS( GetCurrentProcessId(), Pid );
+
 		Agent->Release();
 		AgentFactory->Release();
 	}

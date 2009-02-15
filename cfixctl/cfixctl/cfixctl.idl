@@ -255,7 +255,7 @@ library Cfixctl
 			[in] DWORD Clsctx,
 			[in] ULONG Flags,
 			[in] ULONG Timeout,
-			[in] BSTR CurrentDirectory,
+			[in] const BSTR CurrentDirectory,
 			[out, retval] ICfixHost** Host
 			);
 

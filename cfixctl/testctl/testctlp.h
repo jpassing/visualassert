@@ -30,6 +30,10 @@
 #include <ole2.h>
 #include <shlwapi.h>
 
+// Parameters not adhering to spec.
+#pragma warning( disable: 6309 )
+#pragma warning( disable: 6387 )
+
 #define CFIXCC_ASSERT_OK( Expr ) CFIX_ASSERT_EQUALS_ULONG( S_OK, ( Expr ) )
 
 #if _M_AMD64

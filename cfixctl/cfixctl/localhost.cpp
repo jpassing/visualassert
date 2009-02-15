@@ -421,6 +421,7 @@ STDMETHODIMP LocalHost::SearchModules(
 {
 	if ( PathFilter == NULL ||
 		 Type != ( ULONG ) -1 && Type > CfixTestModuleTypeMax ||
+		 Arch == 0 ||
 		 Arch != ( ULONG ) -1 && Arch > 
 		     ( CfixTestModuleArchI386 | CfixTestModuleArchAmd64 ) ||
 		 Callback == NULL )

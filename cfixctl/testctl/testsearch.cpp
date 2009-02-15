@@ -285,6 +285,18 @@ public:
 				TESTDATA_FOLDER L"\\amd64\\testklib5.sys" ) );
 			
 			BSTR Path = SysAllocString( PathBuffer );
+			CFIXCC_ASSERT_EQUALS( E_INVALIDARG, this->Host->SearchModules(
+				Path,
+				FlagSets[ Index ],
+				( ULONG ) -1,
+				0,
+				&Cb ) );
+			CFIXCC_ASSERT_EQUALS( E_INVALIDARG, this->Host->SearchModules(
+				Path,
+				FlagSets[ Index ],
+				( ULONG ) -1,
+				32,
+				&Cb ) );
 			CFIXCC_ASSERT_OK( this->Host->SearchModules(
 				Path,
 				FlagSets[ Index ],
