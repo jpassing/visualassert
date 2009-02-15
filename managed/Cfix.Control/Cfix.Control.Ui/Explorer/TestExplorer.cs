@@ -168,7 +168,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.BeforeExpand += treeView_BeforeExpand;
 			this.treeView.AfterCollapse += treeView_AfterCollapse;
 			this.treeView.MouseDown += new MouseEventHandler( treeView_MouseDown );
-
+			this.treeView.KeyDown += new KeyEventHandler( treeView_KeyDown );
 			this.Disposed += this_Disposed;
 		}
 
@@ -193,6 +193,36 @@ namespace Cfix.Control.Ui.Explorer
 			set { this.nodeContextMenu = value; }
 		}
 
+		private void PopupContextMenu( AbstractExplorerNode node, Point pt )
+		{
+			if ( this.BeforeContextMenuPopup != null )
+			{
+				this.BeforeContextMenuPopup(
+					this,
+					new ExplorerNodeEventArgs( node ) );
+			}
+
+			this.nodeContextMenu.Show( this.treeView, pt );
+		}
+
+		private void treeView_KeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Apps ||
+				 ( e.KeyCode == Keys.F10 && e.Shift ) )
+			{
+				TreeNode selNode = this.treeView.SelectedNode;
+				if ( selNode != null )
+				{
+					AbstractExplorerNode explNode = selNode as AbstractExplorerNode;
+					if ( explNode != null )
+					{
+						Rectangle coord = selNode.Bounds;
+						PopupContextMenu( explNode, new Point( coord.X, coord.Y ) );
+					}
+				}
+			}
+		}
+
 		private void treeView_MouseDown( object sender, MouseEventArgs e )
 		{
 			if ( this.nodeContextMenu == null || e.Button != MouseButtons.Right )
@@ -204,14 +234,10 @@ namespace Cfix.Control.Ui.Explorer
 			if ( nodeHit != null )
 			{
 				AbstractExplorerNode explNode = nodeHit as AbstractExplorerNode;
-				if ( explNode != null && this.BeforeContextMenuPopup != null )
+				if ( explNode != null )
 				{
-					this.BeforeContextMenuPopup( 
-						this,
-						new ExplorerNodeEventArgs( explNode ) );
+					PopupContextMenu( explNode, new Point( e.X, e.Y ) );
 				}
-
-				this.nodeContextMenu.Show( this.treeView, new Point( e.X, e.Y ) );
 			}
 		}
 		

@@ -67,18 +67,15 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction( SchedulingOptions schedulingOptions )
-		{
-			throw new CfixException( "Invalid" );
-		}
-
 		public void CreateAction(
 			ICompositeAction actionToComposeWith,
 			SchedulingOptions schedulingOptions,
 			CompositionOptions compositionOptions
 			)
 		{
-			throw new CfixException( "Invalid" );
+			//
+			// Ignore.~
+			//
 		}
 
 		public void Dispose()

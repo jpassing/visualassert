@@ -44,6 +44,10 @@ namespace Cfix.Control.Test
 			return ( uint ) Children.Count;
 		}
 
+		public void EnumItems( uint Flags, out IEnumUnknown Enum )
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	internal class MockModule : MockContainer, ICfixTestModule

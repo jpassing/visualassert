@@ -85,7 +85,7 @@ namespace Cfix.Addin.Windows.Explorer
 			ExplorerNodeEventArgs e )
 		{
 			this.ctxMenuDebugButton.Enabled = e.Item is IComponentActionSource;
-			this.ctxMenuRefreshButton.Enabled = this.refreshButton.Enabled;
+			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
 
 			this.contextMenuReferenceNode = e.Node;
 		}
@@ -109,7 +109,6 @@ namespace Cfix.Addin.Windows.Explorer
 			ITestItem selItem = this.explorer.SelectedItem;
 			bool enable = ( selItem == null || selItem is ITestItemCollection );
 			this.refreshButton.Enabled = enable;
-			this.abortRefreshButton.Enabled = ! enable;
 		}
 
 		private void DisableRefresh()
@@ -130,6 +129,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.statusText.Text = "";
 
 			UpdateRefreshButtonStatus();
+			this.abortRefreshButton.Enabled = false;
 		}
 
 		private void explorer_RefreshStarted( object sender, EventArgs e )
@@ -139,6 +139,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.statusText.Text = Strings.Searching;
 
 			DisableRefresh();
+			this.abortRefreshButton.Enabled = true;
 		}
 
 		private void refreshButton_Click( object sender, EventArgs e )

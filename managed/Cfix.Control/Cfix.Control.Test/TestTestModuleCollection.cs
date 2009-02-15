@@ -73,10 +73,13 @@ namespace Cfix.Control.Test
 				true,
 				true,
 				lst );
-			coll.Refresh();
-
-			Assert.AreEqual( 0, lst.Invalids );
-			Assert.AreEqual( 0, coll.ItemCount );
+			try
+			{
+				coll.Refresh();
+				Assert.Fail( "Expected exception" );
+			}
+			catch ( ArgumentException )
+			{ }
 		}
 
 		[Test]

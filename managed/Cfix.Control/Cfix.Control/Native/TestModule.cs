@@ -41,9 +41,17 @@ namespace Cfix.Control.Native
 			try
 			{
 				ICfixHost host = target.CreateHost();
-				return new NativeConnection(
-					host,
-					host.LoadModule( path ) );
+				try
+				{
+					return new NativeConnection(
+						host,
+						host.LoadModule( path ) );
+				}
+				catch ( COMException x )
+				{
+					target.ReleaseObject( host );
+					throw target.WrapException( x );
+				}
 			}
 			catch ( FileNotFoundException x )
 			{
