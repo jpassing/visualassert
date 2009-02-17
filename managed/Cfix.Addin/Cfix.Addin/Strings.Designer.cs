@@ -70,6 +70,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain current configuration.
+        /// </summary>
+        internal static string FailedToObtainCurrentConfig {
+            get {
+                return ResourceManager.GetString("FailedToObtainCurrentConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Searching....
         /// </summary>
         internal static string Searching {
@@ -84,6 +93,15 @@ namespace Cfix.Addin {
         internal static string SelectFileOrFolder {
             get {
                 return ResourceManager.GetString("SelectFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized platform: {0}.
+        /// </summary>
+        internal static string UnrecognizedPlatform {
+            get {
+                return ResourceManager.GetString("UnrecognizedPlatform", resourceCulture);
             }
         }
         

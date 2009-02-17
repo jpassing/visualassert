@@ -337,7 +337,8 @@ namespace Cfix.Addin.Windows.Explorer
 
 			Solution curSolution = this.dte.Solution;
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
-				( Solution2 ) curSolution );
+				( Solution2 ) curSolution,
+				this.workspace.RunTarget );
 			slnCollection.Closed += new EventHandler( slnCollection_Closed );
 			this.workspace.Session.Tests = slnCollection;
 		}

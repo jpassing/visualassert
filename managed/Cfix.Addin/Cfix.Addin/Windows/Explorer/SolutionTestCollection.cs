@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EnvDTE;
 using EnvDTE80;
 using Cfix.Control;
+using Cfix.Control.Native;
 
 namespace Cfix.Addin.Windows.Explorer
 {
@@ -13,6 +14,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
+		private readonly MultiTarget target;
 
 		private bool IsVcProject( Project prj )
 		{
@@ -23,7 +25,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			if ( IsVcProject( prj ) )
 			{
-				Add( new VCProjectTestCollection( prj ) );
+				Add( new VCProjectTestCollection( prj, this.target ) );
 			}
 		}
 
@@ -36,12 +38,14 @@ namespace Cfix.Addin.Windows.Explorer
 		}
 
 		public SolutionTestCollection(
-			Solution2 solution
+			Solution2 solution,
+			MultiTarget target
 			)
 			: base( null, solution.FileName )
 		{
 			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;
+			this.target = target;
 
 			this.solutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
 			this.solutionEvents.ProjectRemoved += new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
