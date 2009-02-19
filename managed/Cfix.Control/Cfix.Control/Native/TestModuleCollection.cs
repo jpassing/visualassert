@@ -23,20 +23,11 @@ namespace Cfix.Control.Native
 		private readonly MultiTarget runTargets;
 		private readonly bool userOnly;
 		private readonly bool ignoreDuplicates;
-		private readonly ISearchListener listener;
 
 		private readonly Object loadLock = new Object();
 
 		private bool currentLoadAborted;
 		private Loader currentLoader;
-
-		public interface ISearchListener
-		{
-			void InvalidModule(
-				String path,
-				String reason
-				);
-		}
 
 		/*--------------------------------------------------------------
 		 * Loading.
@@ -95,8 +86,7 @@ namespace Cfix.Control.Native
 						this.collection.searchTarget,
 						this.collection.runTargets,
 						this.collection.userOnly,
-						this.collection.ignoreDuplicates,
-						this.collection.listener );
+						this.collection.ignoreDuplicates );
 
 					Debug.Print( "Enter: " + path );
 
@@ -135,11 +125,6 @@ namespace Cfix.Control.Native
 								this.collectionStack.Peek(),
 								new DirectoryInfo( path ).Name,
 								x ) );
-
-						if ( this.collection.listener != null )
-						{
-							this.collection.listener.InvalidModule( path, x.Message );
-						}
 					}
 				}
 			}
@@ -240,8 +225,7 @@ namespace Cfix.Control.Native
 			Target searchTarget,
 			MultiTarget runTargets,
 			bool userOnly,
-			bool ignoreDuplicates,
-			ISearchListener listener
+			bool ignoreDuplicates
 			)
 			: base( parent, dir.Name )
 		{
@@ -251,7 +235,6 @@ namespace Cfix.Control.Native
 			this.runTargets = runTargets;
 			this.userOnly = userOnly;
 			this.ignoreDuplicates = ignoreDuplicates;
-			this.listener = listener;
 		}
 
 		/*--------------------------------------------------------------
@@ -297,8 +280,7 @@ namespace Cfix.Control.Native
 			Target searchTarget,
 			MultiTarget runTargets,
 			bool userOnly,
-			bool ignoreDuplicates,
-			ISearchListener listener
+			bool ignoreDuplicates
 			)
 		{
 			TestModuleCollection result = new TestModuleCollection(
@@ -308,8 +290,7 @@ namespace Cfix.Control.Native
 				searchTarget,
 				runTargets,
 				userOnly,
-				ignoreDuplicates,
-				listener );
+				ignoreDuplicates );
 
 			return result;
 		}

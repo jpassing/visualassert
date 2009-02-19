@@ -15,16 +15,6 @@ namespace Cfix.Control.Test
 		private MultiTarget multiTarget;
 		private String testdataDir;
 
-		private class Listener : TestModuleCollection.ISearchListener
-		{
-			public uint Invalids;
-
-			public void InvalidModule( string path, string reason )
-			{
-				this.Invalids++;
-			}
-		}
-
 		[SetUp]
 		public void Setup()
 		{
@@ -64,15 +54,13 @@ namespace Cfix.Control.Test
 		public void SearchWithNoTargets()
 		{
 			MultiTarget tgt = new MultiTarget();
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				inProcTarget,
 				tgt,
 				true,
-				true,
-				lst );
+				true );
 			try
 			{
 				coll.Refresh();
@@ -85,21 +73,19 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchSingleFile()
 		{
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"simple.dll",
 				inProcTarget,
 				this.multiTarget,
 				true,
-				true,
-				lst );
+				true );
 			coll.Refresh();
 
-			Assert.AreEqual( 0, lst.Invalids );
 			Assert.AreEqual( 1, coll.ItemCount );
 
 			ITestItem item = coll.GetItem( 0 );
+			Assert.IsInstanceOfType( typeof( TestModule ), item );
 			Assert.IsNotNull( item );
 			Assert.AreEqual( "simple", item.Name );
 			Assert.AreSame( item.Parent, coll );
@@ -108,18 +94,14 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchTwoFiles()
 		{
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
 				inProcTarget,
 				this.multiTarget,
 				true,
-				true,
-				lst );
+				true );
 			coll.Refresh();
-
-			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
 			Assert.AreEqual( 3, coll.ItemCount );
@@ -146,36 +128,29 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchEmptyDir()
 		{
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir + "\\dummy" ),
 				"*",
 				inProcTarget,
 				this.multiTarget,
 				true,
-				true,
-				lst );
+				true );
 			coll.Refresh();
 
-			Assert.AreEqual( 0, lst.Invalids );
 			Assert.AreEqual( 0, coll.ItemCount );
 		}
 
 		[Test]
 		public void SearchDir()
 		{
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				inProcTarget,
 				this.multiTarget,
 				true,
-				true,
-				lst );
+				true );
 			coll.Refresh();
-
-			Assert.AreEqual( 1, lst.Invalids );
 
 			Assert.AreEqual( "i386", coll.Name );
 			Assert.AreEqual( 3, coll.ItemCount );
@@ -202,21 +177,17 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchDirRecursive()
 		{
-			Listener lst = new Listener();
 			TestModuleCollection coll = TestModuleCollection.Search(
 				new DirectoryInfo( this.testdataDir + "\\.." ),
 				"*",
 				inProcTarget,
 				this.multiTarget,
 				true,
-				true,
-				lst );
+				true );
 			coll.Refresh();
 
 			for ( int i = 0; i < 3; i++ )
 			{
-				Assert.AreEqual( i + 1, lst.Invalids );
-
 				Assert.AreEqual( "testdata", coll.Name );
 				Assert.AreEqual( 1, coll.ItemCount );
 				ITestItem item = coll.GetItem( 0 );

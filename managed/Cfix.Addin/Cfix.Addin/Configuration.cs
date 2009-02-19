@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Win32;
 using Cfix.Control;
 
@@ -6,7 +8,9 @@ namespace Cfix.Addin
 {
 	public class Configuration : IDisposable
 	{
-		private const String BaseKeyPath = "Software\\cfix\\cfixplus\\1.0";
+		private readonly String[] supportedExtensions = new String[] { ".DLL", ".SYS" };
+
+		private const String BaseKeyPath = "Software\\cfix\\addin\\1.0";
 		private readonly RegistryKey key;
 
 		private Configuration(
@@ -39,6 +43,35 @@ namespace Cfix.Addin
 				);
 		}
 
+		/*----------------------------------------------------------------------
+		 * Settings (constants).
+		 */
+
+		public String[] SupportedExtensions
+		{
+			get { return this.supportedExtensions; }
+		}
+		
+		public bool IsSupportedTestModuleExtension( string extension )
+		{
+			foreach ( String supported in this.SupportedExtensions )
+			{
+				Debug.Assert( supported.ToUpper() == supported );
+				if ( supported == extension.ToUpper() )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public bool IsSupportedTestModulePath( string path )
+		{
+			return IsSupportedTestModuleExtension(
+				new FileInfo( path ).Extension );
+		}
+		
 		/*----------------------------------------------------------------------
 		 * Settings.
 		 */

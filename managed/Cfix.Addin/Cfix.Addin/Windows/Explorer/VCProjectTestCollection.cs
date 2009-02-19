@@ -11,6 +11,7 @@ namespace Cfix.Addin.Windows.Explorer
 {
 	internal class VCProjectTestCollection : GenericTestItemCollection
 	{
+		private readonly Configuration config;
 		private readonly string uniqueName;
 		private readonly Project project;
 		private MultiTarget target;
@@ -57,23 +58,40 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		private void Load()
+		private void LoadPrimaryOutputModule()
 		{
 			//
 			// (Re-) obtain path to primary output as it may have
 			// changed.
 			//
 			VCConfiguration vcConfig = CurrentConfiguration;
+			Architecture arch = GetArchitecture( vcConfig );
+
+			Debug.Assert( this.target.IsArchitectureSupported( arch ) );
 
 			string modulePath = vcConfig.PrimaryOutput;
 			Debug.Print( modulePath );
 
-			if ( File.Exists( modulePath ) )
+			if ( File.Exists( modulePath ) &&
+				 this.config.IsSupportedTestModulePath( modulePath ) )
 			{
-				Add( TestModule.LoadModule(
-					this.target.GetTarget( GetArchitecture( vcConfig ) ),
-					modulePath,
-					true ) );
+				ITestItem module;
+				try
+				{
+					module = TestModule.LoadModule(
+						this.target.GetTarget( arch ),
+						modulePath,
+						true );
+				}
+				catch ( Exception x )
+				{
+					module = new InvalidModule(
+						this,
+						new FileInfo( modulePath ).Name,
+						x );
+				}
+
+				Add( module );
 			}
 		}
 
@@ -83,15 +101,16 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public VCProjectTestCollection(
 			Project project,
-			MultiTarget target
+			MultiTarget target,
+			Configuration config
 			)
 			: base( null, project.Name )
 		{
 			this.uniqueName = project.UniqueName;
 			this.project = project;
 			this.target = target;
-
-			Load();
+			this.config = config;
+			LoadPrimaryOutputModule();
 		}
 
 		public string UniqueName
@@ -106,7 +125,7 @@ namespace Cfix.Addin.Windows.Explorer
 		public override void Refresh()
 		{
 			Clear();
-			Load();
+			LoadPrimaryOutputModule();
 		}
 	}
 }

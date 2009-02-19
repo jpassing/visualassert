@@ -42,7 +42,7 @@ namespace Cfix.Addin.ShellBrowse
 			// if item is file, check if it has a valid extension
 			for (int i=0 ; i<this.validExtension.Length ; i++)
 			{
-				if (sDisplay.ToUpper().EndsWith("." + validExtension[i].ToUpper()))
+				if (sDisplay.ToUpper().EndsWith(validExtension[i].ToUpper()))
 					return 0;
 			}
 

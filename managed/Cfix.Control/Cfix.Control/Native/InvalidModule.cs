@@ -18,7 +18,7 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		internal InvalidModule(
+		public InvalidModule(
 			ITestItemCollection parent,
 			String name,
 			Exception invalidityCause

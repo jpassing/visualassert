@@ -18,7 +18,6 @@ namespace Cfix.Addin.Windows.Explorer
 	public partial class ExplorerWindow : UserControl
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
-		private readonly String[] SupportedExtensions = new String[] { "DLL" };
 
 		private Workspace workspace;
 		private Configuration config;
@@ -324,8 +323,7 @@ namespace Cfix.Addin.Windows.Explorer
 					this.workspace.SearchTarget,
 					this.workspace.RunTarget,
 					! this.config.KernelModeFeaturesEnabled,
-					true,
-					null );
+					true );
 		}
 
 		private void ExploreSolution()
@@ -338,7 +336,8 @@ namespace Cfix.Addin.Windows.Explorer
 			Solution curSolution = this.dte.Solution;
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
 				( Solution2 ) curSolution,
-				this.workspace.RunTarget );
+				this.workspace.RunTarget,
+				this.config );
 			slnCollection.Closed += new EventHandler( slnCollection_Closed );
 			this.workspace.Session.Tests = slnCollection;
 		}
@@ -359,7 +358,7 @@ namespace Cfix.Addin.Windows.Explorer
 				ShellBrowseForFolderDialog dialog = new ShellBrowseForFolderDialog();
 				dialog.hwndOwner = this.Handle;
 
-				dialog.Filter = new FilterByExtension( SupportedExtensions );
+				dialog.Filter = new FilterByExtension( this.config.SupportedExtensions );
 				dialog.DetailsFlags = 
 					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NONEWFOLDERBUTTON |
 					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_BROWSEINCLUDEFILES |
@@ -415,16 +414,9 @@ namespace Cfix.Addin.Windows.Explorer
 					//
 					// Re-check extension.
 					//
-					foreach ( String ext in this.SupportedExtensions )
-					{
-						if ( path.ToUpper().EndsWith( ext ) )
-						{
-							sender.EnableOk( args.hwnd, true );
-							return;
-						}
-					}
-
-					sender.EnableOk( args.hwnd, false );
+					sender.EnableOk(
+						args.hwnd,
+						this.config.IsSupportedTestModulePath( path ) );
 				}
 			}
 			catch ( Exception x )

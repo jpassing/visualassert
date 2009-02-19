@@ -8,16 +8,6 @@ namespace QuickTest
 {
 	class Program
 	{
-		private class Listener : TestModuleCollection.ISearchListener
-		{
-			public uint Invalids;
-
-			public void InvalidModule( string path, string reason )
-			{
-				this.Invalids++;
-			}
-		}
-
 		[STAThread]
 		static void Main( string[] args )
 		{
@@ -47,8 +37,7 @@ namespace QuickTest
 					inTarget,
 					multiTarget,
 					false,
-					true,
-					new Listener() );
+					true );
 
 				using ( ExplorerForm f = new ExplorerForm() )
 				{

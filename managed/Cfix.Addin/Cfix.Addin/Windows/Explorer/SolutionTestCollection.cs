@@ -12,6 +12,7 @@ namespace Cfix.Addin.Windows.Explorer
 	{
 		public event EventHandler Closed;
 
+		private readonly Configuration config;
 		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
 		private readonly MultiTarget target;
@@ -25,7 +26,10 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			if ( IsVcProject( prj ) )
 			{
-				Add( new VCProjectTestCollection( prj, this.target ) );
+				Add( new VCProjectTestCollection( 
+					prj, 
+					this.target,
+					this.config ) );
 			}
 		}
 
@@ -39,13 +43,15 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public SolutionTestCollection(
 			Solution2 solution,
-			MultiTarget target
+			MultiTarget target,
+			Configuration config
 			)
 			: base( null, solution.FileName )
 		{
 			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;
 			this.target = target;
+			this.config = config;
 
 			this.solutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
 			this.solutionEvents.ProjectRemoved += new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
