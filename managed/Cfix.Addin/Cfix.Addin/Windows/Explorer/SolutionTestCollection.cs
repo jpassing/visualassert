@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 using EnvDTE;
@@ -46,7 +47,7 @@ namespace Cfix.Addin.Windows.Explorer
 			MultiTarget target,
 			Configuration config
 			)
-			: base( null, solution.FileName )
+			: base( null, new FileInfo( solution.FullName ).Name )
 		{
 			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;

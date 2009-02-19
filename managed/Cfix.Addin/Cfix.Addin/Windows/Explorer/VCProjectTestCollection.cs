@@ -14,7 +14,15 @@ namespace Cfix.Addin.Windows.Explorer
 		private readonly Configuration config;
 		private readonly string uniqueName;
 		private readonly Project project;
-		private MultiTarget target;
+		private readonly MultiTarget target;
+
+		private readonly object loadLock = new object();
+
+		//
+		// Current path to module -- this changes whenever the active
+		// solution configuration changes.
+		//
+		private string currentPath;
 
 		private VCConfiguration CurrentConfiguration
 		{
@@ -41,7 +49,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		private Architecture GetArchitecture( VCConfiguration config )
+		private static Architecture GetArchitecture( VCConfiguration config )
 		{
 			string plafName = ( ( VCPlatform ) config.Platform ).Name;
 			switch ( plafName )
@@ -58,40 +66,38 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		private void LoadPrimaryOutputModule()
+		private void LoadPrimaryOutputModule( VCConfiguration vcConfig )
 		{
-			//
-			// (Re-) obtain path to primary output as it may have
-			// changed.
-			//
-			VCConfiguration vcConfig = CurrentConfiguration;
-			Architecture arch = GetArchitecture( vcConfig );
-
-			Debug.Assert( this.target.IsArchitectureSupported( arch ) );
-
-			string modulePath = vcConfig.PrimaryOutput;
-			Debug.Print( modulePath );
-
-			if ( File.Exists( modulePath ) &&
-				 this.config.IsSupportedTestModulePath( modulePath ) )
+			lock ( this.loadLock )
 			{
-				ITestItem module;
-				try
-				{
-					module = TestModule.LoadModule(
-						this.target.GetTarget( arch ),
-						modulePath,
-						true );
-				}
-				catch ( Exception x )
-				{
-					module = new InvalidModule(
-						this,
-						new FileInfo( modulePath ).Name,
-						x );
-				}
+				Architecture arch = GetArchitecture( vcConfig );
 
-				Add( module );
+				Debug.Assert( this.target.IsArchitectureSupported( arch ) );
+
+				this.currentPath = vcConfig.PrimaryOutput;
+				Debug.Print( this.currentPath );
+
+				if ( File.Exists( this.currentPath ) &&
+					 this.config.IsSupportedTestModulePath( this.currentPath ) )
+				{
+					ITestItem module;
+					try
+					{
+						module = TestModule.LoadModule(
+							this.target.GetTarget( arch ),
+							this.currentPath,
+							true );
+					}
+					catch ( Exception x )
+					{
+						module = new InvalidModule(
+							this,
+							new FileInfo( this.currentPath ).Name,
+							x );
+					}
+
+					Add( module );
+				}
 			}
 		}
 
@@ -110,7 +116,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.project = project;
 			this.target = target;
 			this.config = config;
-			LoadPrimaryOutputModule();
+
+			LoadPrimaryOutputModule( CurrentConfiguration );
 		}
 
 		public string UniqueName
@@ -124,8 +131,29 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public override void Refresh()
 		{
-			Clear();
-			LoadPrimaryOutputModule();
+			//
+			// (Re-) obtain path to primary output as it may have
+			// changed.
+			//
+			VCConfiguration vcConfig = CurrentConfiguration;
+
+			if ( vcConfig.PrimaryOutput != this.currentPath )
+			{
+				//
+				// Configuration changed, reload from scratch.
+				//
+				Debug.Print( "Full reload" );
+
+				Clear();
+				LoadPrimaryOutputModule( vcConfig );
+			}
+			else
+			{
+				//
+				// Refresh module.
+				//
+				base.Refresh();
+			}
 		}
 	}
 }
