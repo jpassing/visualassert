@@ -123,6 +123,9 @@
   <data name="FailedToObtainCurrentConfig" xml:space="preserve">
     <value>Failed to obtain current configuration</value>
   </data>
+  <data name="RunActive" xml:space="preserve">
+    <value>Run still active</value>
+  </data>
   <data name="Searching" xml:space="preserve">
     <value>Searching...</value>
   </data>

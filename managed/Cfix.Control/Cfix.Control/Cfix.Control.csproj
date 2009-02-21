@@ -71,7 +71,7 @@
     <Compile Include="Native\TestItemCollectionResult.cs" />
     <Compile Include="Native\TestItemResult.cs" />
     <Compile Include="Native\TestModuleCollection.cs" />
-    <Compile Include="GenericSession.cs" />
+    <Compile Include="Native\Session.cs" />
     <Compile Include="ITestItemCollection.cs" />
     <Compile Include="Native\MultiTarget.cs" />
     <Compile Include="Native\NativeAction.cs" />

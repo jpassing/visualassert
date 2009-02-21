@@ -7,18 +7,23 @@ namespace Cfix.Control.Native
 {
 	internal class NativeAction : IComponentAction
 	{
+		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
+
 		private TestItem item;
 		private ICfixAction action;
 		private ICfixHost host;
+		private readonly uint flags;
 
 		public NativeAction( 
 			TestItem item, 
 			ICfixHost host,
-			ICfixAction action )
+			ICfixAction action,
+			uint flags )
 		{
 			this.item = item;
 			this.host = host;
 			this.action = action;
+			this.flags = flags;
 
 			Debug.Assert( host.GetHostProcessId() > 0 );
 		}
@@ -51,7 +56,7 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				this.action.Run( sink );
+				this.action.Run( sink, this.flags );
 			}
 			catch ( COMException x )
 			{

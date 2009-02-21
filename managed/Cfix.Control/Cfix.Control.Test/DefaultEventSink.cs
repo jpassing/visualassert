@@ -114,5 +114,11 @@ namespace Cfix.Control.Test
 			this.Exceptions++;
 			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
 		}
+
+		public void AfterRunFinish()
+		{ }
+
+		public void BeforeRunStart()
+		{ }
 	}
 }

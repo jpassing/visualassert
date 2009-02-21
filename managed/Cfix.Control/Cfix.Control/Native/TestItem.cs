@@ -36,16 +36,23 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		private NativeAction CreateNativeAction( SchedulingOptions flags )
+		private NativeAction CreateNativeAction( SchedulingOptions schedOptions )
 		{
 			NativeConnection connection = this.NativeConnection;
 			ICfixTestItem ctlItem = connection.Item;
 			try
 			{
+				uint nativeFlags = 0;
+				if ( ( schedOptions & SchedulingOptions.ComNeutralThreading ) != 0 )
+				{
+					nativeFlags |= NativeAction.CFIXCTL_ACTION_COM_NEUTRAL;
+				}
+
 				return new NativeAction(
 					this,
 					connection.Host,
-					ctlItem.CreateExecutionAction( ( uint ) flags, 0 ) );
+					ctlItem.CreateExecutionAction( ( uint ) schedOptions, 0 ),
+					nativeFlags );
 			}
 			catch ( COMException x )
 			{

@@ -79,6 +79,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run still active.
+        /// </summary>
+        internal static string RunActive {
+            get {
+                return ResourceManager.GetString("RunActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Searching....
         /// </summary>
         internal static string Searching {

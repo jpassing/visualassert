@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Cfix.Control;
 using Cfix.Control.Native;
 
@@ -9,6 +10,9 @@ namespace Cfix.Addin
 		private readonly Target searchTarget;
 		private readonly MultiTarget target;
 		private readonly ISession session;
+
+		private readonly object runLock = new object();
+		private IRun currentRun;
 
 		/*----------------------------------------------------------------------
 		 * Private.
@@ -81,7 +85,7 @@ namespace Cfix.Addin
 			//
 			this.searchTarget = Target.CreateLocalTarget( Architecture.I386, true );
 			this.target = CreateMultiTarget();
-			this.session = new GenericSession();
+			this.session = new Session();
 		}
 
 		~Workspace()
@@ -125,6 +129,48 @@ namespace Cfix.Addin
 		public ISession Session
 		{
 			get { return session; }
+		}
+
+		public IRun CurrentRun
+		{
+			get { return this.currentRun; }
+		}
+
+		public bool IsRunActive
+		{
+			get
+			{
+				lock ( this.runLock )
+				{
+					return this.currentRun != null && 
+					   this.currentRun.IsStarted &&
+					   ! this.currentRun.IsFinished;
+				}
+			}
+		}
+
+		public void CreateRun(
+			IDispositionPolicy policy,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
+		{
+			lock ( this.runLock )
+			{
+				if ( IsRunActive )
+				{
+					//
+					// Run still active.
+					//
+					throw new CfixException( Strings.RunActive );
+				}
+
+				Debug.Assert( this.currentRun == null || this.currentRun.IsFinished );
+				this.currentRun = this.session.CreateRun(
+					policy,
+					schedulingOptions,
+					compositionOptions );
+			}
 		}
 
 	}

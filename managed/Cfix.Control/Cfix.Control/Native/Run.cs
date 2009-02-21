@@ -19,6 +19,9 @@ namespace Cfix.Control.Native
 		public event EventHandler<NotificationEventArgs> Notification;
 
 		private readonly IDispositionPolicy dispositionPolicy;
+		private readonly SchedulingOptions schedulingOptions;
+		private readonly CompositionOptions compositionOptions;
+
 		private readonly ITestItemCollection rootItem;
 		private readonly IResultItemCollection rootResult;
 
@@ -34,12 +37,19 @@ namespace Cfix.Control.Native
 		private readonly IDictionary<String, TestItemCollectionResult> modules =
 			new Dictionary<String, TestItemCollectionResult>();
 
+		private volatile bool started;
+		private volatile bool finished;
+
 		public Run( 
 			IDispositionPolicy policy,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions,
 			ITestItemCollection rootItem 
 			)
 		{
 			this.dispositionPolicy = policy;
+			this.schedulingOptions = schedulingOptions;
+			this.compositionOptions = compositionOptions;
 			this.rootItem = rootItem;
 			this.rootResult = TestItemCollectionResult.CreateResult(
 				this, rootItem, ExecutionStatus.Pending );
@@ -83,6 +93,7 @@ namespace Cfix.Control.Native
 			IAction action
 			)
 		{
+			this.started = true;
 			if ( this.Started != null )
 			{
 				this.Started( this, EventArgs.Empty );
@@ -113,12 +124,27 @@ namespace Cfix.Control.Native
 			finally
 			{
 				this.rundownLock.Release();
+				this.finished = true;
 			}
 		}
 
 		/*--------------------------------------------------------------
 		 * ICfixProcessEventSink.
 		 */
+
+		void ICfixProcessEventSink.AfterRunFinish()
+		{
+			//
+			// Not used.
+			//
+		}
+
+		void ICfixProcessEventSink.BeforeRunStart()
+		{ 
+			//
+			// Not used.
+			//
+		}
 
 		ICfixTestÌtemContainerEventSink ICfixProcessEventSink.GetTestÌtemContainerEventSink( 
 			ICfixTestModule module, 
@@ -152,20 +178,22 @@ namespace Cfix.Control.Native
 		 * IRun.
 		 */
 
-		public ITestItemCollection RootItem 
-		{ 
-			get { return this.rootItem; }
-		}
-
 		public IResultItemCollection RootResult 
 		{
 			get { return this.rootResult; }
 		}
 
-		public void Start(
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
-			)
+		public bool IsStarted 
+		{
+			get { return this.started; }
+		}
+		
+		public bool IsFinished 
+		{
+			get { return this.finished; }
+		}
+
+		public void Start()
 		{
 			IAction action = null;
 

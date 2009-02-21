@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 
-namespace Cfix.Control
+namespace Cfix.Control.Native
 {
-	public class GenericSession : ISession
+	public class Session : ISession
 	{
 		private readonly Object testsLock = new Object();
 		private ITestItemCollection tests;
@@ -11,14 +11,32 @@ namespace Cfix.Control
 		public event EventHandler BeforeSetTests;
 		public event EventHandler AfterSetTests;
 
-		public GenericSession()
+		public Session()
 		{
 		}
 
-		~GenericSession()
+		~Session()
 		{
 			Dispose( false );
 		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( this.tests != null )
+			{
+				this.tests.Dispose();
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/*----------------------------------------------------------------------
+		 * ISession.
+		 */
 
 		public ITestItemCollection Tests
 		{
@@ -56,18 +74,25 @@ namespace Cfix.Control
 			}
 		}
 
-		protected virtual void Dispose( bool disposing )
+		public IRun CreateRun(
+			IDispositionPolicy policy,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			)
 		{
-			if ( this.tests != null )
+			if ( this.tests == null )
 			{
-				this.tests.Dispose();
+				throw new CfixException( "No tests loaded" );
 			}
-		}
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
+			lock ( this.testsLock )
+			{
+				return new Run(
+					policy,
+					schedulingOptions,
+					compositionOptions,
+					this.tests );
+			}
 		}
 	}
 }

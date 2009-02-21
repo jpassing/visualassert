@@ -104,15 +104,21 @@ namespace Cfix.Control.Test
 
 			Assert.AreEqual( 0, fixture.ItemCount );
 
-			DefaultEventSink sink = new DefaultEventSink();
-			IComponentAction action = mod.CreateAction( SchedulingOptions.None );
-			Assert.AreEqual( 0, action.TestCaseCount );
+			SchedulingOptions[] opts = { 
+				SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
 
-			action.TerminateHost();
+			foreach ( SchedulingOptions opt in opts )
+			{
+				DefaultEventSink sink = new DefaultEventSink();
+				IComponentAction action = mod.CreateAction( opt );
+				Assert.AreEqual( 0, action.TestCaseCount );
 
-			Assert.AreEqual( 0, sink.FixtureStarts );
-			Assert.AreEqual( 0, sink.FixtureFinishs );
-			Assert.AreEqual( 0, sink.TestCaseStarts );
+				action.TerminateHost();
+
+				Assert.AreEqual( 0, sink.FixtureStarts );
+				Assert.AreEqual( 0, sink.FixtureFinishs );
+				Assert.AreEqual( 0, sink.TestCaseStarts );
+			}
 		}
 
 		[Test]

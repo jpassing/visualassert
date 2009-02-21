@@ -5,7 +5,13 @@ namespace Cfix.Control
 	[Flags]
 	public enum SchedulingOptions
 	{
-		None = 0
+		None = 0,
+
+		//
+		// Run tests on threads that are COM-neutral, i.e. have not
+		// joined any apartment.
+		//
+		ComNeutralThreading = 1
 	}
 
 	[Flags]

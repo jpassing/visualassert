@@ -51,7 +51,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run( 
+				this.policy, 
+				SchedulingOptions.None, 
+				CompositionOptions.NonComposite, 
+				mod );
 
 			Assert.AreSame( run.RootResult.Run, run );
 
@@ -102,7 +106,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run( 
+				this.policy,
+				SchedulingOptions.None, 
+				CompositionOptions.NonComposite, 
+				mod );
 
 			Assert.AreEqual( 1, run.RootResult.ItemCount );
 			IResultItemCollection fixture =
@@ -170,7 +178,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run(
+				this.policy,
+				SchedulingOptions.None,
+				CompositionOptions.NonComposite,
+				mod );
 
 			int statusChanges = 0;
 
@@ -240,7 +252,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run(
+				this.policy,
+				SchedulingOptions.None,
+				CompositionOptions.NonComposite,
+				mod );
 
 			int statusChanges = 0;
 
@@ -363,7 +379,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run(
+				this.policy,
+				SchedulingOptions.None,
+				CompositionOptions.NonComposite,
+				mod );
 
 			int statusChanges = 0;
 
@@ -442,7 +462,11 @@ namespace Cfix.Control.Test
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
-			IRun run = new Run( this.policy, mod );
+			IRun run = new Run(
+				this.policy,
+				SchedulingOptions.None,
+				CompositionOptions.NonComposite,
+				mod );
 
 			int spawns = 0;
 			run.HostSpawned += delegate( object sender, HostEventArgs e )

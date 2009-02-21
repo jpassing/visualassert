@@ -96,12 +96,11 @@ namespace Cfix.Control
 		event EventHandler StatusChanged;
 		event EventHandler<NotificationEventArgs> Notification;
 
-		ITestItemCollection RootItem { get; }
 		IResultItemCollection RootResult { get; }
 
-		void Start(
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
-			);
+		bool IsStarted { get; }
+		bool IsFinished { get; }
+
+		void Start();
 	}
 }

@@ -10,5 +10,11 @@ namespace Cfix.Control
 		event EventHandler AfterSetTests;
 
 		ITestItemCollection Tests { get; set; }
+
+		IRun CreateRun(
+			IDispositionPolicy policy,
+			SchedulingOptions schedulingOptions,
+			CompositionOptions compositionOptions
+			);
 	}
 }
