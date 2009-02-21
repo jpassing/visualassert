@@ -154,6 +154,8 @@ library Cfixctl
 			);
 	}
 
+	const ULONG CFIXCTL_ACTION_COM_NEUTRAL = 1;
+
 	[
 	  object,
 	  uuid( 57f93e41-d44f-11dd-99e2-0016d3b98f9b ),
@@ -166,9 +168,23 @@ library Cfixctl
 			Method Description:
 				Start the run (synchonously). At most one run per object
 				may be active.
+
+			Arguments:
+				Sink	- Sink to deliver events to.
+				Flags	- Options:
+					None (0):
+						Tests will be run on the current thread, and thus, 
+						within the current COM apartment. This may 
+						not be applicable to certain tests. 
+
+					CFIXCTL_ACTION_COM_NEUTRAL:
+						Tests will be runo n a non-COM thread. Tests are 
+						thus free to initialize and tear down COM apatrtments 
+						at will.
 		--*/
 		HRESULT Run( 
-			[in] ICfixEventSink *Sink
+			[in] ICfixEventSink *Sink,
+			[in] ULONG Flags
 			);
 
 		/*++
@@ -607,6 +623,9 @@ library Cfixctl
 			[in] HRESULT Hr
 			);
 
+		HRESULT BeforeRunStart();
+		HRESULT AfterRunFinish();
+
 		HRESULT GetTestÌtemContainerEventSink(
 			[in] ICfixTestModule *Module,
 			[in] ULONG FixtureOrdinal,
@@ -698,13 +717,4 @@ library Cfixctl
 	{
 		interface ICfixAgent;
 	}
-
-	//[
-	//	uuid( 57f93e4d-d44f-11dd-99e2-0016d3b98f9b )
-	//]
-	//coclass TypeLibWorkaround
-	//{
-	//	interface ICfixTestModule;
-	//	interface ICfixHost;
-	//}
 }

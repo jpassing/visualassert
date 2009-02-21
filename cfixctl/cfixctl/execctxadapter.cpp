@@ -47,7 +47,7 @@ typedef struct _CFIXCTLP_EXEC_CONTEXT
 
 	ICfixProcessEventSink *ProcessSink;
 	ICfixTestÌtemContainerEventSink *FixtureSink;		// May be NULL.
-	ICfixTestÌtemEventSink *TestCaseSink;	// May be NULL.
+	ICfixTestÌtemEventSink *TestCaseSink;				// May be NULL.
 
 	volatile BOOL IssueAbort;
 } CFIXCTLP_EXEC_CONTEXT, *PCFIXCTLP_EXEC_CONTEXT;
@@ -430,7 +430,7 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 	Context->TestCaseSink = NULL;
 }
 
-VOID CfixctlsExecCtxBeforeChildThreadStart(
+static VOID CfixctlsExecCtxBeforeChildThreadStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
 	__in ULONG MainThreadId,
 	__in_opt PVOID ParentContext
@@ -458,7 +458,7 @@ VOID CfixctlsExecCtxBeforeChildThreadStart(
 		GetCurrentThreadId() ) ) );
 }
 
-VOID CfixctlsExecCtxAfterChildThreadFinish(
+static VOID CfixctlsExecCtxAfterChildThreadFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
 	__in ULONG MainThreadId,
 	__in_opt PVOID ParentContext

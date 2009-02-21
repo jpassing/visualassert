@@ -99,6 +99,25 @@ HRESULT CfixctlpAbortExecutionContextAdapter(
 	__in PCFIX_EXECUTION_CONTEXT Context
 	);
 
+/*++
+	Routine Description:
+		Create an execution context proxy that performs a thread switch
+		for each call. The thread servicing the calls must call 
+		CfixctlpServiceThreadSwitchProxy.
+--*/
+HRESULT CfixctlpCreateThreadSwitchProxy(
+	__in PCFIX_EXECUTION_CONTEXT Context,
+	__out PCFIX_EXECUTION_CONTEXT *Proxy
+	);
+
+/*++
+	Routine Description:
+		Service all proxied calls..
+--*/
+HRESULT CfixctlpServiceThreadSwitchProxy(
+	__in PCFIX_EXECUTION_CONTEXT Context,
+	__in HANDLE WorkerThread
+	);
 
 /*++
 	Routine Description:

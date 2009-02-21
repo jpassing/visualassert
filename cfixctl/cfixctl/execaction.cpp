@@ -74,7 +74,8 @@ public:
 	 */
 
 	STDMETHOD( Run )( 
-		__in ICfixEventSink *Sink
+		__in ICfixEventSink *Sink,
+		__in ULONG Flags
 		);
 
 	STDMETHOD( Stop )();
@@ -105,6 +106,116 @@ IClassFactory& CfixctlpGetExecutionActionFactory()
 	static ComClassFactory< 
 		ComMtaObject< ExecutionAction >, CfixctlServerLock > Factory;
 	return Factory;
+}
+
+/*----------------------------------------------------------------------
+ * 
+ * Helpers.
+ *
+ */
+
+typedef struct _CFIXCTLP_RUN_ARGS
+{
+	PCFIX_ACTION Action;
+	PCFIX_EXECUTION_CONTEXT Context;
+} CFIXCTLP_RUN_ARGS, *PCFIXCTLP_RUN_ARGS;
+
+static HRESULT CfixctlsRunDirect(
+	__in PCFIX_ACTION Action,
+	__in PCFIX_EXECUTION_CONTEXT Context
+	)
+{
+	ASSERT( Action );
+	ASSERT( Context );
+
+	return Action->Run( Action, Context );
+}
+
+static DWORD CfixctlsRunIndirectThreadProc( PVOID Args )
+{
+	PCFIXCTLP_RUN_ARGS ThreadArgs = ( PCFIXCTLP_RUN_ARGS ) Args;
+	
+	return ( DWORD ) CfixctlsRunDirect(
+		ThreadArgs->Action,
+		ThreadArgs->Context );
+}
+
+static HRESULT CfixctlsRunOnWorkerThread(
+	__in PCFIX_ACTION Action,
+	__in PCFIX_EXECUTION_CONTEXT Adapter
+	)
+{
+	ASSERT( Action );
+	ASSERT( Adapter );
+
+	//
+	// N.B. The thread we are about to spawn will not be a COM thread - 
+	// maybe some test will call CoInitializeEx, maybe not. Therefore,
+	// we may not perform any COM activity on this thread, which in turn
+	// means that we cannot pass the Adapter over to the thread as the
+	// adapter would indeed perform (D)COM calls.
+	//
+	// Therefore, wrap the Adapter.
+	//
+
+	HANDLE Thread = NULL;
+	PCFIX_EXECUTION_CONTEXT Proxy = NULL;
+
+	HRESULT Hr = CfixctlpCreateThreadSwitchProxy( Adapter, &Proxy );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	CFIXCTLP_RUN_ARGS ThreadArgs;
+	ThreadArgs.Action	= Action;
+	ThreadArgs.Context	= Proxy;
+
+	Thread = CreateThread(
+		NULL,
+		0,
+		CfixctlsRunIndirectThreadProc,
+		&ThreadArgs,
+		0,
+		NULL );
+	if ( Thread == NULL )
+	{
+		Hr = HRESULT_FROM_WIN32( GetLastError() );
+		goto Cleanup;
+	}
+
+	//
+	// Service execution context callbacks until the thread dies.
+	//
+	Hr = CfixctlpServiceThreadSwitchProxy( Proxy, Thread );
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
+	DWORD ExitCode;
+	if ( ! GetExitCodeThread( Thread, &ExitCode ) )
+	{
+		Hr =  HRESULT_FROM_WIN32( GetLastError() );
+	}
+	else
+	{
+		Hr = ( HRESULT ) ExitCode;
+	}
+
+Cleanup:
+
+	if ( Thread != NULL )
+	{
+		VERIFY( CloseHandle( Thread ) );
+	}
+
+	if ( Proxy != NULL )
+	{
+		Proxy->Dereference( Proxy );
+	}
+
+	return Hr;
 }
 
 /*----------------------------------------------------------------------
@@ -176,12 +287,18 @@ STDMETHODIMP ExecutionAction::QueryInterface(
  */
 
 STDMETHODIMP ExecutionAction::Run( 
-	__in ICfixEventSink *Sink
+	__in ICfixEventSink *Sink,
+	__in ULONG Flags
 	)
 {
 	if ( Sink == NULL )
 	{
 		return E_POINTER;
+	}
+
+	if ( Flags > CFIXCTL_ACTION_COM_NEUTRAL )
+	{
+		return E_INVALIDARG;
 	}
 
 	if ( this->Module == NULL || 
@@ -217,6 +334,12 @@ STDMETHODIMP ExecutionAction::Run(
 		goto Cleanup;
 	}
 
+	Hr = ProcessSink->BeforeRunStart();
+	if ( FAILED( Hr ) )
+	{
+		goto Cleanup;
+	}
+
 	//
 	// Before starting the run, make the adapter object available
 	// s.t. concurrent threads can issue abortions.
@@ -228,11 +351,20 @@ STDMETHODIMP ExecutionAction::Run(
 	//
 	// Let it run and tunnel events through the adapter.
 	//
-	Hr = Action->Run( Action, Adapter );
+	if ( Flags & CFIXCTL_ACTION_COM_NEUTRAL )
+	{
+		CfixctlsRunOnWorkerThread( Action, Adapter );
+	}
+	else
+	{
+		CfixctlsRunDirect( Action, Adapter );
+	}
 
 	EnterCriticalSection( &this->CurrentAdapterLock );
 	this->CurrentAdapter = NULL;
 	LeaveCriticalSection( &this->CurrentAdapterLock );
+
+	Hr = ProcessSink->AfterRunFinish();
 
 Cleanup:
 	if ( ProcessSink )

@@ -287,6 +287,20 @@ public:
 		return S_OK;
 	}
 
+	STDMETHOD( BeforeRunStart )()
+	{
+		this->CallbackCount++;
+		this->CallbackMask |= 4096;
+		return S_OK;
+	}
+
+	STDMETHOD( AfterRunFinish )()
+	{
+		this->CallbackCount++;
+		this->CallbackMask |= 8192;
+		return S_OK;
+	}
+
 	STDMETHOD( GetTestÌtemContainerEventSink )(
 		__in ICfixTestModule *Module,
 		__in ULONG FixtureOrdinal,
@@ -438,37 +452,45 @@ void RunFixturesFromTestlib10()
 		CFIXCC_ASSERT_OK( Module->CreateExecutionAction(
 			0, 0, &ModuleAction ) );
 
-		EventSink Sink( Flags );
-
-		CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
-		HRESULT Hr = ModuleAction->Run( &Sink );
-		CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
-
-		if ( Flags & EVENT_SINK_FAIL_PROCESS_SINK )
+		//
+		// Reuse action.
+		//
+		for ( ULONG RunFlags = 0; 
+			  RunFlags <= CFIXCTL_ACTION_COM_NEUTRAL; 
+			  RunFlags++ )
 		{
-			CFIXCC_ASSERT_EQUALS( E_FAIL, Hr );
-		}
-		else
-		{
-			CFIXCC_ASSERT_OK( Hr );
-		}
+			EventSink Sink( Flags );
 
-		ULONG TestCases;
-		CFIXCC_ASSERT_EQUALS( E_POINTER, ModuleAction->GetTestCaseCount( NULL ) );
-		CFIXCC_ASSERT_OK( ModuleAction->GetTestCaseCount( &TestCases ) );
-		CFIXCC_ASSERT_EQUALS( 2UL, TestCases );
+			CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
+			HRESULT Hr = ModuleAction->Run( &Sink, RunFlags );
+			CFIXCC_ASSERT_EQUALS( S_FALSE, ModuleAction->Stop() );
+
+			if ( Flags & EVENT_SINK_FAIL_PROCESS_SINK )
+			{
+				CFIXCC_ASSERT_EQUALS( E_FAIL, Hr );
+			}
+			else
+			{
+				CFIXCC_ASSERT_OK( Hr );
+			}
+
+			ULONG TestCases;
+			CFIXCC_ASSERT_EQUALS( E_POINTER, ModuleAction->GetTestCaseCount( NULL ) );
+			CFIXCC_ASSERT_OK( ModuleAction->GetTestCaseCount( &TestCases ) );
+			CFIXCC_ASSERT_EQUALS( 2UL, TestCases );
+
+			if ( Flags == 0 )
+			{
+				CFIXCC_ASSERT( Sink.CallbackMask & 8 ); // Log.
+				CFIXCC_ASSERT_EQUALS( 
+					8UL + 256UL + 512UL + 1024UL + 2048UL + 4096UL + 8192UL, 
+					Sink.CallbackMask );
+			}
+
+			CFIXCC_ASSERT_EQUALS( 0UL, Sink.RefCount );
+		}
 
 		ModuleAction->Release();
-
-		if ( Flags == 0 )
-		{
-			CFIXCC_ASSERT( Sink.CallbackMask & 8 ); // Log.
-			CFIXCC_ASSERT_EQUALS( 
-				8UL + 256UL + 512UL + 1024UL + 2048UL, 
-				Sink.CallbackMask );
-		}
-
-		CFIXCC_ASSERT_EQUALS( 0UL, Sink.RefCount );
 	}
 
 	Module->Release();

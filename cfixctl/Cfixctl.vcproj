@@ -209,6 +209,10 @@
 						RelativePath=".\cfixctl\execctxadapter.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\cfixctl\threadswitchproxy.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="activation"

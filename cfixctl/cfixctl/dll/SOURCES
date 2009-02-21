@@ -83,6 +83,7 @@ SOURCES=\
 	..\compat.cpp \
 	..\messageresolver.cpp \
 	..\selfreg.c \
+	..\threadswitchproxy.cpp \
 	..\cfixctl.rc \
 	..\cfixctlmsg.mc
 	
