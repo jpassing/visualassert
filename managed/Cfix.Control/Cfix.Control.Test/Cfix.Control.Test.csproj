@@ -59,6 +59,7 @@
     <Compile Include="DefaultEventSink.cs" />
     <Compile Include="MockObjects.cs" />
     <Compile Include="TestResult.cs" />
+    <Compile Include="TestSession.cs" />
     <Compile Include="TestTestModuleCollection.cs" />
     <Compile Include="TestTestModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

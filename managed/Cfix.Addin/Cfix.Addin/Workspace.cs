@@ -7,6 +7,7 @@ namespace Cfix.Addin
 {
 	public class Workspace : IDisposable
 	{
+		private readonly Configuration config;
 		private readonly Target searchTarget;
 		private readonly MultiTarget target;
 		private readonly ISession session;
@@ -75,6 +76,16 @@ namespace Cfix.Addin
 			return target;
 		}
 
+		private IDispositionPolicy DispositionPolicy
+		{
+			get
+			{
+				return new StandardDispositionPolicy(
+					this.config.DefaultUnhandledExceptionDisposition,
+					this.config.DefaultFailedAssertionDisposition );
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * ctor/dtor.
 		 */
@@ -85,6 +96,7 @@ namespace Cfix.Addin
 			//
 			this.searchTarget = Target.CreateLocalTarget( Architecture.I386, true );
 			this.target = CreateMultiTarget();
+			this.config = Configuration.Load();
 			this.session = new Session();
 		}
 
@@ -104,6 +116,11 @@ namespace Cfix.Addin
 			{
 				this.target.Dispose();
 			}
+
+			if ( this.config != null )
+			{
+				this.config.Dispose();
+			}
 		}
 
 		public void Dispose()
@@ -115,6 +132,11 @@ namespace Cfix.Addin
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
+
+		public Configuration Configuration
+		{
+			get { return this.config; }
+		}
 
 		public Target SearchTarget
 		{
@@ -149,11 +171,7 @@ namespace Cfix.Addin
 			}
 		}
 
-		public void CreateRun(
-			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
-			)
+		public void CreateRun()
 		{
 			lock ( this.runLock )
 			{
@@ -166,10 +184,16 @@ namespace Cfix.Addin
 				}
 
 				Debug.Assert( this.currentRun == null || this.currentRun.IsFinished );
+
+				SchedulingOptions schOpts =
+					this.config.UseComNeutralThread
+						? SchedulingOptions.ComNeutralThreading
+						: SchedulingOptions.None;
+
 				this.currentRun = this.session.CreateRun(
-					policy,
-					schedulingOptions,
-					compositionOptions );
+					this.DispositionPolicy,
+					schOpts,
+					CompositionOptions.NonComposite );
 			}
 		}
 

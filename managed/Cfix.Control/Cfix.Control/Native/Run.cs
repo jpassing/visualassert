@@ -37,7 +37,9 @@ namespace Cfix.Control.Native
 		private readonly IDictionary<String, TestItemCollectionResult> modules =
 			new Dictionary<String, TestItemCollectionResult>();
 
-		private volatile bool started;
+		private readonly object actionLock = new object();
+		private IAction action;
+		
 		private volatile bool finished;
 
 		public Run( 
@@ -85,25 +87,22 @@ namespace Cfix.Control.Native
 		 * Async run.
 		 */
 
-		private delegate void AsyncRunDelegate(
-			IAction action
-			);
+		private delegate void AsyncRunDelegate();
 
-		private void AsyncRun(
-			IAction action
-			)
+		private void AsyncRun()
 		{
-			this.started = true;
 			if ( this.Started != null )
 			{
 				this.Started( this, EventArgs.Empty );
 			}
 
-			action.Run( this );
+			this.action.Run( this );
 		}
 
 		private void AsyncRunCompletionCallback( IAsyncResult ar )
 		{
+			this.finished = true;
+
 			try
 			{
 				AsyncRunDelegate dlg = ( AsyncRunDelegate ) ar.AsyncState;
@@ -124,7 +123,6 @@ namespace Cfix.Control.Native
 			finally
 			{
 				this.rundownLock.Release();
-				this.finished = true;
 			}
 		}
 
@@ -185,43 +183,87 @@ namespace Cfix.Control.Native
 
 		public bool IsStarted 
 		{
-			get { return this.started; }
+			get { return this.action != null; }
 		}
 		
 		public bool IsFinished 
 		{
-			get { return this.finished; }
+			get { return this.action != null && this.finished; }
 		}
 
 		public void Start()
 		{
-			IAction action = null;
-
-			if ( ( compositionOptions & CompositionOptions.NonComposite )
-				== CompositionOptions.NonComposite )
+			lock ( this.actionLock )
 			{
-				IComponentActionSource compSrc =
-					this.rootItem as IComponentActionSource;
-				if ( compSrc == null )
+				if ( this.IsStarted )
 				{
-					throw new ArgumentException(
-						"Not a component source" );
+					throw new CfixException( "Already started" );
 				}
 
-				action = compSrc.CreateAction( schedulingOptions );
-			}
-			else
-			{
-				// TODO
-				throw new NotImplementedException();
-			}
+				if ( ( compositionOptions & CompositionOptions.NonComposite )
+					== CompositionOptions.NonComposite )
+				{
+					IComponentActionSource compSrc =
+						this.rootItem as IComponentActionSource;
+					if ( compSrc == null )
+					{
+						throw new ArgumentException(
+							"Not a component source" );
+					}
 
-			AsyncRunDelegate asyncRun = AsyncRun;
-			this.rundownLock.Acquire();
-			asyncRun.BeginInvoke(
-				action,
-				AsyncRunCompletionCallback,
-				asyncRun );
+					this.action = compSrc.CreateAction( schedulingOptions );
+				}
+				else
+				{
+					// TODO
+					throw new NotImplementedException();
+				}
+
+				AsyncRunDelegate asyncRun = AsyncRun;
+				this.rundownLock.Acquire();
+				asyncRun.BeginInvoke(
+					AsyncRunCompletionCallback,
+					asyncRun );
+			}
+		}
+
+		public void Stop()
+		{
+			lock ( this.actionLock )
+			{
+				if ( this.action != null )
+				{
+					//
+					// Will implicitly set finished to true.
+					//
+					this.action.Stop();
+				}
+			}
+		}
+
+		public void Terminate()
+		{
+			lock ( this.actionLock )
+			{
+				if ( this.action != null )
+				{
+					IComponentAction compAction = this.action as IComponentAction;
+					if ( compAction != null )
+					{
+						compAction.TerminateHost();
+
+						//
+						// Enforce state.
+						//
+						this.finished = true;
+					}
+					else
+					{
+						// TODO: Terminate multiple hosts?
+						Stop();
+					}
+				}
+			}
 		}
 
 		/*--------------------------------------------------------------
@@ -231,12 +273,13 @@ namespace Cfix.Control.Native
 		internal void OnItemAdded( IResultItem item )
 		{
 			//
-			// Remember this module for use as event sink.
+			// Remember the item's module for use as event sink.
 			//
 			TestModule module = item.Item as TestModule;
 			if ( module != null )
 			{
 				this.modules[ module.Path ] = ( TestItemCollectionResult ) item;
+				return;
 			}
 		}
 

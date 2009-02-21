@@ -20,7 +20,6 @@ namespace Cfix.Addin.Windows.Explorer
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
 
 		private Workspace workspace;
-		private Configuration config;
 		private DTE2 dte;
 		private SolutionEvents solutionEvents;
 		private BuildEvents buildEvents;
@@ -49,16 +48,13 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public void Initialize( 
 			Workspace ws, 
-			Configuration config,
 			DTE2 dte )
 		{
 			Debug.Assert( this.workspace == null );
-			Debug.Assert( this.config == null );
 			Debug.Assert( this.dte == null );
 			
 			this.workspace = ws;
 			this.dte = dte;
-			this.config = config;
 			this.solutionEvents = dte.Events.SolutionEvents;
 			this.buildEvents = dte.Events.BuildEvents;
 
@@ -72,7 +68,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
-			this.autoRefreshButton.Checked = this.config.AutoRefreshAfterBuild;
+			this.autoRefreshButton.Checked = this.workspace.Configuration.AutoRefreshAfterBuild;
 		}
 
 		/*----------------------------------------------------------------------
@@ -224,7 +220,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			try
 			{
-				this.config.AutoRefreshAfterBuild = this.autoRefreshButton.Checked;
+				this.workspace.Configuration.AutoRefreshAfterBuild = this.autoRefreshButton.Checked;
 			}
 			catch ( Exception x )
 			{
@@ -322,7 +318,7 @@ namespace Cfix.Addin.Windows.Explorer
 					filter,
 					this.workspace.SearchTarget,
 					this.workspace.RunTarget,
-					! this.config.KernelModeFeaturesEnabled,
+					! this.workspace.Configuration.KernelModeFeaturesEnabled,
 					true );
 		}
 
@@ -337,7 +333,7 @@ namespace Cfix.Addin.Windows.Explorer
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
 				( Solution2 ) curSolution,
 				this.workspace.RunTarget,
-				this.config );
+				this.workspace.Configuration );
 			slnCollection.Closed += new EventHandler( slnCollection_Closed );
 			this.workspace.Session.Tests = slnCollection;
 		}
@@ -358,7 +354,8 @@ namespace Cfix.Addin.Windows.Explorer
 				ShellBrowseForFolderDialog dialog = new ShellBrowseForFolderDialog();
 				dialog.hwndOwner = this.Handle;
 
-				dialog.Filter = new FilterByExtension( this.config.SupportedExtensions );
+				dialog.Filter = new FilterByExtension( 
+					this.workspace.Configuration.SupportedExtensions );
 				dialog.DetailsFlags = 
 					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_NONEWFOLDERBUTTON |
 					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_BROWSEINCLUDEFILES |
@@ -416,7 +413,7 @@ namespace Cfix.Addin.Windows.Explorer
 					//
 					sender.EnableOk(
 						args.hwnd,
-						this.config.IsSupportedTestModulePath( path ) );
+						this.workspace.Configuration.IsSupportedTestModulePath( path ) );
 				}
 			}
 			catch ( Exception x )

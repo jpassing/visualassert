@@ -16,7 +16,7 @@ namespace Cfix.Addin
 
 		public void RestoreWindowState()
 		{
-			if ( this.addin.Configuration.ExplorerWindowVisible )
+			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
 			{
 				Explorer.Visible = true;
 			}
@@ -26,7 +26,7 @@ namespace Cfix.Addin
 		{
 			if ( this.explorer != null && this.explorer.Visible )
 			{
-				this.addin.Configuration.ExplorerWindowVisible = true;
+				this.addin.Workspace.Configuration.ExplorerWindowVisible = true;
 			}
 		}
 
@@ -43,7 +43,6 @@ namespace Cfix.Addin
 						Icons.cfix );
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
-						this.addin.Configuration,
 						this.addin.DTE );
 					this.explorer.Visible = true;
 

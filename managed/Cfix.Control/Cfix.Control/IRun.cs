@@ -102,5 +102,7 @@ namespace Cfix.Control
 		bool IsFinished { get; }
 
 		void Start();
+		void Stop();
+		void Terminate();
 	}
 }

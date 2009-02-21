@@ -301,11 +301,14 @@ namespace Cfix.Control.Native
 
 		protected override void Dispose( bool disposing )
 		{
-			foreach ( ITestItem item in this.subItems )
+			if ( this.subItems != null )
 			{
-				if ( item != null )
+				foreach ( ITestItem item in this.subItems )
 				{
-					item.Dispose();
+					if ( item != null )
+					{
+						item.Dispose();
+					}
 				}
 			}
 

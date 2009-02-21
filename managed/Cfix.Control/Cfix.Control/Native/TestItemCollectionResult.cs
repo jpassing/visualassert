@@ -387,8 +387,31 @@ namespace Cfix.Control.Native
 			ExecutionStatus status
 			)
 		{
-			return CreateResult( run, null, itemColl, status );
-		}
+			TestItemCollectionResult result = CreateResult( run, null, itemColl, status );
 
+			TestItemCollection nativeColl = itemColl as TestItemCollection;
+			TestModule nativeMod = itemColl as TestModule;
+			if ( itemColl != null && nativeMod == null )
+			{
+				//
+				// This is a fixture. We must add the module in order
+				// to yield a fully workable result, which, in particular,
+				// can be used as cfixctl event sink.
+				//
+
+				TestItemCollectionResult moduleResult = new TestItemCollectionResult(
+					run,
+					nativeColl.Module,
+					status );
+				moduleResult.SetItems( new IResultItem[] { result } );
+				run.OnItemAdded( moduleResult );
+
+				return moduleResult;
+			}
+			else
+			{
+				return result;
+			}
+		}
 	}
 }

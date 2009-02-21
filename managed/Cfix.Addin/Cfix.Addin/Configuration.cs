@@ -84,6 +84,21 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool UseComNeutralThread
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "UseComNeutralThread", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"UseComNeutralThread",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public bool KernelModeFeaturesEnabled
 		{
 			get

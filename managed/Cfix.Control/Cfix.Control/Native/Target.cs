@@ -14,7 +14,11 @@ namespace Cfix.Control.Native
 
 	public class Target : IDisposable
 	{
+#if DEBUG
+		private const uint DefaultTimeout = 30000;
+#else
 		private const uint DefaultTimeout = 3000;
+#endif
 
 		private ICfixAgent agent;
 		private ICfixMessageResolver resolver;

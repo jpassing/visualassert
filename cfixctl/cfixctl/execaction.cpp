@@ -353,18 +353,18 @@ STDMETHODIMP ExecutionAction::Run(
 	//
 	if ( Flags & CFIXCTL_ACTION_COM_NEUTRAL )
 	{
-		CfixctlsRunOnWorkerThread( Action, Adapter );
+		Hr = CfixctlsRunOnWorkerThread( Action, Adapter );
 	}
 	else
 	{
-		CfixctlsRunDirect( Action, Adapter );
+		Hr = CfixctlsRunDirect( Action, Adapter );
 	}
 
 	EnterCriticalSection( &this->CurrentAdapterLock );
 	this->CurrentAdapter = NULL;
 	LeaveCriticalSection( &this->CurrentAdapterLock );
 
-	Hr = ProcessSink->AfterRunFinish();
+	( VOID ) ProcessSink->AfterRunFinish();
 
 Cleanup:
 	if ( ProcessSink )
