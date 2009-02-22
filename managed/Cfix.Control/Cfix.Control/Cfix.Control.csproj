@@ -61,10 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractRun.cs" />
     <Compile Include="Architecture.cs" />
     <Compile Include="Failure.cs" />
     <Compile Include="IDispositionPolicy.cs" />
     <Compile Include="IResultItemCollection.cs" />
+    <Compile Include="Native\AbstractNativeResultItem.cs" />
     <Compile Include="Native\AbstractResultItem.cs" />
     <Compile Include="Native\InvalidModule.cs" />
     <Compile Include="Native\StackTrace.cs" />

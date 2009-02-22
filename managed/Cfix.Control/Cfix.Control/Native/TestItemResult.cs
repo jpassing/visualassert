@@ -6,32 +6,19 @@ using Cfixctl;
 namespace Cfix.Control.Native
 {
 	internal class TestItemResult 
-		: AbstractResultItem, ICfixTestÌtemEventSink
+		: AbstractNativeResultItem, ICfixTestÌtemEventSink
 	{
 		private volatile int executions;
 
 		private TestItemResult( 
+			AbstractRun run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( parent, item, status )
+			: base( run, parent, item, status )
 		{
 			Debug.Assert( ! ( item is ITestItemCollection ) );
-		}
-
-		internal override Run InternalRun
-		{
-			get { return this.parent.InternalRun; }
-		}
-
-		/*----------------------------------------------------------------------
-		 * IResultItem.
-		 */
-
-		public override IRun Run
-		{
-			get { return this.Parent.Run; }
 		}
 
 		/*--------------------------------------------------------------
@@ -77,6 +64,7 @@ namespace Cfix.Control.Native
 		 */
 
 		internal static TestItemResult CreateResult( 
+			AbstractRun run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
@@ -85,6 +73,7 @@ namespace Cfix.Control.Native
 			Debug.Assert( ! ( item is ITestItemCollection ) );
 
 			return new TestItemResult(
+				run,
 				parent,
 				item,
 				status );

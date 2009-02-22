@@ -9,12 +9,10 @@ namespace Cfix.Control.Native
 	 * Class that may represent a module or a fixture.
 	 --*/
 	internal class TestItemCollectionResult 
-		: AbstractResultItem, 
+		: AbstractNativeResultItem, 
 		  IResultItemCollection, 
 		  ICfixTestÌtemContainerEventSink
 	{
-		private readonly Run run;
-
 		private IList<IResultItem> subItems;
 
 		private volatile int subItemsFinished;
@@ -22,17 +20,16 @@ namespace Cfix.Control.Native
 		private volatile bool subItemInconclusive;
 
 		private TestItemCollectionResult( 
+			AbstractRun run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( parent, item, status )
+			: base( run, parent, item, status )
 		{
 			Debug.Assert( parent != null );
 			Debug.Assert( item is ITestItemCollection );
 			Debug.Assert( parent.InternalRun != null );
-
-			this.run = parent.InternalRun;
 		}
 
 		private TestItemCollectionResult(
@@ -40,12 +37,10 @@ namespace Cfix.Control.Native
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( null, item, status )
+			: base( run, null, item, status )
 		{
 			Debug.Assert( item is ITestItemCollection );
 			Debug.Assert( run != null );
-
-			this.run = run;
 		}
 
 		private void SetItems( IList<IResultItem> items )
@@ -92,7 +87,7 @@ namespace Cfix.Control.Native
 #if DEBUG
 			if ( ranToCompletion )
 			{
-				foreach ( AbstractResultItem child in this.subItems )
+				foreach ( AbstractNativeResultItem child in this.subItems )
 				{
 					Debug.Assert( child.Completed );
 				}
@@ -106,7 +101,7 @@ namespace Cfix.Control.Native
 				//
 				// Adjust states of children that have been skipped.
 				//
-				foreach ( AbstractResultItem child in this.subItems )
+				foreach ( AbstractNativeResultItem child in this.subItems )
 				{
 					if ( child.Status == ExecutionStatus.Pending )
 					{
@@ -150,20 +145,6 @@ namespace Cfix.Control.Native
 			{
 				this.parent.OnChildFinished( this.Status, false );
 			}
-		}
-
-		internal override Run InternalRun
-		{
-			get { return this.run; }
-		}
-
-		/*----------------------------------------------------------------------
-		 * IResultItem.
-		 */
-
-		public override IRun Run
-		{
-			get { return this.run; }
 		}
 
 		/*----------------------------------------------------------------------
@@ -350,6 +331,7 @@ namespace Cfix.Control.Native
 			else
 			{
 				result = new TestItemCollectionResult(
+					run,
 					parent,
 					itemColl,
 					status );
@@ -371,7 +353,10 @@ namespace Cfix.Control.Native
 				else
 				{
 					TestItemResult itemResult = TestItemResult.CreateResult(
-						result, item, status );
+						run,
+						result, 
+						item, 
+						status );
 					run.OnItemAdded( itemResult );
 					children.Add( itemResult );
 				}

@@ -1,1 +1,414 @@
- 
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Cfix.Control.AbstractRun" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AbstractRun.cs</FileName>
+      <HashCode>AAAAJAiKACgQAAAAAAAAAQAUAEpARQCEJBCsAAEAgIE=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.CfixException" Collapsed="true">
+    <Position X="9.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Exceptions.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.UnsupportedArchitectureException" Collapsed="true">
+    <Position X="8.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Exceptions.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.TestItemDisappearedException" Collapsed="true">
+    <Position X="10.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Exceptions.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.Failure" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAAAAIAAAACA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.Inconclusiveness" Collapsed="true">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.UnhandledExceptionFailure" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.CodeFailure" Collapsed="true">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAIAAAECAAABAAAAAABAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.FailedAssertionFailure" Collapsed="true">
+    <Position X="3" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAAgAAAAIAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.FailedRelateExpressionFailure" Collapsed="true">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>AAAgAAAAIIAAAAAAAAIAAAAAAIAAQAAAAEAIAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.GenericTestItemCollection" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GenericTestItemCollection.cs</FileName>
+      <HashCode>ACIAAgEAACBAQFBEARAARBQAIAAEgAAAAAAAAABCAAE=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.LogEventArgs" Collapsed="true">
+    <Position X="18.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.ThreadEventArgs" Collapsed="true">
+    <Position X="18.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.NotificationEventArgs" Collapsed="true">
+    <Position X="18.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.HostEventArgs" Collapsed="true">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.FailEventArgs" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.TestItemEventArgs" Collapsed="true">
+    <Position X="16.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItemCollection.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.AbstractResultItem" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\AbstractResultItem.cs</FileName>
+      <HashCode>AAQAAgAEBAAAAABAAAQAQAQGAAAQAAAAAAAQAAAAAAI=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.RundownLock" Collapsed="true">
+    <Position X="13.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RundownLock.cs</FileName>
+      <HashCode>AAAAAAABAAAAAAAAAgAAAAAAAAAAAAAgEAAAABAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.SequenceAction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SequenceAction.cs</FileName>
+      <HashCode>AAAAAAAAACAAACACAAgAAgAAAAAAAAAAIAAQAAAAAAI=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.StandardDispositionPolicy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StandardDispositionPolicy.cs</FileName>
+      <HashCode>AAAAgAAAAAAAAAAAACAAAMAAAAAAAIAAQAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.AbstractNativeResultItem" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\AbstractNativeResultItem.cs</FileName>
+      <HashCode>AAAAAIAAEABAAAJAACAgAACAABgAENAYAAAQAAAAAAg=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.InvalidModule" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\InvalidModule.cs</FileName>
+      <HashCode>AAIACAAAACgAAABEABAAQBQAAAAEAAAAAAAAAAACAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.MultiTarget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\MultiTarget.cs</FileName>
+      <HashCode>oAAAAAAQACAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.NativeAction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\NativeAction.cs</FileName>
+      <HashCode>EAEABAAAACIEEAgAAAQAAAAAAAAAAAAAKAgQACIAAAY=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.Run" Collapsed="true">
+    <Position X="10.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\Run.cs</FileName>
+      <HashCode>ACABCAAIAAgAAAAAARAEAAQAAAEAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.Session" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\Session.cs</FileName>
+      <HashCode>EAAAIBEAACAAAAAAAQAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.StackTrace" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\StackTrace.cs</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.Target" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\Target.cs</FileName>
+      <HashCode>EAAAABAEACIBEQAAAAAAAAAAAgAAAIIAQAAKAAAAAIQ=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cfix.Control.Native.TestItem" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestItem.cs</FileName>
+      <HashCode>AAIgAAAAACAAEABEABAAQBQEAAAEAAAAAAAACAECAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.NativeConnection" Collapsed="true">
+    <Position X="16.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAACAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.Native.TestItemCollection" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestItemCollection.cs</FileName>
+      <HashCode>ACQAACEAACBAwFAEAQAAAAAAAIAAgAAAAAAAABDAAAE=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.TestItemCollectionResult" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestItemCollectionResult.cs</FileName>
+      <HashCode>ICAAAKEAAAAAQFAAACAAAAIAgAAACKAQAACAAgADAAg=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.TestItemResult" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestItemResult.cs</FileName>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAEAEAAAAAAAAAAAgAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Cfix.Control.Native.TestModule" Collapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestModule.cs</FileName>
+      <HashCode>AAQAAAAAAAJAAAIAIAACQKAEAAABAAAEAQAACAAABAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cfix.Control.Native.TestModuleCollection" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\TestModuleCollection.cs</FileName>
+      <HashCode>CAAAACAAAgBAgBAAEAAAEAAAQAAQAAAAAAAABACgBAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Cfix.Control.IAction" Collapsed="true">
+    <Position X="4.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IAction.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAQAAAAAAI=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IComponentAction" Collapsed="true">
+    <Position X="5.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IAction.cs</FileName>
+      <HashCode>AAAAAAAAAAIAAAgAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.ICompositeAction" Collapsed="true">
+    <Position X="3.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IAction.cs</FileName>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IComponentActionSource" Collapsed="true">
+    <Position X="13.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IAction.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IDispositionPolicy" Collapsed="true">
+    <Position X="15" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IDispositionPolicy.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAMAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IResultItem" Collapsed="true">
+    <Position X="8.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IResultItem.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAQAQEAAAAAAAAAAAQAAAAAAI=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IResultItemCollection" Collapsed="true">
+    <Position X="8.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IResultItemCollection.cs</FileName>
+      <HashCode>AAAAAAEAAAAAAEAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IRun" Collapsed="true">
+    <Position X="16.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IRun.cs</FileName>
+      <HashCode>AAAAAACAACgAAAAAAAAAAQAAAEpAQAAAJBAMAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.ISession" Collapsed="true">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ISession.cs</FileName>
+      <HashCode>EAAAIAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IStackTrace" Collapsed="true">
+    <Position X="13.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IStackTrace.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.ITestItem" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAEABAAQBQAAAAAAAAAAAAAAAACAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.ITestItemCollection" Collapsed="true">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItemCollection.cs</FileName>
+      <HashCode>AAAAAAEAAABAQEAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Cfix.Control.IAbortableTestItemCollection" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItemCollection.cs</FileName>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Cfix.Control.Architecture" Collapsed="true">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Architecture.cs</FileName>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAABAAAAAABAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.ExecutionStatus" Collapsed="true">
+    <Position X="18.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExecutionStatus.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYABAAIAEBAIA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.RelateOperator" Collapsed="true">
+    <Position X="15" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Failure.cs</FileName>
+      <HashCode>ACAAAAAAAAAAQAAAgAEAAAAAAAAAAAAAAAAAAAQAACA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.Disposition" Collapsed="true">
+    <Position X="16.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IDispositionPolicy.cs</FileName>
+      <HashCode>AAAACAAAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.SchedulingOptions" Collapsed="true">
+    <Position X="16.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItem.cs</FileName>
+      <HashCode>QAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEEACAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.CompositionOptions" Collapsed="true">
+    <Position X="15" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITestItem.cs</FileName>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Cfix.Control.Native.HostCreationOptions" Collapsed="true">
+    <Position X="13.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Native\Target.cs</FileName>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>
