@@ -6,6 +6,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control", "Cfix.Control\Cfix.Control.csproj", "{C48FD013-1C86-4C95-B4BA-126C8749E008}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control.Test", "Cfix.Control.Test\Cfix.Control.Test.csproj", "{43932BBA-0D20-45F1-B716-F0C4BCAF36F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D106E50C-65B0-4B22-82A3-35B4233270C7} = {D106E50C-65B0-4B22-82A3-35B4233270C7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control.Ui", "Cfix.Control.Ui\Cfix.Control.Ui.csproj", "{FD67630D-9595-452C-8097-A1F34E321FCC}"
 	ProjectSection(ProjectDependencies) = postProject

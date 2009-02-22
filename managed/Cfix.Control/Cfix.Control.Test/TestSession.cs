@@ -143,6 +143,60 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, spawns );
 			Assert.AreEqual( 1, starts );
 			Assert.AreEqual( 0, fails );
+
+			Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+		}
+
+		[Test]
+		public void TestInconclusive()
+		{
+			ISession session = new Session();
+			session.Tests = GetFixture( "Inconclusive" );
+
+			IRun run = session.CreateRun(
+				new StandardDispositionPolicy(
+					Disposition.Continue,
+					Disposition.Break ),
+				SchedulingOptions.ComNeutralThreading,
+				CompositionOptions.NonComposite );
+
+			Assert.IsFalse( run.IsFinished );
+			Assert.IsFalse( run.IsStarted );
+
+			AutoResetEvent done = new AutoResetEvent( false );
+
+			int fails = 0;
+			run.Failed += delegate( object sender, FailEventArgs e )
+			{
+				fails++;
+				done.Set();
+			};
+
+			int successes = 0;
+			run.Succeeded += delegate( object sender, EventArgs e )
+			{
+				successes++;
+				done.Set();
+			};
+
+			run.Start();
+			done.WaitOne();
+			Assert.IsTrue( run.IsFinished );
+
+			Assert.AreEqual( 1, successes );
+			Assert.AreEqual( 0, fails );
+
+			Assert.AreEqual( 
+				ExecutionStatus.SucceededWithInconclusiveParts, 
+				run.RootResult.Status );
+
+			IResultItemCollection fix = ( IResultItemCollection ) run.RootResult.GetItem( 0 );
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithInconclusiveParts,
+				fix.Status );
+			Assert.AreEqual(
+				ExecutionStatus.Inconclusive,
+				fix.GetItem( 0 ).Status );
 		}
 	}
 }

@@ -9,6 +9,11 @@ namespace Cfix.Control.Native
 	{
 		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
 
+		public const uint CFIX_FIXTURE_EXECUTION_SHORTCUT_FIXTURE_ON_FAILURE	= 1;
+		public const uint CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_SETUP_FAILURE	= 2;
+		public const uint CFIX_FIXTURE_EXECUTION_ESCALATE_FIXTURE_FAILUES = 4;
+		public const uint CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_FAILURE = 7;
+
 		private TestItem item;
 		private ICfixAction action;
 		private ICfixHost host;

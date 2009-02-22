@@ -36,16 +36,16 @@ namespace Cfix.Control.Native
 			this.item.Disposed += new EventHandler( item_Disposed );
 		}
 
-		private AbstractResultItem(
-			TestItemCollectionResult parent,
-			String itemName,
-			ExecutionStatus status
-			)
-		{
-			this.parent = parent;
-			this.status = status;
-			this.itemName = itemName;
-		}
+		//private AbstractResultItem(
+		//    TestItemCollectionResult parent,
+		//    String itemName,
+		//    ExecutionStatus status
+		//    )
+		//{
+		//    this.parent = parent;
+		//    this.status = status;
+		//    this.itemName = itemName;
+		//}
 
 		private void item_Disposed( object sender, EventArgs e )
 		{
@@ -108,6 +108,10 @@ namespace Cfix.Control.Native
 
 		internal abstract Run InternalRun { get; }
 
+		protected bool IsNative
+		{
+			get { return this.item is TestItem; }
+		}
 
 		/*----------------------------------------------------------------------
 		 * IResultItem.

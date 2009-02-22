@@ -387,10 +387,10 @@ namespace Cfix.Control.Native
 			ExecutionStatus status
 			)
 		{
-			TestItemCollectionResult result = CreateResult( run, null, itemColl, status );
-
 			TestItemCollection nativeColl = itemColl as TestItemCollection;
 			TestModule nativeMod = itemColl as TestModule;
+
+			TestItemCollectionResult parent;
 			if ( itemColl != null && nativeMod == null )
 			{
 				//
@@ -398,15 +398,38 @@ namespace Cfix.Control.Native
 				// to yield a fully workable result, which, in particular,
 				// can be used as cfixctl event sink.
 				//
+				// We may, however, not just use a full-fledged result for the
+				// module since the fixture may have siblings which will
+				// not be run.
+				//
 
-				TestItemCollectionResult moduleResult = new TestItemCollectionResult(
+				parent = new TestItemCollectionResult(
 					run,
 					nativeColl.Module,
 					status );
-				moduleResult.SetItems( new IResultItem[] { result } );
-				run.OnItemAdded( moduleResult );
+			}
+			else
+			{
+				//
+				// No parent injection required.
+				//
+				parent = null;
+			}
 
-				return moduleResult;
+			TestItemCollectionResult result = 
+				CreateResult( run, parent, itemColl, status );
+
+			if ( parent != null )
+			{
+				//
+				// Add child and make sure it is at the right offset/ordinal.
+				//
+				int ordinal = ( int ) result.Item.Ordinal;
+				IResultItem[] children = new IResultItem[ ordinal + 1 ];
+				children[ ordinal ] = result;
+				parent.SetItems( children );
+				run.OnItemAdded( parent );
+				return parent;
 			}
 			else
 			{
