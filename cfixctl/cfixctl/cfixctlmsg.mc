@@ -108,3 +108,11 @@ SymbolicName	= CFIXCTL_E_HOST_DIED_PREMATURELY
 Language		= English
 The host image terminated prematurely and its exit code could not be determined.
 .
+
+MessageId		= 0xB009
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_TESTMODULE_NOT_FOUND
+Language		= English
+Test module not found.
+.

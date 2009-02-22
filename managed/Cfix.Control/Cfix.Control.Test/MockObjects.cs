@@ -110,7 +110,7 @@ namespace Cfix.Control.Test
 		}
 	}
 
-	internal class MockAgent : ICfixAgent
+	internal class MockAgent : ICfixAgent, ICfixMessageResolver
 	{
 		private MockModule module;
 
@@ -146,7 +146,12 @@ namespace Cfix.Control.Test
 
 		public ICfixMessageResolver CreateMessageResolver()
 		{
-			return null;
+			return this;
+		}
+
+		public string ResolveMessage( uint MessageId, uint Reserved )
+		{
+			return "mock";
 		}
 	}
 

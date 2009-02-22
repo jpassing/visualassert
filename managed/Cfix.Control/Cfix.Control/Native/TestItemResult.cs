@@ -11,7 +11,7 @@ namespace Cfix.Control.Native
 		private volatile int executions;
 
 		private TestItemResult( 
-			AbstractRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
@@ -64,7 +64,7 @@ namespace Cfix.Control.Native
 		 */
 
 		internal static TestItemResult CreateResult( 
-			AbstractRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status

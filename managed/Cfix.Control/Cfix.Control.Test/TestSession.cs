@@ -190,13 +190,9 @@ namespace Cfix.Control.Test
 				ExecutionStatus.SucceededWithInconclusiveParts, 
 				run.RootResult.Status );
 
-			IResultItemCollection fix = ( IResultItemCollection ) run.RootResult.GetItem( 0 );
-			Assert.AreEqual(
-				ExecutionStatus.SucceededWithInconclusiveParts,
-				fix.Status );
 			Assert.AreEqual(
 				ExecutionStatus.Inconclusive,
-				fix.GetItem( 0 ).Status );
+				run.RootResult.GetItem( 0 ).Status );
 		}
 	}
 }

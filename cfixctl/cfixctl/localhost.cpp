@@ -194,6 +194,11 @@ STDMETHODIMP LocalHost::LoadModule(
 		Hr = CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
 	}
 
+	if ( Hr == HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ) )
+	{
+		Hr = CFIXCTL_E_TESTMODULE_NOT_FOUND;
+	}
+
 	if ( FAILED( Hr ) )
 	{
 		goto Cleanup;

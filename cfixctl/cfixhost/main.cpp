@@ -131,6 +131,11 @@ int wWinMain(
 	}
 
 	//
+	// No 'drive not ready'-dialogs, please.
+	//
+	SetErrorMode( SetErrorMode( 0 ) | SEM_FAILCRITICALERRORS );
+
+	//
 	// Initialize.
 	//
 	CfixhostsShutdownEvent = CreateEvent( NULL, FALSE, FALSE, NULL );

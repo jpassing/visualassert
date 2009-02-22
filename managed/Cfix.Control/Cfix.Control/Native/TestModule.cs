@@ -43,9 +43,11 @@ namespace Cfix.Control.Native
 				ICfixHost host = target.CreateHost();
 				try
 				{
+					ICfixTestModule mod = host.LoadModule( path );
+
 					return new NativeConnection(
 						host,
-						host.LoadModule( path ) );
+						mod );
 				}
 				catch ( COMException x )
 				{

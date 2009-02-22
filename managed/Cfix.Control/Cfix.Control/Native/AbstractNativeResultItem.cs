@@ -16,7 +16,7 @@ namespace Cfix.Control.Native
 		protected readonly TestItemCollectionResult parent;
 		
 		protected AbstractNativeResultItem(
-			AbstractRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
@@ -24,6 +24,8 @@ namespace Cfix.Control.Native
 			: base( run, parent, item, status )
 		{
 			this.parent = parent;
+
+			run.OnItemAdded( this );
 		}
 
 		private void AddFailure( Failure failure )

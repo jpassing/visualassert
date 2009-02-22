@@ -38,11 +38,18 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		[ExpectedException( typeof( FileNotFoundException ) )]
 		public void LoadNonexistingModule()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, "idonotexist.dll", true );
+			try
+			{
+				TestModule mod = TestModule.LoadModule(
+					target, "idonotexist.dll", true );
+
+				Assert.Fail( "Expected exception" );
+			}
+			catch ( CfixException )
+			{
+			}
 		}
 
 		[Test]
@@ -79,7 +86,7 @@ namespace Cfix.Control.Test
 			DefaultEventSink sink = new DefaultEventSink();
 			IAction action = mod.CreateAction( SchedulingOptions.None );
 			Assert.AreEqual( 0, action.TestCaseCount );
-			
+
 			action.Run( sink );
 
 			Assert.AreEqual( 1, sink.FixtureStarts );
@@ -105,7 +112,7 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 0, fixture.ItemCount );
 
 			SchedulingOptions[] opts = { 
-				SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
+		        SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
 
 			foreach ( SchedulingOptions opt in opts )
 			{
@@ -122,7 +129,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		[ExpectedException( typeof(  CfixException ) )]
+		[ExpectedException( typeof( CfixException ) )]
 		public void LoadTestlibWithInvalidFixtureName()
 		{
 			TestModule mod = TestModule.LoadModule(
@@ -140,8 +147,8 @@ namespace Cfix.Control.Test
 		[Test]
 		[ExpectedException( typeof( CfixException ) )]
 		public void LoadTestlibWithAmbiguousTestCaseNamesAndFail()
-        {
-            TestModule mod = TestModule.LoadModule(
+		{
+			TestModule mod = TestModule.LoadModule(
 				target, this.testdataDir + "\\dupfixturename.dll", false );
 		}
 

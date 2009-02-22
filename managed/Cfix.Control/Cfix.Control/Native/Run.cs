@@ -54,8 +54,31 @@ namespace Cfix.Control.Native
 			uint fixtureOrdinal 
 			)
 		{
-			return ( ICfixTestÌtemContainerEventSink )
-				this.modules[ module.GetPath() ].GetItem( fixtureOrdinal );
+			TestItemCollectionResult moduleResult;
+			this.modules.TryGetValue( module.GetPath(), out moduleResult );
+
+			if ( moduleResult == null )
+			{
+				if ( this.RootItem is TestItemCollection &&
+					 !( this.RootItem is TestModule ) &&
+					 this.RootItem.Ordinal == fixtureOrdinal )
+				{
+					//
+					// The run comprises a fixture (without its enclosing
+					// module) only.
+					//
+					return ( ICfixTestÌtemContainerEventSink ) this.rootResult;
+				}
+				else
+				{
+					throw new CfixException( "Unknown fixture requested" );
+				}
+			}
+			else
+			{
+				return ( ICfixTestÌtemContainerEventSink )
+					moduleResult.GetItem( fixtureOrdinal );
+			}
 		}
 
 		void ICfixProcessEventSink.Notification( int hr )

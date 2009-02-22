@@ -20,7 +20,7 @@ namespace Cfix.Control.Native
 		private volatile bool subItemInconclusive;
 
 		private TestItemCollectionResult( 
-			AbstractRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status
@@ -205,7 +205,14 @@ namespace Cfix.Control.Native
 			IResultItem item = this.subItems[ ( int ) testCaseOrdinal ];
 			Debug.Assert( item is TestItemResult );
 
-			return ( ICfixTestÌtemEventSink ) item;
+			if ( item == null )
+			{
+				throw new CfixException( "Unknown item" );
+			}
+			else
+			{
+				return ( ICfixTestÌtemEventSink ) item;
+			}
 		}
 
 		public override CFIXCTL_REPORT_DISPOSITION FailedAssertion(
@@ -337,8 +344,6 @@ namespace Cfix.Control.Native
 					status );
 			}
 
-			run.OnItemAdded( result );
-
 			IList<IResultItem> children = new List<IResultItem>( 
 				( int ) itemColl.ItemCount );
 
@@ -357,7 +362,6 @@ namespace Cfix.Control.Native
 						result, 
 						item, 
 						status );
-					run.OnItemAdded( itemResult );
 					children.Add( itemResult );
 				}
 			}
@@ -372,54 +376,54 @@ namespace Cfix.Control.Native
 			ExecutionStatus status
 			)
 		{
-			TestItemCollection nativeColl = itemColl as TestItemCollection;
-			TestModule nativeMod = itemColl as TestModule;
+			return CreateResult( run, null, itemColl, status );
+			//TestItemCollection nativeColl = itemColl as TestItemCollection;
+			//TestModule nativeMod = itemColl as TestModule;
 
-			TestItemCollectionResult parent;
-			if ( itemColl != null && nativeMod == null )
-			{
-				//
-				// This is a fixture. We must add the module in order
-				// to yield a fully workable result, which, in particular,
-				// can be used as cfixctl event sink.
-				//
-				// We may, however, not just use a full-fledged result for the
-				// module since the fixture may have siblings which will
-				// not be run.
-				//
+			//TestItemCollectionResult parent;
+			//if ( itemColl != null && nativeMod == null )
+			//{
+			//    //
+			//    // This is a fixture. We must add the module in order
+			//    // to yield a fully workable result, which, in particular,
+			//    // can be used as cfixctl event sink.
+			//    //
+			//    // We may, however, not just use a full-fledged result for the
+			//    // module since the fixture may have siblings which will
+			//    // not be run.
+			//    //
 
-				parent = new TestItemCollectionResult(
-					run,
-					nativeColl.Module,
-					status );
-			}
-			else
-			{
-				//
-				// No parent injection required.
-				//
-				parent = null;
-			}
+			//    parent = new TestItemCollectionResult(
+			//        run,
+			//        nativeColl.Module,
+			//        status );
+			//}
+			//else
+			//{
+			//    //
+			//    // No parent injection required.
+			//    //
+			//    parent = null;
+			//}
 
-			TestItemCollectionResult result = 
-				CreateResult( run, parent, itemColl, status );
+			//TestItemCollectionResult result =
+			//    CreateResult( run, parent, itemColl, status );
 
-			if ( parent != null )
-			{
-				//
-				// Add child and make sure it is at the right offset/ordinal.
-				//
-				int ordinal = ( int ) result.Item.Ordinal;
-				IResultItem[] children = new IResultItem[ ordinal + 1 ];
-				children[ ordinal ] = result;
-				parent.SetItems( children );
-				run.OnItemAdded( parent );
-				return parent;
-			}
-			else
-			{
-				return result;
-			}
+			//if ( parent != null )
+			//{
+			//    //
+			//    // Add child and make sure it is at the right offset/ordinal.
+			//    //
+			//    int ordinal = ( int ) result.Item.Ordinal;
+			//    IResultItem[] children = new IResultItem[ ordinal + 1 ];
+			//    children[ ordinal ] = result;
+			//    parent.SetItems( children );
+			//    return parent;
+			//}
+			//else
+			//{
+			//    return result;
+			//}
 		}
 	}
 }

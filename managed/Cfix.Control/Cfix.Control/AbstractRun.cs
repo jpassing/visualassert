@@ -118,6 +118,11 @@ namespace Cfix.Control
 			}
 		}
 
+		protected ITestItemCollection RootItem
+		{
+			get { return this.rootItem; }
+		}
+
 		/*--------------------------------------------------------------
 		 * IRun.
 		 */
