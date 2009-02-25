@@ -106,7 +106,7 @@ public:
 				Foo,
 				&Module ) );
 		CFIXCC_ASSERT_EQUALS( 
-			HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ),
+			CFIXCTL_E_TESTMODULE_NOT_FOUND,
 			Host->LoadModule(
 				SomeDll,
 				&Module ) );

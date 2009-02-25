@@ -549,6 +549,10 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 
 				ExecutionStatus.Succeeded, 
 				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreSame(
+				run.RootResult,
+				run.RootResult.GetItem( 0 ).Parent );
+
 		}
 
 		[Test]

@@ -73,7 +73,10 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				this.action.Stop();
+				if ( this.action != null )
+				{
+					this.action.Stop();
+				}
 			}
 			catch ( COMException x )
 			{

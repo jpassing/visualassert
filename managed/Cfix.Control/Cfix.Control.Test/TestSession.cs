@@ -145,6 +145,10 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 0, fails );
 
 			Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+
+			run.Stop();
+			run.Terminate();
+			run.Dispose();
 		}
 
 		[Test]
@@ -152,6 +156,8 @@ namespace Cfix.Control.Test
 		{
 			ISession session = new Session();
 			session.Tests = GetFixture( "Inconclusive" );
+
+			session.Tests.Refresh();
 
 			IRun run = session.CreateRun(
 				new StandardDispositionPolicy(
@@ -193,6 +199,102 @@ namespace Cfix.Control.Test
 			Assert.AreEqual(
 				ExecutionStatus.Inconclusive,
 				run.RootResult.GetItem( 0 ).Status );
+
+			Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
+			foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
+			{
+				Assert.IsInstanceOfType( typeof( Inconclusiveness ), f );
+				Assert.AreEqual( "", f.Message );
+			}
+
+			run.Dispose();
+		}
+
+		[Test]
+		public void TestFailedAssertion()
+		{
+			ISession session = new Session();
+			session.Tests = GetFixture( "Fail" );
+
+			IRun run = session.CreateRun(
+				new StandardDispositionPolicy(
+					Disposition.Continue,
+					Disposition.Break ),
+				SchedulingOptions.ComNeutralThreading,
+				CompositionOptions.NonComposite );
+
+			Assert.IsFalse( run.IsFinished );
+			Assert.IsFalse( run.IsStarted );
+
+			AutoResetEvent done = new AutoResetEvent( false );
+
+			int fails = 0;
+			run.Failed += delegate( object sender, FailEventArgs e )
+			{
+				fails++;
+				done.Set();
+			};
+
+			int successes = 0;
+			run.Succeeded += delegate( object sender, EventArgs e )
+			{
+				successes++;
+				done.Set();
+			};
+
+			run.Start();
+			done.WaitOne();
+			Assert.IsTrue( run.IsFinished );
+
+			Assert.AreEqual( 1, successes );
+			Assert.AreEqual( 0, fails );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.Status );
+
+			Assert.AreEqual( 2, run.RootResult.ItemCount );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 0 ).Status );
+
+			Assert.AreEqual(
+				ExecutionStatus.Failed,
+				run.RootResult.GetItem( 1 ).Status );
+
+			Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
+			foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
+			{
+				Assert.IsInstanceOfType( typeof( FailedAssertionFailure ), f );
+				FailedAssertionFailure fass = ( FailedAssertionFailure ) f;
+				Assert.AreEqual( "FALSE", fass.Expression );
+				Assert.IsNull( f.Message );
+				Assert.AreEqual( 5, fass.LastError );
+				Assert.AreEqual( "FailingAssertion", fass.Routine );
+				Assert.IsTrue( fass.File.EndsWith( "basic.c" ) );
+			}
+
+			Assert.AreEqual( 1, run.RootResult.GetItem( 1 ).Failures.Count );
+			foreach ( Failure f in run.RootResult.GetItem( 1 ).Failures )
+			{
+				Assert.IsInstanceOfType( typeof( UnhandledExceptionFailure ), f );
+				UnhandledExceptionFailure ue = ( UnhandledExceptionFailure ) f;
+				Assert.AreEqual( 0xCAFEBABE, ue.ExceptionCode );
+			}
+
+			run.Dispose();
+
+			try
+			{
+				run.Start();
+				Assert.Fail();
+			}
+			catch ( CfixException )
+			{ }
+
+			run.Stop();
+			run.Stop();
 		}
 	}
 }

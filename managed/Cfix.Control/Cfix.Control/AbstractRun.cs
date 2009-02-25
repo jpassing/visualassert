@@ -59,6 +59,11 @@ namespace Cfix.Control
 			//
 			this.rundownLock.Rundown();
 
+			if ( this.action != null )
+			{
+				this.action.Dispose();
+			}
+
 			//
 			// Now that all async operations have completed, we can 
 			// safely dispose the data structures.
