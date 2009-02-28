@@ -80,13 +80,6 @@ namespace Cfix.Control.Test
 				{
 					Assert.IsNull( item.Item );
 				} );
-
-			Cfixctl.ICfixProcessEventSink procSink =
-				( Cfixctl.ICfixProcessEventSink ) run;
-			Cfixctl.ICfixTestÌtemContainerEventSink conSink =
-				procSink.GetTestÌtemContainerEventSink(
-					module, 0 );
-			Assert.AreSame( conSink, run.RootResult.GetItem( 0 ) );
 		}
 
 		[Test]
@@ -473,9 +466,9 @@ namespace Cfix.Control.Test
 				spawns++;
 			};
 
-			Cfixctl.ICfixEventSink sink = ( Cfixctl.ICfixEventSink ) run;
-			Cfixctl.ICfixTestÌtemContainerEventSink fixSink = 
-				sink.GetProcessEventSink( 1234 ).GetTestÌtemContainerEventSink( module, 0 );
+			Cfixctl.ICfixTestÌtemContainerEventSink fixSink =
+				( Cfixctl.ICfixTestÌtemContainerEventSink ) 
+					run.RootResult.GetItem( 0 );
 
 			IResultItemCollection fixture =
 				( IResultItemCollection ) run.RootResult.GetItem( 0 );
@@ -527,7 +520,7 @@ namespace Cfix.Control.Test
 					testCases.Length == testCasesToExecute ? 1 : 0 );
 			}
 
-			Assert.AreEqual( 1, spawns );
+			Assert.AreEqual( 0, spawns );
 
 			return run;
 		}

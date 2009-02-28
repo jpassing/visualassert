@@ -322,7 +322,7 @@ namespace Cfix.Control.Native
 			foreach ( ITestItem child in this.subItems )
 			{
 				children.Add( child.CreateResultItem(
-					parentResult, 
+					result, 
 					events, 
 					interimStatus ) );
 			}
