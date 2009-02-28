@@ -5,6 +5,7 @@ namespace Cfix.Control
 {
 	public interface IAction : IDisposable
 	{
+		IResultItem Result { get; }
 		void Run();
 		void Stop();
 	}

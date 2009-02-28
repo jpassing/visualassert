@@ -68,7 +68,7 @@ namespace Cfix.Control.Native
 		 */
 
 		internal static TestItemResult CreateResult( 
-			AbstractRun run,
+			Run run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status

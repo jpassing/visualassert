@@ -51,11 +51,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run( 
+			IRun run = new SimpleRunCompiler( 
 				this.policy, 
 				SchedulingOptions.None, 
-				CompositionOptions.NonComposite, 
-				mod );
+				mod ).Compile();
 
 			Traverse(
 				run.RootResult,
@@ -97,11 +96,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run( 
+			IRun run = new SimpleRunCompiler( 
 				this.policy,
 				SchedulingOptions.None, 
-				CompositionOptions.NonComposite, 
-				mod );
+				mod ).Compile();
 
 			Assert.AreEqual( 1, run.RootResult.ItemCount );
 			IResultItemCollection fixture =
@@ -169,11 +167,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run(
+			IRun run = new SimpleRunCompiler(
 				this.policy,
 				SchedulingOptions.None,
-				CompositionOptions.NonComposite,
-				mod );
+				mod ).Compile();
 
 			int statusChanges = 0;
 
@@ -243,11 +240,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run(
+			IRun run = new SimpleRunCompiler(
 				this.policy,
 				SchedulingOptions.None,
-				CompositionOptions.NonComposite,
-				mod );
+				mod ).Compile();
 
 			int statusChanges = 0;
 
@@ -370,11 +366,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run(
+			IRun run = new SimpleRunCompiler(
 				this.policy,
 				SchedulingOptions.None,
-				CompositionOptions.NonComposite,
-				mod );
+				mod ).Compile();
 
 			int statusChanges = 0;
 
@@ -453,11 +448,10 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new Run(
+			IRun run = new SimpleRunCompiler(
 				this.policy,
 				SchedulingOptions.None,
-				CompositionOptions.NonComposite,
-				mod );
+				mod ).Compile();
 
 			int spawns = 0;
 			run.HostSpawned += delegate( object sender, HostEventArgs e )

@@ -22,9 +22,6 @@ namespace Cfix.Control.Native
 		private readonly IActionEvents events;
 		private ICfixAction action;
 
-		public event EventHandler<NotificationEventArgs> Notification;
-		public event EventHandler<HostEventArgs> HostSpawned;
-
 		private class Sink : ICfixProcessEventSink, ICfixEventSink
 		{
 			private readonly IResultItem result;
@@ -37,8 +34,8 @@ namespace Cfix.Control.Native
 			}
 
 			/*------------------------------------------------------------------
-				 * ICfixProcessEventSink.
-				 */
+			 * ICfixProcessEventSink.
+			 */
 
 			void ICfixProcessEventSink.AfterRunFinish()
 			{
@@ -177,8 +174,13 @@ namespace Cfix.Control.Native
 
 		/*----------------------------------------------------------------------
 		 * IAction.
-		 */ 
+		 */
 
+		public IResultItem Result
+		{
+			get { return this.result; }
+		}
+		
 		public ITestItem TestItem
 		{
 			get { return this.item; }

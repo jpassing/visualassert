@@ -76,8 +76,7 @@ namespace Cfix.Control.Native
 
 		public IRun CreateRun(
 			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
+			SchedulingOptions schedulingOptions
 			)
 		{
 			if ( this.tests == null )
@@ -90,7 +89,6 @@ namespace Cfix.Control.Native
 				return new Run(
 					policy,
 					schedulingOptions,
-					compositionOptions,
 					this.tests );
 			}
 		}

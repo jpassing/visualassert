@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cfix.Control
 {
-	public abstract class AbstractRun : IRun, IActionEvents
+	internal class Run : IRun, IActionEvents
 	{
 		public event EventHandler Started;
 		public event EventHandler Succeeded;
@@ -19,9 +19,9 @@ namespace Cfix.Control
 
 		private readonly IDispositionPolicy dispositionPolicy;
 		private readonly SchedulingOptions schedulingOptions;
-		private readonly CompositionOptions compositionOptions;
 
 		private readonly ITestItemCollection rootItem;
+		private readonly IResultItemCollection rootResult;
 
 		//
 		// Rundown lock for avoiding disposal while async operations are
@@ -34,20 +34,20 @@ namespace Cfix.Control
 
 		private volatile bool finished;
 
-		public AbstractRun(
+		public Run(
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions,
 			ITestItemCollection rootItem
 			)
 		{
 			this.dispositionPolicy = policy;
 			this.schedulingOptions = schedulingOptions;
-			this.compositionOptions = compositionOptions;
 			this.rootItem = rootItem;
+			this.rootResult = ( IResultItemCollection ) rootItem.CreateResultItem(
+					null, this, ExecutionStatus.Pending );
 		}
 
-		~AbstractRun()
+		~Run()
 		{
 			Dispose( false );
 		}
@@ -82,8 +82,6 @@ namespace Cfix.Control
 		 * Async run.
 		 */
 
-		protected abstract void RunAction( IAction action );
-
 		private delegate void AsyncRunDelegate();
 
 		private void AsyncRun()
@@ -93,7 +91,7 @@ namespace Cfix.Control
 				this.Started( this, EventArgs.Empty );
 			}
 
-			RunAction( this.action );
+			this.action.Run();
 		}
 
 		private void AsyncRunCompletionCallback( IAsyncResult ar )
@@ -132,7 +130,10 @@ namespace Cfix.Control
 		 * IRun.
 		 */
 
-		public abstract IResultItemCollection RootResult { get; }
+		public IResultItemCollection RootResult
+		{
+			get { return this.rootResult; }
+		}
 
 		public bool IsStarted
 		{

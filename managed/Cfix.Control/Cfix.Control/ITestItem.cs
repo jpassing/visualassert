@@ -24,21 +24,6 @@ namespace Cfix.Control
 		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL
 	}
 
-	[Flags]
-	public enum CompositionOptions
-	{
-		//
-		// Disallow composition.
-		//
-		NonComposite = 1,
-
-		//
-		// Prefer fine-grained components i.o. to allow more flexible
-		// scheduling.
-		//
-		FineGrained = 2
-	}
-
 	public interface ITestItem : IDisposable
     {
 		event EventHandler Disposed;
