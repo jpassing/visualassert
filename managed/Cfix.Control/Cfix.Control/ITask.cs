@@ -4,20 +4,27 @@ using System.Text;
 
 namespace Cfix.Control
 {
+	//
+	// N.B. Sorted in ascending severity.
+	//
 	public enum TaskStatus
 	{
 		Ready,
 		Running,
+		Suceeded,
+		Failed,
 		Stopped,
 		Terminated,
-		Finished
 	}
 
-	public class FailEventArgs : EventArgs
+	public class FinishedEventArgs : EventArgs
 	{
 		private readonly Exception exception;
 
-		public FailEventArgs( Exception x )
+		public static readonly FinishedEventArgs Empty =
+			new FinishedEventArgs( null );
+
+		public FinishedEventArgs( Exception x )
 		{
 			this.exception = x;
 		}
@@ -31,8 +38,7 @@ namespace Cfix.Control
 	public interface ITask : IDisposable
 	{
 		event EventHandler Started;
-		event EventHandler Succeeded;
-		event EventHandler<FailEventArgs> Failed;
+		event EventHandler<FinishedEventArgs> Finished;
 		
 		TaskStatus Status { get; }
 

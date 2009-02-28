@@ -104,7 +104,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 	},
 	{
 		NULL,
-		CLSID_LocalAgent,
+		CLSID_MessageResolver,
 		L"Cfix MessageResolver",
 		L"Cfix.Control.MessageResolver",
 		L"Cfix.Control.MessageResolver.1",

@@ -301,7 +301,7 @@ public:
 		return S_OK;
 	}
 
-	STDMETHOD( GetTestÌtemContainerEventSink )(
+	STDMETHOD( GetTestItemContainerEventSink )(
 		__in ICfixTestModule *Module,
 		__in ULONG FixtureOrdinal,
 		__out ICfixTestÌtemContainerEventSink **Sink

@@ -10,8 +10,7 @@ namespace Cfix.Control.RunControl
 	internal class Task : AbstractActionEventSink, ITask
 	{
 		public event EventHandler Started;
-		public event EventHandler Succeeded;
-		public event EventHandler<FailEventArgs> Failed;
+		public event EventHandler<FinishedEventArgs> Finished;
 		
 		private readonly IHost host;
 		private readonly List<IAction> actions = new List<IAction>();
@@ -94,23 +93,25 @@ namespace Cfix.Control.RunControl
 
 		private void AsyncRunCompletionCallback( IAsyncResult ar )
 		{
-			this.status = TaskStatus.Finished;
-
 			try
 			{
 				AsyncRunDelegate dlg = ( AsyncRunDelegate ) ar.AsyncState;
 				dlg.EndInvoke( ar );
-				
-				if ( this.Succeeded != null )
+
+				this.status = TaskStatus.Suceeded;
+
+				if ( this.Finished != null )
 				{
-					this.Succeeded( this, EventArgs.Empty );
+					this.Finished( this, FinishedEventArgs.Empty );
 				}
 			}
 			catch ( Exception x )
 			{
-				if ( this.Failed != null )
+				this.status = TaskStatus.Failed;
+
+				if ( this.Finished != null )
 				{
-					this.Failed( this, new FailEventArgs( x ) );
+					this.Finished( this, new FinishedEventArgs( x ) );
 				}
 			}
 			finally

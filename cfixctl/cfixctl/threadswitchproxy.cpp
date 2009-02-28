@@ -336,7 +336,9 @@ static VOID CfixctlsThreadSwitchProxyDereference(
 	)
 {
 	PCFIXCTLP_THREADSWITCH_PROXY Proxy = ( PCFIXCTLP_THREADSWITCH_PROXY ) This;
-	if ( 0 == InterlockedDecrement( &Proxy->ReferenceCount ) )
+	LONG Refs = InterlockedDecrement( &Proxy->ReferenceCount );
+	COM_TRACE( ( L"Dereference ThrSwitchAdapter: %d", Refs ) );
+	if ( 0 == Refs )
 	{
 		Proxy->Wrapped->Dereference( Proxy->Wrapped );
 

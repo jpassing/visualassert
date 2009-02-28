@@ -87,7 +87,7 @@
     <Compile Include="IRun.cs" />
     <Compile Include="RunControl\Task.cs" />
     <Compile Include="RundownLock.cs" />
-    <Compile Include="RunControl\AbstractActionEventSink.cs" />
+    <Compile Include="AbstractActionEventSink.cs" />
     <Compile Include="SequenceAction.cs" />
     <Compile Include="GenericTestItemCollection.cs" />
     <Compile Include="IAction.cs" />

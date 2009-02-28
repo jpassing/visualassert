@@ -40,6 +40,8 @@ namespace Cfix.Control.RunControl
 				this.dispositionPolicy,
 				( IResultItemCollection ) action.Result );
 			task.SetParent( r );
+			r.AddTask( task );
+			task.AddAction( action );
 			return r;
 		}
 

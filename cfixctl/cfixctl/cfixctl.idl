@@ -15,7 +15,7 @@ import "ocidl.idl";
 //
 //
 //
-//57f93e52-d44f-11dd-99e2-0016d3b98f9b
+//
 //57f93e53-d44f-11dd-99e2-0016d3b98f9b
 //
 //
@@ -626,7 +626,7 @@ library Cfixctl
 		HRESULT BeforeRunStart();
 		HRESULT AfterRunFinish();
 
-		HRESULT GetTestÌtemContainerEventSink(
+		HRESULT GetTestItemContainerEventSink(
 			[in] ICfixTestModule *Module,
 			[in] ULONG FixtureOrdinal,
 			[out, retval] ICfixTestÌtemContainerEventSink **Sink
@@ -716,5 +716,15 @@ library Cfixctl
 	coclass LocalAgent
 	{
 		interface ICfixAgent;
+	}
+
+	[
+		uuid( 57f93e52-d44f-11dd-99e2-0016d3b98f9b ),
+		noncreatable 
+	]
+	coclass MessageResolver
+	{
+		interface IUnknown;
+		//interface ICfixAction;
 	}
 }

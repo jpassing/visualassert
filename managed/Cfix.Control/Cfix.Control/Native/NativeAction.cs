@@ -51,7 +51,7 @@ namespace Cfix.Control.Native
 				//
 			}
 
-			ICfixTestÌtemContainerEventSink ICfixProcessEventSink.GetTestÌtemContainerEventSink(
+			ICfixTestÌtemContainerEventSink ICfixProcessEventSink.GetTestItemContainerEventSink(
 				ICfixTestModule module,
 				uint fixtureOrdinal
 				)

@@ -13,12 +13,5 @@ namespace Cfix.Control
 		event EventHandler AfterSetTests;
 
 		ITestItemCollection Tests { get; set; }
-
-		IRun CreateRun(
-			IAgent agent,
-			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
-			ThreadingOptions threadingOptions
-			);
 	}
 }

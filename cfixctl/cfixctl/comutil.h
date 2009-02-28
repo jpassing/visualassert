@@ -29,7 +29,7 @@
 #include <strsafe.h>
 #pragma warning( pop )
 
-//#define COM_TRACE_ADDREF_AND_RELEASE
+#define COM_TRACE_ADDREF_AND_RELEASE
 
 #define ASSERT _ASSERTE
 

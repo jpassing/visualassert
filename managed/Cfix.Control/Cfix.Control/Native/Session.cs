@@ -73,28 +73,5 @@ namespace Cfix.Control.Native
 				}
 			}
 		}
-
-		public IRun CreateRun(
-			IAgent agent,
-			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
-			ThreadingOptions threadingOptions
-			)
-		{
-			if ( this.tests == null )
-			{
-				throw new CfixException( "No tests loaded" );
-			}
-
-			lock ( this.testsLock )
-			{
-				return new RunControl.SimpleRunCompiler(
-					agent,
-					policy,
-					schedulingOptions,
-					threadingOptions,
-					this.tests ).Compile();
-			}
-		}
 	}
 }

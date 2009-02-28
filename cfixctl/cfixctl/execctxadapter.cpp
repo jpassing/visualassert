@@ -122,7 +122,9 @@ static VOID CfixctlsExecCtxDereference(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
-	if ( 0 == InterlockedDecrement( &Context->ReferenceCount ) )
+	LONG Refs = InterlockedDecrement( &Context->ReferenceCount );
+	COM_TRACE( ( L"Dereference ExecCtxAdapter: %d", Refs ) );
+	if ( 0 == Refs )
 	{
 		Context->Module->Release();
 		Context->ProcessSink->Release();
@@ -323,7 +325,7 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 	//
 	// Obtain new fixture sink.
 	//
-	if ( SUCCEEDED( Context->ProcessSink->GetTestÌtemContainerEventSink(
+	if ( SUCCEEDED( Context->ProcessSink->GetTestItemContainerEventSink(
 		Context->Module,
 		CfixctlsGetFixtureOrdinal( Fixture ),
 		&Context->FixtureSink ) ) )

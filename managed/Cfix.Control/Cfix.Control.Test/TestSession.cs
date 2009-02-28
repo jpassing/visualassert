@@ -47,13 +47,8 @@ namespace Cfix.Control.Test
 			}
 		}
 
-		private ITestItemCollection GetFixture( string name )
+		private ITestItemCollection GetFixture( TestModule mod, string name )
 		{
-			TestModule mod = ( TestModule ) this.ooProcTarget.CreateHost().LoadModule(
-				null,
-				this.binDir + "\\testmanaged.dll",
-				true );
-
 			foreach ( ITestItem item in mod )
 			{
 				if ( item.Name == name )
@@ -66,235 +61,256 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
-		//[Test]
-		//public void TestBasicEvents()
-		//{
-		//    ISession session = new Session();
-		//    session.Tests = GetFixture( "LogTwice" );
+		[Test]
+		public void TestBasicEvents()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( IRun run = new RunControl.SimpleRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+					Disposition.Continue,
+					Disposition.Break ),
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
+				GetFixture( mod, "LogTwice" ) ).Compile() )
+			{
+				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
-		//    IRun run = session.CreateRun(
-		//        new StandardDispositionPolicy(
-		//            Disposition.Continue,
-		//            Disposition.Break ),
-		//        SchedulingOptions.ComNeutralThreading,
-		//        CompositionOptions.NonComposite );
+				int spawns = 0;
+				run.HostSpawned += delegate( object sender, HostEventArgs e )
+				{
+					spawns++;
+				};
 
-		//    Assert.IsFalse( run.IsFinished );
-		//    Assert.IsFalse( run.IsStarted );
+				int starts = 0;
+				run.Started += delegate( object sender, EventArgs e )
+				{
+					starts++;
+				};
 
-		//    int spawns = 0;
-		//    run.HostSpawned += delegate( object sender, HostEventArgs e )
-		//    {
-		//        spawns++;
-		//    };
+				int threadStarts = 0;
+				run.ThreadStarted += delegate( object sender, ThreadEventArgs e )
+				{
+					threadStarts++;
+				};
 
-		//    int starts = 0;
-		//    run.Started += delegate( object sender, EventArgs e )
-		//    {
-		//        starts++;
-		//    };
+				int threadFinishs = 0;
+				run.ThreadFinished += delegate( object sender, ThreadEventArgs e )
+				{
+					threadFinishs++;
+				};
 
-		//    int threadStarts = 0;
-		//    run.ThreadStarted += delegate( object sender, ThreadEventArgs e )
-		//    {
-		//        threadStarts++;
-		//    };
+				AutoResetEvent done = new AutoResetEvent( false );
 
-		//    int threadFinishs = 0;
-		//    run.ThreadFinished += delegate( object sender, ThreadEventArgs e )
-		//    {
-		//        threadFinishs++;
-		//    };
+				int fails = 0;
+				int successes = 0;
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					switch ( run.Status )
+					{
+						case TaskStatus.Suceeded:
+							successes++;
+							break;
+						case TaskStatus.Failed:
+							fails++;
+							break;
+						default:
+							Assert.Fail( "unexpected status" );
+							break;
+					}
+					done.Set();
+				};
 
-		//    AutoResetEvent done = new AutoResetEvent( false );
+				int logs = 0;
+				run.Log += delegate( object sender, LogEventArgs e )
+				{
+					logs++;
+					Assert.AreEqual( "test", e.Message );
+				};
 
-		//    int fails = 0;
-		//    run.Failed += delegate( object sender, FailEventArgs e )
-		//    {
-		//        fails++;
-		//        done.Set();
-		//    };
+				run.Start();
+				Assert.AreEqual( TaskStatus.Running, run.Status );
 
-		//    int successes = 0;
-		//    run.Succeeded += delegate( object sender, EventArgs e )
-		//    {
-		//        successes++;
-		//        done.Set();
-		//    };
+				done.WaitOne();
+				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 
-		//    int logs = 0;
-		//    run.Log += delegate( object sender, LogEventArgs e )
-		//    {
-		//        logs++;
-		//        Assert.AreEqual( "test", e.Message );
-		//    };
+				Assert.AreEqual( 1, successes );
+				Assert.AreEqual( 2, logs );
+				Assert.AreEqual( 1, threadStarts );
+				Assert.AreEqual( 1, threadFinishs );
+				Assert.AreEqual( 1, spawns );
+				Assert.AreEqual( 1, starts );
+				Assert.AreEqual( 0, fails );
 
-		//    run.Start();
-		//    Assert.IsTrue( run.IsStarted );
+				Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
 
-		//    done.WaitOne();
-		//    Assert.IsTrue( run.IsStarted );
-		//    Assert.IsTrue( run.IsFinished );
+				run.Stop();
+				run.Terminate();
+			}
+		}
 
-		//    Assert.AreEqual( 1, successes );
-		//    Assert.AreEqual( 2, logs );
-		//    Assert.AreEqual( 1, threadStarts );
-		//    Assert.AreEqual( 1, threadFinishs );
-		//    Assert.AreEqual( 1, spawns );
-		//    Assert.AreEqual( 1, starts );
-		//    Assert.AreEqual( 0, fails );
+		[Test]
+		public void TestInconclusive()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( IRun run = new RunControl.SimpleRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+					Disposition.Continue,
+					Disposition.Break ),
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
+				GetFixture( mod, "Inconclusive" ) ).Compile() )
+			{
+				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
-		//    Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				AutoResetEvent done = new AutoResetEvent( false );
 
-		//    run.Stop();
-		//    run.Terminate();
-		//    run.Dispose();
-		//}
+				int fails = 0;
+				int successes = 0;
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					switch ( run.Status )
+					{
+						case TaskStatus.Suceeded:
+							successes++;
+							break;
+						case TaskStatus.Failed:
+							fails++;
+							break;
+						default:
+							Assert.Fail( "unexpected status" );
+							break;
+					}
+					done.Set();
+				};
 
-		//[Test]
-		//public void TestInconclusive()
-		//{
-		//    ISession session = new Session();
-		//    session.Tests = GetFixture( "Inconclusive" );
+				run.Start();
+				done.WaitOne();
+				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 
-		//    session.Tests.Refresh();
+				Assert.AreEqual( 1, successes );
+				Assert.AreEqual( 0, fails );
 
-		//    IRun run = session.CreateRun(
-		//        new StandardDispositionPolicy(
-		//            Disposition.Continue,
-		//            Disposition.Break ),
-		//        SchedulingOptions.ComNeutralThreading,
-		//        CompositionOptions.NonComposite );
+				Assert.AreEqual(
+					ExecutionStatus.SucceededWithInconclusiveParts,
+					run.RootResult.Status );
 
-		//    Assert.IsFalse( run.IsFinished );
-		//    Assert.IsFalse( run.IsStarted );
+				Assert.AreEqual(
+					ExecutionStatus.Inconclusive,
+					run.RootResult.GetItem( 0 ).Status );
 
-		//    AutoResetEvent done = new AutoResetEvent( false );
+				Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
+				foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
+				{
+					Assert.IsInstanceOfType( typeof( Inconclusiveness ), f );
+					Assert.AreEqual( "", f.Message );
+				}
+			}
+		}
 
-		//    int fails = 0;
-		//    run.Failed += delegate( object sender, FailEventArgs e )
-		//    {
-		//        fails++;
-		//        done.Set();
-		//    };
+		[Test]
+		public void TestFailedAssertion()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( IRun run = new RunControl.SimpleRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+					Disposition.Continue,
+					Disposition.Break ),
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
+				GetFixture( mod, "Fail" ) ).Compile() )
+			{
+				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
-		//    int successes = 0;
-		//    run.Succeeded += delegate( object sender, EventArgs e )
-		//    {
-		//        successes++;
-		//        done.Set();
-		//    };
+				AutoResetEvent done = new AutoResetEvent( false );
 
-		//    run.Start();
-		//    done.WaitOne();
-		//    Assert.IsTrue( run.IsFinished );
+				int fails = 0;
+				int successes = 0;
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					switch ( run.Status )
+					{
+						case TaskStatus.Suceeded:
+							successes++;
+							break;
+						case TaskStatus.Failed:
+							fails++;
+							break;
+						default:
+							Assert.Fail( "unexpected status" );
+							break;
+					}
+					done.Set();
+				};
 
-		//    Assert.AreEqual( 1, successes );
-		//    Assert.AreEqual( 0, fails );
+				run.Start();
+				done.WaitOne();
+				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 
-		//    Assert.AreEqual( 
-		//        ExecutionStatus.SucceededWithInconclusiveParts, 
-		//        run.RootResult.Status );
+				Assert.AreEqual( 1, successes );
+				Assert.AreEqual( 0, fails );
 
-		//    Assert.AreEqual(
-		//        ExecutionStatus.Inconclusive,
-		//        run.RootResult.GetItem( 0 ).Status );
+				Assert.AreEqual(
+					ExecutionStatus.Failed,
+					run.RootResult.Status );
 
-		//    Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
-		//    foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
-		//    {
-		//        Assert.IsInstanceOfType( typeof( Inconclusiveness ), f );
-		//        Assert.AreEqual( "", f.Message );
-		//    }
+				Assert.AreEqual( 2, run.RootResult.ItemCount );
 
-		//    run.Dispose();
-		//}
+				Assert.AreEqual(
+					ExecutionStatus.Failed,
+					run.RootResult.GetItem( 0 ).Status );
 
-		//[Test]
-		//public void TestFailedAssertion()
-		//{
-		//    ISession session = new Session();
-		//    session.Tests = GetFixture( "Fail" );
+				Assert.AreEqual(
+					ExecutionStatus.Failed,
+					run.RootResult.GetItem( 1 ).Status );
 
-		//    IRun run = session.CreateRun(
-		//        new StandardDispositionPolicy(
-		//            Disposition.Continue,
-		//            Disposition.Break ),
-		//        SchedulingOptions.ComNeutralThreading,
-		//        CompositionOptions.NonComposite );
+				Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
+				foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
+				{
+					Assert.IsInstanceOfType( typeof( FailedAssertionFailure ), f );
+					FailedAssertionFailure fass = ( FailedAssertionFailure ) f;
+					Assert.AreEqual( "FALSE", fass.Expression );
+					Assert.IsNull( f.Message );
+					Assert.AreEqual( 5, fass.LastError );
+					Assert.AreEqual( "FailingAssertion", fass.Routine );
+					Assert.IsTrue( fass.File.EndsWith( "basic.c" ) );
+				}
 
-		//    Assert.IsFalse( run.IsFinished );
-		//    Assert.IsFalse( run.IsStarted );
+				Assert.AreEqual( 1, run.RootResult.GetItem( 1 ).Failures.Count );
+				foreach ( Failure f in run.RootResult.GetItem( 1 ).Failures )
+				{
+					Assert.IsInstanceOfType( typeof( UnhandledExceptionFailure ), f );
+					UnhandledExceptionFailure ue = ( UnhandledExceptionFailure ) f;
+					Assert.AreEqual( 0xCAFEBABE, ue.ExceptionCode );
+				}
 
-		//    AutoResetEvent done = new AutoResetEvent( false );
+				run.Dispose();
 
-		//    int fails = 0;
-		//    run.Failed += delegate( object sender, FailEventArgs e )
-		//    {
-		//        fails++;
-		//        done.Set();
-		//    };
+				try
+				{
+					run.Start();
+					Assert.Fail();
+				}
+				catch ( CfixException )
+				{ }
 
-		//    int successes = 0;
-		//    run.Succeeded += delegate( object sender, EventArgs e )
-		//    {
-		//        successes++;
-		//        done.Set();
-		//    };
-
-		//    run.Start();
-		//    done.WaitOne();
-		//    Assert.IsTrue( run.IsFinished );
-
-		//    Assert.AreEqual( 1, successes );
-		//    Assert.AreEqual( 0, fails );
-
-		//    Assert.AreEqual(
-		//        ExecutionStatus.Failed,
-		//        run.RootResult.Status );
-
-		//    Assert.AreEqual( 2, run.RootResult.ItemCount );
-
-		//    Assert.AreEqual(
-		//        ExecutionStatus.Failed,
-		//        run.RootResult.GetItem( 0 ).Status );
-
-		//    Assert.AreEqual(
-		//        ExecutionStatus.Failed,
-		//        run.RootResult.GetItem( 1 ).Status );
-
-		//    Assert.AreEqual( 1, run.RootResult.GetItem( 0 ).Failures.Count );
-		//    foreach ( Failure f in run.RootResult.GetItem( 0 ).Failures )
-		//    {
-		//        Assert.IsInstanceOfType( typeof( FailedAssertionFailure ), f );
-		//        FailedAssertionFailure fass = ( FailedAssertionFailure ) f;
-		//        Assert.AreEqual( "FALSE", fass.Expression );
-		//        Assert.IsNull( f.Message );
-		//        Assert.AreEqual( 5, fass.LastError );
-		//        Assert.AreEqual( "FailingAssertion", fass.Routine );
-		//        Assert.IsTrue( fass.File.EndsWith( "basic.c" ) );
-		//    }
-
-		//    Assert.AreEqual( 1, run.RootResult.GetItem( 1 ).Failures.Count );
-		//    foreach ( Failure f in run.RootResult.GetItem( 1 ).Failures )
-		//    {
-		//        Assert.IsInstanceOfType( typeof( UnhandledExceptionFailure ), f );
-		//        UnhandledExceptionFailure ue = ( UnhandledExceptionFailure ) f;
-		//        Assert.AreEqual( 0xCAFEBABE, ue.ExceptionCode );
-		//    }
-
-		//    run.Dispose();
-
-		//    try
-		//    {
-		//        run.Start();
-		//        Assert.Fail();
-		//    }
-		//    catch ( CfixException )
-		//    { }
-
-		//    run.Stop();
-		//    run.Stop();
-		//}
+				run.Stop();
+				run.Stop();
+			}
+		}
 	}
 }
