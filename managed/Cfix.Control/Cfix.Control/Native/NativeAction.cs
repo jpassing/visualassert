@@ -176,6 +176,16 @@ namespace Cfix.Control.Native
 		 * IAction.
 		 */
 
+		public IHost Host 
+		{
+			get { return this.host; } 
+		}
+
+		public ITestItem Item
+		{
+			get { return this.item; }
+		}
+
 		public IResultItem Result
 		{
 			get { return this.result; }

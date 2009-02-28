@@ -21,6 +21,9 @@ namespace Cfix.Control.Native
 			)
 			: base( events, parent, item, status )
 		{
+			Debug.Assert( events != null );
+			Debug.Assert( events.DispositionPolicy != null );
+			Debug.Assert( item != null );
 		}
 
 		private void AddFailure( Failure failure )

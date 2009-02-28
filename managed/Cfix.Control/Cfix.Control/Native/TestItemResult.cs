@@ -63,25 +63,5 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		/*--------------------------------------------------------------
-		 * Factory.
-		 */
-
-		internal static TestItemResult CreateResult( 
-			Run run,
-			TestItemCollectionResult parent,
-			ITestItem item,
-			ExecutionStatus status
-			)
-		{
-			Debug.Assert( ! ( item is ITestItemCollection ) );
-
-			return new TestItemResult(
-				run,
-				parent,
-				item,
-				status );
-		}
-
 	}
 }

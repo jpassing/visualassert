@@ -34,21 +34,6 @@ namespace Cfix.Control
 		}
 	}
 
-	public class FailEventArgs : EventArgs
-	{
-		private readonly Exception exception;
-
-		public FailEventArgs( Exception x )
-		{
-			this.exception = x;
-		}
-
-		public Exception Exception
-		{
-			get { return this.exception; }
-		}
-	}
-
 	public class NotificationEventArgs : EventArgs
 	{
 		private readonly int hr;
@@ -80,15 +65,12 @@ namespace Cfix.Control
 	}
 
 
-	public interface IRun : IDisposable
+	public interface IRun : ITask, IDisposable
 	{
 		//
-		// N.B. Eents may be raised on a worker thread.
+		// N.B. Events may be raised on a worker thread.
 		//
 
-		event EventHandler Started;
-		event EventHandler Succeeded;
-		event EventHandler<FailEventArgs> Failed;
 		event EventHandler<HostEventArgs> HostSpawned;
 		
 		event EventHandler<LogEventArgs> Log;
@@ -97,13 +79,7 @@ namespace Cfix.Control
 		event EventHandler StatusChanged;
 		event EventHandler<NotificationEventArgs> Notification;
 
+		IEnumerable<ITask> Tasks { get; }
 		IResultItemCollection RootResult { get; }
-
-		bool IsStarted { get; }
-		bool IsFinished { get; }
-
-		void Start();
-		void Stop();
-		void Terminate();
 	}
 }

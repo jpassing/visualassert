@@ -75,8 +75,10 @@ namespace Cfix.Control.Native
 		}
 
 		public IRun CreateRun(
+			IAgent agent,
 			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions
+			SchedulingOptions schedulingOptions,
+			ThreadingOptions threadingOptions
 			)
 		{
 			if ( this.tests == null )
@@ -86,10 +88,12 @@ namespace Cfix.Control.Native
 
 			lock ( this.testsLock )
 			{
-				return new Run(
+				return new RunControl.SimpleRunCompiler(
+					agent,
 					policy,
 					schedulingOptions,
-					this.tests );
+					threadingOptions,
+					this.tests ).Compile();
 			}
 		}
 	}

@@ -15,8 +15,10 @@ namespace Cfix.Control
 		ITestItemCollection Tests { get; set; }
 
 		IRun CreateRun(
+			IAgent agent,
 			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions
+			SchedulingOptions schedulingOptions,
+			ThreadingOptions threadingOptions
 			);
 	}
 }

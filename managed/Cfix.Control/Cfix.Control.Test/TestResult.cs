@@ -51,9 +51,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler( 
+			IRun run = new RunControl.SimpleRunCompiler( 
+				target,
 				this.policy, 
-				SchedulingOptions.None, 
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			Traverse(
@@ -96,9 +98,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler( 
+			IRun run = new RunControl.SimpleRunCompiler(
+				target,
 				this.policy,
-				SchedulingOptions.None, 
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			Assert.AreEqual( 1, run.RootResult.ItemCount );
@@ -167,9 +171,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler(
+			IRun run = new RunControl.SimpleRunCompiler(
+				target,
 				this.policy,
 				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			int statusChanges = 0;
@@ -240,9 +246,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler(
+			IRun run = new RunControl.SimpleRunCompiler(
+				target,
 				this.policy,
 				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			int statusChanges = 0;
@@ -366,9 +374,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler(
+			IRun run = new RunControl.SimpleRunCompiler(
+				target,
 				this.policy,
 				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			int statusChanges = 0;
@@ -448,9 +458,11 @@ namespace Cfix.Control.Test
 			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
 				null, module.GetPath(), false );
 
-			IRun run = new SimpleRunCompiler(
+			IRun run = new RunControl.SimpleRunCompiler(
+				target,
 				this.policy,
 				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading,
 				mod ).Compile();
 
 			int spawns = 0;
