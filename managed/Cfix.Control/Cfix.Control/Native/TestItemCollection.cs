@@ -46,6 +46,22 @@ namespace Cfix.Control.Native
 			: this( parent, ordinal, item, parent.IgnoreDuplicates )
 		{ }
 
+		protected override void Dispose( bool disposing )
+		{
+			if ( this.subItems != null )
+			{
+				foreach ( ITestItem item in this.subItems )
+				{
+					if ( item != null )
+					{
+						item.Dispose();
+					}
+				}
+			}
+
+			base.Dispose( disposing );
+		}
+
 		public bool IgnoreDuplicates
 		{
 			get { return ignoreDuplicates; }
@@ -285,6 +301,36 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public override IResultItem CreateResultItem(
+			IResultItemCollection parentResult,
+			IActionEvents events,
+			ExecutionStatus interimStatus
+			)
+		{
+			TestItemCollectionResult result = new TestItemCollectionResult(
+				events,
+				parentResult,
+				this,
+				interimStatus );
+
+			//
+			// Add children.
+			//
+			IList<IResultItem> children = new List<IResultItem>(
+				( int ) this.ItemCount ); 
+			
+			foreach ( ITestItem child in this.subItems )
+			{
+				children.Add( child.CreateResultItem(
+					parentResult, 
+					events, 
+					interimStatus ) );
+			}
+
+			result.SetItems( children );
+			return result;
+		}
+
 		/*--------------------------------------------------------------
 		 * Events.
 		 */
@@ -303,23 +349,6 @@ namespace Cfix.Control.Native
 			{
 				ItemRemoved( this, new TestItemEventArgs( item ) );
 			}
-		}
-
-
-		protected override void Dispose( bool disposing )
-		{
-			if ( this.subItems != null )
-			{
-				foreach ( ITestItem item in this.subItems )
-				{
-					if ( item != null )
-					{
-						item.Dispose();
-					}
-				}
-			}
-
-			base.Dispose( disposing );
 		}
 	}
 }

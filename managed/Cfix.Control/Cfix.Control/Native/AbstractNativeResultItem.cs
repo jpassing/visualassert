@@ -13,19 +13,14 @@ namespace Cfix.Control.Native
 		private ICollection<Failure> failures;
 		private volatile bool inconclusive;
 
-		protected readonly TestItemCollectionResult parent;
-		
 		protected AbstractNativeResultItem(
-			Run run,
-			TestItemCollectionResult parent,
+			IActionEvents events,
+			IResultItemCollection parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( run, parent, item, status )
+			: base( events, parent, item, status )
 		{
-			this.parent = parent;
-
-			run.OnItemAdded( this );
 		}
 
 		private void AddFailure( Failure failure )
@@ -94,12 +89,12 @@ namespace Cfix.Control.Native
 
 		public void BeforeChildThreadStart( uint threadId )
 		{
-			InternalRun.OnThreadStarted( this, threadId );
+			this.events.OnThreadStarted( this, threadId );
 		}
 
 		public void AfterChildThreadFinish( uint threadId )
 		{
-			InternalRun.OnThreadFinished( this, threadId );
+			this.events.OnThreadFinished( this, threadId );
 		}
 
 		public virtual CFIXCTL_REPORT_DISPOSITION FailedAssertion(
@@ -126,7 +121,7 @@ namespace Cfix.Control.Native
 			AddFailure( ass );
 
 			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.FailedAssertion( ass );
+				this.events.DispositionPolicy.FailedAssertion( ass );
 		}
 
 		public virtual CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
@@ -156,7 +151,7 @@ namespace Cfix.Control.Native
 			AddFailure( fr );
 
 			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.FailedAssertion( fr );
+				this.events.DispositionPolicy.FailedAssertion( fr );
 		}
 
 		public virtual CFIXCTL_REPORT_DISPOSITION UnhandledException(
@@ -171,7 +166,7 @@ namespace Cfix.Control.Native
 			AddFailure( u );
 
 			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.UnhandledException( u );
+				this.events.DispositionPolicy.UnhandledException( u );
 		}
 
 		public virtual void Inconclusive(
@@ -188,19 +183,19 @@ namespace Cfix.Control.Native
 
 		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )
 		{
-			InternalRun.OnLog( this, message );
+			this.events.OnLog( this, message );
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultFailedAssertionDisposition()
 		{
 			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.DefaultFailedAssertionDisposition;
+				this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultUnhandledExceptionDisposition()
 		{
 			return ( CFIXCTL_REPORT_DISPOSITION )
-				InternalRun.DispositionPolicy.DefaultUnhandledExceptionDisposition;
+				this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
 		}
 
 	}

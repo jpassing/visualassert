@@ -5,35 +5,18 @@ namespace Cfix.Control
 {
 	public interface IAction : IDisposable
 	{
-		void Run( ICfixEventSink sink );
+		void Run();
 		void Stop();
 	}
 
-	///*++
-	// *	Non-composite action referring to fixtures/testcases
-	// *	of a single module, and thus, of a single architecture and
-	// *  a single process.
-	//--*/
-	//public interface IComponentAction : IAction
-	//{
-	//    Architecture Architecture { get; }
-	//    uint HostProcessId { get; }
-	//    void TerminateHost();
-	//}
-
-	///*++
-	// *	Composite containing one or more IComponentAction that may
-	// *	differ in their architecture.
-	//--*/
-	//public interface ICompositeAction : IAction
-	//{
-	//    void Add( IComponentAction action );
-	//}
-
-	//public interface IComponentActionSource
-	//{
-	//    IComponentAction CreateAction(
-	//        SchedulingOptions schedulingOptions
-	//        );
-	//}
+	public interface IActionEvents
+	{
+		IDispositionPolicy DispositionPolicy { get; }
+		void OnNotification( IResultItem item, int hr );
+		void OnHostSpawned( uint pid );
+		void OnLog( IResultItem item, String message );
+		void OnThreadStarted( IResultItem item, uint threadId );
+		void OnThreadFinished( IResultItem item, uint threadId );
+		void OnStatusChanged( IResultItem item );
+	}
 }

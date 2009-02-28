@@ -34,6 +34,21 @@ namespace Cfix.Control
 		}
 	}
 
+	public class FailEventArgs : EventArgs
+	{
+		private readonly Exception exception;
+
+		public FailEventArgs( Exception x )
+		{
+			this.exception = x;
+		}
+
+		public Exception Exception
+		{
+			get { return this.exception; }
+		}
+	}
+
 	public class NotificationEventArgs : EventArgs
 	{
 		private readonly int hr;
@@ -64,20 +79,6 @@ namespace Cfix.Control
 		}
 	}
 
-	public class FailEventArgs : EventArgs
-	{
-		private readonly Exception exception;
-
-		public FailEventArgs( Exception x )
-		{
-			this.exception = x;
-		}
-
-		public Exception Exception
-		{
-			get { return this.exception; }
-		}
-	}
 
 	public interface IRun : IDisposable
 	{

@@ -10,13 +10,13 @@ namespace Cfix.Control.Native
 	{
 		private volatile int executions;
 
-		private TestItemResult( 
-			Run run,
-			TestItemCollectionResult parent,
+		internal TestItemResult(
+			IActionEvents events,
+			IResultItemCollection parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( run, parent, item, status )
+			: base( events, parent, item, status )
 		{
 			Debug.Assert( ! ( item is ITestItemCollection ) );
 		}
@@ -56,7 +56,11 @@ namespace Cfix.Control.Native
 				this.Status = ExecutionStatus.Succeeded;
 			}
 
-			this.parent.OnChildFinished( this.Status, true );
+			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
+			if ( tp != null )
+			{
+				tp.OnChildFinished( this.Status, true );
+			}
 		}
 
 		/*--------------------------------------------------------------
@@ -64,7 +68,7 @@ namespace Cfix.Control.Native
 		 */
 
 		internal static TestItemResult CreateResult( 
-			Run run,
+			AbstractRun run,
 			TestItemCollectionResult parent,
 			ITestItem item,
 			ExecutionStatus status

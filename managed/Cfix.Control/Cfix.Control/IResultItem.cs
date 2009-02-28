@@ -18,7 +18,5 @@ namespace Cfix.Control
 
 		String Name { get; }
 		ExecutionStatus Status { get; }
-
-		IRun Run { get; }
 	}
 }

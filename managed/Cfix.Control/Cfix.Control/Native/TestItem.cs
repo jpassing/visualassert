@@ -145,6 +145,7 @@ namespace Cfix.Control.Native
 
 		public IAction CreateAction(
 			IHost host,
+			IActionEvents events,
 			SchedulingOptions schedOptions,
 			ThreadingOptions threadingOptions
 			)
@@ -152,9 +153,24 @@ namespace Cfix.Control.Native
 			return new NativeAction(
 				host,
 				this,
+				events,
 				schedOptions,
 				threadingOptions );
 		}
+
+		public virtual IResultItem CreateResultItem(
+			IResultItemCollection parentResult ,
+			IActionEvents events,
+			ExecutionStatus interimStatus
+			)
+		{
+			return new TestItemResult(
+				events,
+				parentResult,
+				this,
+				interimStatus );
+		}
+
 	}
 
 }

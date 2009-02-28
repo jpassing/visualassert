@@ -19,32 +19,21 @@ namespace Cfix.Control.Native
 		private volatile bool subItemFailed;
 		private volatile bool subItemInconclusive;
 
-		private TestItemCollectionResult( 
-			Run run,
-			TestItemCollectionResult parent,
+		internal TestItemCollectionResult( 
+			IActionEvents events,
+			IResultItemCollection parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
-			: base( run, parent, item, status )
-		{
-			Debug.Assert( parent != null );
-			Debug.Assert( item is ITestItemCollection );
-			Debug.Assert( parent.InternalRun != null );
-		}
-
-		private TestItemCollectionResult(
-			Run run,
-			ITestItem item,
-			ExecutionStatus status
-			)
-			: base( run, null, item, status )
+			: base( events, parent, item, status )
 		{
 			Debug.Assert( item is ITestItemCollection );
-			Debug.Assert( run != null );
+			Debug.Assert( events != null );
 		}
 
-		private void SetItems( IList<IResultItem> items )
+		internal void SetItems( IList<IResultItem> items )
 		{
+			Debug.Assert( this.subItems == null );
 			this.subItems = items;
 		}
 
@@ -53,7 +42,12 @@ namespace Cfix.Control.Native
 			if ( this.Status == ExecutionStatus.Pending )
 			{
 				this.Status = ExecutionStatus.Running;
-				this.parent.OnChildStarted();
+
+				TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
+				if ( tp != null )
+				{
+					tp.OnChildStarted();
+				}
 			}
 		}
 
@@ -141,9 +135,10 @@ namespace Cfix.Control.Native
 				this.Status = ExecutionStatus.Succeeded;
 			}
 
-			if ( this.parent != null )
+			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
+			if ( tp != null )
 			{
-				this.parent.OnChildFinished( this.Status, false );
+				tp.OnChildFinished( this.Status, false );
 			}
 		}
 
@@ -318,65 +313,65 @@ namespace Cfix.Control.Native
 		 * Factory.
 		 */
 
-		private static TestItemCollectionResult CreateResult(
-			Run run,
-			TestItemCollectionResult parent,
-			ITestItemCollection itemColl,
-			ExecutionStatus status
-			)
-		{
-			Debug.Assert( run != null );
+		//private static TestItemCollectionResult CreateResult(
+		//    Run run,
+		//    TestItemCollectionResult parent,
+		//    ITestItemCollection itemColl,
+		//    ExecutionStatus status
+		//    )
+		//{
+		//    Debug.Assert( run != null );
 
-			TestItemCollectionResult result;
-			if ( parent == null )
-			{
-				result = new TestItemCollectionResult(
-					run,
-					itemColl,
-					status );
-			}
-			else
-			{
-				result = new TestItemCollectionResult(
-					run,
-					parent,
-					itemColl,
-					status );
-			}
+		//    TestItemCollectionResult result;
+		//    if ( parent == null )
+		//    {
+		//        result = new TestItemCollectionResult(
+		//            run,
+		//            itemColl,
+		//            status );
+		//    }
+		//    else
+		//    {
+		//        result = new TestItemCollectionResult(
+		//            run,
+		//            parent,
+		//            itemColl,
+		//            status );
+		//    }
 
-			IList<IResultItem> children = new List<IResultItem>( 
-				( int ) itemColl.ItemCount );
+		//    IList<IResultItem> children = new List<IResultItem>( 
+		//        ( int ) itemColl.ItemCount );
 
-			foreach ( ITestItem item in itemColl )
-			{
-				ITestItemCollection childColl = item as ITestItemCollection;
-				if ( childColl != null )
-				{
-					children.Add( 
-						CreateResult( run, result, childColl, status ) );
-				}
-				else
-				{
-					TestItemResult itemResult = TestItemResult.CreateResult(
-						run,
-						result, 
-						item, 
-						status );
-					children.Add( itemResult );
-				}
-			}
+		//    foreach ( ITestItem item in itemColl )
+		//    {
+		//        ITestItemCollection childColl = item as ITestItemCollection;
+		//        if ( childColl != null )
+		//        {
+		//            children.Add( 
+		//                CreateResult( run, result, childColl, status ) );
+		//        }
+		//        else
+		//        {
+		//            TestItemResult itemResult = TestItemResult.CreateResult(
+		//                run,
+		//                result, 
+		//                item, 
+		//                status );
+		//            children.Add( itemResult );
+		//        }
+		//    }
 
-			result.SetItems( children );
-			return result;
-		}
+		//    result.SetItems( children );
+		//    return result;
+		//}
 
-		internal static TestItemCollectionResult CreateResult(
-			Run run,
-			ITestItemCollection itemColl,
-			ExecutionStatus status
-			)
-		{
-			return CreateResult( run, null, itemColl, status );
-		}
+		//internal static TestItemCollectionResult CreateResult(
+		//    Run run,
+		//    ITestItemCollection itemColl,
+		//    ExecutionStatus status
+		//    )
+		//{
+		//    return CreateResult( run, null, itemColl, status );
+		//}
 	}
 }

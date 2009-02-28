@@ -51,9 +51,15 @@ namespace Cfix.Control
 
 		IAction CreateAction( 
 			IHost hostToRunOn, 
+			IActionEvents events,
 			SchedulingOptions schedOpts,
 			ThreadingOptions threadingOptions
 			);
 
+		IResultItem CreateResultItem(
+			IResultItemCollection parentResult,
+			IActionEvents events,
+			ExecutionStatus interimStatus
+			);
 	}
 }

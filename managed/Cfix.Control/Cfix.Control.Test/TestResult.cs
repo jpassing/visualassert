@@ -57,8 +57,6 @@ namespace Cfix.Control.Test
 				CompositionOptions.NonComposite, 
 				mod );
 
-			Assert.AreSame( run.RootResult.Run, run );
-
 			Traverse(
 				run.RootResult,
 				delegate( IResultItem item )

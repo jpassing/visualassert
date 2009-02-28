@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cfix.Control
 {
-	public abstract class AbstractRun : IRun
+	public abstract class AbstractRun : IRun, IActionEvents
 	{
 		public event EventHandler Started;
 		public event EventHandler Succeeded;
@@ -220,42 +220,15 @@ namespace Cfix.Control
 		}
 
 		/*--------------------------------------------------------------
-		 * Internal.
+		 * IActionEvents.
 		 */
 
-		internal void OnLog( IResultItem item, String message )
+		public IDispositionPolicy DispositionPolicy
 		{
-			if ( Log != null )
-			{
-				Log( item, new LogEventArgs( message ) );
-			}
+			get { return this.dispositionPolicy; }
 		}
 
-		internal void OnThreadStarted( IResultItem item, uint threadId )
-		{
-			if ( ThreadStarted != null )
-			{
-				ThreadStarted( item, new ThreadEventArgs( threadId ) );
-			}
-		}
-
-		internal void OnThreadFinished( IResultItem item, uint threadId )
-		{
-			if ( ThreadFinished != null )
-			{
-				ThreadFinished( item, new ThreadEventArgs( threadId ) );
-			}
-		}
-
-		internal void OnStatusChanged( IResultItem item )
-		{
-			if ( StatusChanged != null )
-			{
-				StatusChanged( item, EventArgs.Empty );
-			}
-		}
-
-		internal void OnNotification( IResultItem item, int hr )
+		public void OnNotification( IResultItem item, int hr )
 		{
 			if ( Notification != null )
 			{
@@ -263,20 +236,43 @@ namespace Cfix.Control
 			}
 		}
 
-		internal IDispositionPolicy DispositionPolicy
-		{
-			get { return this.dispositionPolicy; }
-		}
-
-		/*--------------------------------------------------------------
-		 * Protected.
-		 */
-
-		protected void OnHostSpawned( uint processId )
+		public void OnHostSpawned( uint processId )
 		{
 			if ( this.HostSpawned != null )
 			{
 				this.HostSpawned( this, new HostEventArgs( processId ) );
+			}
+		}
+
+		public void OnLog( IResultItem item, String message )
+		{
+			if ( Log != null )
+			{
+				Log( item, new LogEventArgs( message ) );
+			}
+		}
+
+		public void OnThreadStarted( IResultItem item, uint threadId )
+		{
+			if ( ThreadStarted != null )
+			{
+				ThreadStarted( item, new ThreadEventArgs( threadId ) );
+			}
+		}
+
+		public void OnThreadFinished( IResultItem item, uint threadId )
+		{
+			if ( ThreadFinished != null )
+			{
+				ThreadFinished( item, new ThreadEventArgs( threadId ) );
+			}
+		}
+
+		public void OnStatusChanged( IResultItem item )
+		{
+			if ( StatusChanged != null )
+			{
+				StatusChanged( item, EventArgs.Empty );
 			}
 		}
 	}

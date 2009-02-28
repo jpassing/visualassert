@@ -66,10 +66,12 @@ namespace Cfix.Control.Test
 				DefaultEventSink sink = new DefaultEventSink();
 				mod.CreateAction( 
 					host, 
+					sink,
 					SchedulingOptions.None,
-					ThreadingOptions.ComNeutralThreading ).Run( sink );
+					ThreadingOptions.ComNeutralThreading ).Run();
 
-				Assert.AreEqual( 0, sink.FixtureStarts );
+				Assert.AreEqual( 0, sink.Notifications );
+				Assert.AreEqual( 1, sink.HostSpawns );
 			}
 		}
 
@@ -95,15 +97,15 @@ namespace Cfix.Control.Test
 				DefaultEventSink sink = new DefaultEventSink();
 				IAction action = mod.CreateAction( 
 					host, 
+					sink,
 					SchedulingOptions.None,
 					ThreadingOptions.None );
 				Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
-				action.Run( sink );
+				action.Run();
 
-				Assert.AreEqual( 1, sink.FixtureStarts );
-				Assert.AreEqual( 1, sink.FixtureFinishs );
-				Assert.AreEqual( 0, sink.TestCaseStarts );
+				Assert.AreEqual( 1, sink.HostSpawns );
+				Assert.AreEqual( 0, sink.Notifications );
 			}
 		}
 
@@ -134,15 +136,15 @@ namespace Cfix.Control.Test
 					DefaultEventSink sink = new DefaultEventSink();
 					IAction action = mod.CreateAction( 
 						host,
+						sink,
 						SchedulingOptions.None, 
 						opt );
 					Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
 					host.Terminate();
 
-					Assert.AreEqual( 0, sink.FixtureStarts );
-					Assert.AreEqual( 0, sink.FixtureFinishs );
-					Assert.AreEqual( 0, sink.TestCaseStarts );
+					Assert.AreEqual( 0, sink.HostSpawns );
+					Assert.AreEqual( 0, sink.Notifications );
 				}
 			}
 		}

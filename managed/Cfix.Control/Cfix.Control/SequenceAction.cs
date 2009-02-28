@@ -21,12 +21,15 @@ namespace Cfix.Control
 		private volatile bool stopped = false;
 		private volatile IAction currentAction = null;
 
-		public SequenceAction( IList<IAction> actions )
+		public SequenceAction( 
+			IList<IAction> actions
+			)
 		{
 			this.actions = actions;
 		}
 
-		public void Run( ICfixEventSink sink )
+
+		public void Run()
 		{
 			if ( this.started )
 			{
@@ -46,8 +49,8 @@ namespace Cfix.Control
 				// Save reference to current action to allow stopping.
 				//
 				this.currentAction = action;
-				
-				action.Run( sink );
+
+				action.Run();
 			}
 		}
 

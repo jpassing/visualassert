@@ -15,18 +15,18 @@ namespace Cfix.Control
 		private volatile ExecutionStatus status;
 
 		private readonly String itemName;
-		private readonly IResultItemCollection parent;
-
-		private readonly AbstractRun run;
+		
+		protected readonly IResultItemCollection parent;
+		protected readonly IActionEvents events;
 
 		protected AbstractResultItem(
-			AbstractRun run,
+			IActionEvents events,
 			IResultItemCollection parent,
 			ITestItem item,
 			ExecutionStatus status
 			)
 		{
-			this.run = run;
+			this.events = events;
 			this.parent = parent;
 			this.status = status;
 			this.itemName = item.Name;
@@ -70,19 +70,9 @@ namespace Cfix.Control
 				if ( value != this.status )
 				{
 					this.status = value;
-					this.InternalRun.OnStatusChanged( this );
+					this.events.OnStatusChanged( this );
 				}
 			}
-		}
-
-		protected AbstractRun InternalRun 
-		{
-			get { return this.run; }
-		}
-
-		public IRun Run
-		{ 
-			get { return this.run; }
 		}
 
 		public abstract ICollection<Failure> Failures { get; }

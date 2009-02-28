@@ -159,12 +159,22 @@ namespace Cfix.Control
 
 		public IAction CreateAction(
 			IHost hostToRunOn,
+			IActionEvents events,
 			SchedulingOptions schedOpts,
 			ThreadingOptions threadingOptions
 			)
 		{
 			throw new NotImplementedException();
 		}
+
+		public IResultItem CreateResultItem(
+			IResultItemCollection parentResult,
+			IActionEvents events,
+			ExecutionStatus interimStatus
+			)
+		{
+			throw new NotImplementedException();
+		}	
 
 		public ITestItem GetItem( uint ordinal )
 		{

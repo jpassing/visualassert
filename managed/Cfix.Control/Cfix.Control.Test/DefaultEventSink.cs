@@ -3,122 +3,45 @@ using Cfixctl;
 
 namespace Cfix.Control.Test
 {
-	internal class DefaultEventSink : 
-		ICfixEventSink, 
-		ICfixProcessEventSink,
-		ICfixTestÌtemContainerEventSink,
-		ICfixTestÌtemEventSink
+	internal class DefaultEventSink : IActionEvents
 	{
 		public uint Notifications;
+		public uint HostSpawns;
 
-		public uint TestCaseStarts;
-		public uint TestCaseFinishs;
-		public uint FixtureStarts;
-		public uint FixtureFinishs;
-		public uint ChildThreadStarts;
-		public uint ChildThreadFinishs;
-
-		public uint Logs;
-		public uint Assertions;
-		public uint Inconclusives;
-		public uint Exceptions;
-		public uint FailedRelates;
-
-		public virtual ICfixProcessEventSink GetProcessEventSink( uint ProcessId )
+		public IDispositionPolicy DispositionPolicy 
 		{
-			return this;
+			get
+			{
+				return new StandardDispositionPolicy(
+					 Disposition.Break, Disposition.Break );
+			}
 		}
 
-		public virtual ICfixTestÌtemContainerEventSink GetTestÌtemContainerEventSink(
-			ICfixTestModule Module,
-			uint FixtureOrdinal
-			)
+		public void OnNotification( IResultItem item, int hr )
 		{
-			return this;
+			Notifications++;
 		}
 
-		public virtual void Notification( int Hr )
+		public void OnHostSpawned( uint processId )
 		{
-			this.Notifications++;
+			HostSpawns++;
 		}
 
-		public virtual void AfterChildThreadFinish( uint ThreadId )
+		public void OnLog( IResultItem item, String message )
 		{
-			this.ChildThreadFinishs++;
 		}
 
-		public virtual void AfterFixtureFinish( int RanToCompletion )
+		public void OnThreadStarted( IResultItem item, uint threadId )
 		{
-			this.FixtureFinishs++;
 		}
 
-		public virtual void BeforeChildThreadStart( uint ThreadId )
+		public void OnThreadFinished( IResultItem item, uint threadId )
 		{
-			this.ChildThreadStarts++;
 		}
 
-		public virtual void BeforeFixtureStart()
+		public void OnStatusChanged( IResultItem item )
 		{
-			this.FixtureStarts++;
 		}
 
-		public virtual void AfterTestCaseFinish( int RanToCompletion )
-		{
-			this.TestCaseFinishs++;
-		}
-
-		public virtual void BeforeTestCaseStart()
-		{
-			this.TestCaseStarts++;
-		}
-
-		public virtual CFIXCTL_REPORT_DISPOSITION FailedAssertion( string Expression, string Routine, string File, string Message, uint Line, uint LastError, uint Flags, uint Reserved, ICfixStackTrace StackTrace )
-		{
-			this.Assertions++;
-			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
-		}
-
-		public virtual CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion( CFIXCTL_RELATE_OPERATOR Operator, object ExpectedValue, object ActualValue, string Routine, string File, string Message, uint Line, uint LastError, uint Flags, uint Reserved, ICfixStackTrace StackTrace )
-		{
-			this.FailedRelates++;
-			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
-		}
-
-		public virtual ICfixTestÌtemEventSink GetTestItemEventSink( uint TestCaseOrdinal, uint ThreadId )
-		{
-			return this;
-		}
-
-		public virtual void Inconclusive( string Message, uint Reserved, ICfixStackTrace StackTrace )
-		{
-			this.Inconclusives++;
-		}
-
-		public virtual void Log( string Message, uint Reserved, ICfixStackTrace StackTrace )
-		{
-			this.Logs++;
-		}
-
-		public virtual CFIXCTL_REPORT_DISPOSITION QueryDefaultFailedAssertionDisposition()
-		{
-			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
-		}
-
-		public virtual CFIXCTL_REPORT_DISPOSITION QueryDefaultUnhandledExceptionDisposition()
-		{
-			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
-		}
-
-		public virtual CFIXCTL_REPORT_DISPOSITION UnhandledException( uint ExceptionCode, uint Reserved, ICfixStackTrace StackTrace )
-		{
-			this.Exceptions++;
-			return CFIXCTL_REPORT_DISPOSITION.CfixctlDispositionContinue;
-		}
-
-		public void AfterRunFinish()
-		{ }
-
-		public void BeforeRunStart()
-		{ }
 	}
 }

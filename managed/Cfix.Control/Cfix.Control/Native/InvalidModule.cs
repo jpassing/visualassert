@@ -82,6 +82,7 @@ namespace Cfix.Control.Native
 
 		public IAction CreateAction(
 			IHost hostToRunOn,
+			IActionEvents events,
 			SchedulingOptions schedOpts,
 			ThreadingOptions threadingOptions
 			)
@@ -89,6 +90,13 @@ namespace Cfix.Control.Native
 			throw new NotImplementedException();
 		}
 
-		
+		public IResultItem CreateResultItem(
+			IResultItemCollection parentResult,
+			IActionEvents events,
+			ExecutionStatus interimStatus
+			)
+		{
+			throw new NotImplementedException();
+		}		
 	}
 }
