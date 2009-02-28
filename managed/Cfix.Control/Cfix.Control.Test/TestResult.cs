@@ -48,8 +48,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( fixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run( 
 				this.policy, 
@@ -103,8 +103,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( testFixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run( 
 				this.policy,
@@ -175,8 +175,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( testFixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run(
 				this.policy,
@@ -249,8 +249,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( testFixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run(
 				this.policy,
@@ -376,8 +376,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( testFixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run(
 				this.policy,
@@ -459,8 +459,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( testFixture );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			IRun run = new Run(
 				this.policy,

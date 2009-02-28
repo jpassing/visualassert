@@ -12,20 +12,20 @@ namespace Cfix.Control.Test
 	{
 		private Agent ooProcTarget;
 		private Agent inProcTarget;
-		private MultiTarget multiTarget;
+		private AgentSet multiTarget;
 		private String testdataDir;
 
 		[SetUp]
 		public void Setup()
 		{
-			this.ooProcTarget = Agent.CreateLocalTarget(
+			this.ooProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
-			this.inProcTarget = Agent.CreateLocalTarget(
+			this.inProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
 
-			this.multiTarget = new MultiTarget();
+			this.multiTarget = new AgentSet();
 			this.multiTarget.AddArchitecture( ooProcTarget );
 
 			String binDir = new FileInfo(
@@ -53,8 +53,8 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchWithNoTargets()
 		{
-			MultiTarget tgt = new MultiTarget();
-			TestModuleCollection coll = TestModuleCollection.Search(
+			AgentSet tgt = new AgentSet();
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				inProcTarget,
@@ -73,7 +73,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchSingleFile()
 		{
-			TestModuleCollection coll = TestModuleCollection.Search(
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"simple.dll",
 				inProcTarget,
@@ -94,7 +94,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchTwoFiles()
 		{
-			TestModuleCollection coll = TestModuleCollection.Search(
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
 				inProcTarget,
@@ -128,7 +128,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchEmptyDir()
 		{
-			TestModuleCollection coll = TestModuleCollection.Search(
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir + "\\dummy" ),
 				"*",
 				inProcTarget,
@@ -143,7 +143,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchDir()
 		{
-			TestModuleCollection coll = TestModuleCollection.Search(
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				inProcTarget,
@@ -177,7 +177,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void SearchDirRecursive()
 		{
-			TestModuleCollection coll = TestModuleCollection.Search(
+			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir + "\\.." ),
 				"*",
 				inProcTarget,

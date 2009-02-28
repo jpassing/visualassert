@@ -16,7 +16,7 @@ namespace Cfix.Control.Test
 		[SetUp]
 		public void Setup()
 		{
-			this.target = Agent.CreateLocalTarget(
+			this.target = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
 
@@ -42,10 +42,11 @@ namespace Cfix.Control.Test
 		{
 			try
 			{
-				TestModule mod = TestModule.LoadModule(
-					target, "idonotexist.dll", true );
-
-				Assert.Fail( "Expected exception" );
+				using ( ITestItemCollection mod = this.target.CreateHost().LoadModule(
+					null, "idonotexist.dll", true ) )
+				{
+					Assert.Fail( "Expected exception" );
+				}
 			}
 			catch ( CfixException )
 			{
@@ -55,143 +56,156 @@ namespace Cfix.Control.Test
 		[Test]
 		public void LoadNonTestlib()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\notatestdll.dll", true );
-			Assert.AreEqual( this.testdataDir + "\\notatestdll.dll", mod.Path );
-			Assert.AreEqual( 0, mod.ItemCount );
+			using ( IHost host = this.target.CreateHost() )
+			{
+				TestModule mod = ( TestModule ) host.LoadModule(
+					null, this.testdataDir + "\\notatestdll.dll", true );
+				Assert.AreEqual( this.testdataDir + "\\notatestdll.dll", mod.Path );
+				Assert.AreEqual( 0, mod.ItemCount );
 
-			DefaultEventSink sink = new DefaultEventSink();
-			mod.CreateAction( SchedulingOptions.None ).Run( sink );
+				DefaultEventSink sink = new DefaultEventSink();
+				mod.CreateAction( host, SchedulingOptions.None ).Run( sink );
 
-			Assert.AreEqual( 0, sink.FixtureStarts );
+				Assert.AreEqual( 0, sink.FixtureStarts );
+			}
 		}
 
 		[Test]
 		public void LoadTestlibWithEmptyFixture()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\simple.dll", true );
-
-			Assert.AreEqual( 0, mod.Ordinal );
-			Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
-
-			Assert.AreEqual( 1, mod.ItemCount );
-
-			ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
-			Assert.AreEqual( 0, fixture.Ordinal );
-			Assert.AreEqual( "SampleFixture", fixture.Name );
-
-			Assert.AreEqual( 0, fixture.ItemCount );
-
-			DefaultEventSink sink = new DefaultEventSink();
-			IAction action = mod.CreateAction( SchedulingOptions.None );
-			Assert.AreEqual( 0, action.TestCaseCount );
-
-			action.Run( sink );
-
-			Assert.AreEqual( 1, sink.FixtureStarts );
-			Assert.AreEqual( 1, sink.FixtureFinishs );
-			Assert.AreEqual( 0, sink.TestCaseStarts );
-		}
-
-		[Test]
-		public void LoadTestlibAndTerminate()
-		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\simple.dll", true );
-
-			Assert.AreEqual( 0, mod.Ordinal );
-			Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
-
-			Assert.AreEqual( 1, mod.ItemCount );
-
-			ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
-			Assert.AreEqual( 0, fixture.Ordinal );
-			Assert.AreEqual( "SampleFixture", fixture.Name );
-
-			Assert.AreEqual( 0, fixture.ItemCount );
-
-			SchedulingOptions[] opts = { 
-		        SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
-
-			foreach ( SchedulingOptions opt in opts )
+			using ( IHost host = this.target.CreateHost() )
 			{
+				TestModule mod = ( TestModule ) host.LoadModule(
+					null, this.testdataDir + "\\simple.dll", true );
+
+				Assert.AreEqual( 0, mod.Ordinal );
+				Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
+
+				Assert.AreEqual( 1, mod.ItemCount );
+
+				ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+				Assert.AreEqual( 0, fixture.Ordinal );
+				Assert.AreEqual( "SampleFixture", fixture.Name );
+
+				Assert.AreEqual( 0, fixture.ItemCount );
+
 				DefaultEventSink sink = new DefaultEventSink();
-				IComponentAction action = mod.CreateAction( opt );
+				IAction action = mod.CreateAction( host, SchedulingOptions.None );
 				Assert.AreEqual( 0, action.TestCaseCount );
 
-				action.TerminateHost();
+				action.Run( sink );
 
-				Assert.AreEqual( 0, sink.FixtureStarts );
-				Assert.AreEqual( 0, sink.FixtureFinishs );
+				Assert.AreEqual( 1, sink.FixtureStarts );
+				Assert.AreEqual( 1, sink.FixtureFinishs );
 				Assert.AreEqual( 0, sink.TestCaseStarts );
 			}
 		}
+
+		//[Test]
+		//public void LoadTestlibAndTerminate()
+		//{
+		//    using ( TestModule mod = ( TestModule ) this.target.CreateHost().LoadModule(
+		//        null, this.testdataDir + "\\simple.dll", true ) )
+		//    {
+		//        Assert.AreEqual( 0, mod.Ordinal );
+		//        Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
+
+		//        Assert.AreEqual( 1, mod.ItemCount );
+
+		//        ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+		//        Assert.AreEqual( 0, fixture.Ordinal );
+		//        Assert.AreEqual( "SampleFixture", fixture.Name );
+
+		//        Assert.AreEqual( 0, fixture.ItemCount );
+
+		//        SchedulingOptions[] opts = { 
+		//            SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
+
+		//        foreach ( SchedulingOptions opt in opts )
+		//        {
+		//            DefaultEventSink sink = new DefaultEventSink();
+		//            IAction action = mod.CreateAction( opt );
+		//            Assert.AreEqual( 0, action.TestCaseCount );
+
+		//            action.TerminateHost();
+
+		//            Assert.AreEqual( 0, sink.FixtureStarts );
+		//            Assert.AreEqual( 0, sink.FixtureFinishs );
+		//            Assert.AreEqual( 0, sink.TestCaseStarts );
+		//        }
+		//    }
+		//}
 
 		[Test]
 		[ExpectedException( typeof( CfixException ) )]
 		public void LoadTestlibWithInvalidFixtureName()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\toolong.dll", true );
+			using ( ITestItemCollection mod = this.target.CreateHost().LoadModule(			
+				null, this.testdataDir + "\\toolong.dll", true ) )
+			{}
 		}
 
 		[Test]
 		[ExpectedException( typeof( BadImageFormatException ) )]
 		public void LoadTestlibWithWrongArch()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\wrongarch.dll", true );
+			using ( ITestItemCollection mod = this.target.CreateHost().LoadModule(
+				null, this.testdataDir + "\\wrongarch.dll", true ) )
+			{ }
 		}
 
 		[Test]
 		[ExpectedException( typeof( CfixException ) )]
 		public void LoadTestlibWithAmbiguousTestCaseNamesAndFail()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\dupfixturename.dll", false );
+			using ( ITestItemCollection mod = this.target.CreateHost().LoadModule(
+				null, this.testdataDir + "\\dupfixturename.dll", false ) )
+			{ }
 		}
 
 		[Test]
 		public void LoadTestlibWithAmbiguousTestCaseNames()
 		{
-			TestModule mod = TestModule.LoadModule(
-				target, this.testdataDir + "\\dupfixturename.dll", true );
+			using ( IHost host = this.target.CreateHost() )
+			{
+				TestModule mod = ( TestModule ) host.LoadModule(
+					null, this.testdataDir + "\\dupfixturename.dll", true );
 
-			Assert.AreEqual( 0, mod.Ordinal );
-			Assert.AreEqual( this.testdataDir + "\\dupfixturename.dll", mod.Path );
+				Assert.AreEqual( 0, mod.Ordinal );
+				Assert.AreEqual( this.testdataDir + "\\dupfixturename.dll", mod.Path );
 
-			Assert.AreEqual( 1, mod.ItemCount );
+				Assert.AreEqual( 1, mod.ItemCount );
 
-			ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
-			Assert.AreEqual( 0, fixture.Ordinal );
-			Assert.AreEqual( "TestExecActionDummy", fixture.Name );
+				ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+				Assert.AreEqual( 0, fixture.Ordinal );
+				Assert.AreEqual( "TestExecActionDummy", fixture.Name );
 
-			Assert.AreEqual( 2, fixture.ItemCount );
+				Assert.AreEqual( 2, fixture.ItemCount );
 
-			ITestItem tc = fixture.GetItem( 0 );
-			Assert.AreEqual( 0, tc.Ordinal );
-			Assert.AreEqual( "Log", tc.Name );
+				ITestItem tc = fixture.GetItem( 0 );
+				Assert.AreEqual( 0, tc.Ordinal );
+				Assert.AreEqual( "Log", tc.Name );
 
-			tc = fixture.GetItem( 1 );
-			Assert.IsNull( tc );
+				tc = fixture.GetItem( 1 );
+				Assert.IsNull( tc );
 
-			mod.Refresh();
+				mod.Refresh();
 
-			Assert.AreEqual( 1, mod.ItemCount );
+				Assert.AreEqual( 1, mod.ItemCount );
 
-			fixture = ( ITestItemCollection ) mod.GetItem( 0 );
-			Assert.AreEqual( 0, fixture.Ordinal );
-			Assert.AreEqual( "TestExecActionDummy", fixture.Name );
+				fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+				Assert.AreEqual( 0, fixture.Ordinal );
+				Assert.AreEqual( "TestExecActionDummy", fixture.Name );
 
-			Assert.AreEqual( 2, fixture.ItemCount );
+				Assert.AreEqual( 2, fixture.ItemCount );
 
-			tc = fixture.GetItem( 0 );
-			Assert.AreEqual( 0, tc.Ordinal );
-			Assert.AreEqual( "Log", tc.Name );
+				tc = fixture.GetItem( 0 );
+				Assert.AreEqual( 0, tc.Ordinal );
+				Assert.AreEqual( "Log", tc.Name );
 
-			tc = fixture.GetItem( 1 );
-			Assert.IsNull( tc );
+				tc = fixture.GetItem( 1 );
+				Assert.IsNull( tc );
+			}
 		}
 		
 	}

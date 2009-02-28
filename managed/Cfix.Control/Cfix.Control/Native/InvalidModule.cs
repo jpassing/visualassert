@@ -29,6 +29,19 @@ namespace Cfix.Control.Native
 			this.invalidityCause = invalidityCause;
 		}
 
+		public void Dispose()
+		{
+			if ( !this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
+			}
+		}
+
 		public Exception InvalidityCause
 		{
 			get { return this.invalidityCause; }
@@ -67,28 +80,14 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public void CreateAction(
-			ICompositeAction actionToComposeWith,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
+		public IAction CreateAction(
+			IHost hostToRunOn,
+			SchedulingOptions schedOpts
 			)
 		{
-			//
-			// Ignore.~
-			//
+			throw new NotImplementedException();
 		}
 
-		public void Dispose()
-		{
-			if ( ! this.disposed )
-			{
-				if ( Disposed != null )
-				{
-					Disposed( this, EventArgs.Empty );
-				}
-
-				this.disposed = true;
-			}
-		}
+		
 	}
 }

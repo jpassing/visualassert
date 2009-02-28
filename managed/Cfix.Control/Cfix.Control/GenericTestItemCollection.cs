@@ -139,22 +139,30 @@ namespace Cfix.Control
 		public event EventHandler< TestItemEventArgs > ItemAdded;
 		public event EventHandler< TestItemEventArgs > ItemRemoved;
 
-		public void CreateAction(
-			ICompositeAction actionToComposeWith,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
+		//public void CreateAction(
+		//    ICompositeAction actionToComposeWith,
+		//    SchedulingOptions schedulingOptions,
+		//    CompositionOptions compositionOptions
+		//    )
+		//{
+		//    lock ( this.listLock )
+		//    {
+		//        foreach ( ITestItem item in this.list )
+		//        {
+		//            item.CreateAction(
+		//                actionToComposeWith,
+		//                schedulingOptions,
+		//                compositionOptions );
+		//        }
+		//    }
+		//}
+
+		public IAction CreateAction(
+			IHost hostToRunOn,
+			SchedulingOptions schedOpts
 			)
 		{
-			lock ( this.listLock )
-			{
-				foreach ( ITestItem item in this.list )
-				{
-					item.CreateAction(
-						actionToComposeWith,
-						schedulingOptions,
-						compositionOptions );
-				}
-			}
+			throw new NotImplementedException();
 		}
 
 		public ITestItem GetItem( uint ordinal )

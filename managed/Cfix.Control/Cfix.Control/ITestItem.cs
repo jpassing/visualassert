@@ -43,10 +43,9 @@ namespace Cfix.Control
 
 		ITestItemCollection Parent { get; }
 
-		void CreateAction( 
-			ICompositeAction actionToComposeWith,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
+		IAction CreateAction( 
+			IHost hostToRunOn, 
+			SchedulingOptions schedOpts 
 			);
 	}
 }

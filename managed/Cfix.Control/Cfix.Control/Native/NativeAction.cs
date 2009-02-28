@@ -5,7 +5,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	internal class NativeAction : IComponentAction
+	internal class NativeAction : IAction
 	{
 		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
 
@@ -16,21 +16,16 @@ namespace Cfix.Control.Native
 
 		private TestItem item;
 		private ICfixAction action;
-		private ICfixHost host;
 		private readonly uint flags;
 
 		public NativeAction( 
 			TestItem item, 
-			ICfixHost host,
 			ICfixAction action,
 			uint flags )
 		{
 			this.item = item;
-			this.host = host;
 			this.action = action;
 			this.flags = flags;
-
-			Debug.Assert( host.GetHostProcessId() > 0 );
 		}
 
 		/*----------------------------------------------------------------------
@@ -45,11 +40,6 @@ namespace Cfix.Control.Native
 		public uint TestCaseCount
 		{
 			get { return this.action.GetTestCaseCount(); }
-		}
-
-		public uint HostProcessId
-		{
-			get { return this.host.GetHostProcessId(); }
 		}
 
 		public Architecture Architecture
@@ -84,32 +74,12 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public void TerminateHost()
-		{
-			try
-			{
-				this.host.Terminate();
-				this.host = null;
-				this.action = null;
-			}
-			catch ( COMException x )
-			{
-				throw this.item.Module.Target.WrapException( x );
-			}
-		}
-
 		protected virtual void Dispose( bool disposing )
 		{
 			if ( this.action != null )
 			{
 				this.item.Module.Target.ReleaseObject( this.action );
 				this.action = null;
-			}
-
-			if ( this.host != null )
-			{
-				this.item.Module.Target.ReleaseObject( this.host );
-				this.host = null;
 			}
 		}
 

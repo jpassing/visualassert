@@ -19,8 +19,8 @@ namespace Cfix.Control.Native
 
 		private readonly DirectoryInfo dirInfo;
 		private readonly String filter;
-		private readonly Agent searchTarget;
-		private readonly MultiTarget runTargets;
+		private readonly IAgent searchTarget;
+		private readonly AgentSet runTargets;
 		private readonly bool userOnly;
 		private readonly bool ignoreDuplicates;
 
@@ -111,12 +111,15 @@ namespace Cfix.Control.Native
 				{
 					try
 					{
-						this.collectionStack.Peek().Add(
-							TestModule.LoadModule(
-								this.collectionStack.Peek(),
-								this.collection.runTargets.GetTarget( arch ),
-								path,
-								this.collection.ignoreDuplicates ) );
+						using ( IHost host =
+							this.collection.runTargets.GetTarget( arch ).CreateHost() )
+						{
+							this.collectionStack.Peek().Add(
+								host.LoadModule(
+									this.collectionStack.Peek(),
+									path,
+									this.collection.ignoreDuplicates ) );
+						}
 					}
 					catch ( Exception x )
 					{
@@ -172,44 +175,39 @@ namespace Cfix.Control.Native
 				this.currentLoadAborted = false;
 				this.currentLoader = new Loader( this );
 
-				ICfixHost host = null;
-				try
+				using ( IHost host = searchTarget.CreateHost() )
 				{
-					host = searchTarget.CreateHost();
-
-					host.SearchModules(
-						this.dirInfo.FullName + "\\" + filter,
-						CFIXCTL_SEARCH_FLAG_RECURSIVE,
-						userOnly
-							? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
-							: UInt32.MaxValue,
-						( uint ) runTargets.GetArchitectures(),
-						this.currentLoader );
-				}
-				catch ( COMException x )
-				{
-					if ( this.currentLoadAborted )
+					try
 					{
-						//
-						// Load has been aborted - not a true error.
-						// Note that thanks to marvelous Interop, we cannot rely 
-						// on the exception's HRESULT.
-						//
+						( ( Host ) host ).GetNativeItem().SearchModules(
+							this.dirInfo.FullName + "\\" + filter,
+							CFIXCTL_SEARCH_FLAG_RECURSIVE,
+							userOnly
+								? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
+								: UInt32.MaxValue,
+							( uint ) runTargets.GetArchitectures(),
+							this.currentLoader );
 					}
-					else
+					catch ( COMException x )
 					{
-						throw searchTarget.WrapException( x );
+						if ( this.currentLoadAborted )
+						{
+							//
+							// Load has been aborted - not a true error.
+							// Note that thanks to marvelous Interop, we cannot rely 
+							// on the exception's HRESULT.
+							//
+						}
+						else
+						{
+							throw ( ( Agent ) searchTarget ).WrapException( x );
+						}
 					}
-				}
-				finally
-				{
-					if ( host != null )
+					finally
 					{
-						searchTarget.ReleaseObject( host );
+						this.currentLoadAborted = false;
+						this.currentLoader = null;
 					}
-
-					this.currentLoadAborted = false;
-					this.currentLoader = null;
 				}
 			}
 		}
@@ -222,8 +220,8 @@ namespace Cfix.Control.Native
 			ITestItemCollection parent,
 			DirectoryInfo dir, 
 			String filter,
-			Agent searchTarget,
-			MultiTarget runTargets,
+			IAgent searchTarget,
+			AgentSet runTargets,
 			bool userOnly,
 			bool ignoreDuplicates
 			)
@@ -269,16 +267,11 @@ namespace Cfix.Control.Native
 		 * Statics.
 		 */
 
-		/*++
-		 * Create a TestModuleCollection for the given directory.
-		 * The caller has to invoke Refresh() to actually load the
-		 * children.
-		 --*/
-		public static TestModuleCollection Search(
+		internal static TestModuleCollection Search(
 			DirectoryInfo dir,
 			String filter, 
-			Agent searchTarget,
-			MultiTarget runTargets,
+			IAgent searchTarget,
+			AgentSet runTargets,
 			bool userOnly,
 			bool ignoreDuplicates
 			)

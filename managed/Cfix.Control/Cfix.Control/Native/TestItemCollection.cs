@@ -214,36 +214,6 @@ namespace Cfix.Control.Native
 		public event EventHandler<TestItemEventArgs> ItemAdded;
 		public event EventHandler<TestItemEventArgs> ItemRemoved;
 
-		public override void CreateAction(
-			ICompositeAction actionToComposeWith,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
-			)
-		{
-			if ( ( compositionOptions & CompositionOptions.FineGrained ) ==
-				 CompositionOptions.FineGrained )
-			{
-				//
-				// Recurse and add items individually - this will result in 
-				// multiple small actions rather than few SequenceActions.
-				//
-				foreach ( ITestItem item in this.subItems )
-				{
-					item.CreateAction(
-						actionToComposeWith,
-						schedulingOptions,
-						compositionOptions );
-				}
-			}
-			else
-			{
-				base.CreateAction( 
-					actionToComposeWith, 
-					schedulingOptions, 
-					compositionOptions );
-			}
-		}
-
 		public ITestItem GetItem( uint ordinal )
 		{
 			return this.subItems[ ordinal ];
@@ -266,15 +236,25 @@ namespace Cfix.Control.Native
 
 		public virtual void Refresh()
 		{
-			NativeConnection connection = NativeConnection;
-			try
+			using ( IHost host = this.Module.Target.CreateHost() )
 			{
-				Update( ( ICfixTestContainer ) connection.Item );
-			}
-			finally
-			{
-				this.Module.Target.ReleaseObject( connection.Item );
-				this.Module.Target.ReleaseObject( connection.Host );
+				ICfixTestItem ctlItem = null;
+				try
+				{
+					ctlItem = GetNativeItem( host );
+					Update( ( ICfixTestContainer ) ctlItem );
+				}
+				catch ( COMException x )
+				{
+					throw this.Module.Target.WrapException( x );
+				}
+				finally
+				{
+					if ( ctlItem != null )
+					{
+						this.Module.Target.ReleaseObject( ctlItem );
+					}
+				}
 			}
 		}
 

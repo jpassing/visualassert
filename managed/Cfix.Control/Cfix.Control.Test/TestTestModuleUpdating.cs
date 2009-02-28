@@ -15,8 +15,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( new MockItem( "foo" ) );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -34,8 +34,8 @@ namespace Cfix.Control.Test
 				Assert.Fail( "Should not be called " );
 			};
 
-			mod.Update();
-			mod.Update();
+			mod.Refresh();
+			mod.Refresh();
 
 			Assert.AreEqual( 1, mod.ItemCount );
 			Assert.AreEqual( 0, mod.GetItem( 0 ).Ordinal );
@@ -49,8 +49,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( new MockItem( "foo" ) );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -76,7 +76,7 @@ namespace Cfix.Control.Test
 			//
 			module.Children.Add( new MockItem( "bar" ) );
 
-			mod.Update();
+			mod.Refresh();
 
 			Assert.AreEqual( 1, additions );
 			Assert.AreEqual( 0, deletions );
@@ -95,7 +95,7 @@ namespace Cfix.Control.Test
 			//
 			module.Children.RemoveAt( 1 );
 
-			mod.Update();
+			mod.Refresh();
 
 			Assert.AreEqual( 0, additions );
 			Assert.AreEqual( 1, deletions );
@@ -112,8 +112,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( new MockItem( "foo" ) );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -141,7 +141,7 @@ namespace Cfix.Control.Test
 
 			try
 			{
-				mod.Update();
+				mod.Refresh();
 				Assert.Fail();
 			}
 			catch ( CfixException )
@@ -158,8 +158,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( new MockItem( "foo" ) );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -185,7 +185,7 @@ namespace Cfix.Control.Test
 			//
 			module.Children.Add( new MockItem( "bar" ) );
 
-			mod.Update();
+			mod.Refresh();
 
 			Assert.AreEqual( 1, additions );
 			Assert.AreEqual( 0, deletions );
@@ -204,7 +204,7 @@ namespace Cfix.Control.Test
 			module.Children.Clear();
 			module.Children.Add( new MockItem( "bar" ) );
 
-			mod.Update();
+			mod.Refresh();
 
 			Assert.AreEqual( 1, additions );
 			Assert.AreEqual( 2, deletions );
@@ -221,8 +221,8 @@ namespace Cfix.Control.Test
 			module.Children.Add( new MockItem( "foo" ) );
 
 			Agent target = new MockTarget( module );
-			TestModule mod = TestModule.LoadModule(
-				target, module.GetPath(), false );
+			TestModule mod = ( TestModule ) target.CreateHost().LoadModule(
+				null, module.GetPath(), false );
 
 			Assert.AreEqual( 1, mod.ItemCount );
 
@@ -249,7 +249,7 @@ namespace Cfix.Control.Test
 			module.Children.Clear();
 			module.Children.Add( new MockItem( "bar" ) );
 
-			mod.Update();
+			mod.Refresh();
 
 			Assert.AreEqual( 1, additions );
 			Assert.AreEqual( 1, deletions );

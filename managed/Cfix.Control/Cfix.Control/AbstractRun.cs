@@ -148,35 +148,35 @@ namespace Cfix.Control
 		{
 			lock ( this.actionLock )
 			{
-				if ( this.IsStarted )
-				{
-					throw new CfixException( "Already started" );
-				}
+				//if ( this.IsStarted )
+				//{
+				//    throw new CfixException( "Already started" );
+				//}
 
-				if ( ( compositionOptions & CompositionOptions.NonComposite )
-					== CompositionOptions.NonComposite )
-				{
-					IComponentActionSource compSrc =
-						this.rootItem as IComponentActionSource;
-					if ( compSrc == null )
-					{
-						throw new ArgumentException(
-							"Not a component source" );
-					}
+				//if ( ( compositionOptions & CompositionOptions.NonComposite )
+				//    == CompositionOptions.NonComposite )
+				//{
+				//    IComponentActionSource compSrc =
+				//        this.rootItem as IComponentActionSource;
+				//    if ( compSrc == null )
+				//    {
+				//        throw new ArgumentException(
+				//            "Not a component source" );
+				//    }
 
-					this.action = compSrc.CreateAction( schedulingOptions );
-				}
-				else
-				{
-					// TODO
-					throw new NotImplementedException();
-				}
+				//    this.action = compSrc.CreateAction( schedulingOptions );
+				//}
+				//else
+				//{
+				//    // TODO
+				//    throw new NotImplementedException();
+				//}
 
-				AsyncRunDelegate asyncRun = AsyncRun;
-				this.rundownLock.Acquire();
-				asyncRun.BeginInvoke(
-					AsyncRunCompletionCallback,
-					asyncRun );
+				//AsyncRunDelegate asyncRun = AsyncRun;
+				//this.rundownLock.Acquire();
+				//asyncRun.BeginInvoke(
+				//    AsyncRunCompletionCallback,
+				//    asyncRun );
 			}
 		}
 
@@ -200,21 +200,21 @@ namespace Cfix.Control
 			{
 				if ( this.action != null )
 				{
-					IComponentAction compAction = this.action as IComponentAction;
-					if ( compAction != null )
-					{
-						compAction.TerminateHost();
+					//IComponentAction compAction = this.action as IComponentAction;
+					//if ( compAction != null )
+					//{
+					//    compAction.TerminateHost();
 
-						//
-						// Enforce state.
-						//
-						this.finished = true;
-					}
-					else
-					{
-						// TODO: Terminate multiple hosts?
-						Stop();
-					}
+					//    //
+					//    // Enforce state.
+					//    //
+					//    this.finished = true;
+					//}
+					//else
+					//{
+					//    // TODO: Terminate multiple hosts?
+					//    Stop();
+					//}
 				}
 			}
 		}

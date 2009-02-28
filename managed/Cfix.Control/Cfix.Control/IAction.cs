@@ -10,31 +10,31 @@ namespace Cfix.Control
 		void Stop();
 	}
 
-	/*++
-	 *	Non-composite action referring to fixtures/testcases
-	 *	of a single module, and thus, of a single architecture and
-	 *  a single process.
-	--*/
-	public interface IComponentAction : IAction
-	{
-		Architecture Architecture { get; }
-		uint HostProcessId { get; }
-		void TerminateHost();
-	}
+	///*++
+	// *	Non-composite action referring to fixtures/testcases
+	// *	of a single module, and thus, of a single architecture and
+	// *  a single process.
+	//--*/
+	//public interface IComponentAction : IAction
+	//{
+	//    Architecture Architecture { get; }
+	//    uint HostProcessId { get; }
+	//    void TerminateHost();
+	//}
 
-	/*++
-	 *	Composite containing one or more IComponentAction that may
-	 *	differ in their architecture.
-	--*/
-	public interface ICompositeAction : IAction
-	{
-		void Add( IComponentAction action );
-	}
+	///*++
+	// *	Composite containing one or more IComponentAction that may
+	// *	differ in their architecture.
+	//--*/
+	//public interface ICompositeAction : IAction
+	//{
+	//    void Add( IComponentAction action );
+	//}
 
-	public interface IComponentActionSource
-	{
-		IComponentAction CreateAction(
-			SchedulingOptions schedulingOptions
-			);
-	}
+	//public interface IComponentActionSource
+	//{
+	//    IComponentAction CreateAction(
+	//        SchedulingOptions schedulingOptions
+	//        );
+	//}
 }

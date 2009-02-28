@@ -22,7 +22,7 @@ namespace Cfix.Control.Native
 
 		private CfixTestModuleType type = 0;
 
-		private TestModule(
+		internal TestModule(
 			ITestItemCollection parentCollection,
 			String path,
 			Agent target,
@@ -36,58 +36,13 @@ namespace Cfix.Control.Native
 			this.target = target;
 		}
 
-		private static NativeConnection Connect( Agent target, String path )
-		{
-			try
-			{
-				ICfixHost host = target.CreateHost();
-				try
-				{
-					ICfixTestModule mod = host.LoadModule( path );
-
-					return new NativeConnection(
-						host,
-						mod );
-				}
-				catch ( COMException x )
-				{
-					target.ReleaseObject( host );
-					throw target.WrapException( x );
-				}
-			}
-			catch ( FileNotFoundException x )
-			{
-				throw new FileNotFoundException(
-					String.Format( "Module {0} not found: {1} ",
-						path,
-						x.Message ) );
-			}
-			catch ( COMException x )
-			{
-				throw target.WrapException( x );
-			}
-		}
-
-		private NativeConnection Connect()
-		{
-			return Connect( this.target, this.path );
-		}
-
 		/*--------------------------------------------------------------
 		 * Overrides.
 		 */
 
-		internal override NativeConnection NativeConnection
+		protected override ICfixTestItem GetNativeItem( IHost host )
 		{
-			get
-			{
-				return Connect();
-			}
-		}
-
-		public override void Refresh()
-		{
-			Update();
+			return ( ( Host ) host ).GetNativeItem().LoadModule( this.path );
 		}
 
 		public override ITestItemCollection Parent
@@ -123,25 +78,6 @@ namespace Cfix.Control.Native
 			get { return this.target.Architecture; }
 		}
 
-		public void Update()
-		{
-			if ( this.target == null )
-			{
-				throw new ArgumentException();
-			}
-
-			NativeConnection connection = Connect();
-			try
-			{
-				Update( ( ICfixTestModule ) connection.Item );
-			}
-			finally
-			{
-				this.target.ReleaseObject( connection.Item );
-				this.target.ReleaseObject( connection.Host );
-			}
-		}
-
 		public CfixTestModuleType Type
 		{
 			get { return this.type; }
@@ -152,54 +88,6 @@ namespace Cfix.Control.Native
 			get
 			{
 				return this.path;
-			}
-		}
-
-		/*--------------------------------------------------------------
-		 * Statics.
-		 */
-
-		public static TestModule LoadModule(
-			Agent target,
-			String path,
-			bool ignoreDuplicates
-			)
-		{
-			return LoadModule( null, target, path, ignoreDuplicates );
-		}
-
-		public static TestModule LoadModule(
-			ITestItemCollection parentCollection,
-			Agent target,
-			String path,
-			bool ignoreDuplicates
-			)
-		{
-			if ( target == null || path == null )
-			{
-				throw new ArgumentException( "" );
-			}
-
-			NativeConnection connection = Connect( target, path );
-			try
-			{
-				ICfixTestModule ctlModule = ( ICfixTestModule ) connection.Item;
-
-				TestModule mod = new TestModule(
-					parentCollection,
-					path,
-					target,
-					ctlModule,
-					ignoreDuplicates );
-
-				mod.Update( ctlModule );
-
-				return mod;
-			}
-			finally
-			{
-				target.ReleaseObject( connection.Item );
-				target.ReleaseObject( connection.Host );
 			}
 		}
 	}

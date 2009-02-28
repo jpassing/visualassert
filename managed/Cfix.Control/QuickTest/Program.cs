@@ -11,11 +11,11 @@ namespace QuickTest
 		[STAThread]
 		static void Main( string[] args )
 		{
-			Agent ooTarget = Agent.CreateLocalTarget( 
+			Agent ooTarget = Agent.CreateLocalAgent( 
 				Architecture.I386, 
 				false );
 
-			Agent inTarget = Agent.CreateLocalTarget(
+			Agent inTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
 
@@ -27,25 +27,25 @@ namespace QuickTest
 			//GenericTestItemCollection cont = new GenericTestItemCollection( "Cont" );
 			//cont.Add( mod );
 
-			using ( MultiTarget multiTarget = new MultiTarget() )
-			{
-				multiTarget.AddArchitecture( ooTarget );
+			//using ( AgentSet multiTarget = new AgentSet() )
+			//{
+			//    multiTarget.AddArchitecture( ooTarget );
 
-				TestModuleCollection cont = TestModuleCollection.Search(
-					new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl" ),
-					"*",
-					inTarget,
-					multiTarget,
-					false,
-					true );
+			//    TestModuleCollection cont = TestModuleCollection.Search(
+			//        new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl" ),
+			//        "*",
+			//        inTarget,
+			//        multiTarget,
+			//        false,
+			//        true );
 
-				using ( ExplorerForm f = new ExplorerForm() )
-				{
-					f.Explorer.SetSession( new Session(), true );
-					f.Explorer.Session.Tests = cont;
-					Application.Run( f );
-				}
-			}
+			//    using ( ExplorerForm f = new ExplorerForm() )
+			//    {
+			//        f.Explorer.SetSession( new Session(), true );
+			//        f.Explorer.Session.Tests = cont;
+			//        Application.Run( f );
+			//    }
+			//}
 		}
 	}
 }

@@ -4,7 +4,7 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class TestItem : ITestItem, IComponentActionSource
+	public class TestItem : ITestItem
 	{
 		private readonly TestItemCollection parent;
 		private readonly uint ordinal;
@@ -36,23 +36,22 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		private NativeAction CreateNativeAction( SchedulingOptions schedOptions )
+		protected virtual ICfixTestItem GetNativeItem( IHost host )
 		{
-			NativeConnection connection = this.NativeConnection;
-			ICfixTestItem ctlItem = connection.Item;
+			ICfixTestContainer parentContainer =
+				( ICfixTestContainer ) parent.GetNativeItem( host );
+
 			try
 			{
-				uint nativeFlags = 0;
-				if ( ( schedOptions & SchedulingOptions.ComNeutralThreading ) != 0 )
+				if ( ordinal >= parentContainer.GetItemCount() )
 				{
-					nativeFlags |= NativeAction.CFIXCTL_ACTION_COM_NEUTRAL;
+					//
+					// Module must have changed in the meantime.
+					//
+					throw new TestItemDisappearedException();
 				}
 
-				return new NativeAction(
-					this,
-					connection.Host,
-					ctlItem.CreateExecutionAction( ( uint ) schedOptions, 0 ),
-					nativeFlags );
+				return parentContainer.GetItem( this.ordinal );
 			}
 			catch ( COMException x )
 			{
@@ -60,7 +59,7 @@ namespace Cfix.Control.Native
 			}
 			finally
 			{
-				this.Module.Target.ReleaseObject( ctlItem );
+				this.Module.Target.ReleaseObject( parentContainer );
 			}
 		}
 
@@ -83,6 +82,26 @@ namespace Cfix.Control.Native
 			Dispose( false );
 		}
 
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( !this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+		
 		internal virtual TestModule Module
 		{
 			get
@@ -98,41 +117,6 @@ namespace Cfix.Control.Native
 		public bool IsDisposed
 		{
 			get { return this.disposed; }
-		}
-
-		internal virtual NativeConnection NativeConnection
-		{
-			get
-			{
-				NativeConnection parentConnection =
-					parent.NativeConnection;
-
-				ICfixTestContainer parentContainer =
-					( ICfixTestContainer ) parentConnection.Item;
-
-				try
-				{
-					if ( ordinal >= parentContainer.GetItemCount() )
-					{
-						//
-						// Module must have changed in the meantime.
-						//
-						throw new TestItemDisappearedException();
-					}
-
-					return new NativeConnection(
-						parentConnection.Host,
-						parentContainer.GetItem( this.ordinal ) );
-				}
-				catch ( COMException x )
-				{
-					throw this.Module.Target.WrapException( x );
-				}
-				finally
-				{
-					this.Module.Target.ReleaseObject( parentContainer );
-				}
-			}
 		}
 
 		public String Name
@@ -159,52 +143,36 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IComponentAction CreateAction( SchedulingOptions schedulingOptions )
-		{
-			return CreateNativeAction( schedulingOptions );
-		}
-
-		public virtual void CreateAction( 
-			ICompositeAction actionToComposeWith,
-			SchedulingOptions schedulingOptions,
-			CompositionOptions compositionOptions
+		public IAction CreateAction(
+			IHost host,
+			SchedulingOptions schedOptions
 			)
 		{
-			actionToComposeWith.Add( CreateNativeAction( schedulingOptions ) );
-		}
-
-		protected virtual void Dispose( bool disposing )
-		{
-			if ( ! this.disposed )
+			ICfixTestItem ctlItem = GetNativeItem( host );
+			try
 			{
-				if ( Disposed != null )
+				uint nativeFlags = 0;
+				if ( ( schedOptions & SchedulingOptions.ComNeutralThreading ) != 0 )
 				{
-					Disposed( this, EventArgs.Empty );
+					nativeFlags |= NativeAction.CFIXCTL_ACTION_COM_NEUTRAL;
 				}
 
-				this.disposed = true;
+				return new NativeAction(
+					this,
+					ctlItem.CreateExecutionAction( ( uint ) schedOptions, 0 ),
+					nativeFlags );
 			}
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-	}
-
-	internal class NativeConnection
-	{
-		public readonly ICfixHost Host;
-		public readonly ICfixTestItem Item;
-
-		public NativeConnection(
-			ICfixHost host,
-			ICfixTestItem item
-			)
-		{
-			this.Host = host;
-			this.Item = item;
+			catch ( COMException x )
+			{
+				throw this.Module.Target.WrapException( x );
+			}
+			finally
+			{
+				if ( ctlItem != null )
+				{
+					this.Module.Target.ReleaseObject( ctlItem );
+				}
+			}
 		}
 	}
 

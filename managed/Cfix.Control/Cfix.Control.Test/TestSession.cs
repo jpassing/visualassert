@@ -13,20 +13,20 @@ namespace Cfix.Control.Test
 	{
 		private Agent ooProcTarget;
 		private Agent inProcTarget;
-		private MultiTarget multiTarget;
+		private AgentSet multiTarget;
 		private String binDir;
 
 		[SetUp]
 		public void Setup()
 		{
-			this.ooProcTarget = Agent.CreateLocalTarget(
+			this.ooProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
-			this.inProcTarget = Agent.CreateLocalTarget(
+			this.inProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
 
-			this.multiTarget = new MultiTarget();
+			this.multiTarget = new AgentSet();
 			this.multiTarget.AddArchitecture( ooProcTarget );
 
 			this.binDir = new FileInfo(
@@ -49,8 +49,8 @@ namespace Cfix.Control.Test
 
 		private ITestItemCollection GetFixture( string name )
 		{
-			TestModule mod = TestModule.LoadModule(
-				this.ooProcTarget,
+			TestModule mod = ( TestModule ) this.ooProcTarget.CreateHost().LoadModule(
+				null,
 				this.binDir + "\\testmanaged.dll",
 				true );
 
