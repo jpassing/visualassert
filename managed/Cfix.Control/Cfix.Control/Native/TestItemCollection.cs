@@ -234,6 +234,33 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public uint ItemCountRecursive
+		{
+			get
+			{
+				uint count = 0;
+				for ( int i = 0; i < this.subItems.Length; i++ )
+				{
+					if ( this.subItems[ i ] != null )
+					{
+						ITestItemCollection subCont = this.subItems[ i ]
+							as ITestItemCollection;
+
+						if ( subCont != null )
+						{
+							count += subCont.ItemCountRecursive;
+						}
+						else
+						{
+							count++;
+						}
+					}
+				}
+
+				return count;
+			}
+		}
+
 		public virtual void Refresh()
 		{
 			using ( IHost host = this.Module.Target.CreateHost() )

@@ -40,7 +40,7 @@ namespace Cfix.Control.Native
 		 * Overrides.
 		 */
 
-		protected override ICfixTestItem GetNativeItem( IHost host )
+		internal override ICfixTestItem GetNativeItem( IHost host )
 		{
 			return ( ( Host ) host ).GetNativeItem().LoadModule( this.path );
 		}

@@ -14,18 +14,51 @@ namespace Cfix.Control.Native
 		public const uint CFIX_FIXTURE_EXECUTION_ESCALATE_FIXTURE_FAILUES = 4;
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_FAILURE = 7;
 
-		private TestItem item;
+		private readonly TestItem item;
+		private readonly IHost host;
+		private readonly SchedulingOptions schedOptions;
+		private readonly ThreadingOptions threadingOptions;
 		private ICfixAction action;
-		private readonly uint flags;
 
 		public NativeAction( 
-			TestItem item, 
-			ICfixAction action,
-			uint flags )
+			IHost host,
+			TestItem item,
+			SchedulingOptions schedOptions,
+			ThreadingOptions threadingOptions
+			)
 		{
 			this.item = item;
-			this.action = action;
-			this.flags = flags;
+			this.host = host;
+			this.schedOptions = schedOptions;
+			this.threadingOptions = threadingOptions;
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		private ICfixAction CreateNativeAction()
+		{
+			ICfixTestItem ctlItem = this.item.GetNativeItem( host );
+			try
+			{
+				return ctlItem.CreateExecutionAction(
+					( uint ) this.schedOptions, 
+					0 );
+			}
+			catch ( COMException x )
+			{
+				throw this.item.Module.Target.WrapException( x );
+			}
+			finally
+			{
+				if ( ctlItem != null )
+				{
+					this.item.Module.Target.ReleaseObject( ctlItem );
+				}
+			}
 		}
 
 		/*----------------------------------------------------------------------
@@ -37,11 +70,6 @@ namespace Cfix.Control.Native
 			get { return this.item; }
 		}
 
-		public uint TestCaseCount
-		{
-			get { return this.action.GetTestCaseCount(); }
-		}
-
 		public Architecture Architecture
 		{
 			get { return this.item.Module.Architecture; }
@@ -51,11 +79,18 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				this.action.Run( sink, this.flags );
+				this.action = CreateNativeAction();
+				this.action.Run( 
+					sink, 
+					( uint ) this.threadingOptions );
 			}
-			catch ( COMException x )
+			finally
 			{
-				throw this.item.Module.Target.WrapException( x );
+				if ( this.action != null )
+				{
+					this.item.Module.Target.ReleaseObject( this.action );
+					this.action = null;
+				}
 			}
 		}
 
@@ -83,10 +118,5 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
 	}
 }

@@ -36,7 +36,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		protected virtual ICfixTestItem GetNativeItem( IHost host )
+		internal virtual ICfixTestItem GetNativeItem( IHost host )
 		{
 			ICfixTestContainer parentContainer =
 				( ICfixTestContainer ) parent.GetNativeItem( host );
@@ -145,34 +145,15 @@ namespace Cfix.Control.Native
 
 		public IAction CreateAction(
 			IHost host,
-			SchedulingOptions schedOptions
+			SchedulingOptions schedOptions,
+			ThreadingOptions threadingOptions
 			)
 		{
-			ICfixTestItem ctlItem = GetNativeItem( host );
-			try
-			{
-				uint nativeFlags = 0;
-				if ( ( schedOptions & SchedulingOptions.ComNeutralThreading ) != 0 )
-				{
-					nativeFlags |= NativeAction.CFIXCTL_ACTION_COM_NEUTRAL;
-				}
-
-				return new NativeAction(
-					this,
-					ctlItem.CreateExecutionAction( ( uint ) schedOptions, 0 ),
-					nativeFlags );
-			}
-			catch ( COMException x )
-			{
-				throw this.Module.Target.WrapException( x );
-			}
-			finally
-			{
-				if ( ctlItem != null )
-				{
-					this.Module.Target.ReleaseObject( ctlItem );
-				}
-			}
+			return new NativeAction(
+				host,
+				this,
+				schedOptions,
+				threadingOptions );
 		}
 	}
 

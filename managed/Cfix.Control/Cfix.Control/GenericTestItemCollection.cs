@@ -159,7 +159,8 @@ namespace Cfix.Control
 
 		public IAction CreateAction(
 			IHost hostToRunOn,
-			SchedulingOptions schedOpts
+			SchedulingOptions schedOpts,
+			ThreadingOptions threadingOptions
 			)
 		{
 			throw new NotImplementedException();
@@ -180,6 +181,33 @@ namespace Cfix.Control
 				lock ( this.listLock )
 				{
 					return ( uint ) this.list.Count;
+				}
+			}
+		}
+
+		public uint ItemCountRecursive
+		{
+			get
+			{
+				lock ( this.listLock )
+				{
+					uint count = 0;
+					foreach ( ITestItem item in this.list )
+					{
+						ITestItemCollection subCont = item
+							as ITestItemCollection;
+
+						if ( subCont != null )
+						{
+							count += subCont.ItemCountRecursive;
+						}
+						else
+						{
+							count++;
+						}
+					}
+
+					return count;
 				}
 			}
 		}

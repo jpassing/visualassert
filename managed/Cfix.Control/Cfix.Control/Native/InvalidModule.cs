@@ -82,7 +82,8 @@ namespace Cfix.Control.Native
 
 		public IAction CreateAction(
 			IHost hostToRunOn,
-			SchedulingOptions schedOpts
+			SchedulingOptions schedOpts,
+			ThreadingOptions threadingOptions
 			)
 		{
 			throw new NotImplementedException();

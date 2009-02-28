@@ -10,12 +10,18 @@ namespace Cfix.Control
 		ShortcutFixtureOnFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCUT_FIXTURE_ON_FAILURE,
 		ShurtcutRunOnSetupFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_SETUP_FAILURE,
 		ShurtcutRunOnFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_FAILURE,
+	}
+
+	[Flags]
+	public enum ThreadingOptions
+	{
+		None = 0,
 
 		//
 		// Run tests on threads that are COM-neutral, i.e. have not
 		// joined any apartment.
 		//
-		ComNeutralThreading = 0x1000
+		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL
 	}
 
 	[Flags]
@@ -45,7 +51,9 @@ namespace Cfix.Control
 
 		IAction CreateAction( 
 			IHost hostToRunOn, 
-			SchedulingOptions schedOpts 
+			SchedulingOptions schedOpts,
+			ThreadingOptions threadingOptions
 			);
+
 	}
 }

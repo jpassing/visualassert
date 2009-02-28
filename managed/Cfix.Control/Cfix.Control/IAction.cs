@@ -5,7 +5,6 @@ namespace Cfix.Control
 {
 	public interface IAction : IDisposable
 	{
-		uint TestCaseCount { get; }
 		void Run( ICfixEventSink sink );
 		void Stop();
 	}

@@ -64,7 +64,10 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( 0, mod.ItemCount );
 
 				DefaultEventSink sink = new DefaultEventSink();
-				mod.CreateAction( host, SchedulingOptions.None ).Run( sink );
+				mod.CreateAction( 
+					host, 
+					SchedulingOptions.None,
+					ThreadingOptions.ComNeutralThreading ).Run( sink );
 
 				Assert.AreEqual( 0, sink.FixtureStarts );
 			}
@@ -90,8 +93,11 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( 0, fixture.ItemCount );
 
 				DefaultEventSink sink = new DefaultEventSink();
-				IAction action = mod.CreateAction( host, SchedulingOptions.None );
-				Assert.AreEqual( 0, action.TestCaseCount );
+				IAction action = mod.CreateAction( 
+					host, 
+					SchedulingOptions.None,
+					ThreadingOptions.None );
+				Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
 				action.Run( sink );
 
@@ -104,10 +110,10 @@ namespace Cfix.Control.Test
 		[Test]
 		public void LoadTestlibAndTerminate()
 		{
-			SchedulingOptions[] opts = { 
-					SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
+			ThreadingOptions[] opts = { 
+					ThreadingOptions.None, ThreadingOptions.ComNeutralThreading };
 
-			foreach ( SchedulingOptions opt in opts )
+			foreach ( ThreadingOptions opt in opts )
 			{
 				using ( IHost host = this.target.CreateHost() )
 				{
@@ -126,8 +132,11 @@ namespace Cfix.Control.Test
 					Assert.AreEqual( 0, fixture.ItemCount );
 
 					DefaultEventSink sink = new DefaultEventSink();
-					IAction action = mod.CreateAction( host, opt );
-					Assert.AreEqual( 0, action.TestCaseCount );
+					IAction action = mod.CreateAction( 
+						host,
+						SchedulingOptions.None, 
+						opt );
+					Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
 					host.Terminate();
 

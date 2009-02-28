@@ -26,20 +26,6 @@ namespace Cfix.Control
 			this.actions = actions;
 		}
 
-		public uint TestCaseCount
-		{
-			get
-			{
-				uint count = 0;
-				foreach ( IAction action in this.actions )
-				{
-					count += action.TestCaseCount;
-				}
-
-				return count;
-			}
-		}
-
 		public void Run( ICfixEventSink sink )
 		{
 			if ( this.started )

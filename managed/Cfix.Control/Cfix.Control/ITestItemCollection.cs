@@ -25,6 +25,7 @@ namespace Cfix.Control
 
 		ITestItem GetItem( uint ordinal );
 		uint ItemCount { get; }
+		uint ItemCountRecursive { get; }
 
 		void Refresh();
 	}
