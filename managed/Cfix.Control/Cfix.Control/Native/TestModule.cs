@@ -11,7 +11,7 @@ namespace Cfix.Control.Native
 	public class TestModule : TestItemCollection
 	{
 		private readonly String path;
-		private readonly Target target;
+		private readonly Agent target;
 
 		//
 		// N.B. We have to use a separate parent (rather than relying
@@ -25,7 +25,7 @@ namespace Cfix.Control.Native
 		private TestModule(
 			ITestItemCollection parentCollection,
 			String path,
-			Target target,
+			Agent target,
 			ICfixTestModule ctlModule,
 			bool ignoreDuplicates
 			)
@@ -36,7 +36,7 @@ namespace Cfix.Control.Native
 			this.target = target;
 		}
 
-		private static NativeConnection Connect( Target target, String path )
+		private static NativeConnection Connect( Agent target, String path )
 		{
 			try
 			{
@@ -110,7 +110,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		internal Target Target
+		internal Agent Target
 		{
 			get
 			{
@@ -160,7 +160,7 @@ namespace Cfix.Control.Native
 		 */
 
 		public static TestModule LoadModule(
-			Target target,
+			Agent target,
 			String path,
 			bool ignoreDuplicates
 			)
@@ -170,7 +170,7 @@ namespace Cfix.Control.Native
 
 		public static TestModule LoadModule(
 			ITestItemCollection parentCollection,
-			Target target,
+			Agent target,
 			String path,
 			bool ignoreDuplicates
 			)

@@ -11,11 +11,11 @@ namespace QuickTest
 		[STAThread]
 		static void Main( string[] args )
 		{
-			Target ooTarget = Target.CreateLocalTarget( 
+			Agent ooTarget = Agent.CreateLocalTarget( 
 				Architecture.I386, 
 				false );
 
-			Target inTarget = Target.CreateLocalTarget(
+			Agent inTarget = Agent.CreateLocalTarget(
 				Architecture.I386,
 				true );
 

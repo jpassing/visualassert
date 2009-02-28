@@ -19,7 +19,7 @@ namespace Cfix.Control.Native
 
 		private readonly DirectoryInfo dirInfo;
 		private readonly String filter;
-		private readonly Target searchTarget;
+		private readonly Agent searchTarget;
 		private readonly MultiTarget runTargets;
 		private readonly bool userOnly;
 		private readonly bool ignoreDuplicates;
@@ -222,7 +222,7 @@ namespace Cfix.Control.Native
 			ITestItemCollection parent,
 			DirectoryInfo dir, 
 			String filter,
-			Target searchTarget,
+			Agent searchTarget,
 			MultiTarget runTargets,
 			bool userOnly,
 			bool ignoreDuplicates
@@ -277,7 +277,7 @@ namespace Cfix.Control.Native
 		public static TestModuleCollection Search(
 			DirectoryInfo dir,
 			String filter, 
-			Target searchTarget,
+			Agent searchTarget,
 			MultiTarget runTargets,
 			bool userOnly,
 			bool ignoreDuplicates

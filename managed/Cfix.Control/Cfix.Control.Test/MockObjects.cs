@@ -155,7 +155,7 @@ namespace Cfix.Control.Test
 		}
 	}
 
-	internal class MockTarget : Target
+	internal class MockTarget : Agent
 	{
 		public MockTarget( MockModule module )
 			: base( 

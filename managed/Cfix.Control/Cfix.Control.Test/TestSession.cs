@@ -11,18 +11,18 @@ namespace Cfix.Control.Test
 	[TestFixture]
 	public class TestSession
 	{
-		private Target ooProcTarget;
-		private Target inProcTarget;
+		private Agent ooProcTarget;
+		private Agent inProcTarget;
 		private MultiTarget multiTarget;
 		private String binDir;
 
 		[SetUp]
 		public void Setup()
 		{
-			this.ooProcTarget = Target.CreateLocalTarget(
+			this.ooProcTarget = Agent.CreateLocalTarget(
 				Architecture.I386,
 				false );
-			this.inProcTarget = Target.CreateLocalTarget(
+			this.inProcTarget = Agent.CreateLocalTarget(
 				Architecture.I386,
 				true );
 

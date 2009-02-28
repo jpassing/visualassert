@@ -6,8 +6,8 @@ namespace Cfix.Control.Native
 {
 	public class MultiTarget : IDisposable
 	{
-		private Target[] targets =
-			new Target[ ( int ) Architecture.Max + 1 ];
+		private Agent[] targets =
+			new Agent[ ( int ) Architecture.Max + 1 ];
 
 		~MultiTarget()
 		{
@@ -16,7 +16,7 @@ namespace Cfix.Control.Native
 
 		protected virtual void Dispose( bool disposing )
 		{
-			foreach ( Target tgt in this.targets )
+			foreach ( Agent tgt in this.targets )
 			{
 				if ( tgt != null )
 				{
@@ -31,7 +31,7 @@ namespace Cfix.Control.Native
 			GC.SuppressFinalize( this );
 		}
 
-		public void AddArchitecture( Target target )
+		public void AddArchitecture( Agent target )
 		{
 			if ( target == null )
 			{
@@ -43,9 +43,9 @@ namespace Cfix.Control.Native
 			this.targets[ ( int ) arch ] = target;
 		}
 
-		public Target GetTarget( Architecture arch )
+		public Agent GetTarget( Architecture arch )
 		{
-			Target value = this.targets[ ( int ) arch ];
+			Agent value = this.targets[ ( int ) arch ];
 			if ( value != null )
 			{
 				return value;

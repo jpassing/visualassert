@@ -47,7 +47,7 @@ namespace Cfix.Control.Test
 			fixture.Children.Add( test );
 			module.Children.Add( fixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -102,7 +102,7 @@ namespace Cfix.Control.Test
 			testFixture.Children.Add( test2 );
 			module.Children.Add( testFixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -174,7 +174,7 @@ namespace Cfix.Control.Test
 			testFixture.Children.Add( test3 );
 			module.Children.Add( testFixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -248,7 +248,7 @@ namespace Cfix.Control.Test
 			testFixture.Children.Add( test3 );
 			module.Children.Add( testFixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -375,7 +375,7 @@ namespace Cfix.Control.Test
 			testFixture.Children.Add( test1 );
 			module.Children.Add( testFixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -458,7 +458,7 @@ namespace Cfix.Control.Test
 			}
 			module.Children.Add( testFixture );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 

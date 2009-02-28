@@ -12,7 +12,7 @@ namespace Cfix.Control.Native
 		UseJob = 1	// CFIXCTL_AGENT_FLAG_USE_JOB
 	}
 
-	public class Target : IDisposable
+	public class Agent : IDisposable
 	{
 #if DEBUG
 		private const uint DefaultTimeout = 30000;
@@ -42,7 +42,7 @@ namespace Cfix.Control.Native
 		 * Ctor/Dtor.
 		 */
 
-		protected Target(
+		protected Agent(
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc,
@@ -81,7 +81,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		~Target()
+		~Agent()
 		{
 			Dispose( false );
 		}
@@ -176,14 +176,14 @@ namespace Cfix.Control.Native
 		 * Statics.
 		 */
 
-		public static Target CreateLocalTarget(
+		public static Agent CreateLocalTarget(
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
 			String currentDirectory
 			)
 		{
-			return new Target(
+			return new Agent(
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
 				allowInproc,
@@ -191,7 +191,7 @@ namespace Cfix.Control.Native
 				currentDirectory );
 		}
 
-		public static Target CreateLocalTarget(
+		public static Agent CreateLocalTarget(
 			Architecture arch,
 			bool allowInproc
 			)

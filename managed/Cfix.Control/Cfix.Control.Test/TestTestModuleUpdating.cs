@@ -14,7 +14,7 @@ namespace Cfix.Control.Test
 			MockModule module = new MockModule( "foo.dll" );
 			module.Children.Add( new MockItem( "foo" ) );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -48,7 +48,7 @@ namespace Cfix.Control.Test
 			MockModule module = new MockModule( "foo.dll" );
 			module.Children.Add( new MockItem( "foo" ) );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -111,7 +111,7 @@ namespace Cfix.Control.Test
 			MockModule module = new MockModule( "foo.dll" );
 			module.Children.Add( new MockItem( "foo" ) );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -157,7 +157,7 @@ namespace Cfix.Control.Test
 			MockModule module = new MockModule( "foo.dll" );
 			module.Children.Add( new MockItem( "foo" ) );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 
@@ -220,7 +220,7 @@ namespace Cfix.Control.Test
 			MockModule module = new MockModule( "foo.dll" );
 			module.Children.Add( new MockItem( "foo" ) );
 
-			Target target = new MockTarget( module );
+			Agent target = new MockTarget( module );
 			TestModule mod = TestModule.LoadModule(
 				target, module.GetPath(), false );
 

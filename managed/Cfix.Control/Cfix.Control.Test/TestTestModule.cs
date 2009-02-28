@@ -10,13 +10,13 @@ namespace Cfix.Control.Test
 	[TestFixture]
 	public class TestTestModule
 	{
-		private Target target;
+		private Agent target;
 		private String testdataDir;
 
 		[SetUp]
 		public void Setup()
 		{
-			this.target = Target.CreateLocalTarget(
+			this.target = Agent.CreateLocalTarget(
 				Architecture.I386,
 				false );
 
