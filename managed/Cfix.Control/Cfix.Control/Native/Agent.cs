@@ -12,7 +12,7 @@ namespace Cfix.Control.Native
 		UseJob = 1	// CFIXCTL_AGENT_FLAG_USE_JOB
 	}
 
-	public class Agent : IDisposable
+	public class Agent : IAgent
 	{
 #if DEBUG
 		private const uint DefaultTimeout = 30000;
@@ -133,7 +133,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public virtual ICfixHost CreateHost()
+		public virtual IHost CreateHost()
 		{
 			ICfixHost host = this.agent.CreateHost(
 				this.arch, 
@@ -143,7 +143,8 @@ namespace Cfix.Control.Native
 				currentDirectory );
 
 			Debug.Assert( host != null );
-			return host;
+
+			return new Host( this, host );
 		}
 
 		public Architecture Architecture
@@ -176,7 +177,7 @@ namespace Cfix.Control.Native
 		 * Statics.
 		 */
 
-		public static Agent CreateLocalTarget(
+		public static Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
@@ -191,12 +192,12 @@ namespace Cfix.Control.Native
 				currentDirectory );
 		}
 
-		public static Agent CreateLocalTarget(
+		public static Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc
 			)
 		{
-			return CreateLocalTarget(
+			return CreateLocalAgent(
 				arch,
 				allowInproc,
 				HostCreationOptions.None,

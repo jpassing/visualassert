@@ -57,7 +57,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
-				inProcTarget,
 				tgt,
 				true,
 				true );
@@ -76,7 +75,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"simple.dll",
-				inProcTarget,
 				this.multiTarget,
 				true,
 				true );
@@ -97,7 +95,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
-				inProcTarget,
 				this.multiTarget,
 				true,
 				true );
@@ -131,7 +128,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir + "\\dummy" ),
 				"*",
-				inProcTarget,
 				this.multiTarget,
 				true,
 				true );
@@ -146,7 +142,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir ),
 				"*",
-				inProcTarget,
 				this.multiTarget,
 				true,
 				true );
@@ -180,7 +175,6 @@ namespace Cfix.Control.Test
 			ITestItemCollection coll = this.inProcTarget.CreateHost().SearchModules(
 				new DirectoryInfo( this.testdataDir + "\\.." ),
 				"*",
-				inProcTarget,
 				this.multiTarget,
 				true,
 				true );

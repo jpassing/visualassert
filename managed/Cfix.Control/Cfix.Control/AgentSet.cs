@@ -1,22 +1,21 @@
 using System;
 using System.Diagnostics;
-using Cfixctl;
 
-namespace Cfix.Control.Native
+namespace Cfix.Control
 {
-	public class MultiTarget : IDisposable
+	public class AgentSet : IDisposable
 	{
-		private Agent[] targets =
-			new Agent[ ( int ) Architecture.Max + 1 ];
+		private IAgent[] targets =
+			new IAgent[ ( int ) Architecture.Max + 1 ];
 
-		~MultiTarget()
+		~AgentSet()
 		{
 			Dispose( false );
 		}
 
 		protected virtual void Dispose( bool disposing )
 		{
-			foreach ( Agent tgt in this.targets )
+			foreach ( IAgent tgt in this.targets )
 			{
 				if ( tgt != null )
 				{
@@ -31,7 +30,7 @@ namespace Cfix.Control.Native
 			GC.SuppressFinalize( this );
 		}
 
-		public void AddArchitecture( Agent target )
+		public void AddArchitecture( IAgent target )
 		{
 			if ( target == null )
 			{
@@ -43,9 +42,9 @@ namespace Cfix.Control.Native
 			this.targets[ ( int ) arch ] = target;
 		}
 
-		public Agent GetTarget( Architecture arch )
+		public IAgent GetTarget( Architecture arch )
 		{
-			Agent value = this.targets[ ( int ) arch ];
+			IAgent value = this.targets[ ( int ) arch ];
 			if ( value != null )
 			{
 				return value;

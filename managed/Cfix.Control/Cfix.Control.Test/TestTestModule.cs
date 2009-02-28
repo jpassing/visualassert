@@ -101,40 +101,42 @@ namespace Cfix.Control.Test
 			}
 		}
 
-		//[Test]
-		//public void LoadTestlibAndTerminate()
-		//{
-		//    using ( TestModule mod = ( TestModule ) this.target.CreateHost().LoadModule(
-		//        null, this.testdataDir + "\\simple.dll", true ) )
-		//    {
-		//        Assert.AreEqual( 0, mod.Ordinal );
-		//        Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
+		[Test]
+		public void LoadTestlibAndTerminate()
+		{
+			SchedulingOptions[] opts = { 
+					SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
 
-		//        Assert.AreEqual( 1, mod.ItemCount );
+			foreach ( SchedulingOptions opt in opts )
+			{
+				using ( IHost host = this.target.CreateHost() )
+				{
+					TestModule mod = ( TestModule ) host.LoadModule(
+						null, this.testdataDir + "\\simple.dll", true );
 
-		//        ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
-		//        Assert.AreEqual( 0, fixture.Ordinal );
-		//        Assert.AreEqual( "SampleFixture", fixture.Name );
+					Assert.AreEqual( 0, mod.Ordinal );
+					Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
 
-		//        Assert.AreEqual( 0, fixture.ItemCount );
+					Assert.AreEqual( 1, mod.ItemCount );
 
-		//        SchedulingOptions[] opts = { 
-		//            SchedulingOptions.None, SchedulingOptions.ComNeutralThreading };
+					ITestItemCollection fixture = ( ITestItemCollection ) mod.GetItem( 0 );
+					Assert.AreEqual( 0, fixture.Ordinal );
+					Assert.AreEqual( "SampleFixture", fixture.Name );
 
-		//        foreach ( SchedulingOptions opt in opts )
-		//        {
-		//            DefaultEventSink sink = new DefaultEventSink();
-		//            IAction action = mod.CreateAction( opt );
-		//            Assert.AreEqual( 0, action.TestCaseCount );
+					Assert.AreEqual( 0, fixture.ItemCount );
 
-		//            action.TerminateHost();
+					DefaultEventSink sink = new DefaultEventSink();
+					IAction action = mod.CreateAction( host, opt );
+					Assert.AreEqual( 0, action.TestCaseCount );
 
-		//            Assert.AreEqual( 0, sink.FixtureStarts );
-		//            Assert.AreEqual( 0, sink.FixtureFinishs );
-		//            Assert.AreEqual( 0, sink.TestCaseStarts );
-		//        }
-		//    }
-		//}
+					host.Terminate();
+
+					Assert.AreEqual( 0, sink.FixtureStarts );
+					Assert.AreEqual( 0, sink.FixtureFinishs );
+					Assert.AreEqual( 0, sink.TestCaseStarts );
+				}
+			}
+		}
 
 		[Test]
 		[ExpectedException( typeof( CfixException ) )]
