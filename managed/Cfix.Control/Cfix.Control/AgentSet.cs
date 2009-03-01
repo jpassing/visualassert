@@ -5,7 +5,7 @@ namespace Cfix.Control
 {
 	public class AgentSet : IDisposable
 	{
-		private IAgent[] targets =
+		private IAgent[] agent =
 			new IAgent[ ( int ) Architecture.Max + 1 ];
 
 		~AgentSet()
@@ -15,7 +15,7 @@ namespace Cfix.Control
 
 		protected virtual void Dispose( bool disposing )
 		{
-			foreach ( IAgent tgt in this.targets )
+			foreach ( IAgent tgt in this.agent )
 			{
 				if ( tgt != null )
 				{
@@ -38,13 +38,13 @@ namespace Cfix.Control
 			}
 
 			Architecture arch = target.Architecture;
-			Debug.Assert( this.targets[ ( int ) arch ] == null );
-			this.targets[ ( int ) arch ] = target;
+			Debug.Assert( this.agent[ ( int ) arch ] == null );
+			this.agent[ ( int ) arch ] = target;
 		}
 
 		public IAgent GetTarget( Architecture arch )
 		{
-			IAgent value = this.targets[ ( int ) arch ];
+			IAgent value = this.agent[ ( int ) arch ];
 			if ( value != null )
 			{
 				return value;
@@ -57,17 +57,17 @@ namespace Cfix.Control
 
 		public bool IsArchitectureSupported( Architecture arch )
 		{
-			return this.targets[ ( int ) arch ] != null;
+			return this.agent[ ( int ) arch ] != null;
 		}
 
 		internal Architecture GetArchitectures()
 		{
 			Architecture arch = 0;
-			for ( int i = 0; i < this.targets.Length; i++ )
+			for ( int i = 0; i < this.agent.Length; i++ )
 			{
-				if ( this.targets[ i ] != null )
+				if ( this.agent[ i ] != null )
 				{
-					arch |= this.targets[ i ].Architecture;
+					arch |= this.agent[ i ].Architecture;
 				}
 			}
 

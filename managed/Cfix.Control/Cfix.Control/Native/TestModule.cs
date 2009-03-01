@@ -11,7 +11,7 @@ namespace Cfix.Control.Native
 	public class TestModule : TestItemCollection
 	{
 		private readonly String path;
-		private readonly Agent target;
+		private readonly Agent agent;
 
 		//
 		// N.B. We have to use a separate parent (rather than relying
@@ -33,7 +33,7 @@ namespace Cfix.Control.Native
 		{
 			this.parentCollection = parentCollection;
 			this.path = path;
-			this.target = target;
+			this.agent = target;
 		}
 
 		/*--------------------------------------------------------------
@@ -65,17 +65,17 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		internal Agent Target
+		internal Agent Agent
 		{
 			get
 			{
-				return this.target;
+				return this.agent;
 			}
 		}
 
 		public Architecture Architecture
 		{
-			get { return this.target.Architecture; }
+			get { return this.agent.Architecture; }
 		}
 
 		public CfixTestModuleType Type

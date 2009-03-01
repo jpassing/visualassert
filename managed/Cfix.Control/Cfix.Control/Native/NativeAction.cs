@@ -137,7 +137,7 @@ namespace Cfix.Control.Native
 		{
 			if ( this.action != null )
 			{
-				this.item.Module.Target.ReleaseObject( this.action );
+				this.item.Module.Agent.ReleaseObject( this.action );
 				this.action = null;
 			}
 		}
@@ -159,13 +159,13 @@ namespace Cfix.Control.Native
 			}
 			catch ( COMException x )
 			{
-				throw this.item.Module.Target.WrapException( x );
+				throw this.item.Module.Agent.WrapException( x );
 			}
 			finally
 			{
 				if ( ctlItem != null )
 				{
-					this.item.Module.Target.ReleaseObject( ctlItem );
+					this.item.Module.Agent.ReleaseObject( ctlItem );
 				}
 			}
 		}
@@ -207,7 +207,7 @@ namespace Cfix.Control.Native
 			{
 				if ( this.action != null )
 				{
-					this.item.Module.Target.ReleaseObject( this.action );
+					this.item.Module.Agent.ReleaseObject( this.action );
 					this.action = null;
 				}
 			}
@@ -224,7 +224,7 @@ namespace Cfix.Control.Native
 			}
 			catch ( COMException x )
 			{
-				throw this.item.Module.Target.WrapException( x );
+				throw this.item.Module.Agent.WrapException( x );
 			}
 		}
 

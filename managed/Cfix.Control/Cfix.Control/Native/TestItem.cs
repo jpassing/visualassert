@@ -55,11 +55,11 @@ namespace Cfix.Control.Native
 			}
 			catch ( COMException x )
 			{
-				throw this.Module.Target.WrapException( x );
+				throw this.Module.Agent.WrapException( x );
 			}
 			finally
 			{
-				this.Module.Target.ReleaseObject( parentContainer );
+				this.Module.Agent.ReleaseObject( parentContainer );
 			}
 		}
 

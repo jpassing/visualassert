@@ -172,7 +172,7 @@ namespace Cfix.Control.Native
 						}
 						finally
 						{
-							Module.Target.ReleaseObject( newItem );
+							Module.Agent.ReleaseObject( newItem );
 						}
 
 						newSubItemsDict.Add( this.subItems[ i ].Name, this.subItems[ i ] );
@@ -190,7 +190,7 @@ namespace Cfix.Control.Native
 				}
 				catch ( COMException x )
 				{
-					throw this.Module.Target.WrapException( x );
+					throw this.Module.Agent.WrapException( x );
 				}
 			}
 		}
@@ -279,7 +279,7 @@ namespace Cfix.Control.Native
 
 		public virtual void Refresh()
 		{
-			using ( IHost host = this.Module.Target.CreateHost() )
+			using ( IHost host = this.Module.Agent.CreateHost() )
 			{
 				ICfixTestItem ctlItem = null;
 				try
@@ -289,13 +289,13 @@ namespace Cfix.Control.Native
 				}
 				catch ( COMException x )
 				{
-					throw this.Module.Target.WrapException( x );
+					throw this.Module.Agent.WrapException( x );
 				}
 				finally
 				{
 					if ( ctlItem != null )
 					{
-						this.Module.Target.ReleaseObject( ctlItem );
+						this.Module.Agent.ReleaseObject( ctlItem );
 					}
 				}
 			}
