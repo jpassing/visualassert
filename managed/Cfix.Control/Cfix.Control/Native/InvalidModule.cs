@@ -80,11 +80,10 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction(
-			IHost hostToRunOn,
-			IActionEvents events,
-			SchedulingOptions schedOpts,
-			ThreadingOptions threadingOptions
+		public void Add(
+			IRunCompiler compiler,
+			IResultItemCollection parentResult,
+			IActionEvents events
 			)
 		{
 			throw new NotImplementedException();

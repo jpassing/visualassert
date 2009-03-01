@@ -15,7 +15,6 @@ namespace Cfix.Control.Native
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_FAILURE = 7;
 
 		private readonly TestItem item;
-		private readonly IHost host;
 		private readonly SchedulingOptions schedOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly IResultItem result;
@@ -111,21 +110,20 @@ namespace Cfix.Control.Native
 		}
 
 		public NativeAction( 
-			IHost host,
 			TestItem item,
+			IResultItemCollection parentResult,
 			IActionEvents events,
 			SchedulingOptions schedOptions,
 			ThreadingOptions threadingOptions
 			)
 		{
 			this.item = item;
-			this.host = host;
 			this.events = events;
 			this.schedOptions = schedOptions;
 			this.threadingOptions = threadingOptions;
 
 			this.result = item.CreateResultItem(
-				null,
+				parentResult,
 				events,
 				ExecutionStatus.Pending );
 		}
@@ -150,7 +148,7 @@ namespace Cfix.Control.Native
 			GC.SuppressFinalize( this );
 		}
 
-		private ICfixAction CreateNativeAction()
+		private ICfixAction CreateNativeAction( IHost host )
 		{
 			ICfixTestItem ctlItem = this.item.GetNativeItem( host );
 			try
@@ -176,11 +174,6 @@ namespace Cfix.Control.Native
 		 * IAction.
 		 */
 
-		public IHost Host 
-		{
-			get { return this.host; } 
-		}
-
 		public ITestItem Item
 		{
 			get { return this.item; }
@@ -201,11 +194,11 @@ namespace Cfix.Control.Native
 			get { return this.item.Module.Architecture; }
 		}
 
-		public void Run()
+		public void Run( IHost host )
 		{
 			try
 			{
-				this.action = CreateNativeAction();
+				this.action = CreateNativeAction( host );
 				this.action.Run( 
 					new Sink( this.result, this.events ), 
 					( uint ) this.threadingOptions );

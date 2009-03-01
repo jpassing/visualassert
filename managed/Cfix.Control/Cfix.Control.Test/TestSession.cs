@@ -61,6 +61,18 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
+		private IRun CreateRun( TestModule mod, String fixture )
+		{
+			IRunCompiler comp = new RunControl.SimpleRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+						Disposition.Continue, Disposition.Break ),
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading );
+			comp.Add( GetFixture( mod, fixture ) );
+			return comp.Compile();
+		}
+
 		[Test]
 		public void TestBasicEvents()
 		{
@@ -69,14 +81,7 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = new RunControl.SimpleRunCompiler(
-				this.ooProcTarget,
-				new StandardDispositionPolicy(
-					Disposition.Continue,
-					Disposition.Break ),
-				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading,
-				GetFixture( mod, "LogTwice" ) ).Compile() )
+			using ( IRun run = CreateRun( mod, "LogTwice" ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
@@ -161,14 +166,7 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = new RunControl.SimpleRunCompiler(
-				this.ooProcTarget,
-				new StandardDispositionPolicy(
-					Disposition.Continue,
-					Disposition.Break ),
-				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading,
-				GetFixture( mod, "Inconclusive" ) ).Compile() )
+			using ( IRun run = CreateRun( mod, "Inconclusive" ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
@@ -225,14 +223,7 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = new RunControl.SimpleRunCompiler(
-				this.ooProcTarget,
-				new StandardDispositionPolicy(
-					Disposition.Continue,
-					Disposition.Break ),
-				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading,
-				GetFixture( mod, "Fail" ) ).Compile() )
+			using ( IRun run = CreateRun( mod, "Fail" ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 

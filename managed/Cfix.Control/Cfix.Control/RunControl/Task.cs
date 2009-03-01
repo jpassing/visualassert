@@ -7,7 +7,7 @@ namespace Cfix.Control.RunControl
 	/*++
 	 * Run actions of a single host.
 	 --*/
-	internal class Task : AbstractActionEventSink, ITask
+	internal class Task : ITask
 	{
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
@@ -25,10 +25,8 @@ namespace Cfix.Control.RunControl
 		private readonly object actionLock = new object();
 
 		public Task( 
-			IHost host,
-			IDispositionPolicy policy
+			IHost host
 			)
-			: base( policy )
 		{
 			this.host = host;
 		}
@@ -64,11 +62,26 @@ namespace Cfix.Control.RunControl
 
 		internal void AddAction( IAction action )
 		{
-			Debug.Assert( action.Host == this.host );
 			lock ( this.actionLock )
 			{
 				this.actions.Add( action );
 			}
+		}
+
+		internal void AddActionRange( IEnumerable<IAction> actions )
+		{
+			lock ( this.actionLock )
+			{
+				foreach ( IAction action in actions )
+				{
+					this.actions.Add( action );
+				}
+			}
+		}
+
+		internal IHost Host
+		{
+			get { return this.host; }
 		}
 
 		/*--------------------------------------------------------------
@@ -87,7 +100,7 @@ namespace Cfix.Control.RunControl
 			this.status = TaskStatus.Running;
 			foreach ( IAction act in this.actions )
 			{
-				act.Run();
+				act.Run( this.host );
 			}
 		}
 

@@ -34,11 +34,10 @@ namespace Cfix.Control
 
 		ITestItemCollection Parent { get; }
 
-		IAction CreateAction( 
-			IHost hostToRunOn, 
-			IActionEvents events,
-			SchedulingOptions schedOpts,
-			ThreadingOptions threadingOptions
+		void Add( 
+			IRunCompiler compiler,
+			IResultItemCollection parentResult,
+			IActionEvents events
 			);
 
 		IResultItem CreateResultItem(

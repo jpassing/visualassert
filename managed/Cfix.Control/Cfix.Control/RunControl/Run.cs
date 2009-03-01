@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Cfix.Control.RunControl
@@ -9,20 +10,19 @@ namespace Cfix.Control.RunControl
 		public event EventHandler<FinishedEventArgs> Finished;
 
 		private readonly List<ITask> tasks = new List<ITask>();
-		private readonly IResultItemCollection rootResult;
 		
 		private volatile TaskStatus status = TaskStatus.Ready;
 		private volatile uint tasksFinished;
 
+		private IResultItemCollection rootResult;
+		
 		private readonly object actionLock = new object();
 
 		public Run(
-			IDispositionPolicy policy,
-			IResultItemCollection rootResult
+			IDispositionPolicy policy
 			)
 			: base( policy )
 		{
-			this.rootResult = rootResult;
 		}
 
 		~Run()
@@ -76,6 +76,11 @@ namespace Cfix.Control.RunControl
 		public IResultItemCollection RootResult
 		{
 			get { return this.rootResult; }
+			internal set 
+			{
+				Debug.Assert( this.rootResult == null );
+				this.rootResult = value; 
+			}
 		}
 
 		public IEnumerable<ITask> Tasks
@@ -90,6 +95,7 @@ namespace Cfix.Control.RunControl
 		
 		public void Start()
 		{
+			Debug.Assert( this.rootResult != null );
 			lock ( this.actionLock )
 			{
 				this.status = TaskStatus.Running;

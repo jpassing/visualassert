@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using NUnit.Framework;
 using Cfix.Control;
 using Cfix.Control.Native;
@@ -64,11 +65,24 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( 0, mod.ItemCount );
 
 				DefaultEventSink sink = new DefaultEventSink();
-				mod.CreateAction( 
-					host, 
-					sink,
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.target,
+					new StandardDispositionPolicy(
+						Disposition.Break, Disposition.Break ),
 					SchedulingOptions.None,
-					ThreadingOptions.ComNeutralThreading ).Run();
+					ThreadingOptions.ComNeutralThreading );
+				mod.Add(
+					comp,
+					null,
+					sink );
+				IRun run = comp.Compile();
+				AutoResetEvent done = new AutoResetEvent( false );
+				run.Finished += delegate( object s, FinishedEventArgs e )
+				{
+					done.Set();
+				};
+				run.Start();
+				done.WaitOne();
 
 				Assert.AreEqual( 0, sink.Notifications );
 				Assert.AreEqual( 1, sink.HostSpawns );
@@ -93,16 +107,27 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( "SampleFixture", fixture.Name );
 
 				Assert.AreEqual( 0, fixture.ItemCount );
-
-				DefaultEventSink sink = new DefaultEventSink();
-				IAction action = mod.CreateAction( 
-					host, 
-					sink,
-					SchedulingOptions.None,
-					ThreadingOptions.None );
 				Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
-				action.Run();
+				DefaultEventSink sink = new DefaultEventSink();
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.target,
+					new StandardDispositionPolicy(
+						Disposition.Break, Disposition.Break ),
+					SchedulingOptions.None,
+					ThreadingOptions.ComNeutralThreading );
+				mod.Add(
+					comp,
+					null,
+					sink );
+				IRun run = comp.Compile();
+				AutoResetEvent done = new AutoResetEvent( false );
+				run.Finished += delegate( object s, FinishedEventArgs e )
+				{
+					done.Set();
+				};
+				run.Start();
+				done.WaitOne();
 
 				Assert.AreEqual( 1, sink.HostSpawns );
 				Assert.AreEqual( 0, sink.Notifications );
@@ -132,17 +157,33 @@ namespace Cfix.Control.Test
 					Assert.AreEqual( "SampleFixture", fixture.Name );
 
 					Assert.AreEqual( 0, fixture.ItemCount );
-
-					DefaultEventSink sink = new DefaultEventSink();
-					IAction action = mod.CreateAction( 
-						host,
-						sink,
-						SchedulingOptions.None, 
-						opt );
 					Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
-					host.Terminate();
+					DefaultEventSink sink = new DefaultEventSink();
+					IRunCompiler comp = new RunControl.SimpleRunCompiler(
+						this.target,
+						new StandardDispositionPolicy(
+							Disposition.Break, Disposition.Break ),
+						SchedulingOptions.None,
+						ThreadingOptions.ComNeutralThreading );
+					mod.Add(
+						comp,
+						null,
+						sink );
+					IRun run = comp.Compile();
+					AutoResetEvent done = new AutoResetEvent( false );
+					run.Finished += delegate( object s, FinishedEventArgs e )
+					{
+						done.Set();
+					};
+					run.Started += delegate( object s, EventArgs e )
+					{
+						run.Terminate();
+					};
 
+					run.Start();
+					done.WaitOne();
+					
 					Assert.AreEqual( 0, sink.HostSpawns );
 					Assert.AreEqual( 0, sink.Notifications );
 				}

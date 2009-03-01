@@ -143,19 +143,19 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public IAction CreateAction(
-			IHost host,
-			IActionEvents events,
-			SchedulingOptions schedOptions,
-			ThreadingOptions threadingOptions
+		public void Add( 
+			IRunCompiler compiler,
+			IResultItemCollection parentResult,
+			IActionEvents events
 			)
 		{
-			return new NativeAction(
-				host,
-				this,
-				events,
-				schedOptions,
-				threadingOptions );
+			compiler.Add(
+				new NativeAction(
+					this,
+					parentResult,
+					events,
+					compiler.SchedulingOptions,
+					compiler.ThreadingOptions ) );
 		}
 
 		public virtual IResultItem CreateResultItem(

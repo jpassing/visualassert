@@ -5,10 +5,9 @@ namespace Cfix.Control
 {
 	public interface IAction : IDisposable
 	{
-		IHost Host { get; }
 		ITestItem Item { get; }
 		IResultItem Result { get; }
-		void Run();
+		void Run( IHost host );
 		void Stop();
 	}
 
