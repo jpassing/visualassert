@@ -159,33 +159,26 @@ namespace Cfix.Control.Test
 					Assert.AreEqual( 0, fixture.ItemCount );
 					Assert.AreEqual( 0, fixture.ItemCountRecursive );
 
-					DefaultEventSink sink = new DefaultEventSink();
 					IRunCompiler comp = new RunControl.SimpleRunCompiler(
 						this.target,
 						new StandardDispositionPolicy(
 							Disposition.Break, Disposition.Break ),
 						SchedulingOptions.None,
 						ThreadingOptions.ComNeutralThreading );
-					mod.Add(
-						comp,
-						null,
-						sink );
+					comp.Add( mod );
 					IRun run = comp.Compile();
 					AutoResetEvent done = new AutoResetEvent( false );
 					run.Finished += delegate( object s, FinishedEventArgs e )
 					{
 						done.Set();
 					};
-					run.Started += delegate( object s, EventArgs e )
+					run.HostSpawned += delegate( object s, HostEventArgs e )
 					{
 						run.Terminate();
 					};
 
 					run.Start();
 					done.WaitOne();
-					
-					Assert.AreEqual( 0, sink.HostSpawns );
-					Assert.AreEqual( 0, sink.Notifications );
 				}
 			}
 		}
