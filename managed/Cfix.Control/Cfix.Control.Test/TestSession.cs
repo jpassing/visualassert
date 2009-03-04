@@ -61,7 +61,7 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
-		private IRun CreateRun( TestModule mod, String fixture )
+		private IRun CreateRun( TestModule mod, ITestItemCollection fixture )
 		{
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				this.ooProcTarget,
@@ -69,7 +69,7 @@ namespace Cfix.Control.Test
 						Disposition.Continue, Disposition.Break ),
 				SchedulingOptions.None,
 				ThreadingOptions.ComNeutralThreading );
-			comp.Add( GetFixture( mod, fixture ) );
+			comp.Add( fixture );
 			return comp.Compile();
 		}
 
@@ -81,7 +81,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = CreateRun( mod, "LogTwice" ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "LogTwice" ) )
+			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
@@ -166,7 +167,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = CreateRun( mod, "Inconclusive" ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "Inconclusive" ) )
+			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
@@ -223,7 +225,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( IRun run = CreateRun( mod, "Fail" ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "Fail" ) )
+			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 

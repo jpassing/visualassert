@@ -92,11 +92,13 @@ namespace Cfix.Control.Native
 
 		public void BeforeChildThreadStart( uint threadId )
 		{
+			Debug.Assert( this.events != null );
 			this.events.OnThreadStarted( this, threadId );
 		}
 
 		public void AfterChildThreadFinish( uint threadId )
 		{
+			Debug.Assert( this.events != null );
 			this.events.OnThreadFinished( this, threadId );
 		}
 
@@ -123,6 +125,7 @@ namespace Cfix.Control.Native
 
 			AddFailure( ass );
 
+			Debug.Assert( this.events != null );
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( ass );
 		}
@@ -153,6 +156,7 @@ namespace Cfix.Control.Native
 
 			AddFailure( fr );
 
+			Debug.Assert( this.events != null );
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( fr );
 		}
@@ -168,6 +172,7 @@ namespace Cfix.Control.Native
 
 			AddFailure( u );
 
+			Debug.Assert( this.events != null );
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.UnhandledException( u );
 		}
@@ -186,17 +191,20 @@ namespace Cfix.Control.Native
 
 		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )
 		{
+			Debug.Assert( this.events != null );
 			this.events.OnLog( this, message );
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultFailedAssertionDisposition()
 		{
+			Debug.Assert( this.events != null );
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultUnhandledExceptionDisposition()
 		{
+			Debug.Assert( this.events != null );
 			return ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
 		}

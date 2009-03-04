@@ -23,11 +23,16 @@ namespace Cfix.Control.Native
 
 		private class Sink : ICfixProcessEventSink, ICfixEventSink
 		{
+			private readonly Agent agent;
 			private readonly IResultItem result;
 			private readonly IActionEvents events;
 
-			public Sink( IResultItem result, IActionEvents events )
+			public Sink( 
+				Agent agent,
+				IResultItem result, 
+				IActionEvents events )
 			{
+				this.agent = agent;
 				this.result = result;
 				this.events = events;
 			}
@@ -55,38 +60,49 @@ namespace Cfix.Control.Native
 				uint fixtureOrdinal
 				)
 			{
-				if ( this.result.Item is TestModule )
+				try
 				{
-					//
-					// This is a entire-module run, just request fixture.
-					//
-
-					Debug.Assert( module.GetPath() ==
-						( ( TestModule ) this.result.Item ).Path );
-
-					TestItemCollectionResult coll = ( TestItemCollectionResult ) this.result;
-					return ( ICfixTestÌtemContainerEventSink )
-						coll.GetItem( fixtureOrdinal );
-				}
-				else if ( this.result is IResultItemCollection )
-				{
-					//
-					// The run comprises a fixture (without its enclosing
-					// module) only.
-					//
-
-					if ( this.result.Item.Ordinal == fixtureOrdinal )
+					if ( this.result.Item is TestModule )
 					{
-						return ( ICfixTestÌtemContainerEventSink ) this.result;
+						//
+						// This is a entire-module run, just request fixture.
+						//
+
+						Debug.Assert( module.GetPath() ==
+							( ( TestModule ) this.result.Item ).Path );
+
+						TestItemCollectionResult coll = ( TestItemCollectionResult ) this.result;
+						return ( ICfixTestÌtemContainerEventSink )
+							coll.GetItem( fixtureOrdinal );
+					}
+					else if ( this.result is IResultItemCollection )
+					{
+						//
+						// The run comprises a fixture (without its enclosing
+						// module) only.
+						//
+
+						if ( this.result.Item.Ordinal == fixtureOrdinal )
+						{
+							return ( ICfixTestÌtemContainerEventSink ) this.result;
+						}
+						else
+						{
+							throw new CfixException( "Unknown fixture requested" );
+						}
 					}
 					else
 					{
-						throw new CfixException( "Unknown fixture requested" );
+						throw new CfixException( "Unexpected sink request" );
 					}
 				}
-				else
+				finally
 				{
-					throw new CfixException( "Unexpected sink request" );
+					//
+					// N.B. This is required in order to have the refcount
+					// after return equal the refcount before having entered.
+					//
+					this.agent.ReleaseObject( module );
 				}
 			}
 
@@ -200,7 +216,10 @@ namespace Cfix.Control.Native
 			{
 				this.action = CreateNativeAction( host );
 				this.action.Run( 
-					new Sink( this.result, this.events ), 
+					new Sink( 
+						this.item.Module.Agent, 
+						this.result, 
+						this.events ), 
 					( uint ) this.threadingOptions );
 			}
 			finally

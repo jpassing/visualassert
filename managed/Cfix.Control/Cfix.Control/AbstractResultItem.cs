@@ -11,13 +11,14 @@ namespace Cfix.Control
 		// still available.
 		//
 		private ITestItem item;
+		protected IActionEvents events;
+		
 		private volatile ExecutionStatus status;
 
 		private readonly String itemName;
 		
 		protected readonly IResultItemCollection parent;
-		protected readonly IActionEvents events;
-
+		
 		protected AbstractResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -40,6 +41,7 @@ namespace Cfix.Control
 			// Remove own reference.
 			//
 			this.item = null;
+			this.events = null;
 		}
 
 		/*----------------------------------------------------------------------
@@ -68,6 +70,9 @@ namespace Cfix.Control
 			{
 				if ( value != this.status )
 				{
+					Debug.Assert( this.events != null );
+					Debug.Assert( this.item != null );
+
 					this.status = value;
 					this.events.OnStatusChanged( this );
 				}
