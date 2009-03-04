@@ -56,10 +56,14 @@ namespace Cfix.Control.RunControl
 		public IRun Compile()
 		{
 			Task task = new Task( this.agent.CreateHost() );
-			task.AddAction( this.action );
-			
-			this.run.RootResult = ( IResultItemCollection ) this.action.Result;
-			this.run.AddTask( task );
+			if ( this.action != null )
+			{
+				task.AddAction( this.action );
+
+				this.run.RootResult = ( IResultItemCollection ) this.action.Result;
+				this.run.AddTask( task );
+			}
+
 			return this.run;
 		}
 

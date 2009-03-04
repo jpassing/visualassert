@@ -109,8 +109,12 @@ namespace Cfix.Control.Test
 			int invalids = 0;
 			foreach ( ITestItem item in coll )
 			{
-				if ( item is InvalidModule )
+				InvalidModule inv = item as InvalidModule;
+				if ( inv != null )
 				{
+					Assert.IsNotNull( inv.InvalidityCause );
+					Assert.AreEqual( "toolong.dll", inv.Name );
+
 					invalids++;
 				}
 				else

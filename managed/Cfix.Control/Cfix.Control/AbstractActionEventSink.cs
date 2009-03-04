@@ -14,23 +14,16 @@ namespace Cfix.Control.RunControl
 		public event EventHandler StatusChanged;
 
 		private readonly IDispositionPolicy policy;
-		private AbstractActionEventSink parent;
 
 		protected AbstractActionEventSink(
 			IDispositionPolicy policy 
 			)
 		{
 			this.policy = policy;
-			this.parent = null;
 		}
 
 		protected AbstractActionEventSink() : this( null )
 		{
-		}
-
-		public void SetParent( AbstractActionEventSink parent )
-		{
-			this.parent = parent;
 		}
 
 		/*--------------------------------------------------------------
@@ -41,14 +34,7 @@ namespace Cfix.Control.RunControl
 		{
 			get 
 			{
-				if ( this.parent != null )
-				{
-					return this.parent.DispositionPolicy;
-				}
-				else
-				{
-					return this.policy;
-				}
+				return this.policy;
 			}
 		}
 
@@ -58,11 +44,6 @@ namespace Cfix.Control.RunControl
 			{
 				Notification( item, new NotificationEventArgs( hr ) );
 			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnNotification( item, hr );
-			}
 		}
 
 		public void OnHostSpawned( uint processId )
@@ -70,11 +51,6 @@ namespace Cfix.Control.RunControl
 			if ( this.HostSpawned != null )
 			{
 				this.HostSpawned( this, new HostEventArgs( processId ) );
-			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnHostSpawned( processId );
 			}
 		}
 
@@ -84,11 +60,6 @@ namespace Cfix.Control.RunControl
 			{
 				Log( item, new LogEventArgs( message ) );
 			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnLog( item, message );
-			}
 		}
 
 		public void OnThreadStarted( IResultItem item, uint threadId )
@@ -96,11 +67,6 @@ namespace Cfix.Control.RunControl
 			if ( ThreadStarted != null )
 			{
 				ThreadStarted( item, new ThreadEventArgs( threadId ) );
-			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnThreadStarted( item, threadId );
 			}
 		}
 
@@ -110,11 +76,6 @@ namespace Cfix.Control.RunControl
 			{
 				ThreadFinished( item, new ThreadEventArgs( threadId ) );
 			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnThreadFinished( item, threadId );
-			}
 		}
 
 		public void OnStatusChanged( IResultItem item )
@@ -122,11 +83,6 @@ namespace Cfix.Control.RunControl
 			if ( StatusChanged != null )
 			{
 				StatusChanged( item, EventArgs.Empty );
-			}
-
-			if ( this.parent != null )
-			{
-				this.parent.OnStatusChanged( item );
 			}
 		}
 	}

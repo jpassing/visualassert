@@ -95,7 +95,8 @@ namespace Cfix.Control.RunControl
 		
 		public void Start()
 		{
-			Debug.Assert( this.rootResult != null );
+			Debug.Assert( ( this.rootResult == null ) == ( this.tasks.Count == 0 ) );
+
 			lock ( this.actionLock )
 			{
 				this.status = TaskStatus.Running;

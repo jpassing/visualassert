@@ -74,6 +74,30 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
+		public void TestEmptyRunRaisesFinishEvent()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( IRun run = new RunControl.SimpleRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+						Disposition.Continue, Disposition.Break ),
+				SchedulingOptions.None,
+				ThreadingOptions.ComNeutralThreading ).Compile() )
+			{
+				AutoResetEvent done = new AutoResetEvent( false );
+
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					done.Set();
+				};
+
+				run.Start();
+				done.WaitOne();
+				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+			}
+		}
+
+		[Test]
 		public void TestBasicEvents()
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )
@@ -140,6 +164,14 @@ namespace Cfix.Control.Test
 
 				run.Start();
 				Assert.AreEqual( TaskStatus.Running, run.Status );
+
+				int tasks = 0;
+				foreach ( ITask t in run.Tasks )
+				{
+					tasks++;
+				}
+
+				Assert.AreEqual( 1, tasks );
 
 				done.WaitOne();
 				Assert.AreEqual( TaskStatus.Suceeded, run.Status );

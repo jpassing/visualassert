@@ -52,11 +52,6 @@ namespace Cfix.Control.Native
 		{
 			Debug.Assert( agent != null );
 
-			if ( agent == null )
-			{
-				throw new ArgumentException( "null", "agent" );
-			}
-
 			this.agent = agent;
 			this.arch = arch;
 			this.flags = flags;

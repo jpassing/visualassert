@@ -78,9 +78,9 @@ namespace Cfix.Control.Native
 			get { return this.agent.Architecture; }
 		}
 
-		public CfixTestModuleType Type
+		public ModuleType Type
 		{
-			get { return this.type; }
+			get { return ( ModuleType ) this.type; }
 		}
 
 		public String Path

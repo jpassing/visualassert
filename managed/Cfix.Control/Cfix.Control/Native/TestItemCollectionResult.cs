@@ -37,19 +37,19 @@ namespace Cfix.Control.Native
 			this.subItems = items;
 		}
 
-		internal void OnChildStarted()
-		{
-			if ( this.Status == ExecutionStatus.Pending )
-			{
-				this.Status = ExecutionStatus.Running;
+		//internal void OnChildStarted()
+		//{
+		//    if ( this.Status == ExecutionStatus.Pending )
+		//    {
+		//        this.Status = ExecutionStatus.Running;
 
-				TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
-				if ( tp != null )
-				{
-					tp.OnChildStarted();
-				}
-			}
-		}
+		//        TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
+		//        if ( tp != null )
+		//        {
+		//            tp.OnChildStarted();
+		//        }
+		//    }
+		//}
 
 		internal void OnChildFinished( ExecutionStatus status, bool childIsLeaf )
 		{

@@ -14,4 +14,10 @@ namespace Cfix.Control
 		I386 = CfixTestModuleArch.CfixTestModuleArchI386,
 		Amd64 = CfixTestModuleArch.CfixTestModuleArchAmd64,
 	}
+
+	public enum ModuleType
+	{
+		User = CfixTestModuleType.CfixTestModuleTypeUser,
+		Kernel = CfixTestModuleType.CfixTestModuleTypeKernel
+	}
 }

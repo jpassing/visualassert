@@ -144,8 +144,13 @@ namespace Cfix.Control.Test
 			{
 				using ( IHost host = this.target.CreateHost() )
 				{
+					Assert.AreNotEqual( 0, host.ProcessId );
+					Assert.AreEqual( Architecture.I386, host.Architecture );
+
 					TestModule mod = ( TestModule ) host.LoadModule(
 						null, this.testdataDir + "\\simple.dll", true );
+					Assert.AreEqual( Architecture.I386, mod.Architecture );
+					Assert.AreEqual( ModuleType.User, mod.Type );
 
 					Assert.AreEqual( 0, mod.Ordinal );
 					Assert.AreEqual( this.testdataDir + "\\simple.dll", mod.Path );
