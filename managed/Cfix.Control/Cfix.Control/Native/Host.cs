@@ -1,10 +1,17 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Wrapper for ICfixHost.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	public class Host : IHost
 	{
 		private readonly Agent agent;
@@ -15,6 +22,9 @@ namespace Cfix.Control.Native
 			ICfixHost host
 			)
 		{
+			Debug.Assert( agent != null );
+			Debug.Assert( host != null );
+
 			this.agent = agent;
 			this.host = host;
 		}

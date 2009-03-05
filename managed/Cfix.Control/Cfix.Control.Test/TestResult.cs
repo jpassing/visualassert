@@ -39,7 +39,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void testBasics()
+		public void TestBasics()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer fixture = new MockContainer( "fixture" );
@@ -85,7 +85,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void testFixtureAllSuccess()
+		public void TestFixtureAllSuccess()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer testFixture = new MockContainer( "fixture" );
@@ -157,7 +157,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void testFixtureFailSetupSkipTestcases()
+		public void TestFixtureFailSetupSkipTestcases()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer testFixture = new MockContainer( "fixture" );
@@ -233,7 +233,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void testFixtureSucFirstFailSecondSkipThird()
+		public void TestFixtureSucFirstFailSecondSkipThird()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer testFixture = new MockContainer( "fixture" );
@@ -366,7 +366,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void testFixtureWithInconclusiveTest()
+		public void TestFixtureWithInconclusiveTest()
 		{
 			MockModule module = new MockModule( "foo.dll" );
 			MockContainer testFixture = new MockContainer( "fixture" );
@@ -444,7 +444,7 @@ namespace Cfix.Control.Test
 			Assert.IsNull( fixture.Failures );
 		}
 
-		private IRun runTest(
+		private IRun RunTest(
 			ExecutionStatus fixSetup,
 			ExecutionStatus[] testCases,
 			int testCasesToExecute,
@@ -538,9 +538,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void succeedEmptyFixture()
+		public void SucceedEmptyFixture()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[ 0 ],
 				0,
@@ -559,9 +559,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void failingSetup()
+		public void FailingSetup()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Failed,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
 				1,
@@ -579,9 +579,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void inconcSetup()
+		public void InconcSetup()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Inconclusive,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
 				1,
@@ -599,9 +599,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void failingTeardown()
+		public void FailingTeardown()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
 				1,
@@ -619,9 +619,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void inconcTeardown()
+		public void InconcTeardown()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
 				1,
@@ -639,9 +639,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void shortcutAfterFirstFailure()
+		public void ShortcutAfterFirstFailure()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
 				1,
@@ -662,9 +662,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void shortcutAfterFirstFailureWithInconcTeardown()
+		public void ShortcutAfterFirstFailureWithInconcTeardown()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
 				1,
@@ -685,9 +685,9 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void continueAfterFirstFailure()
+		public void ContinueAfterFirstFailure()
 		{
-			IRun run = runTest(
+			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
 				new ExecutionStatus[] { ExecutionStatus.Failed, ExecutionStatus.Succeeded },
 				2,

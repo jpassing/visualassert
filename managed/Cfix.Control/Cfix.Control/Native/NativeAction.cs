@@ -5,6 +5,14 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Wrapper for ICfixAction. Additionally, this object handles
+	 *		provides a ICfixProcessEventSink to handle action/module 
+	 *		associations.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	internal class NativeAction : IAction
 	{
 		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
@@ -19,7 +27,11 @@ namespace Cfix.Control.Native
 		private readonly ThreadingOptions threadingOptions;
 		private readonly IResultItem result;
 		private readonly IActionEvents events;
-		private ICfixAction action;
+
+		private readonly object runLock = new object();
+		
+		private volatile ICfixAction action;
+
 
 		private class Sink : ICfixProcessEventSink, ICfixEventSink
 		{
@@ -133,6 +145,9 @@ namespace Cfix.Control.Native
 			ThreadingOptions threadingOptions
 			)
 		{
+			Debug.Assert( item != null );
+			Debug.Assert( events != null );
+
 			this.item = item;
 			this.events = events;
 			this.schedOptions = schedOptions;
@@ -214,13 +229,25 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				this.action = CreateNativeAction( host );
-				this.action.Run( 
-					new Sink( 
-						this.item.Module.Agent, 
-						this.result, 
-						this.events ), 
-					( uint ) this.threadingOptions );
+				//
+				// Avoid concurrent run requests.
+				//
+				lock ( runLock )
+				{
+					if ( this.action != null )
+					{
+						throw new InvalidOperationException(
+							"Already started" );
+					}
+
+					this.action = CreateNativeAction( host );
+					this.action.Run(
+						new Sink(
+							this.item.Module.Agent,
+							this.result,
+							this.events ),
+						( uint ) this.threadingOptions );
+				}
 			}
 			finally
 			{
@@ -236,9 +263,10 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				if ( this.action != null )
+				ICfixAction current = this.action;
+				if ( current != null )
 				{
-					this.action.Stop();
+					current.Stop();
 				}
 			}
 			catch ( COMException x )
@@ -246,9 +274,5 @@ namespace Cfix.Control.Native
 				throw this.item.Module.Agent.WrapException( x );
 			}
 		}
-
-		
-
 	}
-
 }

@@ -3,6 +3,12 @@ using System.Diagnostics;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Utility class.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	public class Session : ISession
 	{
 		private readonly Object testsLock = new Object();

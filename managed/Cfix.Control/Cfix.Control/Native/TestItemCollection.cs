@@ -6,17 +6,23 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Wrapper for a composite ICfixTestItem (e.g. fixture).
+	 * 
+	 *		Threadsafe.
+	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
 	public class TestItemCollection : TestItem, ITestItemCollection
 	{
-		/// <summary>
-		/// Children, indexed by ordinal.
-		/// </summary>
+		//
+		// Children, indexed by ordinal.
+		//
 		private ITestItem[] subItems;
 
-		/// <summary>
-		/// Required for updating.
-		/// </summary>
+		//
+		// Required for updating.
+		//
 		private IDictionary< String, ITestItem > subItemsDict 
 			= new Dictionary< String, ITestItem >();
 
@@ -321,10 +327,14 @@ namespace Cfix.Control.Native
 			
 			foreach ( ITestItem child in this.subItems )
 			{
-				children.Add( child.CreateResultItem(
-					result, 
-					events, 
-					interimStatus ) );
+				IResultItemFactory fac = child as IResultItemFactory;
+				if ( fac != null )
+				{
+					children.Add( fac.CreateResultItem(
+						result,
+						events,
+						interimStatus ) );
+				}
 			}
 
 			result.SetItems( children );

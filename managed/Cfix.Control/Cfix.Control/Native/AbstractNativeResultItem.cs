@@ -6,6 +6,12 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Base implementation for result items.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	internal abstract class AbstractNativeResultItem
 		: AbstractResultItem, ICfixReportEventSink
 	{

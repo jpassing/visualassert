@@ -1,10 +1,18 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class TestItem : ITestItem
+	/*++
+	 * Class Description:
+	 *		Wrapper for a ICfixTestItem and base class for other
+	 *		test item wrapper classes.
+	 * 
+	 *		Threadsafe.
+	 --*/
+	public class TestItem : ITestItem, IResultItemFactory
 	{
 		private readonly TestItemCollection parent;
 		private readonly uint ordinal;
@@ -72,6 +80,8 @@ namespace Cfix.Control.Native
 			uint ordinal,
 			ICfixTestItem item )
 		{
+			Debug.Assert( item != null );
+
 			this.parent = parent;
 			this.ordinal = ordinal;
 			this.name = item.GetName();
@@ -121,26 +131,17 @@ namespace Cfix.Control.Native
 
 		public String Name
 		{
-			get
-			{
-				return this.name;
-			}
+			get { return this.name; }
 		}
 
 		public uint Ordinal
 		{
-			get
-			{
-				return this.ordinal;
-			}
+			get { return this.ordinal; }
 		}
 
 		public virtual ITestItemCollection Parent
 		{
-			get
-			{
-				return this.parent;
-			}
+			get { return this.parent; }
 		}
 
 		public void Add( 
@@ -170,7 +171,5 @@ namespace Cfix.Control.Native
 				this,
 				interimStatus );
 		}
-
 	}
-
 }

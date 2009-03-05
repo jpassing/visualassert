@@ -1,14 +1,21 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Represents a module that, for whichever reason, is invalid
+	 *		and cannot bed represented as a TestModule.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	public sealed class InvalidModule : ITestItem
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
-		private Exception invalidityCause;
+		private readonly Exception invalidityCause;
 
 		private bool disposed;
 
@@ -24,6 +31,9 @@ namespace Cfix.Control.Native
 			Exception invalidityCause
 			)
 		{
+			Debug.Assert( name != null );
+			Debug.Assert( invalidityCause != null );
+
 			this.parent = parent;
 			this.name = name;
 			this.invalidityCause = invalidityCause;
@@ -86,16 +96,9 @@ namespace Cfix.Control.Native
 			IActionEvents events
 			)
 		{
-			throw new NotImplementedException();
+			//
+			// Nothing to add.
+			//
 		}
-
-		public IResultItem CreateResultItem(
-			IResultItemCollection parentResult,
-			IActionEvents events,
-			ExecutionStatus interimStatus
-			)
-		{
-			throw new NotImplementedException();
-		}		
 	}
 }

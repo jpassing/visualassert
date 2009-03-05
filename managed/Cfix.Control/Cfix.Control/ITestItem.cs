@@ -39,7 +39,10 @@ namespace Cfix.Control
 			IResultItemCollection parentResult,
 			IActionEvents events
 			);
+	}
 
+	public interface IResultItemFactory
+	{
 		IResultItem CreateResultItem(
 			IResultItemCollection parentResult,
 			IActionEvents events,

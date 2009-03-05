@@ -12,6 +12,12 @@ namespace Cfix.Control.Native
 		UseJob = 1	// CFIXCTL_AGENT_FLAG_USE_JOB
 	}
 
+	/*++
+	 * Class Description:
+	 *		Wrapper for ICfixAgent.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	public class Agent : IAgent
 	{
 #if DEBUG
@@ -23,8 +29,8 @@ namespace Cfix.Control.Native
 		private ICfixAgent agent;
 		private ICfixMessageResolver resolver;
 
-		private CfixTestModuleArch arch;
-		private Clsctx clsctx;
+		private readonly CfixTestModuleArch arch;
+		private readonly Clsctx clsctx;
 
 		private uint timeout = DefaultTimeout;
 

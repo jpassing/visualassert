@@ -5,9 +5,6 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	/*++
-	 * Class that may represent a module or a fixture.
-	 --*/
 	internal class TestItemCollectionResult 
 		: AbstractNativeResultItem, 
 		  IResultItemCollection, 
@@ -36,20 +33,6 @@ namespace Cfix.Control.Native
 			Debug.Assert( this.subItems == null );
 			this.subItems = items;
 		}
-
-		//internal void OnChildStarted()
-		//{
-		//    if ( this.Status == ExecutionStatus.Pending )
-		//    {
-		//        this.Status = ExecutionStatus.Running;
-
-		//        TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
-		//        if ( tp != null )
-		//        {
-		//            tp.OnChildStarted();
-		//        }
-		//    }
-		//}
 
 		internal void OnChildFinished( ExecutionStatus status, bool childIsLeaf )
 		{
@@ -308,70 +291,5 @@ namespace Cfix.Control.Native
 				Debug.Assert( Status == ExecutionStatus.Inconclusive );
 			}
 		}
-
-		/*--------------------------------------------------------------
-		 * Factory.
-		 */
-
-		//private static TestItemCollectionResult CreateResult(
-		//    Run run,
-		//    TestItemCollectionResult parent,
-		//    ITestItemCollection itemColl,
-		//    ExecutionStatus status
-		//    )
-		//{
-		//    Debug.Assert( run != null );
-
-		//    TestItemCollectionResult result;
-		//    if ( parent == null )
-		//    {
-		//        result = new TestItemCollectionResult(
-		//            run,
-		//            itemColl,
-		//            status );
-		//    }
-		//    else
-		//    {
-		//        result = new TestItemCollectionResult(
-		//            run,
-		//            parent,
-		//            itemColl,
-		//            status );
-		//    }
-
-		//    IList<IResultItem> children = new List<IResultItem>( 
-		//        ( int ) itemColl.ItemCount );
-
-		//    foreach ( ITestItem item in itemColl )
-		//    {
-		//        ITestItemCollection childColl = item as ITestItemCollection;
-		//        if ( childColl != null )
-		//        {
-		//            children.Add( 
-		//                CreateResult( run, result, childColl, status ) );
-		//        }
-		//        else
-		//        {
-		//            TestItemResult itemResult = TestItemResult.CreateResult(
-		//                run,
-		//                result, 
-		//                item, 
-		//                status );
-		//            children.Add( itemResult );
-		//        }
-		//    }
-
-		//    result.SetItems( children );
-		//    return result;
-		//}
-
-		//internal static TestItemCollectionResult CreateResult(
-		//    Run run,
-		//    ITestItemCollection itemColl,
-		//    ExecutionStatus status
-		//    )
-		//{
-		//    return CreateResult( run, null, itemColl, status );
-		//}
 	}
 }
