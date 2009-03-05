@@ -159,6 +159,10 @@ namespace Cfix.Control.Native
 					compiler.ThreadingOptions ) );
 		}
 
+		/*--------------------------------------------------------------
+		 * IResultItemFactory.
+		 */
+
 		public virtual IResultItem CreateResultItem(
 			IResultItemCollection parentResult ,
 			IActionEvents events,

@@ -21,7 +21,7 @@ namespace Cfix.Control
 	{
 		private readonly Exception exception;
 
-		public static readonly FinishedEventArgs Empty =
+		public static readonly new FinishedEventArgs Empty =
 			new FinishedEventArgs( null );
 
 		public FinishedEventArgs( Exception x )

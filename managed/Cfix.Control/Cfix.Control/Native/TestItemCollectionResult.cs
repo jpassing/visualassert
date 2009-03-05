@@ -10,7 +10,7 @@ namespace Cfix.Control.Native
 		  IResultItemCollection, 
 		  ICfixTestÌtemContainerEventSink
 	{
-		private IList<IResultItem> subItems;
+		private readonly IList<IResultItem> subItems;
 
 		private volatile int subItemsFinished;
 		private volatile bool subItemFailed;
@@ -19,19 +19,31 @@ namespace Cfix.Control.Native
 		internal TestItemCollectionResult( 
 			IActionEvents events,
 			IResultItemCollection parent,
-			ITestItem item,
+			ITestItemCollection itemCollection,
 			ExecutionStatus status
 			)
-			: base( events, parent, item, status )
+			: base( events, parent, itemCollection, status )
 		{
-			Debug.Assert( item is ITestItemCollection );
 			Debug.Assert( events != null );
-		}
+			Debug.Assert( itemCollection != null );
 
-		internal void SetItems( IList<IResultItem> items )
-		{
-			Debug.Assert( this.subItems == null );
-			this.subItems = items;
+			//
+			// Add children.
+			//
+			this.subItems = new List<IResultItem>(
+				( int ) itemCollection.ItemCount );
+
+			foreach ( ITestItem child in itemCollection )
+			{
+				IResultItemFactory fac = child as IResultItemFactory;
+				if ( fac != null )
+				{
+					this.subItems.Add( fac.CreateResultItem(
+						this,
+						events,
+						status ) );
+				}
+			}
 		}
 
 		internal void OnChildFinished( ExecutionStatus status, bool childIsLeaf )

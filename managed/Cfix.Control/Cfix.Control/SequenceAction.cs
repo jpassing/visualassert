@@ -1,6 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Cfixctl;
+//using System;
+//using System.Diagnostics;
+//using System.Collections.Generic;
+//using Cfixctl;
 
 //namespace Cfix.Control
 //{
@@ -11,6 +12,11 @@ using Cfixctl;
 //    /// </summary>
 //    internal class SequenceAction : IAction
 //    {
+//        //
+//        // Direct ancestor for all actions.
+//        //
+//        private readonly ITestItem item;
+//        private readonly IResultItem result;
 //        private readonly IList<IAction> actions;
 
 //        private volatile bool started = false;
@@ -21,14 +27,37 @@ using Cfixctl;
 //        private volatile bool stopped = false;
 //        private volatile IAction currentAction = null;
 
-//        public SequenceAction( 
+//        public SequenceAction(
+//            ITestItem item,
 //            IList<IAction> actions
 //            )
 //        {
+//            Debug.Assert( item != null );
+//            Debug.Assert( actions != null );
+
 //            this.actions = actions;
+//            this.item = item;
+
+//            this.result = item.CreateResultItem(
+//                parentResult,
+//                events,
+//                ExecutionStatus.Pending );
 //        }
 
+//        /*----------------------------------------------------------------------
+//         * IAction.
+//         */
 
+//        public IResultItem Result
+//        {
+//            get { return this.result; }
+//        }
+
+//        public ITestItem Item
+//        {
+//            get { return this.item; }
+//        }
+		
 //        public void Run()
 //        {
 //            if ( this.started )
@@ -57,7 +86,7 @@ using Cfixctl;
 //        [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.InvalidOperationException.#ctor(System.String)" )]
 //        public void Stop()
 //        {
-//            if ( ! this.started )
+//            if ( !this.started )
 //            {
 //                throw new InvalidOperationException( "Not started" );
 //            }

@@ -4,13 +4,29 @@ using System.Text;
 
 namespace Cfix.Control.RunControl
 {
+	// Non-threadsafe
 	public class SimpleRunCompiler : IRunCompiler
 	{
 		private readonly IAgent agent;
 		private readonly SchedulingOptions schedulingOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly Run run;
-		private IAction action;
+
+		private IList<IAction> actions = new List<IAction>();
+		private IResultItem result;
+
+		private static IResultItem GetRootAncestor( IResultItem item )
+		{
+			IResultItem parent = item.Parent;
+			if ( parent != null )
+			{
+				return GetRootAncestor( parent );
+			}
+			else
+			{
+				return item;
+			}
+		}
 
 		public SimpleRunCompiler(
 			IAgent agent,
@@ -25,6 +41,10 @@ namespace Cfix.Control.RunControl
 			this.run = new Run( policy );
 		}
 
+		/*--------------------------------------------------------------
+		 * IRunCompiler.
+		 */
+
 		public SchedulingOptions SchedulingOptions
 		{
 			get { return this.schedulingOptions; }
@@ -37,12 +57,37 @@ namespace Cfix.Control.RunControl
 
 		public void Add( IAction action )
 		{
-			if ( this.action != null )
+			if ( this.result == null )
 			{
-				throw new InvalidOperationException();
+				this.result = GetRootAncestor( action.Result );
+			}
+			else
+			{
+				//
+				// The action's result must belong to the existing
+				// tree of results.
+				//
+				if ( ReferenceEquals(
+					GetRootAncestor( action.Result ),
+					GetRootAncestor( this.result ) ) )
+				{
+					//
+					// Ok.
+					//
+				}
+				else
+				{
+					//
+					// Forests not supported.
+					//
+					throw new ArgumentException(
+						"The action's result does not integrate with " +
+						"the existing result tree" );
+
+				}
 			}
 
-			this.action = action;
+			this.actions.Add( action );
 		}
 
 		public void Add( ITestItem item )
@@ -55,12 +100,16 @@ namespace Cfix.Control.RunControl
 
 		public IRun Compile()
 		{
-			Task task = new Task( this.agent.CreateHost() );
-			if ( this.action != null )
+			if ( this.actions.Count > 0 )
 			{
-				task.AddAction( this.action );
+				Task task = new Task( this.agent.CreateHost() );
+				
+				foreach ( IAction act in this.actions )
+				{
+					task.AddAction( act );
+				}
 
-				this.run.RootResult = ( IResultItemCollection ) this.action.Result;
+				this.run.RootResult = ( IResultItemCollection ) this.result;
 				this.run.AddTask( task );
 			}
 

@@ -9,7 +9,8 @@ namespace Cfix.Control
 	/// 
 	/// Threadsafe.
 	/// </summary>
-	public class GenericTestItemCollection : ITestItemCollection
+	public class GenericTestItemCollection : 
+		ITestItemCollection, IResultItemFactory
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
@@ -133,38 +134,8 @@ namespace Cfix.Control
 		}
 
 		/*--------------------------------------------------------------
-		 * ITestItemCollection.
+		 * IResultItemFactory.
 		 */
-
-		public event EventHandler< TestItemEventArgs > ItemAdded;
-		public event EventHandler< TestItemEventArgs > ItemRemoved;
-
-		//public void CreateAction(
-		//    ICompositeAction actionToComposeWith,
-		//    SchedulingOptions schedulingOptions,
-		//    CompositionOptions compositionOptions
-		//    )
-		//{
-		//    lock ( this.listLock )
-		//    {
-		//        foreach ( ITestItem item in this.list )
-		//        {
-		//            item.CreateAction(
-		//                actionToComposeWith,
-		//                schedulingOptions,
-		//                compositionOptions );
-		//        }
-		//    }
-		//}
-
-		public void Add(
-			IRunCompiler compiler,
-			IResultItemCollection parentResult,
-			IActionEvents events
-			)
-		{
-			throw new NotImplementedException();
-		}
 
 		public IResultItem CreateResultItem(
 			IResultItemCollection parentResult,
@@ -172,8 +143,46 @@ namespace Cfix.Control
 			ExecutionStatus interimStatus
 			)
 		{
-			throw new NotImplementedException();
-		}	
+			return new GenericResultCollection(
+				events,
+				parentResult,
+				this,
+				interimStatus );
+		}
+
+		/*--------------------------------------------------------------
+		 * ITestItemCollection.
+		 */
+
+		public event EventHandler< TestItemEventArgs > ItemAdded;
+		public event EventHandler< TestItemEventArgs > ItemRemoved;
+
+		public void Add(
+			IRunCompiler compiler,
+			IResultItemCollection parentResult,
+			IActionEvents events
+			)
+		{
+			IResultItemCollection ownResult = new GenericResultCollection(
+				events,
+				parentResult,
+				this,
+				ExecutionStatus.Pending );
+
+			//
+			// Let children add their actions.
+			//
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.Add(
+						compiler,
+						ownResult,
+						events );
+				}
+			}
+		}
 
 		public ITestItem GetItem( uint ordinal )
 		{

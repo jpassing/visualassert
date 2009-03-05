@@ -109,10 +109,10 @@ namespace Cfix.Control.Native
 				Architecture arch = ( Architecture ) nativeArch;
 				if ( this.collection.runTargets.IsArchitectureSupported( arch ) )
 				{
-					try
-					{
-						using ( IHost host =
+					using ( IHost host =
 							this.collection.runTargets.GetTarget( arch ).CreateHost() )
+					{
+						try
 						{
 							this.collectionStack.Peek().Add(
 								host.LoadModule(
@@ -120,14 +120,14 @@ namespace Cfix.Control.Native
 									path,
 									this.collection.ignoreDuplicates ) );
 						}
-					}
-					catch ( Exception x )
-					{
-						this.collectionStack.Peek().Add(
-							new InvalidModule(
-								this.collectionStack.Peek(),
-								new DirectoryInfo( path ).Name,
-								x ) );
+						catch ( Exception x )
+						{
+							this.collectionStack.Peek().Add(
+								new InvalidModule(
+									this.collectionStack.Peek(),
+									new DirectoryInfo( path ).Name,
+									x ) );
+						}
 					}
 				}
 			}

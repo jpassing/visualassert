@@ -9,12 +9,13 @@ using Cfix.Control.Native;
 namespace Cfix.Control.Test
 {
 	[TestFixture]
-	public class TestSession
+	public class TestRun
 	{
 		private Agent ooProcTarget;
 		private Agent inProcTarget;
 		private AgentSet multiTarget;
 		private String binDir;
+		private String testdataDir;
 
 		[SetUp]
 		public void Setup()
@@ -31,6 +32,9 @@ namespace Cfix.Control.Test
 
 			this.binDir = new FileInfo(
 				Assembly.GetExecutingAssembly().FullName ).Directory.FullName;
+			this.testdataDir =
+				binDir +
+				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata\i386";
 		}
 
 		[TearDown]
@@ -336,6 +340,79 @@ namespace Cfix.Control.Test
 
 				run.Stop();
 				run.Stop();
+			}
+		}
+
+		[Test]
+		public void TestInvalidModule()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( ITestItemCollection coll = host.SearchModules(
+				new DirectoryInfo( this.testdataDir ),
+				"toolong.dll",
+				this.multiTarget,
+				true,
+				true ) )
+			{
+				coll.Refresh();
+
+				Assert.IsInstanceOfType( typeof( InvalidModule ), coll.GetItem( 0 ) );
+				InvalidModule inv = ( InvalidModule ) coll.GetItem( 0 );
+
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.None,
+					ThreadingOptions.None );
+				comp.Add( inv );
+				using ( IRun run = comp.Compile() )
+				{
+					Assert.IsNull( run.RootResult );
+				}
+			}
+		}
+
+		[Test]
+		public void TestModuleCollection()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( ITestItemCollection coll = host.SearchModules(
+				new DirectoryInfo( this.testdataDir ),
+				"*.dll",
+				this.multiTarget,
+				true,
+				true ) )
+			{
+				coll.Refresh();
+
+				Assert.AreEqual( 3, coll.ItemCount );
+
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.None,
+					ThreadingOptions.None );
+				comp.Add( coll );
+				using ( IRun run = comp.Compile() )
+				{
+					//
+					// Only simple.dll is a true test DLL and will
+					// have a result item. All others are invalid/
+					// do not apply.
+					//
+					Assert.AreSame( coll, run.RootResult.Item );
+					Assert.AreEqual( 2, run.RootResult.ItemCount );
+
+					Assert.AreEqual( "dupfixturename", run.RootResult.GetItem( 0 ).Name );
+					Assert.AreEqual( "simple", run.RootResult.GetItem( 1 ).Name );
+
+					IResultItemCollection simpleModRes =
+						( IResultItemCollection ) run.RootResult.GetItem( 1 );
+
+					// TODO: Run, check root status.
+				}
 			}
 		}
 	}

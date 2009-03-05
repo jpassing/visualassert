@@ -313,32 +313,11 @@ namespace Cfix.Control.Native
 			ExecutionStatus interimStatus
 			)
 		{
-			TestItemCollectionResult result = new TestItemCollectionResult(
+			return new TestItemCollectionResult(
 				events,
 				parentResult,
 				this,
 				interimStatus );
-
-			//
-			// Add children.
-			//
-			IList<IResultItem> children = new List<IResultItem>(
-				( int ) this.ItemCount ); 
-			
-			foreach ( ITestItem child in this.subItems )
-			{
-				IResultItemFactory fac = child as IResultItemFactory;
-				if ( fac != null )
-				{
-					children.Add( fac.CreateResultItem(
-						result,
-						events,
-						interimStatus ) );
-				}
-			}
-
-			result.SetItems( children );
-			return result;
 		}
 
 		/*--------------------------------------------------------------

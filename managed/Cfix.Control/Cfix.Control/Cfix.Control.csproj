@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericResultCollection.cs" />
     <Compile Include="IRunCompiler.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="RunControl\Run.cs" />
