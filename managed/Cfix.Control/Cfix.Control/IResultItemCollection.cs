@@ -14,6 +14,5 @@ namespace Cfix.Control
 
 		uint ItemCount { get; }
 		IResultItem GetItem( uint ordinal );
-
 	}
 }

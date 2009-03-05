@@ -351,7 +351,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"toolong.dll",
 				this.multiTarget,
-				true,
 				true ) )
 			{
 				coll.Refresh();
@@ -381,7 +380,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
 				this.multiTarget,
-				true,
 				true ) )
 			{
 				coll.Refresh();
@@ -403,15 +401,25 @@ namespace Cfix.Control.Test
 					// do not apply.
 					//
 					Assert.AreSame( coll, run.RootResult.Item );
-					Assert.AreEqual( 2, run.RootResult.ItemCount );
-
-					Assert.AreEqual( "dupfixturename", run.RootResult.GetItem( 0 ).Name );
-					Assert.AreEqual( "simple", run.RootResult.GetItem( 1 ).Name );
+					Assert.AreEqual( 1, run.RootResult.ItemCount );
 
 					IResultItemCollection simpleModRes =
-						( IResultItemCollection ) run.RootResult.GetItem( 1 );
+						( IResultItemCollection ) run.RootResult.GetItem( 0 );
+					Assert.AreEqual( "simple", simpleModRes.Name );
 
-					// TODO: Run, check root status.
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
 				}
 			}
 		}

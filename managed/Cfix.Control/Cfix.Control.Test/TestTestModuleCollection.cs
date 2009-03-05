@@ -58,7 +58,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				tgt,
-				true,
 				true );
 			try
 			{
@@ -76,7 +75,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"simple.dll",
 				this.multiTarget,
-				true,
 				true );
 			coll.Refresh();
 
@@ -96,7 +94,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"*.dll",
 				this.multiTarget,
-				true,
 				true );
 			coll.Refresh();
 
@@ -113,7 +110,8 @@ namespace Cfix.Control.Test
 				if ( inv != null )
 				{
 					Assert.IsNotNull( inv.InvalidityCause );
-					Assert.AreEqual( "toolong.dll", inv.Name );
+					Assert.IsTrue( inv.Name == "toolong.dll" ||
+								   inv.Name == "dupfixturename.dll" );
 
 					invalids++;
 				}
@@ -123,7 +121,7 @@ namespace Cfix.Control.Test
 				}
 			}
 
-			Assert.AreEqual( 1, invalids );
+			Assert.AreEqual( 2, invalids );
 		}
 
 		[Test]
@@ -133,7 +131,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir + "\\dummy" ),
 				"*",
 				this.multiTarget,
-				true,
 				true );
 			coll.Refresh();
 
@@ -147,7 +144,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir ),
 				"*",
 				this.multiTarget,
-				true,
 				true );
 			coll.Refresh();
 
@@ -170,7 +166,7 @@ namespace Cfix.Control.Test
 				}
 			}
 
-			Assert.AreEqual( 1, invalids );
+			Assert.AreEqual( 2, invalids );
 		}
 
 		[Test]
@@ -180,7 +176,6 @@ namespace Cfix.Control.Test
 				new DirectoryInfo( this.testdataDir + "\\.." ),
 				"*",
 				this.multiTarget,
-				true,
 				true );
 			coll.Refresh();
 
@@ -211,7 +206,7 @@ namespace Cfix.Control.Test
 					}
 				}
 
-				Assert.AreEqual( 1, invalids );
+				Assert.AreEqual( 2, invalids );
 
 				Assert.IsNotNull( subColl.GetItem( 0 ) );
 				Assert.IsNotNull( subColl.GetItem( 1 ) );

@@ -71,17 +71,22 @@ namespace Cfix.Control.Native
 			DirectoryInfo dir,
 			String filter,
 			AgentSet runAgents,
-			bool userOnly,
-			bool ignoreDuplicates
+			bool userOnly
 			)
 		{
+			//
+			// N.B. Duplicates are always ignored as they lead to
+			// problems during execution: If a TC is executed a second
+			// time, we cannot provide an appropriate event sink -
+			// therefore, disallow duplicates.
+			//
 			return TestModuleCollection.Search(
 				dir,
 				filter,
 				this.agent,
 				runAgents,
 				userOnly,
-				ignoreDuplicates );
+				false );
 		}
 
 		public ITestItemCollection LoadModule( 

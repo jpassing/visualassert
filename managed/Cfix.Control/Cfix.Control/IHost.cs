@@ -17,8 +17,7 @@ namespace Cfix.Control
 			DirectoryInfo dir,
 			String filter,
 			AgentSet runAgents,
-			bool userOnly,
-			bool ignoreDuplicates
+			bool userOnly
 			);
 
 		ITestItemCollection LoadModule(

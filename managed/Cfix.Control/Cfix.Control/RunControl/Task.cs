@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Cfix.Control.RunControl
 {
@@ -11,7 +12,8 @@ namespace Cfix.Control.RunControl
 	{
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
-		
+
+		private readonly IAgent agent;
 		private readonly IHost host;
 		private readonly List<IAction> actions = new List<IAction>();
 
@@ -25,9 +27,11 @@ namespace Cfix.Control.RunControl
 		private readonly object actionLock = new object();
 
 		public Task( 
+			IAgent agent,
 			IHost host
 			)
 		{
+			this.agent = agent;
 			this.host = host;
 		}
 
@@ -98,9 +102,17 @@ namespace Cfix.Control.RunControl
 			}
 
 			this.status = TaskStatus.Running;
-			foreach ( IAction act in this.actions )
+			try
 			{
-				act.Run( this.host );
+				foreach ( IAction act in this.actions )
+				{
+					act.Run( this.host );
+				}
+			}
+			catch ( COMException x )
+			{
+				throw new CfixException(
+					this.agent.ResolveMessage( x.ErrorCode ) );
 			}
 		}
 

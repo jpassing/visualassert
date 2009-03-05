@@ -102,7 +102,7 @@ namespace Cfix.Control.RunControl
 		{
 			if ( this.actions.Count > 0 )
 			{
-				Task task = new Task( this.agent.CreateHost() );
+				Task task = new Task( this.agent, this.agent.CreateHost() );
 				
 				foreach ( IAction act in this.actions )
 				{
