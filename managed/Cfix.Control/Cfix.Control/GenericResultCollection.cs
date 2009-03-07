@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Cfix.Control
 {
 	public class GenericResultCollection :
-		AbstractResultItem, IResultItemCollection
+		GenericResultItem, IResultItemCollection
 	{
 		private readonly IList<IResultItem> subItems;
 		private readonly ITestItemCollection item;

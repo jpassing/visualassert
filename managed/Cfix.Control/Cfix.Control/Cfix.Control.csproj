@@ -70,7 +70,6 @@
     <Compile Include="IAgent.cs" />
     <Compile Include="IDispositionPolicy.cs" />
     <Compile Include="IResultItemCollection.cs" />
-    <Compile Include="Native\AbstractNativeResultItem.cs" />
     <Compile Include="AbstractResultItem.cs" />
     <Compile Include="Native\Host.cs" />
     <Compile Include="IHost.cs" />

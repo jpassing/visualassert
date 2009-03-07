@@ -5,8 +5,8 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	internal class TestItemCollectionResult 
-		: AbstractNativeResultItem, 
+	internal class TestItemCollectionResult
+		: GenericResultItem, 
 		  IResultItemCollection, 
 		  ICfixTestÌtemContainerEventSink
 	{
@@ -80,7 +80,7 @@ namespace Cfix.Control.Native
 #if DEBUG
 			if ( ranToCompletion )
 			{
-				foreach ( AbstractNativeResultItem child in this.subItems )
+				foreach ( GenericResultItem child in this.subItems )
 				{
 					Debug.Assert( child.Completed );
 				}
@@ -94,7 +94,7 @@ namespace Cfix.Control.Native
 				//
 				// Adjust states of children that have been skipped.
 				//
-				foreach ( AbstractNativeResultItem child in this.subItems )
+				foreach ( GenericResultItem child in this.subItems )
 				{
 					if ( child.Status == ExecutionStatus.Pending )
 					{
@@ -186,7 +186,23 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public override CFIXCTL_REPORT_DISPOSITION FailedAssertion(
+		/*----------------------------------------------------------------------
+		 * ICfixReportEventSink.
+		 */
+
+		public void BeforeChildThreadStart( uint threadId )
+		{
+			Debug.Assert( this.events != null );
+			this.events.OnThreadStarted( this, threadId );
+		}
+
+		public void AfterChildThreadFinish( uint threadId )
+		{
+			Debug.Assert( this.events != null );
+			this.events.OnThreadFinished( this, threadId );
+		}
+
+		public CFIXCTL_REPORT_DISPOSITION FailedAssertion(
 			string expression,
 			string routine,
 			string file,
@@ -198,9 +214,20 @@ namespace Cfix.Control.Native
 			ICfixStackTrace stackTrace
 			)
 		{
-			CFIXCTL_REPORT_DISPOSITION disp = base.FailedAssertion(
-				expression, routine, file, message,
-				line, lastError, flags, reserved, stackTrace );
+			FailedAssertionFailure ass = new FailedAssertionFailure(
+				expression,
+				message,
+				file,
+				line,
+				routine,
+				StackTrace.Wrap( stackTrace ),
+				lastError );
+
+			AddFailure( ass );
+
+			Debug.Assert( this.events != null );
+			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+				this.events.DispositionPolicy.FailedAssertion( ass );
 
 			if ( this.subItemsFinished == 0 )
 			{
@@ -215,7 +242,7 @@ namespace Cfix.Control.Native
 			return disp;
 		}
 
-		public override CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
+		public CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
 			CFIXCTL_RELATE_OPERATOR op,
 			object expectedValue,
 			object actualValue,
@@ -228,9 +255,22 @@ namespace Cfix.Control.Native
 			uint reserved,
 			ICfixStackTrace stackTrace )
 		{
-			CFIXCTL_REPORT_DISPOSITION disp = base.FailedRelateAssertion(
-				op, expectedValue, actualValue, routine, file, message,
-				line, lastError, flags, reserved, stackTrace );
+			FailedRelateExpressionFailure fr = new FailedRelateExpressionFailure(
+				( RelateOperator ) op,
+				expectedValue,
+				actualValue,
+				message,
+				file,
+				line,
+				routine,
+				StackTrace.Wrap( stackTrace ),
+				lastError );
+
+			AddFailure( fr );
+
+			Debug.Assert( this.events != null );
+			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+				this.events.DispositionPolicy.FailedAssertion( fr );
 
 			if ( this.subItemsFinished == 0 )
 			{
@@ -245,13 +285,20 @@ namespace Cfix.Control.Native
 			return disp;
 		}
 
-		public override CFIXCTL_REPORT_DISPOSITION UnhandledException(
+		public CFIXCTL_REPORT_DISPOSITION UnhandledException(
 			uint exceptionCode,
 			uint reserved,
 			ICfixStackTrace stackTrace )
 		{
-			CFIXCTL_REPORT_DISPOSITION disp = base.UnhandledException(
-				exceptionCode, reserved, stackTrace );
+			UnhandledExceptionFailure u = new UnhandledExceptionFailure(
+				exceptionCode,
+				StackTrace.Wrap( stackTrace ) );
+
+			AddFailure( u );
+
+			Debug.Assert( this.events != null );
+			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+				this.events.DispositionPolicy.UnhandledException( u );
 
 			if ( this.subItemsFinished == 0 )
 			{
@@ -266,13 +313,16 @@ namespace Cfix.Control.Native
 			return disp;
 		}
 
-		public override void Inconclusive(
+		public void Inconclusive(
 			string reason,
 			uint reserved,
 			ICfixStackTrace stackTrace
 			)
 		{
-			base.Inconclusive( reason, reserved, stackTrace );
+			AddFailure( new Inconclusiveness(
+				reason,
+				StackTrace.Wrap( stackTrace ) ) );
+			IsInconclusive = true;
 
 			if ( this.subItemsFinished == 0 )
 			{
@@ -283,6 +333,26 @@ namespace Cfix.Control.Native
 				OnFinished( false );
 				Debug.Assert( Status == ExecutionStatus.Inconclusive );
 			}
+		}
+
+		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )
+		{
+			Debug.Assert( this.events != null );
+			this.events.OnLog( this, message );
+		}
+
+		public CFIXCTL_REPORT_DISPOSITION QueryDefaultFailedAssertionDisposition()
+		{
+			Debug.Assert( this.events != null );
+			return ( CFIXCTL_REPORT_DISPOSITION )
+				this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
+		}
+
+		public CFIXCTL_REPORT_DISPOSITION QueryDefaultUnhandledExceptionDisposition()
+		{
+			Debug.Assert( this.events != null );
+			return ( CFIXCTL_REPORT_DISPOSITION )
+				this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
 		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Cfix.Control
 {
-	public abstract class AbstractResultItem : IResultItem
+	public class GenericResultItem : IResultItem
 	{
 		//
 		// TestItem this result corresponds to - may or may not be
@@ -23,7 +23,7 @@ namespace Cfix.Control
 		private readonly Object failuresLock = new Object();
 		private ICollection<Failure> failures;
 
-		protected AbstractResultItem(
+		protected GenericResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
 			ITestItem item,
