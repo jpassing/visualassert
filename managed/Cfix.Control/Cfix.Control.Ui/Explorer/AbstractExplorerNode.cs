@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Cfix.Control;
 
@@ -8,13 +9,15 @@ namespace Cfix.Control.Ui.Explorer
 	{
 		private readonly ITestItem testItem;
 
-		public AbstractExplorerNode(
+		protected AbstractExplorerNode(
 			ITestItem testItem,
 			int imageIndex,
 			int selectedImageIndex
 			)
 			: base( testItem.Name, imageIndex, selectedImageIndex )
 		{
+			Debug.Assert( testItem != null );
+
 			this.testItem = testItem;
 
 			//

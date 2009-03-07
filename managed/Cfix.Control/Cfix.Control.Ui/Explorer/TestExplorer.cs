@@ -413,7 +413,6 @@ namespace Cfix.Control.Ui.Explorer
 	public class ExplorerNodeEventArgs : EventArgs
 	{
 		private readonly AbstractExplorerNode node;
-		private readonly ITestItem item;
 
 		internal ExplorerNodeEventArgs(
 			AbstractExplorerNode node 

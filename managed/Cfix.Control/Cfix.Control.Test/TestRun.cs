@@ -674,5 +674,65 @@ namespace Cfix.Control.Test
 		{
 			Assert.Fail( "NIY" );
 		}
+
+		[Test]
+		public void TestTerminate()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "StopInTest" ) )
+			{
+				//
+				// Stop on first log message, check that the rest is skipped.
+				//
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Log += delegate( object sender, LogEventArgs e )
+					{
+						Assert.AreEqual( "Stop me now", e.Message );
+						run.Terminate();
+					};
+
+					bool started = false;
+					run.Started += delegate( object sender, EventArgs e )
+					{
+						started = true;
+					};
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Terminated, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+					Assert.IsTrue( started );
+
+					Assert.AreEqual( ExecutionStatus.Skipped, run.RootResult.Status );
+
+					IResultItem stopMeResult = run.RootResult.GetItem( 0 );
+					IResultItem logResult = run.RootResult.GetItem( 1 );
+
+					Assert.AreEqual( ExecutionStatus.Skipped, stopMeResult.Status );
+					Assert.AreEqual( ExecutionStatus.Skipped, logResult.Status );
+				}
+			}
+		}
 	}
 }

@@ -72,21 +72,6 @@ namespace Cfix.Control.RunControl
 			}
 		}
 
-		internal void AddActionRange( IEnumerable<IAction> actions )
-		{
-			lock ( this.actionLock )
-			{
-				foreach ( IAction action in actions )
-				{
-					this.actions.Add( action );
-				}
-			}
-		}
-
-		internal IHost Host
-		{
-			get { return this.host; }
-		}
 
 		/*--------------------------------------------------------------
 		 * Async run.
