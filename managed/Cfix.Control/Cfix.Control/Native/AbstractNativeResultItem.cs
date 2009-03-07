@@ -15,10 +15,6 @@ namespace Cfix.Control.Native
 	internal abstract class AbstractNativeResultItem
 		: AbstractResultItem, ICfixReportEventSink
 	{
-		private readonly Object failuresLock = new Object();
-		private ICollection<Failure> failures;
-		private volatile bool inconclusive;
-
 		protected AbstractNativeResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -30,66 +26,6 @@ namespace Cfix.Control.Native
 			Debug.Assert( events != null );
 			Debug.Assert( events.DispositionPolicy != null );
 			Debug.Assert( item != null );
-		}
-
-		private void AddFailure( Failure failure )
-		{
-			lock ( this.failuresLock )
-			{
-				if ( this.failures == null )
-				{
-					this.failures = new LinkedList<Failure>();
-				}
-
-				this.failures.Add( failure );
-			}
-		}
-		
-		public int FailureCount
-		{
-			get
-			{
-				if ( this.failures == null )
-				{
-					return 0;
-				}
-				else
-				{
-					return this.failures.Count;
-				}
-			}
-		}
-
-		public bool IsInconclusive
-		{
-			get { return this.inconclusive; }
-		}
-
-		public bool Completed
-		{
-			get 
-			{
-				switch ( this.Status )
-				{
-					case ExecutionStatus.Succeeded:
-					case ExecutionStatus.SucceededWithInconclusiveParts:
-					case ExecutionStatus.Failed:
-					case ExecutionStatus.Inconclusive:
-						return true;
-
-					default:
-						return false;
-				}
-			}
-		}
-
-		/*----------------------------------------------------------------------
-		 * Overrides.
-		 */
-
-		public override ICollection<Failure> Failures
-		{
-			get { return this.failures; }
 		}
 
 		/*----------------------------------------------------------------------
@@ -192,7 +128,7 @@ namespace Cfix.Control.Native
 			AddFailure( new Inconclusiveness(
 				reason,
 				StackTrace.Wrap( stackTrace ) ) );
-			this.inconclusive = true;
+			IsInconclusive = true;
 		}
 
 		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )

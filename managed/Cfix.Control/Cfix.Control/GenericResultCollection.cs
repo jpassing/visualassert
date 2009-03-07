@@ -43,15 +43,6 @@ namespace Cfix.Control
 		}
 
 		/*--------------------------------------------------------------
-		 * Overrides.
-		 */
-
-		public override ICollection<Failure> Failures
-		{
-			get { return null; }
-		}
-
-		/*--------------------------------------------------------------
 		 * IResultItemCollection.
 		 */
 

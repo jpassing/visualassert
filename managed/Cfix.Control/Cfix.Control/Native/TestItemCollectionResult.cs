@@ -107,33 +107,9 @@ namespace Cfix.Control.Native
 			//
 			// Update status and notify parent.
 			//
-			if ( this.subItemFailed )
-			{
-				Status = ExecutionStatus.Failed;
-			}
-			else if ( this.IsInconclusive )
-			{
-				Debug.Assert( this.FailureCount > 0 );
-				this.Status = ExecutionStatus.Inconclusive;
-			}
-			else if ( this.FailureCount > 0 )
-			{
-				//
-				// Setup/Teardown failed.
-				//
-				Status = ExecutionStatus.Failed;
-			}
-			else if ( this.subItemInconclusive )
-			{
-				//
-				// Largely successful, but some inconclusive.
-				//
-				this.Status = ExecutionStatus.SucceededWithInconclusiveParts;
-			}
-			else
-			{
-				this.Status = ExecutionStatus.Succeeded;
-			}
+			this.Status = CalculateStatus( 
+				this.subItemFailed, 
+				this.subItemInconclusive );
 
 			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
 			if ( tp != null )

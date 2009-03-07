@@ -42,20 +42,8 @@ namespace Cfix.Control.Native
 			Debug.Assert( this.Status == ExecutionStatus.Running );
 			Debug.Assert( ( ranToCompletion == 1 ) == ( this.FailureCount == 0 ) );
 
-			if ( this.IsInconclusive )
-			{
-				Debug.Assert( this.FailureCount > 0 );
-				this.Status = ExecutionStatus.Inconclusive;
-			}
-			else if ( this.FailureCount > 0 )
-			{
-				this.Status = ExecutionStatus.Failed;
-			}
-			else
-			{
-				this.Status = ExecutionStatus.Succeeded;
-			}
-
+			this.Status = CalculateStatus( false, false );
+			
 			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
 			if ( tp != null )
 			{

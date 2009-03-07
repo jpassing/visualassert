@@ -11,14 +11,18 @@ namespace Cfix.Control
 		// still available.
 		//
 		private ITestItem item;
+		private readonly String itemName;
+
 		protected IActionEvents events;
 		
 		private volatile ExecutionStatus status;
+		private volatile bool inconclusive;
 
-		private readonly String itemName;
-		
 		protected readonly IResultItemCollection parent;
-		
+
+		private readonly Object failuresLock = new Object();
+		private ICollection<Failure> failures;
+
 		protected AbstractResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -42,6 +46,102 @@ namespace Cfix.Control
 			//
 			this.item = null;
 			this.events = null;
+		}
+
+		/*----------------------------------------------------------------------
+		 * Protected.
+		 */
+
+		protected void AddFailure( Failure failure )
+		{
+			lock ( this.failuresLock )
+			{
+				if ( this.failures == null )
+				{
+					this.failures = new LinkedList<Failure>();
+				}
+
+				this.failures.Add( failure );
+			}
+		}
+
+		protected bool IsInconclusive
+		{
+			get { return this.inconclusive; }
+			set { this.inconclusive = value; }
+		}
+
+		protected ExecutionStatus CalculateStatus(
+			bool subItemFailed,
+			bool subItemInconclusive )
+		{
+			if ( subItemFailed )
+			{
+				return ExecutionStatus.Failed;
+			}
+			else if ( this.IsInconclusive )
+			{
+				Debug.Assert( this.FailureCount > 0 );
+				return ExecutionStatus.Inconclusive;
+			}
+			else if ( this.FailureCount > 0 )
+			{
+				//
+				// Item itself failed.
+				// 
+				// N.B. In case of collections, this may occur if 
+				// Setup/Teardown has failed.
+				//
+				return ExecutionStatus.Failed;
+			}
+			else if ( subItemInconclusive )
+			{
+				//
+				// Largely successful, but some inconclusive.
+				//
+				return ExecutionStatus.SucceededWithInconclusiveParts;
+			}
+			else
+			{
+				return ExecutionStatus.Succeeded;
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Public.
+		 */
+
+		public int FailureCount
+		{
+			get
+			{
+				if ( this.failures == null )
+				{
+					return 0;
+				}
+				else
+				{
+					return this.failures.Count;
+				}
+			}
+		}
+
+		public bool Completed
+		{
+			get
+			{
+				switch ( this.Status )
+				{
+					case ExecutionStatus.Succeeded:
+					case ExecutionStatus.SucceededWithInconclusiveParts:
+					case ExecutionStatus.Failed:
+					case ExecutionStatus.Inconclusive:
+						return true;
+
+					default:
+						return false;
+				}
+			}
 		}
 
 		/*----------------------------------------------------------------------
@@ -79,6 +179,9 @@ namespace Cfix.Control
 			}
 		}
 
-		public abstract ICollection<Failure> Failures { get; }
+		public ICollection<Failure> Failures
+		{
+			get { return this.failures; }
+		}
 	}
 }
