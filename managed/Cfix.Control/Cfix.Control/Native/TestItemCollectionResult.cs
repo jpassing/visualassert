@@ -6,16 +6,10 @@ using Cfixctl;
 namespace Cfix.Control.Native
 {
 	internal class TestItemCollectionResult
-		: GenericResultItem, 
+		: GenericResultCollection,
 		  IResultItemCollection, 
 		  ICfixTestÌtemContainerEventSink
 	{
-		private readonly IList<IResultItem> subItems;
-
-		private volatile int subItemsFinished;
-		private volatile bool subItemFailed;
-		private volatile bool subItemInconclusive;
-
 		internal TestItemCollectionResult( 
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -24,131 +18,6 @@ namespace Cfix.Control.Native
 			)
 			: base( events, parent, itemCollection, status )
 		{
-			Debug.Assert( events != null );
-			Debug.Assert( itemCollection != null );
-
-			//
-			// Add children.
-			//
-			this.subItems = new List<IResultItem>(
-				( int ) itemCollection.ItemCount );
-
-			foreach ( ITestItem child in itemCollection )
-			{
-				IResultItemFactory fac = child as IResultItemFactory;
-				if ( fac != null )
-				{
-					this.subItems.Add( fac.CreateResultItem(
-						this,
-						events,
-						status ) );
-				}
-			}
-		}
-
-		internal void OnChildFinished( 
-			ExecutionStatus status, 
-			bool childIsLeaf,
-			bool ranToCompletion 
-			)
-		{
-			if ( status == ExecutionStatus.Failed )
-			{
-				this.subItemFailed = true;
-			}
-			else if ( status == ExecutionStatus.Inconclusive ||
-				status == ExecutionStatus.SucceededWithInconclusiveParts )
-			{
-				this.subItemInconclusive = true;
-			}
-
-			subItemsFinished++;
-
-			//
-			// N.B. For leaf children, we do need to track how many children
-			// have finished as this object will get a AfterFixtureFinish
-			// callback.
-			//
-			if ( ! childIsLeaf && subItemsFinished == this.subItems.Count )
-			{
-				OnFinished( ranToCompletion );
-			}
-		}
-
-		private void OnFinished( bool ranToCompletion )
-		{
-#if DEBUG
-			if ( ranToCompletion )
-			{
-				foreach ( GenericResultItem child in this.subItems )
-				{
-					Debug.Assert( child.Completed );
-				}
-			}
-#endif
-
-			if ( !ranToCompletion )
-			{
-				Debug.Assert( this.Status != ExecutionStatus.Succeeded );
-
-				//
-				// Adjust states of children that have been skipped.
-				//
-				foreach ( GenericResultItem child in this.subItems )
-				{
-					if ( child.Status == ExecutionStatus.Pending )
-					{
-						// TODO: recursive?
-						child.Status = ExecutionStatus.Skipped;
-					}
-				}
-			}
-
-			//
-			// Update status and notify parent.
-			//
-			this.Status = CalculateStatus( 
-				this.subItemFailed, 
-				this.subItemInconclusive );
-
-			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
-			if ( tp != null )
-			{
-				tp.OnChildFinished( this.Status, false, ranToCompletion );
-			}
-		}
-
-		/*----------------------------------------------------------------------
-		 * IResultItemCollection.
-		 */
-
-		public ITestItemCollection ItemCollection
-		{
-			get { return ( ITestItemCollection ) Item; }
-		}
-
-		public uint ItemCount 
-		{
-			get { return ( uint ) this.subItems.Count; }
-		}
-
-		public IResultItem GetItem( uint ordinal )
-		{
-			return this.subItems[ ( int ) ordinal ];
-		}
-
-		/*----------------------------------------------------------------------
-		 * IEnumerable.
-		 */
-
-		public IEnumerator<IResultItem> GetEnumerator()
-		{
-			return this.subItems.GetEnumerator();
-		}
-
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.subItems.GetEnumerator();
 		}
 
 		/*----------------------------------------------------------------------
@@ -173,7 +42,7 @@ namespace Cfix.Control.Native
 			uint threadId 
 			)
 		{
-			IResultItem item = this.subItems[ ( int ) testCaseOrdinal ];
+			IResultItem item = this.GetItem( testCaseOrdinal );
 			Debug.Assert( item is TestItemResult );
 
 			if ( item == null )
@@ -229,7 +98,7 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( ass );
 
-			if ( this.subItemsFinished == 0 )
+			if ( this.SubItemsFinished == 0 )
 			{
 				//
 				// Setup failure. There will not be any further callbacks, 
@@ -272,7 +141,7 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( fr );
 
-			if ( this.subItemsFinished == 0 )
+			if ( this.SubItemsFinished == 0 )
 			{
 				//
 				// Setup failure. There will not be any further callbacks, 
@@ -300,7 +169,7 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.UnhandledException( u );
 
-			if ( this.subItemsFinished == 0 )
+			if ( this.SubItemsFinished == 0 )
 			{
 				//
 				// Setup failure. There will not be any further callbacks, 
@@ -324,7 +193,7 @@ namespace Cfix.Control.Native
 				StackTrace.Wrap( stackTrace ) ) );
 			IsInconclusive = true;
 
-			if ( this.subItemsFinished == 0 )
+			if ( this.SubItemsFinished == 0 )
 			{
 				//
 				// Setup failure. There will not be any further callbacks, 

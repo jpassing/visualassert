@@ -18,7 +18,7 @@ namespace Cfix.Control
 		private volatile ExecutionStatus status;
 		private volatile bool inconclusive;
 
-		protected readonly IResultItemCollection parent;
+		private readonly IResultItemCollection parent;
 
 		private readonly Object failuresLock = new Object();
 		private ICollection<Failure> failures;
@@ -150,7 +150,26 @@ namespace Cfix.Control
 
 		public IResultItemCollection Parent
 		{
-			get { return this.parent; }
+			get
+			{
+#if DEBUG
+				if ( this.parent != null )
+				{
+					bool foundInParent = false;
+					foreach ( IResultItem child in this.parent )
+					{
+						if ( ReferenceEquals( child, this ) )
+						{
+							foundInParent = true;
+							break;
+						}
+					}
+
+					Debug.Assert( foundInParent );
+				}
+#endif
+				return this.parent;
+			}
 		}
 
 		public ITestItem Item

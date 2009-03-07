@@ -44,8 +44,8 @@ namespace Cfix.Control.Native
 			Debug.Assert( ( ranToCompletion == 1 ) == ( this.FailureCount == 0 ) );
 
 			this.Status = CalculateStatus( false, false );
-			
-			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
+
+			GenericResultCollection tp = this.Parent as GenericResultCollection;
 			if ( tp != null )
 			{
 				tp.OnChildFinished( this.Status, true, ranToCompletion > 0 );
