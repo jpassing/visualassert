@@ -92,8 +92,8 @@ namespace Cfix.Control.Native
 
 		public void Add(
 			IRunCompiler compiler,
-			IResultItemCollection parentResult,
-			IActionEvents events
+			IActionEvents events,
+			IResultItem result
 			)
 		{
 			//

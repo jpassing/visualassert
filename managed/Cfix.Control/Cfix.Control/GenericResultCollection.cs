@@ -35,7 +35,7 @@ namespace Cfix.Control
 
 			foreach ( ITestItem child in itemCollection )
 			{
-				IResultItemFactory fac = child as IResultItemFactory;
+				IRunnableTestItem fac = child as IRunnableTestItem;
 				if ( fac != null )
 				{
 					this.subItems.Add( fac.CreateResultItem(
@@ -148,6 +148,19 @@ namespace Cfix.Control
 		public IResultItem GetItem( uint ordinal )
 		{
 			return this.subItems[ ( int ) ordinal ];
+		}
+
+		public IResultItem GetItem( ITestItem item )
+		{
+			foreach ( IResultItem child in this.subItems )
+			{
+				if ( ReferenceEquals( item, child.Item ) )
+				{
+					return child;
+				}
+			}
+
+			return null;
 		}
 
 		/*--------------------------------------------------------------

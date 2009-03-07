@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,7 +11,7 @@ namespace Cfix.Control
 	/// Threadsafe.
 	/// </summary>
 	public class GenericTestItemCollection : 
-		ITestItemCollection, IResultItemFactory
+		ITestItemCollection, IRunnableTestItem
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
@@ -159,27 +160,47 @@ namespace Cfix.Control
 
 		public void Add(
 			IRunCompiler compiler,
-			IResultItemCollection parentResult,
-			IActionEvents events
+			IActionEvents events,
+			IResultItem result
 			)
 		{
-			IResultItemCollection ownResult = new GenericResultCollection(
-				events,
-				parentResult,
-				this,
-				ExecutionStatus.Pending );
+			Debug.Assert( compiler != null );
+			Debug.Assert( events != null );
+			Debug.Assert( result != null );
+
+			Debug.Assert( result is IResultItemCollection );
+			IResultItemCollection resultColl = ( IResultItemCollection ) result;
 
 			//
-			// Let children add their actions.
+			// N.B. The item collection may contain invalid modules etc,
+			// so the # of results may be smaller than the # of items.
+			//
+			Debug.Assert( resultColl.ItemCount <= this.ItemCount );
+
+			//
+			// Let children add their actions by themselves.
 			//
 			lock ( this.listLock )
 			{
-				foreach ( ITestItem item in this.list )
+				foreach ( ITestItem child in this.list )
 				{
-					item.Add(
-						compiler,
-						ownResult,
-						events );
+					//
+					// Find appropriate result.
+					//
+					// N.B. For invalid modules etc, childResult will be
+					// null.
+					//
+					IResultItem childResult = resultColl.GetItem( child );
+					if ( childResult != null )
+					{
+						Debug.Assert( ReferenceEquals(
+							childResult.Item, child ) );
+
+						child.Add(
+							compiler,
+							events,
+							childResult );
+					}
 				}
 			}
 		}

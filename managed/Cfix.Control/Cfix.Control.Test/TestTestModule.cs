@@ -73,8 +73,11 @@ namespace Cfix.Control.Test
 					ThreadingOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
-					null,
-					sink );
+					sink,
+					mod.CreateResultItem(
+						null,
+						sink,
+						ExecutionStatus.Pending ) );
 				IRun run = comp.Compile();
 				AutoResetEvent done = new AutoResetEvent( false );
 				run.Finished += delegate( object s, FinishedEventArgs e )
@@ -118,8 +121,11 @@ namespace Cfix.Control.Test
 					ThreadingOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
-					null,
-					sink );
+					sink,
+					mod.CreateResultItem(
+						null,
+						sink,
+						ExecutionStatus.Pending ) );
 				IRun run = comp.Compile();
 				AutoResetEvent done = new AutoResetEvent( false );
 				run.Finished += delegate( object s, FinishedEventArgs e )

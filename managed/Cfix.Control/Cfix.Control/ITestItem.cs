@@ -36,12 +36,12 @@ namespace Cfix.Control
 
 		void Add( 
 			IRunCompiler compiler,
-			IResultItemCollection parentResult,
-			IActionEvents events
+			IActionEvents events,
+			IResultItem result
 			);
 	}
 
-	public interface IResultItemFactory
+	public interface IRunnableTestItem : ITestItem
 	{
 		IResultItem CreateResultItem(
 			IResultItemCollection parentResult,

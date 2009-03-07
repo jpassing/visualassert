@@ -90,12 +90,15 @@ namespace Cfix.Control.RunControl
 			this.actions.Add( action );
 		}
 
-		public void Add( ITestItem item )
+		public void Add( IRunnableTestItem item )
 		{
 			item.Add(
 				this,
-				null,
-				this.run );
+				this.run,
+				item.CreateResultItem(
+					null,
+					this.run,
+					ExecutionStatus.Pending ) );
 		}
 
 		public IRun Compile()

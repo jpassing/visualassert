@@ -19,6 +19,6 @@ namespace Cfix.Control
 		 * Method Description:
 		 *		Convenience method for use by client.
 		 --*/
-		void Add( ITestItem item );
+		void Add( IRunnableTestItem item );
 	}
 }

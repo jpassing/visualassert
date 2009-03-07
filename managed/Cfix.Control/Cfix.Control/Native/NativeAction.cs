@@ -139,8 +139,8 @@ namespace Cfix.Control.Native
 
 		public NativeAction( 
 			TestItem item,
-			IResultItemCollection parentResult,
 			IActionEvents events,
+			IResultItem result,
 			SchedulingOptions schedOptions,
 			ThreadingOptions threadingOptions
 			)
@@ -153,10 +153,7 @@ namespace Cfix.Control.Native
 			this.schedOptions = schedOptions;
 			this.threadingOptions = threadingOptions;
 
-			this.result = item.CreateResultItem(
-				parentResult,
-				events,
-				ExecutionStatus.Pending );
+			this.result = result;
 		}
 
 		~NativeAction()

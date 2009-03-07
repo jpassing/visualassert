@@ -12,7 +12,7 @@ namespace Cfix.Control.Native
 	 * 
 	 *		Threadsafe.
 	 --*/
-	public class TestItem : ITestItem, IResultItemFactory
+	public class TestItem : ITestItem, IRunnableTestItem
 	{
 		private readonly TestItemCollection parent;
 		private readonly uint ordinal;
@@ -144,17 +144,21 @@ namespace Cfix.Control.Native
 			get { return this.parent; }
 		}
 
-		public void Add( 
+		public void Add(
 			IRunCompiler compiler,
-			IResultItemCollection parentResult,
-			IActionEvents events
+			IActionEvents events,
+			IResultItem result
 			)
 		{
+			Debug.Assert( compiler != null );
+			Debug.Assert( events != null );
+			Debug.Assert( result != null );
+
 			compiler.Add(
 				new NativeAction(
 					this,
-					parentResult,
 					events,
+					result,
 					compiler.SchedulingOptions,
 					compiler.ThreadingOptions ) );
 		}
