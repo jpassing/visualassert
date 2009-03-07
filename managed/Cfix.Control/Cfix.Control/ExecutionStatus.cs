@@ -9,6 +9,7 @@ namespace Cfix.Control
 		Pending,
 		Running,
 		Skipped,
+		Stopped,
 		Succeeded,
 		SucceededWithInconclusiveParts,
 		Failed,

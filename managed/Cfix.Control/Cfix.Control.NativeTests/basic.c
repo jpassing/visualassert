@@ -1,4 +1,5 @@
 #include <cfix.h>
+#include <crtdbg.h>
 
 static DWORD CALLBACK ThreadProc( PVOID Args )
 {
@@ -18,9 +19,24 @@ static void __stdcall Log()
 	WaitForSingleObject( Thr, INFINITE );
 }
 
+static void __stdcall Nop01()
+{
+}
+
+static void __stdcall Nop02()
+{
+}
+
 static void __stdcall Inconclusive()
 {
 	CFIX_INCONCLUSIVE( NULL );
+}
+
+static void __stdcall StopMe()
+{
+	CFIX_LOG( "Stop me now" );
+	CFIX_ASSERT( !"Seize this assert to abort" );
+	_ASSERTE( !"Should have been stopped" );
 }
 
 static void __stdcall FailingAssertion()
@@ -51,3 +67,31 @@ CFIX_BEGIN_FIXTURE( LogTwice )
 	CFIX_FIXTURE_ENTRY( Log )
 CFIX_END_FIXTURE()
 
+CFIX_BEGIN_FIXTURE( StopInTest )
+	CFIX_FIXTURE_ENTRY( StopMe )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( StopInAfter )
+	CFIX_FIXTURE_AFTER( StopMe )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+	CFIX_FIXTURE_ENTRY( Nop02 )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( StopInBefore )
+	CFIX_FIXTURE_BEFORE( StopMe )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+	CFIX_FIXTURE_ENTRY( Nop02 )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( StopInSetup )
+	CFIX_FIXTURE_SETUP( StopMe )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+	CFIX_FIXTURE_ENTRY( Nop02 )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( StopInTeardown )
+	CFIX_FIXTURE_TEARDOWN( StopMe )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+	CFIX_FIXTURE_ENTRY( Nop02 )
+CFIX_END_FIXTURE()

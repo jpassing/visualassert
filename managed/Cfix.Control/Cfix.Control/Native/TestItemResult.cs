@@ -41,9 +41,19 @@ namespace Cfix.Control.Native
 		public void AfterTestCaseFinish( int ranToCompletion )
 		{
 			Debug.Assert( this.Status == ExecutionStatus.Running );
-			Debug.Assert( ( ranToCompletion == 1 ) == ( this.FailureCount == 0 ) );
 
-			this.Status = CalculateStatus( false, false, false );
+			//
+			// N.B. It is possible that the run has been stopped, yet there
+			// already has been an error reported. The status will be Failed
+			// rather than Stopped in this case -- this is considered ok.
+			//
+			bool stopped = ( ranToCompletion == 0 ) && this.FailureCount == 0;
+
+			this.Status = CalculateStatus( 
+				false, 
+				false,
+				stopped, 
+				false );
 
 			GenericResultCollection tp = this.Parent as GenericResultCollection;
 			if ( tp != null )

@@ -485,9 +485,194 @@ namespace Cfix.Control.Test
 						{
 							Assert.AreEqual( ExecutionStatus.Skipped, item.Status );
 						} );
-
 				}
 			}
+		}
+
+		public void TestStopSinglethreaded( string fixtureName )
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, fixtureName ) )
+			{
+				//
+				// Stop on first log message, check that the rest is skipped.
+				//
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Log += delegate( object sender, LogEventArgs e )
+					{
+						Assert.AreEqual( "Stop me now", e.Message );
+						run.Stop();
+					};
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Stopped, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Stopped, run.RootResult.Status );
+
+					IResultItem stopMeResult = run.RootResult.GetItem( 0 );
+					IResultItem logResult = run.RootResult.GetItem( 1 );
+
+					Assert.AreEqual( ExecutionStatus.Stopped, stopMeResult.Status );
+					Assert.AreEqual( ExecutionStatus.Skipped, logResult.Status );
+				}
+			}
+		}
+
+		[Test]
+		public void TestStopInTestCaseSinglethreaded()
+		{
+			TestStopSinglethreaded( "StopInTest" );
+		}
+
+		[Test]
+		public void TestStopInAfterSinglethreaded()
+		{
+			TestStopSinglethreaded( "StopInAfter" );
+		}
+
+		[Test]
+		public void TestStopInBeforeSinglethreaded()
+		{
+			TestStopSinglethreaded( "StopInBefore" );
+		}
+
+		[Test]
+		public void TestStopInSetupSinglethreaded()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "StopInSetup" ) )
+			{
+				//
+				// Stop on first log message, check that the rest is skipped.
+				//
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Log += delegate( object sender, LogEventArgs e )
+					{
+						Assert.AreEqual( "Stop me now", e.Message );
+						run.Stop();
+					};
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Stopped, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Stopped, run.RootResult.Status );
+
+					IResultItem stopMeResult = run.RootResult.GetItem( 0 );
+					IResultItem logResult = run.RootResult.GetItem( 1 );
+
+					Assert.AreEqual( ExecutionStatus.Skipped, stopMeResult.Status );
+					Assert.AreEqual( ExecutionStatus.Skipped, logResult.Status );
+				}
+			}
+		}
+
+		[Test]
+		public void TestStopInTeardownSinglethreaded()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture = GetFixture( mod, "StopInTeardown" ) )
+			{
+				//
+				// Stop on first log message, check that the rest is skipped.
+				//
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Log += delegate( object sender, LogEventArgs e )
+					{
+						Assert.AreEqual( "Stop me now", e.Message );
+						run.Stop();
+					};
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Stopped, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					IResultItem stopMeResult = run.RootResult.GetItem( 0 );
+					IResultItem logResult = run.RootResult.GetItem( 1 );
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, stopMeResult.Status );
+					Assert.AreEqual( ExecutionStatus.Succeeded, logResult.Status );
+
+					//
+					// No special handling for Teardown, so the status 
+					// should be Succeeded.
+					//
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				}
+			}
+		}
+		
+		[Test]
+		public void TestStopMultithreaded()
+		{
+			Assert.Fail( "NIY" );
 		}
 	}
 }

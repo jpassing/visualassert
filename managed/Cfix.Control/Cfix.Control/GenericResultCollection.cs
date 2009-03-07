@@ -13,6 +13,7 @@ namespace Cfix.Control
 		private volatile int subItemsFinished;
 		private volatile bool subItemFailed;
 		private volatile bool subItemInconclusive;
+		private volatile bool subItemStopped; 
 		private volatile int subItemsSkipped;
 
 		public GenericResultCollection(
@@ -68,6 +69,12 @@ namespace Cfix.Control
 			}
 #endif
 
+			bool stoppedInSetup =
+				!ranToCompletion &&
+				this.subItemsFinished == 0 &&
+				this.FailureCount == 0 &&
+				this.ItemCount > 0;
+
 			if ( !ranToCompletion )
 			{
 				Debug.Assert( this.Status != ExecutionStatus.Succeeded );
@@ -90,6 +97,7 @@ namespace Cfix.Control
 			this.Status = CalculateStatus(
 				this.subItemFailed,
 				this.subItemInconclusive,
+				this.subItemStopped || stoppedInSetup,
 				this.subItemsSkipped > 0 && this.subItemsSkipped == ItemCount );
 
 			GenericResultCollection tp = this.Parent as GenericResultCollection;
@@ -137,6 +145,10 @@ namespace Cfix.Control
 			else if ( status == ExecutionStatus.Skipped )
 			{
 				this.subItemsSkipped++;
+			}
+			else if ( status == ExecutionStatus.Stopped )
+			{
+				this.subItemStopped = true;
 			}
 
 			subItemsFinished++;

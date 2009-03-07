@@ -74,12 +74,17 @@ namespace Cfix.Control
 		protected ExecutionStatus CalculateStatus(
 			bool subItemFailed,
 			bool subItemInconclusive,
-			bool allSubItemsSkipped 
+			bool subItemStopped,
+			bool allSubItemsSkipped
 			)
 		{
 			if ( subItemFailed )
 			{
 				return ExecutionStatus.Failed;
+			}
+			else if ( subItemStopped )
+			{
+				return ExecutionStatus.Stopped;
 			}
 			else if ( this.IsInconclusive )
 			{
@@ -143,6 +148,7 @@ namespace Cfix.Control
 					case ExecutionStatus.Failed:
 					case ExecutionStatus.Inconclusive:
 					case ExecutionStatus.Skipped:
+					case ExecutionStatus.Stopped:
 						return true;
 
 					case ExecutionStatus.Pending:
