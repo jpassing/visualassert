@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using Cfix.Control;
+using Cfix.Control.RunControl;
 using Cfix.Control.Native;
 
 namespace QuickTest
@@ -19,33 +20,30 @@ namespace QuickTest
 				Architecture.I386,
 				true );
 
-			//TestModule mod = TestModule.LoadModule(
-			//    target,
-			//    @"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testslow.dll",
-			//    true );
+			using ( IHost host = inTarget.CreateHost() )
+			using ( ITestItemCollection mod = host.LoadModule(
+				null,
+				@"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testslow.dll",
+				false ) )
+			using ( ExplorerForm f = new ExplorerForm() )
+			{
+				IRunCompiler comp = new SimpleRunCompiler(
+					ooTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) mod );
+				using ( IRun run = comp.Compile() )
+				{
+					f.Explorer.SetSession( new Session(), true );
+					f.Explorer.Session.Tests = mod;
 
-			//GenericTestItemCollection cont = new GenericTestItemCollection( "Cont" );
-			//cont.Add( mod );
+					f.Results.Run = run;
 
-			//using ( AgentSet multiTarget = new AgentSet() )
-			//{
-			//    multiTarget.AddArchitecture( ooTarget );
-
-			//    TestModuleCollection cont = TestModuleCollection.Search(
-			//        new DirectoryInfo( @"D:\dev\wdev\cfix-cfixctl" ),
-			//        "*",
-			//        inTarget,
-			//        multiTarget,
-			//        false,
-			//        true );
-
-			//    using ( ExplorerForm f = new ExplorerForm() )
-			//    {
-			//        f.Explorer.SetSession( new Session(), true );
-			//        f.Explorer.Session.Tests = cont;
-			//        Application.Run( f );
-			//    }
-			//}
+					Application.Run( f );
+				}
+			}
 		}
 	}
 }

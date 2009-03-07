@@ -36,6 +36,7 @@
     <AssemblyName>Cfix.Control.Ui</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aga.Controls, Version=1.6.1.0, Culture=neutral, PublicKeyToken=fcc90fbf924463a3, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -53,11 +54,24 @@
     </Compile>
     <Compile Include="Explorer\NodeFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result\ResultExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Result\ResultExplorer.Designer.cs">
+      <DependentUpon>ResultExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Result\IResultNode.cs" />
+    <Compile Include="Result\ResultItemNode.cs" />
+    <Compile Include="Result\ResultModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Explorer\TestExplorer.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TestExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Result\ResultExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ResultExplorer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

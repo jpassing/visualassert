@@ -29,18 +29,20 @@ namespace QuickTest
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.refresh = new System.Windows.Forms.Button();
 			this.progressLabel = new System.Windows.Forms.Label();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.currentNodeLabel = new System.Windows.Forms.Label();
 			this.abortBtn = new System.Windows.Forms.Button();
+			this.Results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.SuspendLayout();
 			// 
 			// refresh
 			// 
 			this.refresh.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
-			this.refresh.Location = new System.Drawing.Point( 0, 234 );
+			this.refresh.Location = new System.Drawing.Point( 0, 483 );
 			this.refresh.Name = "refresh";
 			this.refresh.Size = new System.Drawing.Size( 75, 23 );
 			this.refresh.TabIndex = 1;
@@ -52,7 +54,7 @@ namespace QuickTest
 			// 
 			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
 			this.progressLabel.AutoSize = true;
-			this.progressLabel.Location = new System.Drawing.Point( 12, 262 );
+			this.progressLabel.Location = new System.Drawing.Point( 12, 511 );
 			this.progressLabel.Name = "progressLabel";
 			this.progressLabel.Size = new System.Drawing.Size( 139, 13 );
 			this.progressLabel.TabIndex = 2;
@@ -70,14 +72,16 @@ namespace QuickTest
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.explorer.Location = new System.Drawing.Point( 0, 0 );
 			this.explorer.Name = "explorer";
-			this.explorer.Size = new System.Drawing.Size( 292, 228 );
+			this.explorer.NodeContextMenu = null;
+			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.Size = new System.Drawing.Size( 808, 221 );
 			this.explorer.TabIndex = 0;
 			// 
 			// currentNodeLabel
 			// 
 			this.currentNodeLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
 			this.currentNodeLabel.AutoSize = true;
-			this.currentNodeLabel.Location = new System.Drawing.Point( 141, 262 );
+			this.currentNodeLabel.Location = new System.Drawing.Point( 141, 511 );
 			this.currentNodeLabel.Name = "currentNodeLabel";
 			this.currentNodeLabel.Size = new System.Drawing.Size( 139, 13 );
 			this.currentNodeLabel.TabIndex = 2;
@@ -86,7 +90,7 @@ namespace QuickTest
 			// abortBtn
 			// 
 			this.abortBtn.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
-			this.abortBtn.Location = new System.Drawing.Point( 82, 235 );
+			this.abortBtn.Location = new System.Drawing.Point( 82, 484 );
 			this.abortBtn.Name = "abortBtn";
 			this.abortBtn.Size = new System.Drawing.Size( 75, 23 );
 			this.abortBtn.TabIndex = 3;
@@ -94,11 +98,22 @@ namespace QuickTest
 			this.abortBtn.UseVisualStyleBackColor = true;
 			this.abortBtn.Click += new System.EventHandler( this.abortBtn_Click );
 			// 
+			// Results
+			// 
+			this.Results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+						| System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.Results.Location = new System.Drawing.Point( 0, 227 );
+			this.Results.Name = "Results";
+			this.Results.Size = new System.Drawing.Size( 808, 251 );
+			this.Results.TabIndex = 4;
+			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size( 292, 284 );
+			this.ClientSize = new System.Drawing.Size( 811, 533 );
+			this.Controls.Add( this.Results );
 			this.Controls.Add( this.abortBtn );
 			this.Controls.Add( this.currentNodeLabel );
 			this.Controls.Add( this.progressLabel );
@@ -119,5 +134,6 @@ namespace QuickTest
 		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.Label currentNodeLabel;
 		private System.Windows.Forms.Button abortBtn;
+		public Cfix.Control.Ui.Result.ResultExplorer Results;
 	}
 }
