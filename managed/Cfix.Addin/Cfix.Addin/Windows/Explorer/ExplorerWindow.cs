@@ -79,7 +79,8 @@ namespace Cfix.Addin.Windows.Explorer
 			object sender, 
 			ExplorerNodeEventArgs e )
 		{
-			this.ctxMenuDebugButton.Enabled = e.Item is IComponentActionSource;
+			this.ctxMenuDebugButton.Enabled = e.Item is IRunnableTestItem;
+			this.ctxMenuRunButton.Enabled = e.Item is IRunnableTestItem;
 			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
 
 			this.contextMenuReferenceNode = e.Node;
@@ -312,14 +313,14 @@ namespace Cfix.Addin.Windows.Explorer
 
 			Debug.Print( "Search for " + filter + " in " + dir );
 
-			this.workspace.Session.Tests =
-				TestModuleCollection.Search(
+			using ( IHost host = this.workspace.SearchAgent.CreateHost() )
+			{
+				this.workspace.Session.Tests = host.SearchModules(
 					dir,
 					filter,
-					this.workspace.SearchTarget,
-					this.workspace.RunTarget,
-					! this.workspace.Configuration.KernelModeFeaturesEnabled,
-					true );
+					this.workspace.RunAgents,
+					! this.workspace.Configuration.KernelModeFeaturesEnabled );
+			}
 		}
 
 		private void ExploreSolution()
@@ -332,7 +333,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Solution curSolution = this.dte.Solution;
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
 				( Solution2 ) curSolution,
-				this.workspace.RunTarget,
+				this.workspace.RunAgents,
 				this.workspace.Configuration );
 			slnCollection.Closed += new EventHandler( slnCollection_Closed );
 			this.workspace.Session.Tests = slnCollection;

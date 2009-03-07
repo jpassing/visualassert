@@ -8,8 +8,8 @@ namespace Cfix.Addin
 	public class Workspace : IDisposable
 	{
 		private readonly Configuration config;
-		private readonly Target searchTarget;
-		private readonly MultiTarget target;
+		private readonly Agent searchAgent;
+		private readonly AgentSet runAgents;
 		private readonly ISession session;
 
 		private readonly object runLock = new object();
@@ -42,20 +42,20 @@ namespace Cfix.Addin
 		}
 
 		/*++
-		 * Create MultiTarget for all supported architectures.
+		 * Create AgentSet for all supported architectures.
 		 --*/
-		private static MultiTarget CreateMultiTarget()
+		private static AgentSet CreateRunAgents()
 		{
-			MultiTarget target = new MultiTarget();
+			AgentSet target = new AgentSet();
 			switch ( GetNativeArchitecture() )
 			{
 				case Architecture.Amd64:
 					target.AddArchitecture(
-						Target.CreateLocalTarget(
+						Agent.CreateLocalAgent(
 							Architecture.Amd64,
 							false ) );
 					target.AddArchitecture(
-						Target.CreateLocalTarget(
+						Agent.CreateLocalAgent(
 							Architecture.I386,
 							false ) );
 
@@ -63,7 +63,7 @@ namespace Cfix.Addin
 
 				case Architecture.I386:
 					target.AddArchitecture(
-						Target.CreateLocalTarget(
+						Agent.CreateLocalAgent(
 							Architecture.I386,
 							false ) );
 					break;
@@ -94,8 +94,8 @@ namespace Cfix.Addin
 			//
 			// Search target is always i386 and inproc.
 			//
-			this.searchTarget = Target.CreateLocalTarget( Architecture.I386, true );
-			this.target = CreateMultiTarget();
+			this.searchAgent = Agent.CreateLocalAgent( Architecture.I386, true );
+			this.runAgents = CreateRunAgents();
 			this.config = Configuration.Load();
 			this.session = new Session();
 		}
@@ -107,14 +107,14 @@ namespace Cfix.Addin
 
 		protected void Dispose( bool disposing )
 		{
-			if ( this.searchTarget != null )
+			if ( this.searchAgent != null )
 			{
-				this.searchTarget.Dispose();
+				this.searchAgent.Dispose();
 			}
 
-			if ( this.target != null )
+			if ( this.runAgents != null )
 			{
-				this.target.Dispose();
+				this.runAgents.Dispose();
 			}
 
 			if ( this.config != null )
@@ -138,14 +138,14 @@ namespace Cfix.Addin
 			get { return this.config; }
 		}
 
-		public Target SearchTarget
+		public Agent SearchAgent
 		{
-			get { return searchTarget; }
+			get { return searchAgent; }
 		}
 
-		public MultiTarget RunTarget
+		public AgentSet RunAgents
 		{
-			get { return target; }
+			get { return runAgents; }
 		} 
 		
 		public ISession Session
@@ -158,44 +158,44 @@ namespace Cfix.Addin
 			get { return this.currentRun; }
 		}
 
-		public bool IsRunActive
-		{
-			get
-			{
-				lock ( this.runLock )
-				{
-					return this.currentRun != null && 
-					   this.currentRun.IsStarted &&
-					   ! this.currentRun.IsFinished;
-				}
-			}
-		}
+		//public bool IsRunActive
+		//{
+		//    get
+		//    {
+		//        lock ( this.runLock )
+		//        {
+		//            return this.currentRun != null && 
+		//               this.currentRun.IsStarted &&
+		//               ! this.currentRun.IsFinished;
+		//        }
+		//    }
+		//}
 
-		public void CreateRun()
-		{
-			lock ( this.runLock )
-			{
-				if ( IsRunActive )
-				{
-					//
-					// Run still active.
-					//
-					throw new CfixException( Strings.RunActive );
-				}
+		//public void CreateRun()
+		//{
+		//    lock ( this.runLock )
+		//    {
+		//        if ( IsRunActive )
+		//        {
+		//            //
+		//            // Run still active.
+		//            //
+		//            throw new CfixException( Strings.RunActive );
+		//        }
 
-				Debug.Assert( this.currentRun == null || this.currentRun.IsFinished );
+		//        Debug.Assert( this.currentRun == null || this.currentRun.IsFinished );
 
-				SchedulingOptions schOpts =
-					this.config.UseComNeutralThread
-						? SchedulingOptions.ComNeutralThreading
-						: SchedulingOptions.None;
+		//        SchedulingOptions schOpts =
+		//            this.config.UseComNeutralThread
+		//                ? SchedulingOptions.ComNeutralThreading
+		//                : SchedulingOptions.None;
 
-				this.currentRun = this.session.CreateRun(
-					this.DispositionPolicy,
-					schOpts,
-					CompositionOptions.NonComposite );
-			}
-		}
+		//        this.currentRun = this.session.CreateRun(
+		//            this.DispositionPolicy,
+		//            schOpts,
+		//            CompositionOptions.NonComposite );
+		//    }
+		//}
 
 	}
 }

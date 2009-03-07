@@ -14,7 +14,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private readonly Configuration config;
 		private readonly string uniqueName;
 		private readonly Project project;
-		private readonly MultiTarget target;
+		private readonly AgentSet agentSet;
 
 		private readonly object loadLock = new object();
 
@@ -72,7 +72,7 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				Architecture arch = GetArchitecture( vcConfig );
 
-				Debug.Assert( this.target.IsArchitectureSupported( arch ) );
+				Debug.Assert( this.agentSet.IsArchitectureSupported( arch ) );
 
 				this.currentPath = vcConfig.PrimaryOutput;
 				Debug.Print( this.currentPath );
@@ -83,10 +83,13 @@ namespace Cfix.Addin.Windows.Explorer
 					ITestItem module;
 					try
 					{
-						module = TestModule.LoadModule(
-							this.target.GetTarget( arch ),
-							this.currentPath,
-							true );
+						using ( IHost host = this.agentSet.GetTarget( arch ).CreateHost() )
+						{
+							module = host.LoadModule(
+								null,
+								this.currentPath,
+								false );
+						}
 					}
 					catch ( Exception x )
 					{
@@ -107,14 +110,14 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public VCProjectTestCollection(
 			Project project,
-			MultiTarget target,
+			AgentSet agents,
 			Configuration config
 			)
 			: base( null, project.Name )
 		{
 			this.uniqueName = project.UniqueName;
 			this.project = project;
-			this.target = target;
+			this.agentSet = agents;
 			this.config = config;
 
 			LoadPrimaryOutputModule( CurrentConfiguration );
@@ -152,7 +155,15 @@ namespace Cfix.Addin.Windows.Explorer
 				//
 				// Refresh module.
 				//
-				base.Refresh();
+				
+				//
+				// N.B. Full reload required to support 
+				// Invalid <-> Valid transitions.
+				//
+				Clear();
+				LoadPrimaryOutputModule( vcConfig ); 
+				
+				//base.Refresh();
 			}
 		}
 	}

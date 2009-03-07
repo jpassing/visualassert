@@ -16,7 +16,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private readonly Configuration config;
 		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
-		private readonly MultiTarget target;
+		private readonly AgentSet agentSet;
 
 		private bool IsVcProject( Project prj )
 		{
@@ -29,7 +29,7 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				Add( new VCProjectTestCollection( 
 					prj, 
-					this.target,
+					this.agentSet,
 					this.config ) );
 			}
 		}
@@ -44,14 +44,14 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public SolutionTestCollection(
 			Solution2 solution,
-			MultiTarget target,
+			AgentSet agentSet,
 			Configuration config
 			)
 			: base( null, new FileInfo( solution.FullName ).Name )
 		{
 			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;
-			this.target = target;
+			this.agentSet = agentSet;
 			this.config = config;
 
 			this.solutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
