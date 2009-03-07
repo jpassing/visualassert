@@ -18,5 +18,11 @@ namespace Cfix.Control
 
 		String Name { get; }
 		ExecutionStatus Status { get; }
+
+		//
+		// Enforce completion:
+		// Mark pending sub-results skipped and calculate status.
+		//
+		void ForceCompletion( bool propagateToParent );
 	}
 }

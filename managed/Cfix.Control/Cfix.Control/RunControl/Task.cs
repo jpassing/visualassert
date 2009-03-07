@@ -111,6 +111,19 @@ namespace Cfix.Control.RunControl
 			}
 			catch ( COMException x )
 			{
+				//
+				// Run did not complete -- either because of a severe
+				// error or because the run hsa been shortcut.
+				//
+				// In either case, we have to update the results of 
+				// not-yet-run actions.
+				//
+				foreach ( IAction action in this.actions )
+				{
+					IResultItem actionResult = action.Result;
+					actionResult.ForceCompletion( true );
+				}
+
 				throw new CfixException(
 					this.agent.ResolveMessage( x.ErrorCode ) );
 			}

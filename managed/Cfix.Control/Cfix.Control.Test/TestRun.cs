@@ -423,5 +423,71 @@ namespace Cfix.Control.Test
 				}
 			}
 		}
+
+		[Test]
+		public void TestFixtureSkippingAfterFailure()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					false ) )
+			{
+				//
+				// Fail is the first fixture to be executed, remaining
+				// must be skipped.
+				//
+				Assert.AreEqual( "Fail", mod.GetItem( 0 ).Name );
+
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( mod );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Failed, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Failed, run.RootResult.Status );
+
+					IResultItemCollection failResult = 
+						( IResultItemCollection ) run.RootResult.GetItem( 0 );
+					IResultItemCollection nextResult =
+						( IResultItemCollection ) run.RootResult.GetItem( 1 );
+
+					Assert.AreEqual( ExecutionStatus.Failed, failResult.Status );
+					Util.Traverse(
+						failResult,
+						delegate( IResultItem item )
+						{
+							Assert.IsTrue( item.Status == ExecutionStatus.Failed ||
+										   item.Status == ExecutionStatus.Skipped );
+						} );
+
+					Assert.AreEqual( ExecutionStatus.Skipped, nextResult.Status );
+					Util.Traverse(
+						nextResult,
+						delegate( IResultItem item )
+						{
+							Assert.AreEqual( ExecutionStatus.Skipped, item.Status );
+						} );
+
+				}
+			}
+		}
 	}
 }

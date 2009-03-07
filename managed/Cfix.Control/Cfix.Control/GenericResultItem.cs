@@ -73,7 +73,9 @@ namespace Cfix.Control
 
 		protected ExecutionStatus CalculateStatus(
 			bool subItemFailed,
-			bool subItemInconclusive )
+			bool subItemInconclusive,
+			bool allSubItemsSkipped 
+			)
 		{
 			if ( subItemFailed )
 			{
@@ -101,7 +103,11 @@ namespace Cfix.Control
 				//
 				return ExecutionStatus.SucceededWithInconclusiveParts;
 			}
-			else
+			else if ( allSubItemsSkipped )
+			{
+				return ExecutionStatus.Skipped;
+			}
+			else 
 			{
 				return ExecutionStatus.Succeeded;
 			}
@@ -136,9 +142,15 @@ namespace Cfix.Control
 					case ExecutionStatus.SucceededWithInconclusiveParts:
 					case ExecutionStatus.Failed:
 					case ExecutionStatus.Inconclusive:
+					case ExecutionStatus.Skipped:
 						return true;
 
+					case ExecutionStatus.Pending:
+					case ExecutionStatus.Running:
+						return false;
+
 					default:
+						Debug.Fail( "Invalid case" );
 						return false;
 				}
 			}
@@ -189,6 +201,7 @@ namespace Cfix.Control
 			{
 				if ( value != this.status )
 				{
+					Debug.Print( "Status of " + Item.Name + " is " + value );
 					Debug.Assert( this.events != null );
 					Debug.Assert( this.item != null );
 
@@ -201,6 +214,23 @@ namespace Cfix.Control
 		public ICollection<Failure> Failures
 		{
 			get { return this.failures; }
+		}
+
+		public virtual void ForceCompletion( bool propagateToParent )
+		{
+			if ( !Completed )
+			{
+				this.Status = ExecutionStatus.Skipped;
+
+				GenericResultCollection tp = this.Parent as GenericResultCollection;
+				if ( tp != null )
+				{
+					tp.OnChildFinished( 
+						this.Status,
+						!propagateToParent,
+						false );
+				}
+			}
 		}
 	}
 }

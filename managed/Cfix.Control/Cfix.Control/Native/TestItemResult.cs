@@ -43,7 +43,7 @@ namespace Cfix.Control.Native
 			Debug.Assert( this.Status == ExecutionStatus.Running );
 			Debug.Assert( ( ranToCompletion == 1 ) == ( this.FailureCount == 0 ) );
 
-			this.Status = CalculateStatus( false, false );
+			this.Status = CalculateStatus( false, false, false );
 
 			GenericResultCollection tp = this.Parent as GenericResultCollection;
 			if ( tp != null )

@@ -15,29 +15,6 @@ namespace Cfix.Control.Test
 				Disposition.Break,
 				Disposition.Break );
 
-		private delegate void VisitHandler( IResultItem item );
-
-		private void Traverse( 
-			IResultItemCollection coll,
-			VisitHandler handler
-			)
-		{
-			handler( coll );
-
-			foreach ( IResultItem item in coll )
-			{
-				IResultItemCollection subColl = item as IResultItemCollection;
-				if ( subColl != null )
-				{
-					Traverse( subColl, handler );
-				}
-				else
-				{
-					handler( item );
-				}
-			}
-		}
-
 		[Test]
 		public void TestBasics()
 		{
@@ -59,14 +36,14 @@ namespace Cfix.Control.Test
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
-			Traverse(
+			Util.Traverse(
 				run.RootResult,
 				delegate( IResultItem item )
 				{
 					Assert.AreEqual( ExecutionStatus.Pending, item.Status );
 				} );
 
-			Traverse(
+			Util.Traverse(
 				run.RootResult,
 				delegate( IResultItem item )
 				{
@@ -76,7 +53,7 @@ namespace Cfix.Control.Test
 
 			mod.Dispose();
 
-			Traverse(
+			Util.Traverse(
 				run.RootResult,
 				delegate( IResultItem item )
 				{
@@ -527,10 +504,10 @@ namespace Cfix.Control.Test
 				{
 					fixSink.UnhandledException( 0, 0, null );
 				}
-
-				fixSink.AfterFixtureFinish(
-					testCases.Length == testCasesToExecute ? 1 : 0 );
 			}
+
+			fixSink.AfterFixtureFinish(
+				testCases.Length == testCasesToExecute ? 1 : 0 );
 
 			Assert.AreEqual( 0, spawns );
 
@@ -564,7 +541,7 @@ namespace Cfix.Control.Test
 			IRun run = RunTest(
 				ExecutionStatus.Failed,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
-				1,
+				0,
 				ExecutionStatus.Succeeded );
 
 			Assert.AreEqual(
@@ -584,7 +561,7 @@ namespace Cfix.Control.Test
 			IRun run = RunTest(
 				ExecutionStatus.Inconclusive,
 				new ExecutionStatus[] { ExecutionStatus.Succeeded },
-				1,
+				0,
 				ExecutionStatus.Succeeded );
 
 			Assert.AreEqual(

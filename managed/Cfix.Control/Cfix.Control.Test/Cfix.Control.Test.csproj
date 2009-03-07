@@ -64,6 +64,7 @@
     <Compile Include="TestTestModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestTestModuleUpdating.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cfix.Control\Cfix.Control.csproj">

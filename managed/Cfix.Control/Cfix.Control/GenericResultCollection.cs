@@ -13,6 +13,7 @@ namespace Cfix.Control
 		private volatile int subItemsFinished;
 		private volatile bool subItemFailed;
 		private volatile bool subItemInconclusive;
+		private volatile int subItemsSkipped;
 
 		public GenericResultCollection(
 			IActionEvents events,
@@ -78,8 +79,7 @@ namespace Cfix.Control
 				{
 					if ( child.Status == ExecutionStatus.Pending )
 					{
-						// TODO: recursive?
-						child.Status = ExecutionStatus.Skipped;
+						child.ForceCompletion( false );
 					}
 				}
 			}
@@ -89,7 +89,8 @@ namespace Cfix.Control
 			//
 			this.Status = CalculateStatus(
 				this.subItemFailed,
-				this.subItemInconclusive );
+				this.subItemInconclusive,
+				this.subItemsSkipped > 0 && this.subItemsSkipped == ItemCount );
 
 			GenericResultCollection tp = this.Parent as GenericResultCollection;
 			if ( tp != null )
@@ -99,12 +100,28 @@ namespace Cfix.Control
 		}
 
 		/*--------------------------------------------------------------
+		 * Override.
+		 */
+
+		public override void ForceCompletion( bool propagateToParent )
+		{
+			//
+			// Force completion of childre, which will lead to own
+			// status being set properly (skipped/failed/etc).
+			//
+			foreach ( IResultItem child in this.subItems )
+			{
+				child.ForceCompletion( propagateToParent );
+			}
+		}
+
+		/*--------------------------------------------------------------
 		 * Internal.
 		 */
 
 		internal void OnChildFinished(
 			ExecutionStatus status,
-			bool childIsLeaf,
+			bool noPropagation,
 			bool ranToCompletion
 			)
 		{
@@ -117,15 +134,21 @@ namespace Cfix.Control
 			{
 				this.subItemInconclusive = true;
 			}
+			else if ( status == ExecutionStatus.Skipped )
+			{
+				this.subItemsSkipped++;
+			}
 
 			subItemsFinished++;
+
+			Debug.Assert( subItemsFinished <= this.subItems.Count );
 
 			//
 			// N.B. For leaf children, we do need to track how many children
 			// have finished as this object will get a AfterFixtureFinish
 			// callback.
 			//
-			if ( !childIsLeaf && subItemsFinished == this.subItems.Count )
+			if ( !noPropagation && subItemsFinished == this.subItems.Count )
 			{
 				OnFinished( ranToCompletion );
 			}
