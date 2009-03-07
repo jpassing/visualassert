@@ -46,7 +46,11 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		internal void OnChildFinished( ExecutionStatus status, bool childIsLeaf )
+		internal void OnChildFinished( 
+			ExecutionStatus status, 
+			bool childIsLeaf,
+			bool ranToCompletion 
+			)
 		{
 			if ( status == ExecutionStatus.Failed )
 			{
@@ -67,7 +71,7 @@ namespace Cfix.Control.Native
 			//
 			if ( ! childIsLeaf && subItemsFinished == this.subItems.Count )
 			{
-				OnFinished( true );
+				OnFinished( ranToCompletion );
 			}
 		}
 
@@ -94,6 +98,7 @@ namespace Cfix.Control.Native
 				{
 					if ( child.Status == ExecutionStatus.Pending )
 					{
+						// TODO: recursive?
 						child.Status = ExecutionStatus.Skipped;
 					}
 				}
@@ -133,7 +138,7 @@ namespace Cfix.Control.Native
 			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
 			if ( tp != null )
 			{
-				tp.OnChildFinished( this.Status, false );
+				tp.OnChildFinished( this.Status, false, ranToCompletion );
 			}
 		}
 

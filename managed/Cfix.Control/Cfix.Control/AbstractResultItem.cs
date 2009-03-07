@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Cfix.Control
 {
-	internal abstract class AbstractResultItem : IResultItem
+	public abstract class AbstractResultItem : IResultItem
 	{
 		//
 		// TestItem this result corresponds to - may or may not be

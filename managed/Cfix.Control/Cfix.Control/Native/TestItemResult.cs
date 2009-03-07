@@ -59,7 +59,7 @@ namespace Cfix.Control.Native
 			TestItemCollectionResult tp = this.parent as TestItemCollectionResult;
 			if ( tp != null )
 			{
-				tp.OnChildFinished( this.Status, true );
+				tp.OnChildFinished( this.Status, true, ranToCompletion > 0 );
 			}
 		}
 

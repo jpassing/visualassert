@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Cfix.Control
 {
-	public class GenericResultCollection : IResultItemCollection
+	public class GenericResultCollection :
+		AbstractResultItem, IResultItemCollection
 	{
-		private readonly IResultItemCollection parent;
 		private readonly IList<IResultItem> subItems;
 		private readonly ITestItemCollection item;
 
@@ -15,12 +15,12 @@ namespace Cfix.Control
 			IResultItemCollection parent,
 			ITestItemCollection itemCollection,
 			ExecutionStatus status
-			)
+			) 
+			: base( events, parent, itemCollection, status )
 		{
 			Debug.Assert( events != null );
 			Debug.Assert( itemCollection != null );
 			
-			this.parent = parent;
 			this.item = itemCollection;
 
 			//
@@ -43,32 +43,12 @@ namespace Cfix.Control
 		}
 
 		/*--------------------------------------------------------------
-		 * IResultItem.
+		 * Overrides.
 		 */
 
-		public IResultItemCollection Parent
-		{
-			get { return this.parent; }
-		}
-
-		public ITestItem Item
-		{
-			get { return this.item; }
-		}
-
-		public ICollection<Failure> Failures
+		public override ICollection<Failure> Failures
 		{
 			get { return null; }
-		}
-
-		public string Name
-		{
-			get { return this.item.Name; }
-		}
-
-		public ExecutionStatus Status
-		{
-			get { throw new Exception( "The method or operation is not implemented." ); }
 		}
 
 		/*--------------------------------------------------------------
