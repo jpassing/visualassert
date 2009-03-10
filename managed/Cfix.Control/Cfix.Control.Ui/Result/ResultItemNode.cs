@@ -1,15 +1,20 @@
 using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Result
 {
 	internal class ResultItemNode : IResultNode
 	{
 		private readonly IResultItem result;
+		private readonly ImageList iconsList;
 
-		public ResultItemNode( IResultItem result )
+		public ResultItemNode( IResultItem result, ImageList iconsList )
 		{
 			this.result = result;
+			this.iconsList = iconsList;
 		}
 
 		/*----------------------------------------------------------------------
@@ -34,7 +39,15 @@ namespace Cfix.Control.Ui.Result
 
 			foreach ( IResultItem child in coll )
 			{
-				yield return new ResultItemNode( child );
+				yield return new ResultItemNode( child, this.iconsList );
+			}
+		}
+
+		public Image Icon 
+		{
+			get 
+			{ 
+				return this.iconsList.Images[ ( int ) this.result.Status ];
 			}
 		}
 
@@ -43,9 +56,29 @@ namespace Cfix.Control.Ui.Result
 			get { return this.result.Name; }
 		}
 
+		public string Expression
+		{
+			get { return ""; }
+		}
+
+		public string Message
+		{
+			get { return ""; }
+		}
+
 		public string Location
 		{
 			get { return ""; }
+		}
+
+		public string Routine
+		{
+			get { return ""; }
+		}
+
+		public uint LastError
+		{
+			get { return 0; }
 		}
 
 		public int Failures 

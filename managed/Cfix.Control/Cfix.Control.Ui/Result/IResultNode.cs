@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Collections;
 
 namespace Cfix.Control.Ui.Result
@@ -8,9 +9,13 @@ namespace Cfix.Control.Ui.Result
 		bool IsLeaf { get; }
 		IEnumerable GetChildren();
 
-		string Name { get; }
-		string Location { get; }
-		int Failures { get; }
+		Image Icon { get; }
 		string Status { get; }
+		string Name { get; }
+		string Expression { get; }
+		string Message { get; }
+		string Location { get; }
+		string Routine { get; }
+		uint LastError { get; }
 	}
 }

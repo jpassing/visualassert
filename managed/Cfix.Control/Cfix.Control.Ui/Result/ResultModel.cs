@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections;
+using System.Windows.Forms;
 using Cfix.Control;
 using Aga.Controls.Tree;
 
@@ -13,11 +14,20 @@ namespace Cfix.Control.Ui.Result
 		public event EventHandler<TreeModelEventArgs> NodesRemoved;
 		public event EventHandler<TreePathEventArgs> StructureChanged;
 
+		private readonly ImageList iconsList;
+
 		private IRun run;
+
+		public ResultModel( ImageList iconsList )
+		{
+			this.iconsList = iconsList;
+		}
 
 		private IEnumerable GetRoot()
 		{
-			yield return new ResultItemNode( this.run.RootResult );
+			yield return new ResultItemNode( 
+				this.run.RootResult,
+				this.iconsList );
 		}
 
 		public IRun Run

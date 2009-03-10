@@ -117,12 +117,6 @@
     </Compile>
     <Compile Include="Windows\Explorer\SolutionTestCollection.cs" />
     <Compile Include="Windows\Explorer\VSNodeFactory.cs" />
-    <Compile Include="Windows\Results\ResultsWindow.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Results\ResultsWindow.Designer.cs">
-      <DependentUpon>ResultsWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,10 +138,6 @@
     <EmbeddedResource Include="Windows\Explorer\ExplorerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Results\ResultsWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ResultsWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
