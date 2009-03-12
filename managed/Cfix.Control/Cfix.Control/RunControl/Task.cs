@@ -7,6 +7,8 @@ namespace Cfix.Control.RunControl
 {
 	/*++
 	 * Run actions of a single host.
+	 * 
+	 * N.B. Do not Dispose() before the task has finished. 
 	 --*/
 	internal class Task : ITask
 	{
@@ -14,9 +16,13 @@ namespace Cfix.Control.RunControl
 		public event EventHandler<FinishedEventArgs> Finished;
 
 		private readonly IAgent agent;
-		private readonly IHost host;
 		private readonly List<IAction> actions = new List<IAction>();
 
+		//
+		// Host to run on. Disposed and nulled eagerly.
+		//
+		private volatile IHost host;
+		
 		private volatile TaskStatus status = TaskStatus.Ready;
 
 		//
@@ -31,6 +37,9 @@ namespace Cfix.Control.RunControl
 			IHost host
 			)
 		{
+			Debug.Assert( agent != null );
+			Debug.Assert( host != null );
+
 			this.agent = agent;
 			this.host = host;
 		}
@@ -48,15 +57,15 @@ namespace Cfix.Control.RunControl
 
 		protected virtual void Dispose( bool disposing )
 		{
-			if ( this.host != null )
-			{
-				this.host.Dispose();
-			}
-
 			//
 			// Wait for async operations to complete.
 			//
 			this.rundownLock.Rundown();
+
+			if ( this.host != null )
+			{
+				this.host.Dispose();
+			}
 
 			foreach ( IAction act in this.actions )
 			{
@@ -81,6 +90,8 @@ namespace Cfix.Control.RunControl
 
 		private void AsyncRun()
 		{
+			Debug.Assert( this.host != null );
+
 			if ( this.Started != null )
 			{
 				this.Started( this, EventArgs.Empty );
@@ -140,6 +151,13 @@ namespace Cfix.Control.RunControl
 			finally
 			{
 				this.rundownLock.Release();
+
+				//
+				// We are done with the host. Dispose it s.t. the 
+				// process can terminate.
+				//
+				this.host.Dispose();
+				this.host = null;
 			}
 		}
 

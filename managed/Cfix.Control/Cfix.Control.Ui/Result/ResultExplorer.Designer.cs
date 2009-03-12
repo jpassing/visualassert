@@ -129,6 +129,8 @@ namespace Cfix.Control.Ui.Result
 			this.icons.Images.SetKeyName( 5, "Status_SucceededWithInconclusiveParts.bmp" );
 			this.icons.Images.SetKeyName( 6, "Status_Failed.bmp" );
 			this.icons.Images.SetKeyName( 7, "Status_Inconclusive.bmp" );
+			this.icons.Images.SetKeyName( 8, "Inconclusive.bmp" );
+			this.icons.Images.SetKeyName( 9, "Failure.bmp" );
 			// 
 			// ResultExplorer
 			// 

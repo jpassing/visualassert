@@ -298,11 +298,14 @@ namespace Cfix.Control.Ui.Explorer
 
 		public void AbortRefreshSession()
 		{
-			IAbortableTestItemCollection abort =
-				this.session.Tests as IAbortableTestItemCollection;
-			if ( abort != null )
+			if ( this.session != null )
 			{
-				abort.AbortRefresh();
+				IAbortableTestItemCollection abort =
+					this.session.Tests as IAbortableTestItemCollection;
+				if ( abort != null )
+				{
+					abort.AbortRefresh();
+				}
 			}
 		}
 

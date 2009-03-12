@@ -5,6 +5,13 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Represents the outcome of a leaf ICfixTestItem 
+	 *		(e.g. test case).
+	 * 
+	 *		Threadsafe.
+	 --*/
 	internal class TestItemResult 
 		: GenericResultItem, 
 		  ICfixTestÌtemEventSink

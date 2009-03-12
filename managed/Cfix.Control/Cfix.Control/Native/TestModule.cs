@@ -7,10 +7,19 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Represents a test module, i.e. DLL/SYS.
+	 * 
+	 *		Threadsafe.
+	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix" )]
 	public class TestModule : TestItemCollection
 	{
 		private readonly String path;
+		private readonly CfixTestModuleArch arch;
+		private readonly CfixTestModuleType type;
+
 		private readonly Agent agent;
 
 		//
@@ -19,8 +28,6 @@ namespace Cfix.Control.Native
 		// ITestItemCollection to serve as parent.
 		//
 		private readonly ITestItemCollection parentCollection;
-
-		private CfixTestModuleType type = 0;
 
 		internal TestModule(
 			ITestItemCollection parentCollection,
@@ -34,6 +41,7 @@ namespace Cfix.Control.Native
 			this.parentCollection = parentCollection;
 			this.path = path;
 			this.agent = target;
+			ctlModule.GetType( out this.type, out this.arch );
 		}
 
 		/*--------------------------------------------------------------
@@ -75,7 +83,7 @@ namespace Cfix.Control.Native
 
 		public Architecture Architecture
 		{
-			get { return this.agent.Architecture; }
+			get { return ( Architecture ) this.arch; }
 		}
 
 		public ModuleType Type

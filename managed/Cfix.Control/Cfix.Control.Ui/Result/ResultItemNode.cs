@@ -8,13 +8,35 @@ namespace Cfix.Control.Ui.Result
 {
 	internal class ResultItemNode : IResultNode
 	{
+		private readonly ResultItemNode parent;
 		private readonly IResultItem result;
 		private readonly ImageList iconsList;
 
-		public ResultItemNode( IResultItem result, ImageList iconsList )
+		public ResultItemNode( IResultItem result, ImageList iconsList, ResultItemNode parent )
 		{
+			this.parent = parent;
 			this.result = result;
 			this.iconsList = iconsList;
+		}
+
+		public IResultItem ResultItem
+		{
+			get { return this.result; }
+		}
+
+		internal ResultItemNode Parent
+		{
+			get { return this.parent; }
+		}
+
+		internal ICollection<Failure> Failures
+		{
+			get { return this.result.Failures; }
+		}
+
+		internal bool HasFailures
+		{
+			get { return this.result.Failures != null && this.result.Failures.Count > 0; }
 		}
 
 		/*----------------------------------------------------------------------
@@ -25,21 +47,27 @@ namespace Cfix.Control.Ui.Result
 		{
 			get
 			{
-				return !( this.result is IResultItemCollection );
+				return ! ( this.result is IResultItemCollection ) && ! HasFailures;
 			}
 		}
 
-		public System.Collections.IEnumerable GetChildren()
+		public IEnumerable<IResultNode> GetChildren()
 		{
 			IResultItemCollection coll = this.result as IResultItemCollection;
-			if ( coll == null )
+			if ( coll != null )
 			{
-				yield break;
+				foreach ( IResultItem child in coll )
+				{
+					yield return new ResultItemNode( child, this.iconsList, this );
+				}
 			}
 
-			foreach ( IResultItem child in coll )
+			if ( this.result.Failures != null )
 			{
-				yield return new ResultItemNode( child, this.iconsList );
+				foreach ( Failure f in this.result.Failures )
+				{
+					yield return FailureNode.Create( f, this.iconsList );
+				}
 			}
 		}
 
@@ -58,43 +86,27 @@ namespace Cfix.Control.Ui.Result
 
 		public string Expression
 		{
-			get { return ""; }
+			get { return null; }
 		}
 
 		public string Message
 		{
-			get { return ""; }
+			get { return null; }
 		}
 
 		public string Location
 		{
-			get { return ""; }
+			get { return null; }
 		}
 
 		public string Routine
 		{
-			get { return ""; }
+			get { return null; }
 		}
 
-		public uint LastError
+		public string LastError
 		{
-			get { return 0; }
-		}
-
-		public int Failures 
-		{
-			get 
-			{ 
-				ICollection<Failure> failures = this.result.Failures;
-				if ( failures == null )
-				{
-					return 0;
-				}
-				else
-				{
-					return failures.Count;
-				}
-			}
+			get { return null; }
 		}
 
 		public string Status

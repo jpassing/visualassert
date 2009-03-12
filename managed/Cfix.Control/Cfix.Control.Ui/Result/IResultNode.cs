@@ -1,13 +1,13 @@
 using System;
 using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Cfix.Control.Ui.Result
 {
-	internal interface IResultNode
+	public interface IResultNode
 	{
 		bool IsLeaf { get; }
-		IEnumerable GetChildren();
+		IEnumerable<IResultNode> GetChildren();
 
 		Image Icon { get; }
 		string Status { get; }
@@ -16,6 +16,6 @@ namespace Cfix.Control.Ui.Result
 		string Message { get; }
 		string Location { get; }
 		string Routine { get; }
-		uint LastError { get; }
+		string LastError { get; }
 	}
 }

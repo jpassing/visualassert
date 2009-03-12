@@ -5,6 +5,13 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
+	/*++
+	 * Class Description:
+	 *		Represents the outcome of a composite ICfixTestItem 
+	 *		(e.g. fixture or module).
+	 * 
+	 *		Threadsafe.
+	 --*/
 	internal class TestItemCollectionResult
 		: GenericResultCollection,
 		  IResultItemCollection, 
@@ -98,16 +105,6 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( ass );
 
-			//if ( this.SubItemsFinished == 0 )
-			//{
-			//    //
-			//    // Setup failure. There will not be any further callbacks, 
-			//    // thus finish now.
-			//    //
-			//    OnFinished( false );
-			//    Debug.Assert( Status == ExecutionStatus.Failed );
-			//}
-
 			return disp;
 		}
 
@@ -141,16 +138,6 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.FailedAssertion( fr );
 
-			//if ( this.SubItemsFinished == 0 )
-			//{
-			//    //
-			//    // Setup failure. There will not be any further callbacks, 
-			//    // thus finish now.
-			//    //
-			//    OnFinished( false );
-			//    Debug.Assert( Status == ExecutionStatus.Failed );
-			//}
-
 			return disp;
 		}
 
@@ -169,16 +156,6 @@ namespace Cfix.Control.Native
 			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
 				this.events.DispositionPolicy.UnhandledException( u );
 
-			//if ( this.SubItemsFinished == 0 )
-			//{
-			//    //
-			//    // Setup failure. There will not be any further callbacks, 
-			//    // thus finish now.
-			//    //
-			//    OnFinished( false );
-			//    Debug.Assert( Status == ExecutionStatus.Failed );
-			//}
-
 			return disp;
 		}
 
@@ -193,15 +170,6 @@ namespace Cfix.Control.Native
 				StackTrace.Wrap( stackTrace ) ) );
 			IsInconclusive = true;
 
-			//if ( this.SubItemsFinished == 0 )
-			//{
-			//    //
-			//    // Setup failure. There will not be any further callbacks, 
-			//    // thus finish now.
-			//    //
-			//    OnFinished( false );
-			//    Debug.Assert( Status == ExecutionStatus.Inconclusive );
-			//}
 		}
 
 		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )

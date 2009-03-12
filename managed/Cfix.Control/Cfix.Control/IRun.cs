@@ -64,13 +64,18 @@ namespace Cfix.Control
 		}
 	}
 
-
+	/*++
+	 * Run. 
+	 * 
+	 * N.B. Do not Dispose() before the run has finished. 
+	 * 
+	 * You may NOT call Dispose() from within the Finished event.
+	 --*/
 	public interface IRun : ITask, IDisposable
 	{
 		//
 		// N.B. Events may be raised on a worker thread.
 		//
-
 		event EventHandler<HostEventArgs> HostSpawned;
 		
 		event EventHandler<LogEventArgs> Log;

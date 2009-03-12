@@ -37,6 +37,8 @@ namespace QuickTest
 			this.currentNodeLabel = new System.Windows.Forms.Label();
 			this.abortBtn = new System.Windows.Forms.Button();
 			this.Results = new Cfix.Control.Ui.Result.ResultExplorer();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// refresh
@@ -105,14 +107,39 @@ namespace QuickTest
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.Results.Location = new System.Drawing.Point( 0, 227 );
 			this.Results.Name = "Results";
+			this.Results.Run = null;
 			this.Results.Size = new System.Drawing.Size( 808, 251 );
 			this.Results.TabIndex = 4;
+			// 
+			// button1
+			// 
+			this.button1.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.button1.Location = new System.Drawing.Point( 204, 482 );
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size( 75, 23 );
+			this.button1.TabIndex = 5;
+			this.button1.Text = "Load 1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler( this.button1_Click );
+			// 
+			// button2
+			// 
+			this.button2.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.button2.Location = new System.Drawing.Point( 286, 482 );
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size( 75, 23 );
+			this.button2.TabIndex = 6;
+			this.button2.Text = "Load 2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler( this.button2_Click );
 			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 811, 533 );
+			this.Controls.Add( this.button2 );
+			this.Controls.Add( this.button1 );
 			this.Controls.Add( this.Results );
 			this.Controls.Add( this.abortBtn );
 			this.Controls.Add( this.currentNodeLabel );
@@ -135,5 +162,7 @@ namespace QuickTest
 		private System.Windows.Forms.Label currentNodeLabel;
 		private System.Windows.Forms.Button abortBtn;
 		public Cfix.Control.Ui.Result.ResultExplorer Results;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button2;
 	}
 }

@@ -26,8 +26,16 @@ namespace Cfix.Control.Native
 
 		private readonly Object loadLock = new Object();
 
-		private bool currentLoadAborted;
+		//
+		// Currently running load (if any). Guarded by loadLock.
+		//
 		private Loader currentLoader;
+		
+		//
+		// Flag indicating whether the current load has been aborted.
+		// May be set from a different thread.
+		//
+		private volatile bool currentLoadAborted;
 
 		/*--------------------------------------------------------------
 		 * Loading.
@@ -39,7 +47,11 @@ namespace Cfix.Control.Native
 			private readonly Stack<TestModuleCollection> collectionStack =
 				new Stack<TestModuleCollection>();
 
-			private bool abort;
+			//
+			// Flag indicating whether the current load shall be aborted.
+			// May be set from a different thread.
+			//
+			private volatile bool abort;
 			private bool firstCallback = true;
 
 			public Loader(

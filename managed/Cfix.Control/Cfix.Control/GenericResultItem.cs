@@ -6,12 +6,7 @@ namespace Cfix.Control
 {
 	public class GenericResultItem : IResultItem
 	{
-		//
-		// TestItem this result corresponds to - may or may not be
-		// still available.
-		//
-		private ITestItem item;
-		private readonly String itemName;
+		private readonly ITestItem item;
 
 		protected IActionEvents events;
 		
@@ -30,22 +25,14 @@ namespace Cfix.Control
 			ExecutionStatus status
 			)
 		{
+			Debug.Assert( events != null );
+			Debug.Assert( item != null );
+
 			this.events = events;
 			this.parent = parent;
 			this.status = status;
-			this.itemName = item.Name;
 
 			this.item = item;
-			this.item.Disposed += new EventHandler( item_Disposed );
-		}
-
-		private void item_Disposed( object sender, EventArgs e )
-		{
-			//
-			// Remove own reference.
-			//
-			this.item = null;
-			this.events = null;
 		}
 
 		/*----------------------------------------------------------------------
@@ -197,7 +184,7 @@ namespace Cfix.Control
 
 		public string Name
 		{
-			get { return this.itemName; }
+			get { return this.item.Name; }
 		}
 
 		public ExecutionStatus Status

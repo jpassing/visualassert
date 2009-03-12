@@ -32,7 +32,6 @@ namespace Cfix.Control.Native
 		
 		private volatile ICfixAction action;
 
-
 		private class Sink : ICfixProcessEventSink, ICfixEventSink
 		{
 			private readonly Agent agent;
@@ -44,6 +43,19 @@ namespace Cfix.Control.Native
 				IResultItem result, 
 				IActionEvents events )
 			{
+				//
+				// Result has to refer to a native item, i.e. a module,
+				// fixture, or testcase. Result cannot refer to a 
+				// generic collection.
+				//
+				// This requirement is adhered to by the run compilation 
+				// process.
+				//
+				// N.B. result.Item may be a child of NativeAction.item,
+				// which is relevant as the item may be a generic collection.
+				//
+				Debug.Assert( result.Item is TestItem );
+
 				this.agent = agent;
 				this.result = result;
 				this.events = events;

@@ -57,7 +57,7 @@ namespace Cfix.Control.Test
 				run.RootResult,
 				delegate( IResultItem item )
 				{
-					Assert.IsNull( item.Item );
+					Assert.IsNotNull( item.Item );
 				} );
 		}
 
