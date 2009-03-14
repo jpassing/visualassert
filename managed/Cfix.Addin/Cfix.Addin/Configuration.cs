@@ -144,6 +144,21 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool RunWindowVisible
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "RunWindowVisible", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"RunWindowVisible",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public Disposition DefaultFailedAssertionDisposition
 		{
 			get

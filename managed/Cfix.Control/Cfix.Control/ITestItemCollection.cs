@@ -30,6 +30,13 @@ namespace Cfix.Control
 		void Refresh();
 	}
 
+
+	public interface IRunnableTestItemCollection
+		: ITestItemCollection, IRunnableTestItem
+	{
+		uint RunnableItemCount { get; }
+	}
+
 	/*++
 	 * TestItemCollection that supports refreshs to be aborted.
 	 --*/

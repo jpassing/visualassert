@@ -149,10 +149,11 @@ namespace Cfix.Control.RunControl
 						task.AddAction( act );
 					}
 
-					this.run.RootResult = ( IResultItemCollection ) this.result;
 					this.run.AddTask( task );
 				}
 			}
+
+			this.run.RootResult = ( IResultItemCollection ) this.result;
 
 			return this.run;
 		}

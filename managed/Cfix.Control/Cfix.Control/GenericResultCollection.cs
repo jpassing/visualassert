@@ -38,7 +38,26 @@ namespace Cfix.Control
 			foreach ( ITestItem child in itemCollection )
 			{
 				IRunnableTestItem fac = child as IRunnableTestItem;
-				if ( fac != null )
+				IRunnableTestItemCollection facColl = child as IRunnableTestItemCollection;
+
+				//
+				// N.B. Avoid runnable containers without children.
+				//
+				bool resultRequired;
+				if ( facColl != null )
+				{
+					//
+					// If the collection contains non-runnables only,
+					// omit it.
+					//
+					resultRequired = facColl.RunnableItemCount > 0;
+				}
+				else
+				{
+					resultRequired = ( fac != null );
+				}
+
+				if ( resultRequired )
 				{
 					this.subItems.Add( fac.CreateResultItem(
 						this,

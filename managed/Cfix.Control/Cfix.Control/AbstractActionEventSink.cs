@@ -15,7 +15,7 @@ namespace Cfix.Control.RunControl
 
 		private readonly IDispositionPolicy policy;
 
-		private volatile int itemsCompleted;
+		private int itemsCompleted;
 
 		protected AbstractActionEventSink(
 			IDispositionPolicy policy 

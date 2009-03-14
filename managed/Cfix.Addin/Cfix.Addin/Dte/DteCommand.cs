@@ -132,5 +132,12 @@ namespace Cfix.Addin.Dte
 			}
 		}
 
+		public void SetShortcut( string keys )
+		{
+			object[] bindings = new object[ 1 ];
+			bindings[ 0 ] = keys;
+
+			this.command.Bindings = bindings;
+		}
 	}
 }

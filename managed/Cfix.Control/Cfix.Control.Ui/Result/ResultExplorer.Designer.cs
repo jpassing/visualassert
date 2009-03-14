@@ -37,16 +37,13 @@ namespace Cfix.Control.Ui.Result
 			this.colMessage = new Aga.Controls.Tree.TreeColumn();
 			this.colLocation = new Aga.Controls.Tree.TreeColumn();
 			this.colRoutine = new Aga.Controls.Tree.TreeColumn();
+			this.colDuration = new Aga.Controls.Tree.TreeColumn();
 			this.colLastError = new Aga.Controls.Tree.TreeColumn();
 			this.icons = new System.Windows.Forms.ImageList( this.components );
-			this.colDuration = new Aga.Controls.Tree.TreeColumn();
 			this.SuspendLayout();
 			// 
 			// tree
 			// 
-			this.tree.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.tree.BackColor = System.Drawing.SystemColors.Window;
 			this.tree.Columns.Add( this.colName );
 			this.tree.Columns.Add( this.colStatus );
@@ -57,17 +54,18 @@ namespace Cfix.Control.Ui.Result
 			this.tree.Columns.Add( this.colDuration );
 			this.tree.Columns.Add( this.colLastError );
 			this.tree.DefaultToolTipProvider = null;
+			this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tree.DragDropMarkColor = System.Drawing.Color.Black;
 			this.tree.FullRowSelect = true;
 			this.tree.GridLineStyle = ( ( Aga.Controls.Tree.GridLineStyle ) ( ( Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical ) ) );
 			this.tree.LineColor = System.Drawing.SystemColors.ControlDark;
 			this.tree.LoadOnDemand = true;
-			this.tree.Location = new System.Drawing.Point( 3, 34 );
+			this.tree.Location = new System.Drawing.Point( 0, 0 );
 			this.tree.Model = null;
 			this.tree.Name = "tree";
 			this.tree.RowHeight = 18;
 			this.tree.SelectedNode = null;
-			this.tree.Size = new System.Drawing.Size( 482, 277 );
+			this.tree.Size = new System.Drawing.Size( 488, 314 );
 			this.tree.TabIndex = 0;
 			this.tree.UseColumns = true;
 			// 
@@ -113,6 +111,12 @@ namespace Cfix.Control.Ui.Result
 			this.colRoutine.TooltipText = null;
 			this.colRoutine.Width = 120;
 			// 
+			// colDuration
+			// 
+			this.colDuration.Header = "Duration";
+			this.colDuration.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.colDuration.TooltipText = null;
+			// 
 			// colLastError
 			// 
 			this.colLastError.Header = "Last Win32 error";
@@ -133,12 +137,6 @@ namespace Cfix.Control.Ui.Result
 			this.icons.Images.SetKeyName( 7, "Status_Inconclusive.bmp" );
 			this.icons.Images.SetKeyName( 8, "Inconclusive.bmp" );
 			this.icons.Images.SetKeyName( 9, "Failure.bmp" );
-			// 
-			// colDuration
-			// 
-			this.colDuration.Header = "Duration";
-			this.colDuration.SortOrder = System.Windows.Forms.SortOrder.None;
-			this.colDuration.TooltipText = null;
 			// 
 			// ResultExplorer
 			// 

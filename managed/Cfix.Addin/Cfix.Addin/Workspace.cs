@@ -12,6 +12,7 @@ namespace Cfix.Addin
 	{
 		private readonly CfixPlus addin;
 		private readonly Configuration config;
+		private readonly ToolWindows toolWindows;
 		private readonly Agent searchAgent;
 		private readonly AgentSet runAgents;
 		private readonly ISession session;
@@ -20,7 +21,7 @@ namespace Cfix.Addin
 		private IRun currentRun;
 
 		/*----------------------------------------------------------------------
-		 * Private.
+		 * Private - Agent creation.
 		 */
 
 		private static Architecture GetNativeArchitecture()
@@ -80,6 +81,25 @@ namespace Cfix.Addin
 			return target;
 		}
 
+		/*----------------------------------------------------------------------
+		 * Private - Run.
+		 */
+
+		/*----------------------------------------------------------------------
+		 * Private - Run events.
+		 * 
+		 * N.B. Execute on non-GUI thread.
+		 */
+
+		private void run_Log( object sender, LogEventArgs e )
+		{
+			
+		}
+
+		/*----------------------------------------------------------------------
+		 * Private - Misc.
+		 */
+
 		private IDispositionPolicy DispositionPolicy
 		{
 			get
@@ -95,11 +115,14 @@ namespace Cfix.Addin
 		 */
 		internal Workspace( CfixPlus addin )
 		{
-			//
-			// Search target is always i386 and inproc.
-			//
 			this.addin = addin;
+			this.toolWindows = new ToolWindows( addin );
+
+			//
+			// N.B. Search target is always i386 and inproc.
+			//
 			this.searchAgent = Agent.CreateLocalAgent( Architecture.I386, true );
+			
 			this.runAgents = CreateRunAgent();
 			this.config = Configuration.Load();
 			this.session = new Session();
@@ -112,6 +135,12 @@ namespace Cfix.Addin
 
 		protected void Dispose( bool disposing )
 		{
+			if ( this.toolWindows != null )
+			{
+				this.toolWindows.SaveWindowState();
+				this.toolWindows.CloseAll();
+			}
+
 			if ( this.searchAgent != null )
 			{
 				this.searchAgent.Dispose();
@@ -137,6 +166,11 @@ namespace Cfix.Addin
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
+
+		internal ToolWindows ToolWindows
+		{
+			get { return this.toolWindows; }
+		}
 
 		public Configuration Configuration
 		{
@@ -206,7 +240,17 @@ namespace Cfix.Addin
 				this.config.SchedulingOptions,
 				this.config.ThreadingOptions );
 			compiler.Add( item );
-			//IRun run = compiler.Compile();
+
+			//
+			// TODO: Build solution!
+			//
+
+			IRun run = compiler.Compile();
+			run.Log +=new EventHandler<LogEventArgs>( run_Log );
+
+			this.toolWindows.Run.UserControl.Run = run;
+			this.toolWindows.Run.Activate();
+			this.toolWindows.Run.UserControl.StartRun();
 		}
 
 

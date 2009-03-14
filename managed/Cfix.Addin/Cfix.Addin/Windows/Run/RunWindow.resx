@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,34 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExplorerCmdCaption" xml:space="preserve">
-    <value>Test Exlorer</value>
-  </data>
-  <data name="ExplorerWindowCaption" xml:space="preserve">
-    <value>cfix Test Explorer</value>
-  </data>
-  <data name="FailedToObtainCurrentConfig" xml:space="preserve">
-    <value>Failed to obtain current configuration</value>
-  </data>
-  <data name="RunActive" xml:space="preserve">
-    <value>Run still active</value>
-  </data>
-  <data name="RunCmdCaption" xml:space="preserve">
-    <value>Run</value>
-  </data>
-  <data name="RunWindowCaption" xml:space="preserve">
-    <value>cfix Run</value>
-  </data>
-  <data name="Searching" xml:space="preserve">
-    <value>Searching...</value>
-  </data>
-  <data name="SelectFileOrFolder" xml:space="preserve">
-    <value>Please select a test library or a folder to explore.</value>
-  </data>
-  <data name="UnrecognizedPlatform" xml:space="preserve">
-    <value>Unrecognized platform: {0}</value>
-  </data>
-  <data name="UnsupportedArchitecture" xml:space="preserve">
-    <value>Unsupported processor architecture.</value>
-  </data>
+  <metadata name="toolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

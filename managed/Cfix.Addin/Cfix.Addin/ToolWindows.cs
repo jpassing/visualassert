@@ -1,6 +1,7 @@
 using System;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
+using Cfix.Addin.Windows.Run;
 
 namespace Cfix.Addin
 {
@@ -8,6 +9,7 @@ namespace Cfix.Addin
 	{
 		private readonly CfixPlus addin;
 		private DteToolWindow<ExplorerWindow> explorer;
+		private DteToolWindow<RunWindow> run;
 
 		internal ToolWindows( CfixPlus addin )
 		{
@@ -19,6 +21,7 @@ namespace Cfix.Addin
 			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
 			{
 				Explorer.Visible = true;
+				Run.Visible = true;
 			}
 		}
 
@@ -27,6 +30,7 @@ namespace Cfix.Addin
 			if ( this.explorer != null && this.explorer.Visible )
 			{
 				this.addin.Workspace.Configuration.ExplorerWindowVisible = true;
+				this.addin.Workspace.Configuration.RunWindowVisible = true;
 			}
 		}
 
@@ -59,12 +63,46 @@ namespace Cfix.Addin
 			}
 		}
 
+		public DteToolWindow<RunWindow> Run
+		{
+			get
+			{
+				if ( this.run == null )
+				{
+					this.run= DteToolWindow<RunWindow>.Create(
+						this.addin,
+						Strings.RunWindowCaption,
+						RunWindow.Guid,
+						Icons.cfix );
+					this.run.UserControl.Initialize(
+						this.addin.Workspace );
+					this.run.Visible = true;
+
+					try
+					{
+						this.run.Height = 300;
+						this.run.Width = 700;
+					}
+					catch ( Exception )
+					{ }
+				}
+
+				return this.run;
+			}
+		}
+
 		public void CloseAll()
 		{
 			if ( this.explorer != null )
 			{
 				this.explorer.Close();
 				this.explorer.UserControl.Dispose();
+			}
+
+			if ( this.run != null )
+			{
+				this.run.Close();
+				this.run.UserControl.Dispose();
 			}
 		}
 	}

@@ -10,8 +10,8 @@ namespace Cfix.Control
 	/// 
 	/// Threadsafe.
 	/// </summary>
-	public class GenericTestItemCollection : 
-		ITestItemCollection, IRunnableTestItem
+	public class GenericTestItemCollection :
+		ITestItemCollection, IRunnableTestItemCollection
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
@@ -33,6 +33,32 @@ namespace Cfix.Control
 			Dispose( false );
 		}
 
+		protected virtual void Dispose( bool disposing )
+		{
+			lock ( this.listLock )
+			{
+				foreach ( ITestItem item in this.list )
+				{
+					item.Dispose();
+				}
+			}
+
+			if ( !this.disposed )
+			{
+				if ( Disposed != null )
+				{
+					Disposed( this, EventArgs.Empty );
+				}
+
+				this.disposed = true;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
 		/*--------------------------------------------------------------
 		 * Protected.
 		 */
@@ -280,32 +306,28 @@ namespace Cfix.Control
 			}
 		}
 
-		protected virtual void Dispose( bool disposing )
+		/*--------------------------------------------------------------
+		 * IRunnableTestItemCollection.
+		 */
+
+		public uint RunnableItemCount
 		{
-			lock ( this.listLock )
+			get
 			{
-				foreach ( ITestItem item in this.list )
+				uint count = 0;
+				lock ( this.listLock )
 				{
-					item.Dispose();
-				}
-			}
-
-			if ( ! this.disposed )
-			{
-				if ( Disposed != null )
-				{
-					Disposed( this, EventArgs.Empty );
+					foreach ( ITestItem item in this.list )
+					{
+						if ( item is IRunnableTestItem )
+						{
+							count++;
+						}
+					}
 				}
 
-				this.disposed = true;
+				return count;
 			}
 		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
 	}
 }
