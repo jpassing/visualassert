@@ -7,12 +7,17 @@ namespace Cfix.Control.RunControl
 	// Non-threadsafe
 	public class SimpleRunCompiler : IRunCompiler
 	{
-		private readonly IAgent agent;
+		private readonly AgentSet agentSet;
 		private readonly SchedulingOptions schedulingOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly Run run;
 
-		private IList<IAction> actions = new List<IAction>();
+		//
+		// One action list per architecture.
+		//
+		private IList<IAction>[] actions =
+			new IList<IAction>[ ( int ) Architecture.Max + 1 ];
+
 		private IResultItem result;
 
 		private static IResultItem GetRootAncestor( IResultItem item )
@@ -28,18 +33,45 @@ namespace Cfix.Control.RunControl
 			}
 		}
 
+		private static AgentSet CreateSingleArchitectureAgentSet(
+			IAgent agent
+			)
+		{
+			AgentSet set = new AgentSet();
+			set.AddArchitecture( agent );
+			return set;
+		}
+
+		public SimpleRunCompiler(
+			AgentSet agentSet,
+			IDispositionPolicy policy,
+			SchedulingOptions schedulingOptions,
+			ThreadingOptions threadingOptions
+			)
+		{
+			for ( int i = 0; i < this.actions.Length; i++ )
+			{
+				this.actions[ i ] = new List<IAction>();
+			}
+
+			this.agentSet = agentSet;
+			this.schedulingOptions = schedulingOptions;
+			this.threadingOptions = threadingOptions;
+			this.run = new Run( policy );
+		}
+
 		public SimpleRunCompiler(
 			IAgent agent,
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
 			ThreadingOptions threadingOptions
 			)
-		{
-			this.agent = agent;
-			this.schedulingOptions = schedulingOptions;
-			this.threadingOptions = threadingOptions;
-			this.run = new Run( policy );
-		}
+			: this(
+				CreateSingleArchitectureAgentSet( agent ),
+				policy,
+				schedulingOptions,
+				threadingOptions )
+		{ }
 
 		/*--------------------------------------------------------------
 		 * IRunCompiler.
@@ -87,7 +119,7 @@ namespace Cfix.Control.RunControl
 				}
 			}
 
-			this.actions.Add( action );
+			this.actions[ ( int ) action.Architecture ].Add( action );
 		}
 
 		public void Add( IRunnableTestItem item )
@@ -103,17 +135,23 @@ namespace Cfix.Control.RunControl
 
 		public IRun Compile()
 		{
-			if ( this.actions.Count > 0 )
+			for ( int i = 0; i < this.actions.Length; i++ )
 			{
-				Task task = new Task( this.agent, this.agent.CreateHost() );
-				
-				foreach ( IAction act in this.actions )
+				if ( this.actions[ i ].Count > 0 )
 				{
-					task.AddAction( act );
-				}
+					IAgent agent = this.agentSet.GetAgent( ( Architecture ) i );
+					Task task = new Task( 
+						agent, 
+						agent.CreateHost() );
 
-				this.run.RootResult = ( IResultItemCollection ) this.result;
-				this.run.AddTask( task );
+					foreach ( IAction act in this.actions[ i ] )
+					{
+						task.AddAction( act );
+					}
+
+					this.run.RootResult = ( IResultItemCollection ) this.result;
+					this.run.AddTask( task );
+				}
 			}
 
 			return this.run;

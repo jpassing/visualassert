@@ -122,7 +122,7 @@ namespace Cfix.Control.Native
 				if ( this.collection.runTargets.IsArchitectureSupported( arch ) )
 				{
 					using ( IHost host =
-							this.collection.runTargets.GetTarget( arch ).CreateHost() )
+							this.collection.runTargets.GetAgent( arch ).CreateHost() )
 					{
 						try
 						{

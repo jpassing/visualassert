@@ -42,7 +42,7 @@ namespace Cfix.Control
 			this.agent[ ( int ) arch ] = target;
 		}
 
-		public IAgent GetTarget( Architecture arch )
+		public IAgent GetAgent( Architecture arch )
 		{
 			IAgent value = this.agent[ ( int ) arch ];
 			if ( value != null )

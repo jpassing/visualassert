@@ -10,6 +10,7 @@ namespace Cfix.Control
 		void Run( IHost host );
 		void Stop();
 		uint ItemCount { get; }
+		Architecture Architecture { get; }
 	}
 
 	public interface IActionEvents
