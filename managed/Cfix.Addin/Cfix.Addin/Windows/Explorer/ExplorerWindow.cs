@@ -79,8 +79,12 @@ namespace Cfix.Addin.Windows.Explorer
 			object sender, 
 			ExplorerNodeEventArgs e )
 		{
-			this.ctxMenuDebugButton.Enabled = e.Item is IRunnableTestItem;
-			this.ctxMenuRunButton.Enabled = e.Item is IRunnableTestItem;
+			bool runnable = e.Item is IRunnableTestItem;
+			bool debugPossible = this.workspace.IsDebuggingPossible;
+
+			this.ctxMenuDebugButton.Enabled = runnable && debugPossible;
+			this.ctxMenuRunButton.Enabled = runnable;
+			
 			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
 
 			this.contextMenuReferenceNode = e.Node;
@@ -115,6 +119,12 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
+			bool runnable = e.Item is IRunnableTestItem;
+			bool debugPossible = this.workspace.IsDebuggingPossible;
+
+			this.debugButton.Enabled = runnable && debugPossible;
+			this.runButton.Enabled = runnable;
+
 			UpdateRefreshButtonStatus();
 		}
 
@@ -263,8 +273,8 @@ namespace Cfix.Addin.Windows.Explorer
 				//
 				// Enable button only when a solution is open.
 				//
-				Solution curSolution = this.dte.Solution;
-				this.selectSlnModeButton.Enabled = curSolution.Projects.Count > 0;
+				this.selectSlnModeButton.Enabled =
+					this.workspace.IsSolutionOpened;
 			}
 			catch ( Exception x )
 			{
@@ -318,7 +328,7 @@ namespace Cfix.Addin.Windows.Explorer
 				this.workspace.Session.Tests = host.SearchModules(
 					dir,
 					filter,
-					this.workspace.RunAgents,
+					this.workspace.RunAgent,
 					! this.workspace.Configuration.KernelModeFeaturesEnabled );
 			}
 		}
@@ -333,7 +343,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Solution curSolution = this.dte.Solution;
 			SolutionTestCollection slnCollection = new SolutionTestCollection(
 				( Solution2 ) curSolution,
-				this.workspace.RunAgents,
+				this.workspace.RunAgent,
 				this.workspace.Configuration );
 			slnCollection.Closed += new EventHandler( slnCollection_Closed );
 			this.workspace.Session.Tests = slnCollection;
@@ -423,7 +433,6 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		
 		/*----------------------------------------------------------------------
 		 * Solution mode events.
 		 */
@@ -433,6 +442,78 @@ namespace Cfix.Addin.Windows.Explorer
 			try
 			{
 				ExploreSolution();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Run/Debug.
+		 */
+
+		private void debugButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				IRunnableTestItem item =
+					this.explorer.SelectedItem as IRunnableTestItem;
+				if ( item != null )
+				{
+					this.workspace.DebugItem( item );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void runButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				IRunnableTestItem item = 
+					this.explorer.SelectedItem as IRunnableTestItem;
+				if ( item != null )
+				{
+					this.workspace.RunItem( item );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				IRunnableTestItem item =
+					this.contextMenuReferenceNode as IRunnableTestItem;
+				if ( item != null )
+				{
+					this.workspace.DebugItem( item );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void ctxMenuRunButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				IRunnableTestItem item =
+					this.contextMenuReferenceNode as IRunnableTestItem;
+				if ( item != null )
+				{
+					this.workspace.RunItem( item );
+				}
 			}
 			catch ( Exception x )
 			{

@@ -39,12 +39,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.abortRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.autoRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-			this.startDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.startWithoutDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-			this.abortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.terminateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.debugButton = new System.Windows.Forms.ToolStripButton();
+			this.runButton = new System.Windows.Forms.ToolStripButton();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.statusText = new System.Windows.Forms.TextBox();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
@@ -65,8 +61,8 @@ namespace Cfix.Addin.Windows.Explorer
             this.abortRefreshButton,
             this.autoRefreshButton,
             this.separator1,
-            this.toolStripDropDownButton2,
-            this.toolStripDropDownButton1} );
+            this.debugButton,
+            this.runButton} );
 			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
 			// 
@@ -122,49 +118,21 @@ namespace Cfix.Addin.Windows.Explorer
 			this.separator1.Name = "separator1";
 			resources.ApplyResources( this.separator1, "separator1" );
 			// 
-			// toolStripDropDownButton2
+			// debugButton
 			// 
-			this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripDropDownButton2.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.startDebuggingToolStripMenuItem,
-            this.startWithoutDebuggingToolStripMenuItem} );
-			resources.ApplyResources( this.toolStripDropDownButton2, "toolStripDropDownButton2" );
-			this.toolStripDropDownButton2.Image = global::Cfix.Addin.Icons.Start;
-			this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+			this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
+			resources.ApplyResources( this.debugButton, "debugButton" );
+			this.debugButton.Name = "debugButton";
+			this.debugButton.Click += new System.EventHandler( this.debugButton_Click );
 			// 
-			// startDebuggingToolStripMenuItem
+			// runButton
 			// 
-			this.startDebuggingToolStripMenuItem.Image = global::Cfix.Addin.Icons.Start;
-			resources.ApplyResources( this.startDebuggingToolStripMenuItem, "startDebuggingToolStripMenuItem" );
-			this.startDebuggingToolStripMenuItem.Name = "startDebuggingToolStripMenuItem";
-			// 
-			// startWithoutDebuggingToolStripMenuItem
-			// 
-			this.startWithoutDebuggingToolStripMenuItem.Image = global::Cfix.Addin.Icons.Ffwd;
-			resources.ApplyResources( this.startWithoutDebuggingToolStripMenuItem, "startWithoutDebuggingToolStripMenuItem" );
-			this.startWithoutDebuggingToolStripMenuItem.Name = "startWithoutDebuggingToolStripMenuItem";
-			// 
-			// toolStripDropDownButton1
-			// 
-			this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripDropDownButton1.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.abortToolStripMenuItem,
-            this.terminateToolStripMenuItem} );
-			resources.ApplyResources( this.toolStripDropDownButton1, "toolStripDropDownButton1" );
-			this.toolStripDropDownButton1.Image = global::Cfix.Addin.Icons.StopHS;
-			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			// 
-			// abortToolStripMenuItem
-			// 
-			this.abortToolStripMenuItem.Image = global::Cfix.Addin.Icons.StopHS;
-			resources.ApplyResources( this.abortToolStripMenuItem, "abortToolStripMenuItem" );
-			this.abortToolStripMenuItem.Name = "abortToolStripMenuItem";
-			// 
-			// terminateToolStripMenuItem
-			// 
-			this.terminateToolStripMenuItem.Image = global::Cfix.Addin.Icons.Delete;
-			resources.ApplyResources( this.terminateToolStripMenuItem, "terminateToolStripMenuItem" );
-			this.terminateToolStripMenuItem.Name = "terminateToolStripMenuItem";
+			this.runButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.runButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			resources.ApplyResources( this.runButton, "runButton" );
+			this.runButton.Name = "runButton";
+			this.runButton.Click += new System.EventHandler( this.runButton_Click );
 			// 
 			// explorer
 			// 
@@ -204,19 +172,20 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
 			resources.ApplyResources( this.ctxMenuDebugButton, "ctxMenuDebugButton" );
 			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
+			this.ctxMenuDebugButton.Click += new System.EventHandler( this.ctxMenuDebugButton_Click );
 			// 
 			// ctxMenuRunButton
 			// 
 			this.ctxMenuRunButton.Image = global::Cfix.Addin.Icons.Ffwd;
 			resources.ApplyResources( this.ctxMenuRunButton, "ctxMenuRunButton" );
 			this.ctxMenuRunButton.Name = "ctxMenuRunButton";
+			this.ctxMenuRunButton.Click += new System.EventHandler( this.ctxMenuRunButton_Click );
 			// 
 			// ctxMenuRefreshButton
 			// 
 			this.ctxMenuRefreshButton.Image = global::Cfix.Addin.Icons.Refresh;
 			resources.ApplyResources( this.ctxMenuRefreshButton, "ctxMenuRefreshButton" );
 			this.ctxMenuRefreshButton.Name = "ctxMenuRefreshButton";
-
 			// 
 			// ExplorerWindow
 			// 
@@ -245,12 +214,6 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripMenuItem selectDirModeButton;
 		private System.Windows.Forms.ToolStripMenuItem selectSlnModeButton;
 		private System.Windows.Forms.ToolStripSeparator separator1;
-		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
-		private System.Windows.Forms.ToolStripMenuItem abortToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem terminateToolStripMenuItem;
-		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
-		private System.Windows.Forms.ToolStripMenuItem startDebuggingToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem startWithoutDebuggingToolStripMenuItem;
 		private System.Windows.Forms.PictureBox throbberPic;
 		private System.Windows.Forms.TextBox statusText;
 		private System.Windows.Forms.ToolStripButton abortRefreshButton;
@@ -259,5 +222,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuDebugButton;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunButton;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRefreshButton;
+		private System.Windows.Forms.ToolStripButton debugButton;
+		private System.Windows.Forms.ToolStripButton runButton;
 	}
 }

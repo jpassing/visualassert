@@ -2,11 +2,15 @@ using System;
 using System.Diagnostics;
 using Cfix.Control;
 using Cfix.Control.Native;
+using Cfix.Control.RunControl;
+using EnvDTE;
+using EnvDTE80;
 
 namespace Cfix.Addin
 {
 	public class Workspace : IDisposable
 	{
+		private readonly CfixPlus addin;
 		private readonly Configuration config;
 		private readonly Agent searchAgent;
 		private readonly AgentSet runAgents;
@@ -44,7 +48,7 @@ namespace Cfix.Addin
 		/*++
 		 * Create AgentSet for all supported architectures.
 		 --*/
-		private static AgentSet CreateRunAgents()
+		private static AgentSet CreateRunAgent()
 		{
 			AgentSet target = new AgentSet();
 			switch ( GetNativeArchitecture() )
@@ -89,13 +93,14 @@ namespace Cfix.Addin
 		/*----------------------------------------------------------------------
 		 * ctor/dtor.
 		 */
-		internal Workspace()
+		internal Workspace( CfixPlus addin )
 		{
 			//
 			// Search target is always i386 and inproc.
 			//
+			this.addin = addin;
 			this.searchAgent = Agent.CreateLocalAgent( Architecture.I386, true );
-			this.runAgents = CreateRunAgents();
+			this.runAgents = CreateRunAgent();
 			this.config = Configuration.Load();
 			this.session = new Session();
 		}
@@ -140,62 +145,70 @@ namespace Cfix.Addin
 
 		public Agent SearchAgent
 		{
-			get { return searchAgent; }
+			get { return this.searchAgent; }
 		}
 
-		public AgentSet RunAgents
+		public AgentSet RunAgent
 		{
-			get { return runAgents; }
-		} 
-		
+			get { return this.runAgents; }
+		}
+
+		public bool IsSolutionOpened
+		{
+			get
+			{
+				Solution curSolution = this.addin.DTE.Solution;
+				return curSolution.Projects.Count > 0;
+			}
+		}
+
+		public bool IsDebuggingPossible
+		{
+			get
+			{
+				Solution curSolution = this.addin.DTE.Solution;
+				if ( curSolution.Projects.Count == 0 )
+				{
+					return false;
+				}
+
+				return false;
+			}
+		}
+
 		public ISession Session
 		{
-			get { return session; }
+			get { return this.session; }
 		}
 
-		public IRun CurrentRun
+		public void DebugItem( ITestItem item )
 		{
-			get { return this.currentRun; }
+			//
+			// Without a project, debugging does not work properly.
+			// Moreover, we need a project to ontain the architecture
+			// to be used for debugging.
+			//
+			
+			//
+			// N.B. When debugging, it is crucial to use a single host
+			// process only. Debug runs are thus limited to a single
+			// architecture only.
+			//
+
+			throw new NotImplementedException();
 		}
 
-		//public bool IsRunActive
-		//{
-		//    get
-		//    {
-		//        lock ( this.runLock )
-		//        {
-		//            return this.currentRun != null && 
-		//               this.currentRun.IsStarted &&
-		//               ! this.currentRun.IsFinished;
-		//        }
-		//    }
-		//}
+		public void RunItem( IRunnableTestItem item )
+		{
+			SimpleRunCompiler compiler = new SimpleRunCompiler(
+				this.runAgents,
+				this.DispositionPolicy,
+				this.config.SchedulingOptions,
+				this.config.ThreadingOptions );
+			compiler.Add( item );
+			//IRun run = compiler.Compile();
+		}
 
-		//public void CreateRun()
-		//{
-		//    lock ( this.runLock )
-		//    {
-		//        if ( IsRunActive )
-		//        {
-		//            //
-		//            // Run still active.
-		//            //
-		//            throw new CfixException( Strings.RunActive );
-		//        }
-
-		//        Debug.Assert( this.currentRun == null || this.currentRun.IsFinished );
-
-		//        SchedulingOptions schOpts =
-		//            this.config.UseComNeutralThread
-		//                ? SchedulingOptions.ComNeutralThreading
-		//                : SchedulingOptions.None;
-
-		//        this.currentRun = this.session.CreateRun(
-		//            this.DispositionPolicy,
-		//            schOpts,
-		//            CompositionOptions.NonComposite );
-		//    }
-		//}
 
 	}
 }

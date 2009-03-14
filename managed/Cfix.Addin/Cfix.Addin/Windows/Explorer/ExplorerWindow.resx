@@ -219,65 +219,23 @@
   <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="startDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="debugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="startDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 22</value>
+  <data name="debugButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
   </data>
-  <data name="startDebuggingToolStripMenuItem.Text" xml:space="preserve">
+  <data name="debugButton.Text" xml:space="preserve">
     <value>Start Debugging</value>
   </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="runButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 22</value>
+  <data name="runButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
   </data>
-  <data name="startWithoutDebuggingToolStripMenuItem.Text" xml:space="preserve">
+  <data name="runButton.Text" xml:space="preserve">
     <value>Start Without Debugging</value>
-  </data>
-  <data name="toolStripDropDownButton2.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="toolStripDropDownButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="toolStripDropDownButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="toolStripDropDownButton2.Text" xml:space="preserve">
-    <value>toolStripDropDownButton2</value>
-  </data>
-  <data name="abortToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="abortToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
-  </data>
-  <data name="abortToolStripMenuItem.Text" xml:space="preserve">
-    <value>Abort</value>
-  </data>
-  <data name="terminateToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="terminateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
-  </data>
-  <data name="terminateToolStripMenuItem.Text" xml:space="preserve">
-    <value>Terminate</value>
-  </data>
-  <data name="toolStripDropDownButton1.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="toolStripDropDownButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="toolStripDropDownButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="toolStripDropDownButton1.Text" xml:space="preserve">
-    <value>toolStripDropDownButton1</value>
   </data>
   <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -413,7 +371,7 @@
     <value>Refresh</value>
   </data>
   <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 92</value>
+    <value>194, 70</value>
   </data>
   <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
     <value>ctxMenu</value>
@@ -472,41 +430,17 @@
   <data name="&gt;&gt;separator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripDropDownButton2.Name" xml:space="preserve">
-    <value>toolStripDropDownButton2</value>
+  <data name="&gt;&gt;debugButton.Name" xml:space="preserve">
+    <value>debugButton</value>
   </data>
-  <data name="&gt;&gt;toolStripDropDownButton2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;debugButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;startDebuggingToolStripMenuItem.Name" xml:space="preserve">
-    <value>startDebuggingToolStripMenuItem</value>
+  <data name="&gt;&gt;runButton.Name" xml:space="preserve">
+    <value>runButton</value>
   </data>
-  <data name="&gt;&gt;startDebuggingToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;startWithoutDebuggingToolStripMenuItem.Name" xml:space="preserve">
-    <value>startWithoutDebuggingToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;startWithoutDebuggingToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripDropDownButton1.Name" xml:space="preserve">
-    <value>toolStripDropDownButton1</value>
-  </data>
-  <data name="&gt;&gt;toolStripDropDownButton1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;abortToolStripMenuItem.Name" xml:space="preserve">
-    <value>abortToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;abortToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;terminateToolStripMenuItem.Name" xml:space="preserve">
-    <value>terminateToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;terminateToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;runButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ctxMenuDebugButton.Name" xml:space="preserve">
     <value>ctxMenuDebugButton</value>

@@ -83,7 +83,7 @@ namespace Cfix.Addin.Windows.Explorer
 					ITestItem module;
 					try
 					{
-						using ( IHost host = this.agentSet.GetTarget( arch ).CreateHost() )
+						using ( IHost host = this.agentSet.GetAgent( arch ).CreateHost() )
 						{
 							module = host.LoadModule(
 								null,

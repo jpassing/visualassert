@@ -191,5 +191,53 @@ namespace Cfix.Addin
 					RegistryValueKind.DWord );
 			}
 		}
+
+		public SchedulingOptions SchedulingOptions
+		{
+			get
+			{
+				SchedulingOptions val = ( SchedulingOptions ) this.key.GetValue(
+					"SchedulingOptions", SchedulingOptions.None );
+				if ( Enum.IsDefined( typeof( SchedulingOptions ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return SchedulingOptions.None;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"SchedulingOptions",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public ThreadingOptions ThreadingOptions
+		{
+			get
+			{
+				ThreadingOptions val = ( ThreadingOptions ) this.key.GetValue(
+					"ThreadingOptions", ThreadingOptions.ComNeutralThreading );
+				if ( Enum.IsDefined( typeof( ThreadingOptions ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return ThreadingOptions.ComNeutralThreading;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"ThreadingOptions",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
 	}
 }
