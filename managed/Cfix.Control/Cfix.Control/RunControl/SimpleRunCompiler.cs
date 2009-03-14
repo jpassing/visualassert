@@ -135,6 +135,7 @@ namespace Cfix.Control.RunControl
 
 		public IRun Compile()
 		{
+			int tasks = 0;
 			for ( int i = 0; i < this.actions.Length; i++ )
 			{
 				if ( this.actions[ i ].Count > 0 )
@@ -150,7 +151,13 @@ namespace Cfix.Control.RunControl
 					}
 
 					this.run.AddTask( task );
+					tasks++;
 				}
+			}
+
+			if ( tasks == 0 )
+			{
+				throw new EmptyRunException();
 			}
 
 			this.run.RootResult = ( IResultItemCollection ) this.result;

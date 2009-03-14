@@ -453,72 +453,50 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Run/Debug.
 		 */
 
-		private void debugButton_Click( object sender, EventArgs e )
+		private void RunItem( ITestItem item, bool debug )
 		{
 			try
 			{
-				IRunnableTestItem item =
-					this.explorer.SelectedItem as IRunnableTestItem;
+				IRunnableTestItem runItem = item as IRunnableTestItem;
 				if ( item != null )
 				{
-					this.workspace.DebugItem( item );
+					this.workspace.RunItem( runItem );
 				}
+			}
+			catch ( ConcurrentRunException )
+			{
+				//
+				// Ok.
+				//
+			}
+			catch ( EmptyRunException )
+			{
+				CfixPlus.ShowInfo( Strings.EmptyRun );
 			}
 			catch ( Exception x )
 			{
 				CfixPlus.HandleError( x );
 			}
+		}
+
+		private void debugButton_Click( object sender, EventArgs e )
+		{
+			RunItem( this.explorer.SelectedItem, true );
 		}
 
 		private void runButton_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				IRunnableTestItem item = 
-					this.explorer.SelectedItem as IRunnableTestItem;
-				if ( item != null )
-				{
-					this.workspace.RunItem( item );
-				}
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
+			RunItem( this.explorer.SelectedItem, false );
 		}
 
 		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				IRunnableTestItem item =
-					this.contextMenuReferenceNode as IRunnableTestItem;
-				if ( item != null )
-				{
-					this.workspace.DebugItem( item );
-				}
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
+			RunItem( this.contextMenuReferenceNode.Item, true );
 		}
 
 		private void ctxMenuRunButton_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				IRunnableTestItem item =
-					this.contextMenuReferenceNode as IRunnableTestItem;
-				if ( item != null )
-				{
-					this.workspace.RunItem( item );
-				}
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
+			RunItem( this.contextMenuReferenceNode.Item, false );
 		}
 	}
 }

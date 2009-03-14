@@ -59,4 +59,23 @@ namespace Cfix.Control
             : base( msg, inner )
         {}
     }
+
+	[Serializable]
+	public class EmptyRunException : CfixException
+	{
+		public EmptyRunException()
+		{ }
+
+		protected EmptyRunException( SerializationInfo info, StreamingContext ctx )
+			: base( info, ctx )
+		{ }
+
+		public EmptyRunException( String msg )
+			: base( msg )
+		{ }
+
+		public EmptyRunException( String msg, Exception inner )
+			: base( msg, inner )
+		{ }
+	}
 }

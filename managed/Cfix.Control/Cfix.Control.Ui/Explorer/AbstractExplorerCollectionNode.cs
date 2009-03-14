@@ -20,7 +20,10 @@ namespace Cfix.Control.Ui.Explorer
 				this.treeView.Invoke( ( VoidDelegate ) delegate()
 				{
 					this.Nodes.Add( node );
-					this.Expand();
+					if ( node is AbstractExplorerCollectionNode )
+					{
+						this.Expand();
+					}
 				} );
 			}
 			else

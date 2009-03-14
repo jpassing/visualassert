@@ -248,9 +248,21 @@ namespace Cfix.Addin
 			IRun run = compiler.Compile();
 			run.Log +=new EventHandler<LogEventArgs>( run_Log );
 
-			this.toolWindows.Run.UserControl.Run = run;
-			this.toolWindows.Run.Activate();
-			this.toolWindows.Run.UserControl.StartRun();
+			try
+			{
+				this.toolWindows.Run.UserControl.Run = run;
+				this.toolWindows.Run.Activate();
+				this.toolWindows.Run.UserControl.StartRun();
+			}
+			catch ( ConcurrentRunException )
+			{
+				//
+				// Another run is still active. Dispose run as it will
+				// not ever be started.
+				//
+				run.Dispose();
+				throw;
+			}
 		}
 
 

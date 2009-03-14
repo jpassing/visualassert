@@ -31,10 +31,16 @@ namespace Cfix.Addin.Windows.Run
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
+			this.stopButton = new System.Windows.Forms.ToolStripButton();
+			this.terminateButton = new System.Windows.Forms.ToolStripButton();
+			this.toolbar.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolbar
 			// 
+			this.toolbar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.stopButton,
+            this.terminateButton} );
 			this.toolbar.Location = new System.Drawing.Point( 0, 0 );
 			this.toolbar.Name = "toolbar";
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
@@ -60,7 +66,28 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size( 552, 10 );
 			this.progressBar.TabIndex = 2;
-			this.progressBar.Value = 20;
+			// 
+			// stopButton
+			// 
+			this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.stopButton.Enabled = false;
+			this.stopButton.Image = global::Cfix.Addin.Icons.StopHS;
+			this.stopButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.stopButton.Name = "stopButton";
+			this.stopButton.Size = new System.Drawing.Size( 23, 22 );
+			this.stopButton.Text = "Stop testrun";
+			this.stopButton.Click += new System.EventHandler( this.stopButton_Click );
+			// 
+			// terminateButton
+			// 
+			this.terminateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.terminateButton.Enabled = false;
+			this.terminateButton.Image = global::Cfix.Addin.Icons.Delete;
+			this.terminateButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.terminateButton.Name = "terminateButton";
+			this.terminateButton.Size = new System.Drawing.Size( 23, 22 );
+			this.terminateButton.Text = "Terminate testrun (kills processes)";
+			this.terminateButton.Click += new System.EventHandler( this.terminateButton_Click );
 			// 
 			// RunWindow
 			// 
@@ -71,6 +98,8 @@ namespace Cfix.Addin.Windows.Run
 			this.Controls.Add( this.toolbar );
 			this.Name = "RunWindow";
 			this.Size = new System.Drawing.Size( 558, 268 );
+			this.toolbar.ResumeLayout( false );
+			this.toolbar.PerformLayout();
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -81,5 +110,7 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStrip toolbar;
 		private Cfix.Control.Ui.Result.ResultExplorer results;
 		private System.Windows.Forms.ProgressBar progressBar;
+		private System.Windows.Forms.ToolStripButton stopButton;
+		private System.Windows.Forms.ToolStripButton terminateButton;
 	}
 }

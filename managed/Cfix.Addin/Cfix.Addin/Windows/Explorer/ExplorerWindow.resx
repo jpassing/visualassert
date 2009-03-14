@@ -219,6 +219,9 @@
   <data name="separator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
+  <data name="debugButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="debugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="debugButton.Text" xml:space="preserve">
     <value>Start Debugging</value>
+  </data>
+  <data name="runButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="runButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>

@@ -61,6 +61,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selection does not include any test item.
+        /// </summary>
+        internal static string EmptyRun {
+            get {
+                return ResourceManager.GetString("EmptyRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test Exlorer.
         /// </summary>
         internal static string ExplorerCmdCaption {
@@ -84,6 +93,15 @@ namespace Cfix.Addin {
         internal static string FailedToObtainCurrentConfig {
             get {
                 return ResourceManager.GetString("FailedToObtainCurrentConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cfix.
+        /// </summary>
+        internal static string MsgBoxCaption {
+            get {
+                return ResourceManager.GetString("MsgBoxCaption", resourceCulture);
             }
         }
         
@@ -129,6 +147,15 @@ namespace Cfix.Addin {
         internal static string SelectFileOrFolder {
             get {
                 return ResourceManager.GetString("SelectFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test run has not finished yet. Do you wish to terminate it?.
+        /// </summary>
+        internal static string TerminateActiveRun {
+            get {
+                return ResourceManager.GetString("TerminateActiveRun", resourceCulture);
             }
         }
         

@@ -121,16 +121,16 @@ namespace Cfix.Addin.Windows.Explorer
 			// debugButton
 			// 
 			this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
 			resources.ApplyResources( this.debugButton, "debugButton" );
+			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
 			this.debugButton.Name = "debugButton";
 			this.debugButton.Click += new System.EventHandler( this.debugButton_Click );
 			// 
 			// runButton
 			// 
 			this.runButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.runButton.Image = global::Cfix.Addin.Icons.Ffwd;
 			resources.ApplyResources( this.runButton, "runButton" );
+			this.runButton.Image = global::Cfix.Addin.Icons.Ffwd;
 			this.runButton.Name = "runButton";
 			this.runButton.Click += new System.EventHandler( this.runButton_Click );
 			// 
