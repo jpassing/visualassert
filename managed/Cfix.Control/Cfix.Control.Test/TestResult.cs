@@ -40,6 +40,7 @@ namespace Cfix.Control.Test
 				run.RootResult,
 				delegate( IResultItem item )
 				{
+					Assert.AreEqual( new TimeSpan( 0 ), item.Duration );
 					Assert.AreEqual( ExecutionStatus.Pending, item.Status );
 				} );
 
@@ -131,6 +132,8 @@ namespace Cfix.Control.Test
 			Assert.AreEqual(
 				ExecutionStatus.Succeeded,
 				run.RootResult.Status );
+
+			Assert.Greater( fixture.GetItem( 0 ).Duration, new TimeSpan( 0 ) );
 		}
 
 		[Test]

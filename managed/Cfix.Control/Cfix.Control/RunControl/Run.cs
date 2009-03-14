@@ -88,6 +88,20 @@ namespace Cfix.Control.RunControl
 			get { return this.tasks; }
 		}
 
+		public uint ItemCount
+		{
+			get 
+			{
+				uint count = 0;
+				foreach ( ITask task in this.tasks )
+				{
+					count += task.ItemCount;
+				}
+
+				return count;
+			}
+		}
+
 		public TaskStatus Status
 		{
 			get { return this.status; }

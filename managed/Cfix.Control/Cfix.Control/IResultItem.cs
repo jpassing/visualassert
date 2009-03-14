@@ -18,6 +18,8 @@ namespace Cfix.Control
 
 		String Name { get; }
 		ExecutionStatus Status { get; }
+		TimeSpan Duration { get; }
+		bool Completed { get; }
 
 		//
 		// Enforce completion:

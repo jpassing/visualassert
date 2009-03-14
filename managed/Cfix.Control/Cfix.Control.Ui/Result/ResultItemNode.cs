@@ -104,6 +104,23 @@ namespace Cfix.Control.Ui.Result
 			get { return null; }
 		}
 
+
+		public string Duration
+		{
+			get 
+			{
+				TimeSpan span = this.result.Duration;
+				if ( span.Ticks > 0 )
+				{
+					return span.ToString();
+				}
+				else
+				{
+					return String.Empty; 
+				}
+			}
+		}
+
 		public string LastError
 		{
 			get { return null; }

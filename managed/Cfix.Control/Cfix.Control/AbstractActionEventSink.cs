@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 
 namespace Cfix.Control.RunControl
 {
@@ -15,6 +15,8 @@ namespace Cfix.Control.RunControl
 
 		private readonly IDispositionPolicy policy;
 
+		private volatile int itemsCompleted;
+
 		protected AbstractActionEventSink(
 			IDispositionPolicy policy 
 			)
@@ -24,6 +26,11 @@ namespace Cfix.Control.RunControl
 
 		protected AbstractActionEventSink() : this( null )
 		{
+		}
+
+		public uint ItemsCompleted
+		{
+			get { return ( uint ) this.itemsCompleted; }
 		}
 
 		/*--------------------------------------------------------------
@@ -80,6 +87,17 @@ namespace Cfix.Control.RunControl
 
 		public void OnStatusChanged( IResultItem item )
 		{
+			if ( ! ( item is IResultItemCollection ) )
+			{
+				//
+				// Leaf item - count.
+				//
+				if ( item.Completed )
+				{
+					Interlocked.Increment( ref this.itemsCompleted );
+				}
+			}
+
 			if ( StatusChanged != null )
 			{
 				StatusChanged( item, EventArgs.Empty );

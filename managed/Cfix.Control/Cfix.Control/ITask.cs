@@ -41,6 +41,7 @@ namespace Cfix.Control
 		event EventHandler<FinishedEventArgs> Finished;
 		
 		TaskStatus Status { get; }
+		uint ItemCount { get; }
 
 		void Start();
 		void Stop();

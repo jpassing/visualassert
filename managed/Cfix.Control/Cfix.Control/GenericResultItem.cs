@@ -18,6 +18,9 @@ namespace Cfix.Control
 		private readonly Object failuresLock = new Object();
 		private ICollection<Failure> failures;
 
+		private DateTime? startTime;
+		private DateTime? finishTime;
+
 		protected GenericResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -198,8 +201,32 @@ namespace Cfix.Control
 					Debug.Assert( this.events != null );
 					Debug.Assert( this.item != null );
 
+					if ( value == ExecutionStatus.Running )
+					{
+						this.startTime = DateTime.Now;
+					}
+					else if ( this.startTime != null )
+					{
+						this.finishTime = DateTime.Now;
+					}
+
 					this.status = value;
 					this.events.OnStatusChanged( this );
+				}
+			}
+		}
+
+		public TimeSpan Duration
+		{
+			get 
+			{
+				if ( this.startTime == null || this.finishTime == null )
+				{
+					return new TimeSpan( 0 );
+				}
+				else
+				{
+					return ( TimeSpan ) ( this.finishTime - this.startTime );
 				}
 			}
 		}

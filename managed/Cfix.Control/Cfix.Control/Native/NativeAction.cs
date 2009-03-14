@@ -234,6 +234,22 @@ namespace Cfix.Control.Native
 			get { return this.item.Module.Architecture; }
 		}
 
+		public uint ItemCount
+		{
+			get
+			{
+				ITestItemCollection itemColl = this.item as ITestItemCollection;
+				if ( itemColl != null )
+				{
+					return itemColl.ItemCountRecursive;
+				}
+				else
+				{
+					return 1;
+				}
+			}
+		}
+
 		public void Run( IHost host )
 		{
 			try

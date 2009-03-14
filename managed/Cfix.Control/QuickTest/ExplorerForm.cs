@@ -68,6 +68,7 @@ namespace QuickTest
 			this.explorer.AbortRefreshSession();
 		}
 
+		private delegate void VoidDelegate();
 
 		public void LoadModule( string path )
 		{
@@ -89,6 +90,15 @@ namespace QuickTest
 
 				//this.Explorer.SetSession( new Session(), true );
 				//this.Explorer.Session.Tests = mod;
+
+				run.StatusChanged += delegate( object sender, EventArgs e )
+				{
+					this.BeginInvoke( ( VoidDelegate ) delegate
+					{
+						this.statusTxt.Text = String.Format(
+							"{0}/{1}", run.ItemsCompleted, run.ItemCount );
+					} );
+				};
 
 				this.Results.Run = run;
 				run.Start();

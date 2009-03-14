@@ -9,6 +9,7 @@ namespace Cfix.Control
 		IResultItem Result { get; }
 		void Run( IHost host );
 		void Stop();
+		uint ItemCount { get; }
 	}
 
 	public interface IActionEvents

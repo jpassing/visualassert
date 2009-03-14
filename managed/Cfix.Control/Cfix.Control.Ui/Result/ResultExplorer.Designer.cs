@@ -39,6 +39,7 @@ namespace Cfix.Control.Ui.Result
 			this.colRoutine = new Aga.Controls.Tree.TreeColumn();
 			this.colLastError = new Aga.Controls.Tree.TreeColumn();
 			this.icons = new System.Windows.Forms.ImageList( this.components );
+			this.colDuration = new Aga.Controls.Tree.TreeColumn();
 			this.SuspendLayout();
 			// 
 			// tree
@@ -53,6 +54,7 @@ namespace Cfix.Control.Ui.Result
 			this.tree.Columns.Add( this.colMessage );
 			this.tree.Columns.Add( this.colLocation );
 			this.tree.Columns.Add( this.colRoutine );
+			this.tree.Columns.Add( this.colDuration );
 			this.tree.Columns.Add( this.colLastError );
 			this.tree.DefaultToolTipProvider = null;
 			this.tree.DragDropMarkColor = System.Drawing.Color.Black;
@@ -132,6 +134,12 @@ namespace Cfix.Control.Ui.Result
 			this.icons.Images.SetKeyName( 8, "Inconclusive.bmp" );
 			this.icons.Images.SetKeyName( 9, "Failure.bmp" );
 			// 
+			// colDuration
+			// 
+			this.colDuration.Header = "Duration";
+			this.colDuration.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.colDuration.TooltipText = null;
+			// 
 			// ResultExplorer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -154,5 +162,6 @@ namespace Cfix.Control.Ui.Result
 		private Aga.Controls.Tree.TreeColumn colRoutine;
 		private Aga.Controls.Tree.TreeColumn colLastError;
 		private System.Windows.Forms.ImageList icons;
+		private Aga.Controls.Tree.TreeColumn colDuration;
 	}
 }

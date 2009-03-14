@@ -74,7 +74,7 @@ namespace Cfix.Control.Ui.Result
 				return new FailureNode(
 					Strings.UnhandledException,
 					String.Format( 
-						"0x{0:X} ({1}", 
+						"0x{0:X} ({1})", 
 						u.ExceptionCode,
 						Resolve( ( int ) u.ExceptionCode ) ),
 					null,
@@ -183,6 +183,11 @@ namespace Cfix.Control.Ui.Result
 						Resolve( this.lastError ) ); 
 				}
 			}
+		}
+
+		public string Duration
+		{
+			get { return String.Empty; }
 		}
 
 		public Image Icon

@@ -24,6 +24,7 @@ namespace Cfix.Control.Ui.Result
 		private readonly NodeTextBox messageBinding = new NodeTextBox();
 		private readonly NodeTextBox locationBinding = new NodeTextBox();
 		private readonly NodeTextBox routineBinding = new NodeTextBox();
+		private readonly NodeTextBox durationBinding = new NodeTextBox();
 		private readonly NodeTextBox lastErrorBinding = new NodeTextBox();
 
 		public ResultExplorer()
@@ -86,6 +87,13 @@ namespace Cfix.Control.Ui.Result
 			this.routineBinding.UseCompatibleTextRendering = true;
 			this.routineBinding.EditEnabled = false; 
 			this.tree.NodeControls.Add( this.routineBinding );
+
+			this.durationBinding.DataPropertyName = "Duration";
+			this.durationBinding.ParentColumn = this.colDuration;
+			this.durationBinding.Trimming = StringTrimming.EllipsisCharacter;
+			this.durationBinding.UseCompatibleTextRendering = true;
+			this.durationBinding.EditEnabled = false;
+			this.tree.NodeControls.Add( this.durationBinding );
 
 			this.lastErrorBinding.DataPropertyName = "LastError";
 			this.lastErrorBinding.ParentColumn = this.colLastError;

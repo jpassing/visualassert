@@ -256,6 +256,7 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
+		[Ignore]
 		[Test]
 		public void TestHostHandlingOfSinkExceptions()
 		{

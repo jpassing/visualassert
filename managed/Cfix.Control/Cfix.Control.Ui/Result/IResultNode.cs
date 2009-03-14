@@ -17,5 +17,6 @@ namespace Cfix.Control.Ui.Result
 		string Location { get; }
 		string Routine { get; }
 		string LastError { get; }
+		string Duration { get; }
 	}
 }

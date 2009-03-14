@@ -86,5 +86,7 @@ namespace Cfix.Control
 
 		IEnumerable<ITask> Tasks { get; }
 		IResultItemCollection RootResult { get; }
+
+		uint ItemsCompleted { get; }
 	}
 }

@@ -113,6 +113,7 @@ namespace Cfix.Control.Test
 			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
+				Assert.AreEqual( 1, run.ItemCount );
 
 				int spawns = 0;
 				run.HostSpawned += delegate( object sender, HostEventArgs e )
@@ -189,6 +190,7 @@ namespace Cfix.Control.Test
 				Assert.AreEqual( 0, fails );
 
 				Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				Assert.AreEqual( 1, run.ItemsCompleted );
 
 				run.Stop();
 				run.Terminate();

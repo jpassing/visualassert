@@ -17,6 +17,7 @@ namespace Cfix.Control.RunControl
 
 		private readonly IAgent agent;
 		private readonly List<IAction> actions = new List<IAction>();
+		private uint itemCount;
 
 		//
 		// Host to run on. Disposed and nulled eagerly.
@@ -78,9 +79,9 @@ namespace Cfix.Control.RunControl
 			lock ( this.actionLock )
 			{
 				this.actions.Add( action );
+				this.itemCount += action.ItemCount;
 			}
 		}
-
 
 		/*--------------------------------------------------------------
 		 * Async run.
@@ -168,6 +169,11 @@ namespace Cfix.Control.RunControl
 		public TaskStatus Status
 		{
 			get { return this.status; }
+		}
+
+		public uint ItemCount
+		{
+			get { return this.itemCount; }
 		}
 
 		public void Start()
