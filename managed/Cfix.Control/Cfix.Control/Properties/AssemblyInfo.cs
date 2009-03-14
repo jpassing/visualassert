@@ -36,3 +36,5 @@ using System.Runtime.InteropServices;
 
 
 [assembly: System.CLSCompliant( false )]
+
+[assembly: InternalsVisibleTo( "Cfix.Control.Test" )]

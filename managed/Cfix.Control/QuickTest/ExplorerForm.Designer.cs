@@ -29,7 +29,7 @@ namespace QuickTest
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.refresh = new System.Windows.Forms.Button();
 			this.progressLabel = new System.Windows.Forms.Label();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
@@ -39,6 +39,7 @@ namespace QuickTest
 			this.Results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// refresh
@@ -75,7 +76,7 @@ namespace QuickTest
 			this.explorer.Location = new System.Drawing.Point( 0, 0 );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.NodeFactory = nodeFactory2;
 			this.explorer.Size = new System.Drawing.Size( 808, 221 );
 			this.explorer.TabIndex = 0;
 			// 
@@ -133,11 +134,23 @@ namespace QuickTest
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler( this.button2_Click );
 			// 
+			// button3
+			// 
+			this.button3.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.button3.Location = new System.Drawing.Point( 368, 484 );
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size( 75, 23 );
+			this.button3.TabIndex = 7;
+			this.button3.Text = "Load ctl";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler( this.button3_Click );
+			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 811, 533 );
+			this.Controls.Add( this.button3 );
 			this.Controls.Add( this.button2 );
 			this.Controls.Add( this.button1 );
 			this.Controls.Add( this.Results );
@@ -164,5 +177,6 @@ namespace QuickTest
 		public Cfix.Control.Ui.Result.ResultExplorer Results;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button3;
 	}
 }

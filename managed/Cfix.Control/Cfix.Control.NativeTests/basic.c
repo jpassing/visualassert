@@ -45,6 +45,12 @@ static void __stdcall FailingAssertion()
 	CFIX_ASSERT( FALSE );
 }
 
+static void __stdcall SucceedingAssertionAndLog()
+{
+	CFIX_ASSERT( TRUE );
+	CFIX_LOG( L"test" );
+}
+
 static void __stdcall Throw()
 {
 	RaiseException( 0xCAFEBABE, 0, 0, NULL );
@@ -94,4 +100,10 @@ CFIX_BEGIN_FIXTURE( StopInTeardown )
 	CFIX_FIXTURE_TEARDOWN( StopMe )
 	CFIX_FIXTURE_ENTRY( Nop01 )
 	CFIX_FIXTURE_ENTRY( Nop02 )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( SinkTest )
+	CFIX_FIXTURE_SETUP( SucceedingAssertionAndLog )
+	CFIX_FIXTURE_TEARDOWN( SucceedingAssertionAndLog )
+	CFIX_FIXTURE_ENTRY( SucceedingAssertionAndLog )
 CFIX_END_FIXTURE()

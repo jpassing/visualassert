@@ -15,6 +15,7 @@ namespace Cfix.Control.Ui.Result
 		public event EventHandler<TreePathEventArgs> StructureChanged;
 
 		private readonly ImageList iconsList;
+		private readonly TreeViewAdv tree;
 		
 		//
 		// The current run -- may be changed at any time.
@@ -29,6 +30,8 @@ namespace Cfix.Control.Ui.Result
 		private ResultItemNode root;
 
 		private readonly object runLock = new object();
+
+		private bool rootExpanded;
 
 		/*----------------------------------------------------------------------
 		 * Events.
@@ -53,6 +56,16 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
+		private void Expand( TreePath path )
+		{
+			this.tree.FindNode( path ).Expand();
+		}
+
+		private void Collapse( TreePath path )
+		{
+			this.tree.FindNode( path ).Collapse();
+		}
+
 		private void run_StatusChanged( object sender, EventArgs e )
 		{
 			IResultItem item = sender as IResultItem;
@@ -73,6 +86,8 @@ namespace Cfix.Control.Ui.Result
 							GetTreePath( affectedNode.Parent ),
 							new object[] { affectedNode } ) );
 
+					TreePath nodePath = GetTreePath( affectedNode );
+
 					if ( affectedNode.HasFailures )
 					{
 						//
@@ -87,22 +102,34 @@ namespace Cfix.Control.Ui.Result
 							foreach ( Failure f in affectedNode.Failures )
 							{
 								indices[ index ] = index;
-								children[ index++ ] = f;
+								children[ index++ ] = FailureNode.Create( f, this.iconsList );
 							}
 
 							this.NodesInserted(
 								this,
 								new TreeModelEventArgs(
-									GetTreePath( affectedNode ),
+									nodePath,
 									indices,
 									children ) );
 						}
 					}
 
-					//
-					// We do not expect further changes for this node.
-					//
-					this.nodeTable.Remove( item );
+					if ( item.Status == ExecutionStatus.Running )
+					{
+						Expand( nodePath );
+					}
+					else if ( item.Status > ExecutionStatus.Running )
+					{
+						if ( item.Status == ExecutionStatus.Succeeded )
+						{
+							Collapse( nodePath );
+						}
+
+						//
+						// We do not expect further changes for this node.
+						//
+						this.nodeTable.Remove( item );
+					}
 				}
 				else
 				{
@@ -111,15 +138,22 @@ namespace Cfix.Control.Ui.Result
 					//
 				}
 			}
+
+			if ( !this.rootExpanded )
+			{
+				Expand( new TreePath( this.root ) );
+				this.rootExpanded = true;
+			}
 		}
 		
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
 
-		public ResultModel( ImageList iconsList )
+		public ResultModel( ImageList iconsList, TreeViewAdv tree )
 		{
 			this.iconsList = iconsList;
+			this.tree = tree;
 		}
 
 		public IRun Run
@@ -146,13 +180,14 @@ namespace Cfix.Control.Ui.Result
 					//
 
 					this.run = value;
+					this.rootExpanded = false;
 					this.root = new ResultItemNode(
 						this.run.RootResult,
 						this.iconsList,
 						null );
 					this.nodeTable = new Dictionary<IResultItem, ResultItemNode>();
 					this.nodeTable[ this.run.RootResult ] = this.root;
-
+					
 					this.run.StatusChanged += new EventHandler( run_StatusChanged );
 
 					if ( this.StructureChanged != null )

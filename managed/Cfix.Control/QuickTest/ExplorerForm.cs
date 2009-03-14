@@ -82,7 +82,7 @@ namespace QuickTest
 					ooTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.None,
 					ThreadingOptions.None );
 				comp.Add( ( IRunnableTestItem ) mod );
 				IRun run = comp.Compile();
@@ -103,6 +103,11 @@ namespace QuickTest
 		private void button2_Click( object sender, EventArgs e )
 		{
 			LoadModule( @"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testslow.dll" );
+		}
+
+		private void button3_Click( object sender, EventArgs e )
+		{
+			LoadModule( @"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testctl.dll" );
 		}
 	}
 }

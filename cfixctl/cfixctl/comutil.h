@@ -126,7 +126,7 @@ public:
 		ULONG Refs = InterlockedIncrement( &this->ReferenceCount );
 
 #ifdef COM_TRACE_ADDREF_AND_RELEASE
-		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
+		COM_TRACE( ( L"%S @ %p: Count=%d\n", __FUNCTION__, this, Refs ) );
 #endif
 
 		return Refs;
@@ -141,7 +141,7 @@ public:
 		}
 
 #ifdef COM_TRACE_ADDREF_AND_RELEASE
-		COM_TRACE( ( L"%S: Count=%d\n", __FUNCTION__, Refs ) );
+		COM_TRACE( ( L"%S @ %p: Count=%d\n", __FUNCTION__, this, Refs ) );
 #endif
 
 		return Refs;

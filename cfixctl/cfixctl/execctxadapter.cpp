@@ -163,8 +163,8 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxQueryDefaultDisposition(
 		}
 		else
 		{
-			VERIFY( SUCCEEDED( Context->ProcessSink->Notification(
-				CFIXCTL_E_QUERY_DEF_DISP_FAILED ) ) );
+			 ( VOID ) Context->ProcessSink->Notification(
+				CFIXCTL_E_QUERY_DEF_DISP_FAILED );
 			return CfixBreak;
 		}
 
@@ -175,8 +175,8 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxQueryDefaultDisposition(
 		}
 		else
 		{
-			VERIFY( SUCCEEDED( Context->ProcessSink->Notification(
-				CFIXCTL_E_QUERY_DEF_DISP_FAILED ) ) );
+			( VOID ) Context->ProcessSink->Notification(
+				CFIXCTL_E_QUERY_DEF_DISP_FAILED );
 			return CfixContinue;
 		}
 
@@ -298,8 +298,11 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	}
 	else
 	{
-		VERIFY( SUCCEEDED( Context->ProcessSink->Notification(
-			CFIXCTL_E_REPORT_EVENT_FAILED ) ) );
+		//
+		// Try passing a notofication. If it fails, ignore.
+		//
+		( VOID ) Context->ProcessSink->Notification(
+			CFIXCTL_E_REPORT_EVENT_FAILED );
 		return CfixBreak;
 	}
 }
@@ -330,7 +333,14 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 		CfixctlsGetFixtureOrdinal( Fixture ),
 		&Context->FixtureSink ) ) )
 	{
-		return Context->FixtureSink->BeforeFixtureStart();
+		HRESULT Hr = Context->FixtureSink->BeforeFixtureStart();
+		if ( FAILED( Hr ) )
+		{
+			Context->FixtureSink->Release();
+			Context->FixtureSink = NULL;
+		}
+
+		return Hr;
 	}
 	else
 	{
@@ -369,7 +379,14 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 		MainThreadId,
 		&Context->TestCaseSink ) ) )
 	{
-		return Context->TestCaseSink->BeforeTestCaseStart();
+		HRESULT Hr = Context->TestCaseSink->BeforeTestCaseStart();
+		if ( FAILED( Hr ) )
+		{
+			Context->TestCaseSink->Release();
+			Context->TestCaseSink = NULL;
+		}
+
+		return Hr;
 	}
 	else
 	{
@@ -397,8 +414,15 @@ static VOID CfixctlsExecCtxAfterFixtureFinish(
 		return;
 	}
 
-	VERIFY( SUCCEEDED( Context->FixtureSink->AfterFixtureFinish(
-		RanToCompletion ) ) );
+	HRESULT Hr = Context->FixtureSink->AfterFixtureFinish(
+		RanToCompletion );
+	if ( FAILED( Hr ) )
+	{
+		//
+		// Does not really matter.
+		//
+		CFIXCTLP_TRACE( ( L"AfterFixtureFinish failed: 0x%08X", Hr ) );
+	}
 
 	Context->FixtureSink->Release();
 	Context->FixtureSink = NULL;
@@ -425,8 +449,15 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 		return;
 	}
 
-	VERIFY( SUCCEEDED( Context->TestCaseSink->AfterTestCaseFinish(
-		RanToCompletion ) ) );
+	HRESULT Hr = Context->TestCaseSink->AfterTestCaseFinish(
+		RanToCompletion );
+	if ( FAILED( Hr ) )
+	{
+		//
+		// Does not really matter.
+		//
+		CFIXCTLP_TRACE( ( L"AfterTestCaseFinish failed: 0x%08X", Hr ) );
+	}
 
 	Context->TestCaseSink->Release();
 	Context->TestCaseSink = NULL;
@@ -456,8 +487,8 @@ static VOID CfixctlsExecCtxBeforeChildThreadStart(
 	// N.B. We are guaranteed to be called on the child thread.
 	//
 
-	VERIFY( SUCCEEDED( Sink->BeforeChildThreadStart(
-		GetCurrentThreadId() ) ) );
+	( VOID ) Sink->BeforeChildThreadStart(
+		GetCurrentThreadId() );
 }
 
 static VOID CfixctlsExecCtxAfterChildThreadFinish(
@@ -484,8 +515,8 @@ static VOID CfixctlsExecCtxAfterChildThreadFinish(
 	// N.B. We are guaranteed to be called on the child thread.
 	//
 
-	VERIFY( SUCCEEDED( Sink->AfterChildThreadFinish(
-		GetCurrentThreadId() ) ) );
+	( VOID ) Sink->AfterChildThreadFinish(
+		GetCurrentThreadId() );
 }
 
 static HRESULT CfixctlsExecCtxCreateChildThread(

@@ -47,6 +47,34 @@
 	#endif
 #endif
 
+#if DBG
+	#define CFIXCTLP_TRACE( Args ) CfixctlpDbgPrint##Args
+#else
+	#define CFIXCTLP_TRACE( Args ) 
+#endif
+
+__inline VOID CfixctlpDbgPrint(
+	__in PCWSTR Format,
+	...
+	)
+{
+	HRESULT hr;
+	WCHAR Buffer[ 512 ];
+	va_list lst;
+	va_start( lst, Format );
+	hr = StringCchVPrintf(
+		Buffer, 
+		_countof( Buffer ),
+		Format,
+		lst );
+	va_end( lst );
+	
+	if ( SUCCEEDED( hr ) )
+	{
+		OutputDebugString( Buffer );
+	}
+}
+
 /*----------------------------------------------------------------------
  *
  * Class factories.

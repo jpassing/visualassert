@@ -22,7 +22,7 @@ namespace Cfix.Control.Ui.Result
 
 		private static string Resolve( int errorCode )
 		{
-			return new Win32Exception( errorCode ).ToString();
+			return new Win32Exception( errorCode ).Message;
 		}
 
 		private FailureNode( 
@@ -115,7 +115,7 @@ namespace Cfix.Control.Ui.Result
 		{
 			get
 			{
-				return this.stackTrace != null;
+				return this.stackTrace == null;
 			}
 		}
 

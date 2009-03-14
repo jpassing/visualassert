@@ -30,7 +30,7 @@ namespace Cfix.Control.Ui.Result
 		{
 			InitializeComponent();
 
-			this.model = new ResultModel( this.icons );
+			this.model = new ResultModel( this.icons, this.tree );
 			this.tree.Model = model;
 
 			//
