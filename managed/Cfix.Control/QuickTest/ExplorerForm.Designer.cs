@@ -29,7 +29,7 @@ namespace QuickTest
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.refresh = new System.Windows.Forms.Button();
 			this.progressLabel = new System.Windows.Forms.Label();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
@@ -41,12 +41,14 @@ namespace QuickTest
 			this.button2 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.statusTxt = new System.Windows.Forms.TextBox();
+			this.button4 = new System.Windows.Forms.Button();
+			this.button5 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// refresh
 			// 
 			this.refresh.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
-			this.refresh.Location = new System.Drawing.Point( 0, 483 );
+			this.refresh.Location = new System.Drawing.Point( 7, 200 );
 			this.refresh.Name = "refresh";
 			this.refresh.Size = new System.Drawing.Size( 75, 23 );
 			this.refresh.TabIndex = 1;
@@ -77,8 +79,8 @@ namespace QuickTest
 			this.explorer.Location = new System.Drawing.Point( 0, 0 );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory2;
-			this.explorer.Size = new System.Drawing.Size( 808, 221 );
+			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.Size = new System.Drawing.Size( 808, 195 );
 			this.explorer.TabIndex = 0;
 			// 
 			// currentNodeLabel
@@ -94,7 +96,7 @@ namespace QuickTest
 			// abortBtn
 			// 
 			this.abortBtn.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
-			this.abortBtn.Location = new System.Drawing.Point( 82, 484 );
+			this.abortBtn.Location = new System.Drawing.Point( 89, 201 );
 			this.abortBtn.Name = "abortBtn";
 			this.abortBtn.Size = new System.Drawing.Size( 75, 23 );
 			this.abortBtn.TabIndex = 3;
@@ -155,11 +157,35 @@ namespace QuickTest
 			this.statusTxt.Size = new System.Drawing.Size( 134, 20 );
 			this.statusTxt.TabIndex = 8;
 			// 
+			// button4
+			// 
+			this.button4.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.button4.Location = new System.Drawing.Point( 7, 482 );
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size( 75, 23 );
+			this.button4.TabIndex = 9;
+			this.button4.Text = "Term";
+			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Click += new System.EventHandler( this.button4_Click );
+			// 
+			// button5
+			// 
+			this.button5.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.button5.Location = new System.Drawing.Point( 89, 482 );
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size( 75, 23 );
+			this.button5.TabIndex = 10;
+			this.button5.Text = "Stop";
+			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Click += new System.EventHandler( this.button5_Click );
+			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 811, 533 );
+			this.Controls.Add( this.button5 );
+			this.Controls.Add( this.button4 );
 			this.Controls.Add( this.statusTxt );
 			this.Controls.Add( this.button3 );
 			this.Controls.Add( this.button2 );
@@ -190,5 +216,7 @@ namespace QuickTest
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.TextBox statusTxt;
+		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.Button button5;
 	}
 }

@@ -14,7 +14,7 @@ namespace QuickTest
 {
 	public partial class ExplorerForm : Form
 	{
-		private Agent ooTarget;
+		private AgentSet ooTarget;
 		private Agent inTarget;
 
 		public TestExplorer Explorer
@@ -37,9 +37,10 @@ namespace QuickTest
 				this.currentNodeLabel.Text = args.Item.Name;
 			};
 
-			this.ooTarget = Agent.CreateLocalAgent(
+			this.ooTarget = new AgentSet();
+			this.ooTarget.AddArchitecture( Agent.CreateLocalAgent(
 				Architecture.I386,
-				false );
+				false ) );
 
 			this.inTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
@@ -118,6 +119,16 @@ namespace QuickTest
 		private void button3_Click( object sender, EventArgs e )
 		{
 			LoadModule( @"D:\dev\wdev\cfixplus\trunk\bin\chk\i386\testctl.dll" );
+		}
+
+		private void button4_Click( object sender, EventArgs e )
+		{
+			this.Results.Run.Terminate();
+		}
+
+		private void button5_Click( object sender, EventArgs e )
+		{
+			this.Results.Run.Stop();
 		}
 	}
 }

@@ -212,6 +212,11 @@ namespace Cfix.Control
 
 					this.status = value;
 					this.events.OnStatusChanged( this );
+
+					if ( this.parent != null && value == ExecutionStatus.Running )
+					{
+						this.parent.Status = value;
+					}
 				}
 			}
 		}

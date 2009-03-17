@@ -17,7 +17,7 @@ namespace Cfix.Control
 		ICollection<Failure> Failures { get; }
 
 		String Name { get; }
-		ExecutionStatus Status { get; }
+		ExecutionStatus Status { get; set; }
 		TimeSpan Duration { get; }
 		bool Completed { get; }
 

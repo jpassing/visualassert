@@ -120,9 +120,18 @@ namespace Cfix.Control.Ui.Result
 					}
 					else if ( item.Status > ExecutionStatus.Running )
 					{
-						if ( item.Status == ExecutionStatus.Succeeded )
+						IResultItemCollection itemColl =
+								item as IResultItemCollection;
+						if ( item.Status == ExecutionStatus.Succeeded &&
+							 itemColl != null )
 						{
-							Collapse( nodePath );
+							if ( !( itemColl.GetItem( 0 ) is IResultItemCollection ) )
+							{
+								//
+								// Node has leaves as children.
+								//
+								Collapse( nodePath );
+							}
 						}
 
 						//

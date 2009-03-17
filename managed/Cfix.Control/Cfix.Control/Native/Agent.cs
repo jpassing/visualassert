@@ -75,6 +75,7 @@ namespace Cfix.Control.Native
 			try
 			{
 				this.resolver = agent.CreateMessageResolver();
+				Debug.Assert( this.resolver != null );
 			}
 			catch ( COMException x )
 			{

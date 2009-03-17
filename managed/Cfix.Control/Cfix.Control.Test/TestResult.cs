@@ -180,7 +180,11 @@ namespace Cfix.Control.Test
 			// Start fixture.
 			//
 			fixSink.BeforeFixtureStart();
-			Assert.AreEqual( 1, statusChanges );
+			Assert.AreEqual( 2, statusChanges );
+
+			Assert.AreEqual(
+				ExecutionStatus.Running,
+				fixture.Parent.Status );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.Status );
@@ -201,7 +205,7 @@ namespace Cfix.Control.Test
 				ExecutionStatus.Skipped,
 				fixture.GetItem( 2 ).Status );
 
-			Assert.AreEqual( 6, statusChanges );
+			Assert.AreEqual( 7, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Failed,
 				fixture.Status );
@@ -256,7 +260,10 @@ namespace Cfix.Control.Test
 			// Start fixture.
 			//
 			fixSink.BeforeFixtureStart();
-			Assert.AreEqual( 1, statusChanges );
+			Assert.AreEqual( 2, statusChanges );
+			Assert.AreEqual(
+				ExecutionStatus.Running,
+				fixture.Parent.Status );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.Status );
@@ -267,7 +274,7 @@ namespace Cfix.Control.Test
 			Cfixctl.ICfixTestÌtemEventSink tcSink =
 				( Cfixctl.ICfixTestÌtemEventSink ) fixture.GetItem( 0 );
 			tcSink.BeforeTestCaseStart();
-			Assert.AreEqual( 2, statusChanges );
+			Assert.AreEqual( 3, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.GetItem( 0 ).Status );
@@ -276,7 +283,7 @@ namespace Cfix.Control.Test
 			Assert.IsNull( fixture.GetItem( 0 ).Failures );
 			
 			tcSink.AfterTestCaseFinish( 1 );
-			Assert.AreEqual( 3, statusChanges );
+			Assert.AreEqual( 4, statusChanges );
 
 			Assert.AreEqual(
 				ExecutionStatus.Succeeded,
@@ -297,14 +304,14 @@ namespace Cfix.Control.Test
 			tcSink =
 				( Cfixctl.ICfixTestÌtemEventSink ) fixture.GetItem( 1 );
 			tcSink.BeforeTestCaseStart();
-			Assert.AreEqual( 4, statusChanges );
+			Assert.AreEqual( 5, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.Status );
 
 			tcSink.UnhandledException( 1, 0, null );
 			tcSink.AfterTestCaseFinish( 0 );
-			Assert.AreEqual( 5, statusChanges );
+			Assert.AreEqual( 6, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.Status );
@@ -330,7 +337,7 @@ namespace Cfix.Control.Test
 			//
 
 			fixSink.AfterFixtureFinish( 0 );
-			Assert.AreEqual( 8, statusChanges );
+			Assert.AreEqual( 9, statusChanges );
 
 			Assert.AreEqual(
 				ExecutionStatus.Skipped,
@@ -385,7 +392,10 @@ namespace Cfix.Control.Test
 			// Start fixture.
 			//
 			fixSink.BeforeFixtureStart();
-			Assert.AreEqual( 1, statusChanges );
+			Assert.AreEqual( 2, statusChanges );
+			Assert.AreEqual(
+				ExecutionStatus.Running,
+				fixture.Parent.Status );
 			Assert.AreEqual(
 				ExecutionStatus.Running,
 				fixture.Status );
@@ -399,7 +409,7 @@ namespace Cfix.Control.Test
 			tcSink.Inconclusive( "test", 0, null );
 			tcSink.AfterTestCaseFinish( 0 );
 
-			Assert.AreEqual( 3, statusChanges );
+			Assert.AreEqual( 4, statusChanges );
 			Assert.AreEqual(
 				ExecutionStatus.Inconclusive,
 				fixture.GetItem( 0 ).Status );
@@ -408,7 +418,7 @@ namespace Cfix.Control.Test
 			Assert.AreEqual( 1, fixture.GetItem( 0 ).Failures.Count );
 
 			fixSink.AfterFixtureFinish( 1 );
-			Assert.AreEqual( 5, statusChanges );
+			Assert.AreEqual( 6, statusChanges );
 
 			Assert.AreEqual(
 				ExecutionStatus.Inconclusive,

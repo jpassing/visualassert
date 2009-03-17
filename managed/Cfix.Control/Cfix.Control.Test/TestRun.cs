@@ -78,7 +78,8 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void TestEmptyRunRaisesFinishEvent()
+		[ExpectedException( typeof( EmptyRunException ) )]
+		public void TestEmptyRunRaisesException()
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )
 			using ( IRun run = new RunControl.SimpleRunCompiler(
@@ -89,15 +90,7 @@ namespace Cfix.Control.Test
 				ThreadingOptions.ComNeutralThreading ).Compile() )
 			{
 				AutoResetEvent done = new AutoResetEvent( false );
-
-				run.Finished += delegate( object sender, FinishedEventArgs e )
-				{
-					done.Set();
-				};
-
 				run.Start();
-				done.WaitOne();
-				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 			}
 		}
 
