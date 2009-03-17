@@ -12,6 +12,7 @@ namespace Cfix.Control
 		Stopped,
 		Succeeded,
 		SucceededWithInconclusiveParts,
+		SucceededWithSkippedParts,
 		Failed,
 		Inconclusive
 	}

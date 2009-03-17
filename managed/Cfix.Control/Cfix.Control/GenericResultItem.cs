@@ -64,6 +64,7 @@ namespace Cfix.Control
 		protected ExecutionStatus CalculateStatus(
 			bool subItemFailed,
 			bool subItemInconclusive,
+			bool subItemSkipped,
 			bool subItemStopped,
 			bool allSubItemsSkipped
 			)
@@ -102,6 +103,13 @@ namespace Cfix.Control
 			{
 				return ExecutionStatus.Skipped;
 			}
+			else if ( subItemSkipped )
+			{
+				//
+				// Largely successful, but some skipped.
+				//
+				return ExecutionStatus.SucceededWithSkippedParts;
+			}
 			else 
 			{
 				return ExecutionStatus.Succeeded;
@@ -135,6 +143,7 @@ namespace Cfix.Control
 				{
 					case ExecutionStatus.Succeeded:
 					case ExecutionStatus.SucceededWithInconclusiveParts:
+					case ExecutionStatus.SucceededWithSkippedParts:
 					case ExecutionStatus.Failed:
 					case ExecutionStatus.Inconclusive:
 					case ExecutionStatus.Skipped:

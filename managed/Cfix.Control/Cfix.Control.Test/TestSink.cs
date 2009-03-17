@@ -290,7 +290,7 @@ namespace Cfix.Control.Test
 									sink,
 									( uint ) ThreadingOptions.ComNeutralThreading );
 							}
-							catch ( ArgumentException x )
+							catch ( ArgumentException )
 							{
 								//
 								// Passed through, ok.

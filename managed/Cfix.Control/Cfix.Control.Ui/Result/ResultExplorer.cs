@@ -11,9 +11,9 @@ namespace Cfix.Control.Ui.Result
 {
 	public partial class ResultExplorer : UserControl
 	{
-		public const int InconclusiveneIconIndex = 8;
-		public const int UnhandledExceptionIconIndex = 9;
-		public const int FailedAssertionIconIndex = 9;
+		public const int InconclusiveneIconIndex = 9;
+		public const int UnhandledExceptionIconIndex = 10;
+		public const int FailedAssertionIconIndex = 10;
 
 		private readonly ResultModel model;
 

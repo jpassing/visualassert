@@ -13,8 +13,9 @@ namespace Cfix.Control
 		private volatile int subItemsFinished;
 		private volatile bool subItemFailed;
 		private volatile bool subItemInconclusive;
-		private volatile bool subItemStopped; 
+		private volatile bool subItemStopped;
 		private volatile int subItemsSkipped;
+		private volatile int subItemsPartlySkipped;
 
 		public GenericResultCollection(
 			IActionEvents events,
@@ -116,8 +117,11 @@ namespace Cfix.Control
 			this.Status = CalculateStatus(
 				this.subItemFailed,
 				this.subItemInconclusive,
+				this.subItemsSkipped > 0 || this.subItemsPartlySkipped > 0,
 				this.subItemStopped || stoppedInSetup,
-				this.subItemsSkipped > 0 && this.subItemsSkipped == ItemCount );
+				this.subItemsSkipped > 0 && 
+					this.subItemsSkipped == ItemCount &&
+					this.subItemsPartlySkipped == 0 );
 
 			GenericResultCollection tp = this.Parent as GenericResultCollection;
 			if ( tp != null )
@@ -132,13 +136,23 @@ namespace Cfix.Control
 
 		public override void ForceCompletion( bool propagateToParent )
 		{
-			//
-			// Force completion of childre, which will lead to own
-			// status being set properly (skipped/failed/etc).
-			//
-			foreach ( IResultItem child in this.subItems )
+			if ( this.subItems.Count > 0 )
 			{
-				child.ForceCompletion( propagateToParent );
+				//
+				// Force completion of childre, which will lead to own
+				// status being set properly (skipped/failed/etc).
+				//
+				foreach ( IResultItem child in this.subItems )
+				{
+					child.ForceCompletion( propagateToParent );
+				}
+			}
+			else
+			{
+				//
+				// Must do it myself.
+				//
+				base.ForceCompletion( propagateToParent );
 			}
 		}
 
@@ -160,6 +174,10 @@ namespace Cfix.Control
 				status == ExecutionStatus.SucceededWithInconclusiveParts )
 			{
 				this.subItemInconclusive = true;
+			}
+			else if ( status == ExecutionStatus.SucceededWithSkippedParts )
+			{
+				this.subItemsPartlySkipped++;
 			}
 			else if ( status == ExecutionStatus.Skipped )
 			{

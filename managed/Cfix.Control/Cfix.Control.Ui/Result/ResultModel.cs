@@ -125,7 +125,8 @@ namespace Cfix.Control.Ui.Result
 						if ( item.Status == ExecutionStatus.Succeeded &&
 							 itemColl != null )
 						{
-							if ( !( itemColl.GetItem( 0 ) is IResultItemCollection ) )
+							if ( itemColl.ItemCount > 0 &&
+								!( itemColl.GetItem( 0 ) is IResultItemCollection ) )
 							{
 								//
 								// Node has leaves as children.

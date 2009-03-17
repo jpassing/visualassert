@@ -696,5 +696,28 @@ namespace Cfix.Control.Test
 				ExecutionStatus.Succeeded,
 				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 1 ).Status );
 		}
+
+		[Test]
+		public void ShortcutHalfway()
+		{
+			IRun run = RunTest(
+				ExecutionStatus.Succeeded,
+				new ExecutionStatus[] { ExecutionStatus.Succeeded, ExecutionStatus.Succeeded },
+				1,
+				ExecutionStatus.Succeeded );
+
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithSkippedParts,
+				run.RootResult.Status );
+			Assert.AreEqual(
+				ExecutionStatus.SucceededWithSkippedParts,
+				run.RootResult.GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Succeeded,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 0 ).Status );
+			Assert.AreEqual(
+				ExecutionStatus.Skipped,
+				( ( IResultItemCollection ) run.RootResult.GetItem( 0 ) ).GetItem( 1 ).Status );
+		}
 	}
 }

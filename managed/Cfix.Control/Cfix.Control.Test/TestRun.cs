@@ -16,6 +16,7 @@ namespace Cfix.Control.Test
 		private AgentSet multiTarget;
 		private String binDir;
 		private String testdataDir;
+		private String testdataDir2;
 
 		[SetUp]
 		public void Setup()
@@ -35,6 +36,9 @@ namespace Cfix.Control.Test
 			this.testdataDir =
 				binDir +
 				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata\i386";
+			this.testdataDir2 =
+				binDir +
+				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata2\i386";
 		}
 
 		[TearDown]
@@ -729,5 +733,55 @@ namespace Cfix.Control.Test
 				}
 			}
 		}
+
+		[Test]
+		public void TestForceCompletionOfEmptyFixture()
+		{
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.testdataDir2 + "\\testslow.dll",
+					false ) )
+			{
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( mod );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						//
+						// Premature abort due to shortcutting.
+						//
+						Assert.AreEqual( TaskStatus.Terminated, run.Status );
+						done.Set();
+					};
+
+					run.HostSpawned += delegate( object sender, HostEventArgs e )
+					{
+						run.Terminate();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Skipped, run.RootResult.Status );
+
+					Util.Traverse(
+						run.RootResult,
+						delegate( IResultItem item )
+						{
+							Assert.AreEqual( ExecutionStatus.Skipped, item.Status );
+						} );
+				}
+			}
+		}
+
 	}
 }

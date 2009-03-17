@@ -59,6 +59,7 @@ namespace Cfix.Control.Native
 			this.Status = CalculateStatus( 
 				false, 
 				false,
+				false,
 				stopped, 
 				false );
 
