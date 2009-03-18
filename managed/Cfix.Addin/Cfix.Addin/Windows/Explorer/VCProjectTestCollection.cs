@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using EnvDTE;
 using EnvDTE80;
 using Cfix.Control;
@@ -9,10 +10,12 @@ using Microsoft.VisualStudio.VCProjectEngine;
 
 namespace Cfix.Addin.Windows.Explorer
 {
-	internal class VCProjectTestCollection : GenericTestItemCollection
+	internal class VCProjectTestCollection 
+		: GenericTestItemCollection, IBuildableTestItem
 	{
 		private readonly Configuration config;
 		private readonly string uniqueName;
+		private readonly Solution2 solution;
 		private readonly Project project;
 		private readonly AgentSet agentSet;
 
@@ -86,7 +89,7 @@ namespace Cfix.Addin.Windows.Explorer
 						using ( IHost host = this.agentSet.GetAgent( arch ).CreateHost() )
 						{
 							module = host.LoadModule(
-								null,
+								this,
 								this.currentPath,
 								false );
 						}
@@ -109,12 +112,14 @@ namespace Cfix.Addin.Windows.Explorer
 		 */
 
 		public VCProjectTestCollection(
+			Solution2 solution,
 			Project project,
 			AgentSet agents,
 			Configuration config
 			)
 			: base( null, project.Name )
 		{
+			this.solution = solution;
 			this.uniqueName = project.UniqueName;
 			this.project = project;
 			this.agentSet = agents;
@@ -138,7 +143,19 @@ namespace Cfix.Addin.Windows.Explorer
 			// (Re-) obtain path to primary output as it may have
 			// changed.
 			//
-			VCConfiguration vcConfig = CurrentConfiguration;
+			VCConfiguration vcConfig;
+			try
+			{
+				vcConfig = CurrentConfiguration;
+			}
+			catch ( COMException )
+			{
+				//
+				// This may occur when VC is currently being shut down.
+				// ABort operation.
+				//
+				return;
+			}
 
 			if ( vcConfig.PrimaryOutput != this.currentPath )
 			{
@@ -165,6 +182,27 @@ namespace Cfix.Addin.Windows.Explorer
 				
 				//base.Refresh();
 			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * IBuildableTestItem.
+		 */
+
+		public bool Build()
+		{
+			SolutionBuild build = this.solution.SolutionBuild;
+			build.BuildProject(
+				CurrentConfiguration.ConfigurationName,
+				this.uniqueName, 
+				true );
+
+			if ( build.BuildState != vsBuildState.vsBuildStateDone )
+			{
+				Debug.Fail( "Unexpected build state" );
+				return false;
+			}
+
+			return build.LastBuildInfo == 0;
 		}
 	}
 }

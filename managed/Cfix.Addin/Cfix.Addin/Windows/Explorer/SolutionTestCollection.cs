@@ -9,7 +9,8 @@ using Cfix.Control.Native;
 
 namespace Cfix.Addin.Windows.Explorer
 {
-	internal class SolutionTestCollection : GenericTestItemCollection
+	internal class SolutionTestCollection 
+		: GenericTestItemCollection, IBuildableTestItem
 	{
 		public event EventHandler Closed;
 
@@ -28,6 +29,7 @@ namespace Cfix.Addin.Windows.Explorer
 			if ( IsVcProject( prj ) )
 			{
 				Add( new VCProjectTestCollection( 
+					this.solution,
 					prj, 
 					this.agentSet,
 					this.config ) );
@@ -176,6 +178,24 @@ namespace Cfix.Addin.Windows.Explorer
 					}
 				}
 			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * IBuildableTestItem.
+		 */
+
+		public bool Build()
+		{
+			SolutionBuild build = this.solution.SolutionBuild;
+			build.Build( true );
+			
+			if ( build.BuildState != vsBuildState.vsBuildStateDone )
+			{
+				Debug.Fail( "Unexpected build state" );
+				return false;
+			}
+
+			return build.LastBuildInfo == 0;
 		}
 	}
 }

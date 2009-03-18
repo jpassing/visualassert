@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using Cfix.Control;
 using Cfix.Control.Native;
@@ -18,7 +19,6 @@ namespace Cfix.Addin
 		private readonly ISession session;
 
 		private readonly object runLock = new object();
-		private IRun currentRun;
 
 		/*----------------------------------------------------------------------
 		 * Private - Agent creation.
@@ -108,6 +108,42 @@ namespace Cfix.Addin
 					this.config.DefaultUnhandledExceptionDisposition,
 					this.config.DefaultFailedAssertionDisposition );
 			}
+		}
+
+		private Window OutputWindow
+		{
+			get
+			{
+				return this.addin.DTE.Windows.Item(
+					"{34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3}" );
+			}
+		}
+
+		private bool BuildNodeIfRequired( ITestItem item )
+		{
+			//
+			// Walk ancestry and build if required.
+			//
+			while ( item != null )
+			{
+				IBuildableTestItem buildItem = item as IBuildableTestItem;
+				if ( buildItem != null )
+				{
+					//
+					// Build. 
+					//
+					OutputWindow.Activate();
+
+					return buildItem.Build();
+				}
+
+				item = item.Parent;
+			}
+
+			//
+			// No need to build.
+			//
+			return true;
 		}
 		
 		/*----------------------------------------------------------------------
@@ -234,16 +270,20 @@ namespace Cfix.Addin
 
 		public void RunItem( IRunnableTestItem item )
 		{
+			if ( !BuildNodeIfRequired( item ) )
+			{
+				//
+				// Bail out. Errors should have been provided by VS.
+				//
+				return;
+			}
+
 			SimpleRunCompiler compiler = new SimpleRunCompiler(
 				this.runAgents,
 				this.DispositionPolicy,
 				this.config.SchedulingOptions,
 				this.config.ThreadingOptions );
 			compiler.Add( item );
-
-			//
-			// TODO: Build solution!
-			//
 
 			IRun run = compiler.Compile();
 			run.Log +=new EventHandler<LogEventArgs>( run_Log );

@@ -56,9 +56,9 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		private void Expand( TreePath path )
+		private void Expand( TreePath path, bool recursive )
 		{
-			this.tree.FindNode( path ).Expand();
+			this.tree.FindNode( path ).Expand( !recursive );
 		}
 
 		private void Collapse( TreePath path )
@@ -70,88 +70,89 @@ namespace Cfix.Control.Ui.Result
 		{
 			IResultItem item = sender as IResultItem;
 			Debug.Assert( item != null );
-
-			if ( this.NodesChanged != null )
+			Debug.Assert( this.NodesChanged != null );
+			
+			ResultItemNode affectedNode;
+			if ( this.nodeTable.TryGetValue( item, out affectedNode ) )
 			{
-				ResultItemNode affectedNode;
-				if ( this.nodeTable.TryGetValue( item, out affectedNode ) )
+				//
+				// Corresponding node has been expanded and loaded 
+				// before --> issue update.
+				//
+
+				this.NodesChanged(
+					this,
+					new TreeModelEventArgs(
+						GetTreePath( affectedNode.Parent ),
+						new object[] { affectedNode } ) );
+
+				TreePath nodePath = GetTreePath( affectedNode );
+
+				if ( affectedNode.HasFailures )
 				{
 					//
-					// Corresponding node has been requested --> issue update.
+					// New children for this node.
 					//
 
-					this.NodesChanged(
-						this,
-						new TreeModelEventArgs(
-							GetTreePath( affectedNode.Parent ),
-							new object[] { affectedNode } ) );
-
-					TreePath nodePath = GetTreePath( affectedNode );
-
-					if ( affectedNode.HasFailures )
+					if ( this.NodesInserted != null )
 					{
-						//
-						// New children for this node.
-						//
-
-						if ( this.NodesInserted != null )
+						object[] children = new object[ affectedNode.Failures.Count ];
+						int[] indices = new int[ children.Length ];
+						int index = 0;
+						foreach ( Failure f in affectedNode.Failures )
 						{
-							object[] children = new object[ affectedNode.Failures.Count ];
-							int[] indices = new int[ children.Length ];
-							int index = 0;
-							foreach ( Failure f in affectedNode.Failures )
-							{
-								indices[ index ] = index;
-								children[ index++ ] = FailureNode.Create( f, this.iconsList );
-							}
-
-							this.NodesInserted(
-								this,
-								new TreeModelEventArgs(
-									nodePath,
-									indices,
-									children ) );
-						}
-					}
-
-					if ( item.Status == ExecutionStatus.Running )
-					{
-						Expand( nodePath );
-					}
-					else if ( item.Status > ExecutionStatus.Running )
-					{
-						IResultItemCollection itemColl =
-								item as IResultItemCollection;
-						if ( item.Status == ExecutionStatus.Succeeded &&
-							 itemColl != null )
-						{
-							if ( itemColl.ItemCount > 0 &&
-								!( itemColl.GetItem( 0 ) is IResultItemCollection ) )
-							{
-								//
-								// Node has leaves as children.
-								//
-								Collapse( nodePath );
-							}
+							indices[ index ] = index;
+							children[ index++ ] = FailureNode.Create( f, this.iconsList );
 						}
 
-						//
-						// We do not expect further changes for this node.
-						//
-						this.nodeTable.Remove( item );
+						this.NodesInserted(
+							this,
+							new TreeModelEventArgs(
+								nodePath,
+								indices,
+								children ) );
 					}
 				}
-				else
+
+				//if ( item.Status == ExecutionStatus.Running )
+				//{
+				//    Expand( nodePath, false );
+				//}
+				//else 
+				if ( item.Status > ExecutionStatus.Running )
 				{
+					IResultItemCollection itemColl =
+							item as IResultItemCollection;
+					if ( item.Status == ExecutionStatus.Succeeded &&
+						 itemColl != null )
+					{
+						//if ( itemColl.ItemCount > 0 &&
+						//    !( itemColl.GetItem( 0 ) is IResultItemCollection ) )
+						//{
+						//    //
+						//    // Node has leaves as children.
+						//    //
+						//    Collapse( nodePath );
+						//}
+						Collapse( nodePath );
+					}
+
 					//
-					// Corresponding node not requested/vivible yet.
+					// We do not expect further changes for this node.
 					//
+					this.nodeTable.Remove( item );
 				}
+			}
+			else
+			{
+				//
+				// Corresponding node not been requested/expanded yet.
+				//
 			}
 
 			if ( !this.rootExpanded )
 			{
-				Expand( new TreePath( this.root ) );
+				Expand( new TreePath( this.root ), true );
 				this.rootExpanded = true;
 			}
 		}
