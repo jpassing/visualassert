@@ -42,6 +42,25 @@ namespace Cfix.Control
 	}
 
 	[Serializable]
+	public class ArchitectureMismatchException : CfixException
+	{
+		public ArchitectureMismatchException()
+		{ }
+
+		protected ArchitectureMismatchException( SerializationInfo info, StreamingContext ctx )
+			: base( info, ctx )
+		{ }
+
+		public ArchitectureMismatchException( String msg )
+			: base( msg )
+		{ }
+
+		public ArchitectureMismatchException( String msg, Exception inner )
+			: base( msg, inner )
+		{ }
+	}
+
+	[Serializable]
     public class TestItemDisappearedException : CfixException
     {
         public TestItemDisappearedException()

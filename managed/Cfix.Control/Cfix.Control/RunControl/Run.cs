@@ -8,6 +8,7 @@ namespace Cfix.Control.RunControl
 	{
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
+		public event EventHandler<HostEventArgs> BeforeTerminate;
 
 		private readonly List<ITask> tasks = new List<ITask>();
 		
@@ -158,6 +159,14 @@ namespace Cfix.Control.RunControl
 			{
 				foreach ( ITask task in this.tasks )
 				{
+					IProcessTask procTask = task as IProcessTask;
+					if ( this.BeforeTerminate != null && procTask != null )
+					{
+						this.BeforeTerminate(
+							this,
+							new HostEventArgs( procTask.ProcessId ) );
+					}
+
 					task.Terminate();
 				}
 

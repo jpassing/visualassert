@@ -83,6 +83,8 @@ namespace Cfix.Control
 		event EventHandler<ThreadEventArgs> ThreadFinished;
 		event EventHandler StatusChanged;
 		event EventHandler<NotificationEventArgs> Notification;
+		event EventHandler<HostEventArgs> BeforeTerminate;
+		
 
 		IEnumerable<ITask> Tasks { get; }
 		IResultItemCollection RootResult { get; }

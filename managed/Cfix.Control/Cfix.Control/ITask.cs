@@ -47,4 +47,10 @@ namespace Cfix.Control
 		void Stop();
 		void Terminate();
 	}
+
+	public interface IProcessTask : ITask
+	{
+		uint ProcessId { get; }
+		Architecture Architecture { get; } 
+	}
 }

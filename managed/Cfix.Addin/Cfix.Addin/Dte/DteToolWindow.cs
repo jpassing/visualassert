@@ -1,11 +1,12 @@
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 using EnvDTE;
 using EnvDTE80;
 
 namespace Cfix.Addin.Dte
 {
-	internal class DteToolWindow< ControlT >
+	internal class DteToolWindow< ControlT > : IDisposable where ControlT : UserControl
 	{
 		private Window window;
 		private ControlT userControl;
@@ -50,6 +51,31 @@ namespace Cfix.Addin.Dte
 			this.events.WindowCreated += WindowCreatedEvent;
 			this.events.WindowMoved += WindowMovedEvent;
 		}
+
+		~DteToolWindow()
+		{
+			Dispose( false );
+		}
+
+		public void Dispose()
+		{
+			GC.SuppressFinalize( this );
+			Dispose( true );
+		}
+
+		public void Dispose( bool disposing )
+		{
+			this.events.WindowClosing -= WindowClosingEvent;
+			this.events.WindowActivated -= WindowActivateEvent;
+			this.events.WindowCreated -= WindowCreatedEvent;
+			this.events.WindowMoved -= WindowMovedEvent;
+
+			this.userControl.Dispose();
+		}
+
+		/*----------------------------------------------------------------------
+		 * Publics.
+		 */
 
 		public static DteToolWindow<ControlT> Create(
 			DteConnect connect,

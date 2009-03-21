@@ -5,7 +5,7 @@ using Cfix.Addin.Windows.Run;
 
 namespace Cfix.Addin
 {
-	internal class ToolWindows
+	internal class ToolWindows : IDisposable
 	{
 		private readonly CfixPlus addin;
 		private DteToolWindow<ExplorerWindow> explorer;
@@ -14,6 +14,32 @@ namespace Cfix.Addin
 		internal ToolWindows( CfixPlus addin )
 		{
 			this.addin = addin;
+		}
+
+		~ToolWindows()
+		{
+			Dispose( false );
+		}
+
+		public void Dispose()
+		{
+			GC.SuppressFinalize( this );
+			Dispose( true );
+		}
+
+		public void Dispose( bool disposing )
+		{
+			if ( this.explorer != null )
+			{
+				this.explorer.Dispose();
+				this.explorer = null;
+			}
+
+			if ( this.run != null )
+			{
+				this.run.Dispose();
+				this.run = null;
+			}
 		}
 
 		public void RestoreWindowState()

@@ -10,11 +10,11 @@ namespace Cfix.Control.RunControl
 	 * 
 	 * N.B. Do not Dispose() before the task has finished. 
 	 --*/
-	internal class Task : ITask
+	internal class Task : IProcessTask
 	{
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
-
+		
 		private readonly IAgent agent;
 		private readonly List<IAction> actions = new List<IAction>();
 		private uint itemCount;
@@ -23,6 +23,9 @@ namespace Cfix.Control.RunControl
 		// Host to run on. Disposed and nulled eagerly.
 		//
 		private volatile IHost host;
+		
+		private readonly uint hostPid;
+		private readonly Architecture hostArch;
 		
 		private volatile TaskStatus status = TaskStatus.Ready;
 
@@ -43,6 +46,9 @@ namespace Cfix.Control.RunControl
 
 			this.agent = agent;
 			this.host = host;
+
+			this.hostArch = host.Architecture;
+			this.hostPid = host.ProcessId;
 		}
 
 		~Task()
@@ -160,6 +166,20 @@ namespace Cfix.Control.RunControl
 				this.host.Dispose();
 				this.host = null;
 			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * IProcessTask.
+		 */
+
+		public uint ProcessId
+		{
+			get { return this.hostPid; }
+		}
+
+		public Architecture Architecture
+		{
+			get { return this.hostArch; }
 		}
 
 		/*----------------------------------------------------------------------

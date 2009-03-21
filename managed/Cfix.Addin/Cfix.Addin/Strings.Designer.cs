@@ -61,6 +61,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture..
+        /// </summary>
+        internal static string ArchitectureMismatch {
+            get {
+                return ResourceManager.GetString("ArchitectureMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection does not include any test item.
         /// </summary>
         internal static string EmptyRun {

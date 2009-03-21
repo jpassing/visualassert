@@ -145,10 +145,24 @@ namespace Cfix.Addin
 			//
 			return true;
 		}
-		
+
+		private Process2 FindProcess( Debugger2 debugger, uint pid )
+		{
+			foreach( EnvDTE.Process proc in debugger.LocalProcesses )
+			{
+				if ( proc.ProcessID == pid )
+				{
+					return ( Process2 ) proc;
+				}
+			}
+
+			return null;
+		}
+
 		/*----------------------------------------------------------------------
 		 * ctor/dtor.
 		 */
+
 		internal Workspace( CfixPlus addin )
 		{
 			this.addin = addin;
@@ -175,6 +189,7 @@ namespace Cfix.Addin
 			{
 				this.toolWindows.SaveWindowState();
 				this.toolWindows.CloseAll();
+				this.toolWindows.Dispose();
 			}
 
 			if ( this.searchAgent != null )
@@ -191,6 +206,8 @@ namespace Cfix.Addin
 			{
 				this.config.Dispose();
 			}
+
+			this.addin.DTE.Debugger.DetachAll();
 		}
 
 		public void Dispose()
@@ -236,13 +253,13 @@ namespace Cfix.Addin
 		{
 			get
 			{
+				//
+				// Without a project, debugging does not work properly.
+				// Moreover, we need a project to ontain the architecture
+				// to be used for debugging.
+				//
 				Solution curSolution = this.addin.DTE.Solution;
-				if ( curSolution.Projects.Count == 0 )
-				{
-					return false;
-				}
-
-				return false;
+				return ( curSolution.Projects.Count > 0 );
 			}
 		}
 
@@ -251,25 +268,10 @@ namespace Cfix.Addin
 			get { return this.session; }
 		}
 
-		public void DebugItem( ITestItem item )
+		public void RunItem( IRunnableTestItem item, bool debug )
 		{
-			//
-			// Without a project, debugging does not work properly.
-			// Moreover, we need a project to ontain the architecture
-			// to be used for debugging.
-			//
-			
-			//
-			// N.B. When debugging, it is crucial to use a single host
-			// process only. Debug runs are thus limited to a single
-			// architecture only.
-			//
+			Debug.Assert( IsDebuggingPossible );
 
-			throw new NotImplementedException();
-		}
-
-		public void RunItem( IRunnableTestItem item )
-		{
 			if ( !BuildNodeIfRequired( item ) )
 			{
 				//
@@ -278,15 +280,83 @@ namespace Cfix.Addin
 				return;
 			}
 
+			bool allowArchMixing;
+			if ( debug )
+			{
+				//
+				// N.B. When debugging, it is crucial to use a single host
+				// process only. Debug runs are thus limited to a single
+				// architecture only.
+				//
+				allowArchMixing = false;
+			}
+			else
+			{
+				allowArchMixing = true;
+			}
+
 			SimpleRunCompiler compiler = new SimpleRunCompiler(
 				this.runAgents,
 				this.DispositionPolicy,
 				this.config.SchedulingOptions,
-				this.config.ThreadingOptions );
+				this.config.ThreadingOptions,
+				allowArchMixing );
 			compiler.Add( item );
 
 			IRun run = compiler.Compile();
 			run.Log +=new EventHandler<LogEventArgs>( run_Log );
+
+			if ( debug )
+			{
+				run.HostSpawned += delegate( object sender, HostEventArgs e )
+				{
+					try
+					{
+						Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
+						Process2 process = FindProcess( debugger, e.HostProcessId );
+						if ( process == null )
+						{
+							//
+							// Weird, must be gone already. Nop.
+							//
+							return;
+						}
+
+						process.Attach();
+
+						//
+						// N.B. By default, VS hides our tool windows when
+						// going into debug mode.
+						//
+						this.toolWindows.Run.Activate();
+					}
+					catch ( Exception x )
+					{
+						CfixPlus.HandleError( x );
+						run.Terminate();
+					}
+				};
+
+				//run.BeforeTerminate += delegate( object sender, HostEventArgs e )
+				//{
+				//    //
+				//    // To allow terminating via our own UI while being
+				//    // broken in, terminate via DTE API.
+				//    //
+
+				//    Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
+				//    Process2 process = FindProcess( debugger, e.HostProcessId );
+				//    if ( process == null )
+				//    {
+				//        //
+				//        // Weird, must be gone already. Nop.
+				//        //
+				//        return;
+				//    }
+
+				//    process.Terminate( false );
+				//};
+			}
 
 			try
 			{

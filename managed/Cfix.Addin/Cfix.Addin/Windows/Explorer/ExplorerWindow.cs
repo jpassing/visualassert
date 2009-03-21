@@ -460,14 +460,18 @@ namespace Cfix.Addin.Windows.Explorer
 				IRunnableTestItem runItem = item as IRunnableTestItem;
 				if ( item != null )
 				{
-					this.workspace.RunItem( runItem );
+					this.workspace.RunItem( runItem, debug );
 				}
 			}
 			catch ( ConcurrentRunException )
 			{
 				//
-				// Ok.
+				// Ok, error dialog should have been provided.
 				//
+			}
+			catch ( ArchitectureMismatchException )
+			{
+				CfixPlus.ShowInfo( Strings.ArchitectureMismatch );
 			}
 			catch ( EmptyRunException )
 			{

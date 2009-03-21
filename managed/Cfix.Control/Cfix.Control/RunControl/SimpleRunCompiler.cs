@@ -11,6 +11,7 @@ namespace Cfix.Control.RunControl
 		private readonly SchedulingOptions schedulingOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly Run run;
+		private readonly bool allowMultipleArchitectures;
 
 		private readonly HostEnvironment env = new HostEnvironment();
 
@@ -48,7 +49,8 @@ namespace Cfix.Control.RunControl
 			AgentSet agentSet,
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
-			ThreadingOptions threadingOptions
+			ThreadingOptions threadingOptions,
+			bool allowMultipleArchitectures
 			)
 		{
 			for ( int i = 0; i < this.actions.Length; i++ )
@@ -59,10 +61,11 @@ namespace Cfix.Control.RunControl
 			this.agentSet = agentSet;
 			this.schedulingOptions = schedulingOptions;
 			this.threadingOptions = threadingOptions;
+			this.allowMultipleArchitectures = allowMultipleArchitectures;
 			this.run = new Run( policy );
 		}
 
-		public SimpleRunCompiler(
+		internal SimpleRunCompiler(
 			IAgent agent,
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
@@ -72,7 +75,8 @@ namespace Cfix.Control.RunControl
 				CreateSingleArchitectureAgentSet( agent ),
 				policy,
 				schedulingOptions,
-				threadingOptions )
+				threadingOptions,
+				true )
 		{ }
 
 		/*--------------------------------------------------------------
@@ -121,7 +125,23 @@ namespace Cfix.Control.RunControl
 				}
 			}
 
-			this.actions[ ( int ) action.Architecture ].Add( action );
+			int actionsIndex = ( int ) action.Architecture;
+			if ( !this.allowMultipleArchitectures )
+			{
+				for ( int i = 0; i < this.actions.Length; i++ )
+				{
+					if ( i != actionsIndex && this.actions[ i ].Count > 0 )
+					{
+						//
+						// Architecture differs from previously added
+						// actions. This would result in another host
+						// having to be created.
+						//
+						throw new ArchitectureMismatchException();
+					}
+				}
+			}
+			this.actions[ actionsIndex ].Add( action );
 		}
 
 		public void Add( IRunnableTestItem item )

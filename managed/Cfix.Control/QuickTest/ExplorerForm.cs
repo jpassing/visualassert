@@ -85,7 +85,8 @@ namespace QuickTest
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.None,
-					ThreadingOptions.None );
+					ThreadingOptions.None,
+					true );
 				comp.Add( ( IRunnableTestItem ) mod );
 				IRun run = comp.Compile();
 
