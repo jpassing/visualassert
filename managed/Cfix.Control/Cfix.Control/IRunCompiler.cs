@@ -20,5 +20,7 @@ namespace Cfix.Control
 		 *		Convenience method for use by client.
 		 --*/
 		void Add( IRunnableTestItem item );
+
+		HostEnvironment Environment { get; }
 	}
 }

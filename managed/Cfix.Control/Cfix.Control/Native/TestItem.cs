@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
@@ -161,6 +162,9 @@ namespace Cfix.Control.Native
 					result,
 					compiler.SchedulingOptions,
 					compiler.ThreadingOptions ) );
+
+			FileInfo modInfo = new FileInfo( this.Module.Path );
+			compiler.Environment.AddSearchPath( modInfo.Directory.FullName );
 		}
 
 		/*--------------------------------------------------------------

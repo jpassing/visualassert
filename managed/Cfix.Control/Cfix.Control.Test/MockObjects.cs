@@ -124,6 +124,7 @@ namespace Cfix.Control.Test
 			uint Clsctx, 
 			uint Flags, 
 			uint Timeout, 
+			string environment,
 			string CurrentDirectory )
 		{
 			return new MockHost( this.module );
@@ -162,8 +163,7 @@ namespace Cfix.Control.Test
 				new MockAgent( module ), 
 				CfixTestModuleArch.CfixTestModuleArchI386, 
 				true,
-				HostCreationOptions.None,
-				null )
+				HostCreationOptions.None )
 		{
 		}
 

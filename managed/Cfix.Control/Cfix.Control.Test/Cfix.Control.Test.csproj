@@ -60,6 +60,7 @@
     <Compile Include="MockObjects.cs" />
     <Compile Include="TestResult.cs" />
     <Compile Include="TestRun.cs" />
+    <Compile Include="TestHostEnv.cs" />
     <Compile Include="TestSink.cs" />
     <Compile Include="TestTestModuleCollection.cs" />
     <Compile Include="TestTestModule.cs" />

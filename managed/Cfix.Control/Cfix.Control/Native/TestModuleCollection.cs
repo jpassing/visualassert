@@ -118,11 +118,26 @@ namespace Cfix.Control.Native
 				Debug.Assert( new FileInfo( path ).Directory.Name.Equals(
 						this.collectionStack.Peek().dirInfo.Name ) );
 
+				//
+				// N.B. cfxctl has already checked that this module is indeed
+				// a test module, so no additional checking is required.
+				//
+
 				Architecture arch = ( Architecture ) nativeArch;
 				if ( this.collection.runTargets.IsArchitectureSupported( arch ) )
 				{
+					//
+					// N.B. This module may be importing symbols from a DLL
+					// that resides in the same directory. 
+					//
+					// Augment search path.
+					//
+					FileInfo pathInfo = new FileInfo( path );
+					HostEnvironment env = new HostEnvironment();
+					env.AddSearchPath( pathInfo.Directory.FullName );
+
 					using ( IHost host =
-							this.collection.runTargets.GetAgent( arch ).CreateHost() )
+							this.collection.runTargets.GetAgent( arch ).CreateHost( env ) )
 					{
 						try
 						{
@@ -187,6 +202,10 @@ namespace Cfix.Control.Native
 				this.currentLoadAborted = false;
 				this.currentLoader = new Loader( this );
 
+				//
+				// Search, but do not load modules. For this 
+				// operation, the default environment suffices.
+				//
 				using ( IHost host = searchTarget.CreateHost() )
 				{
 					try

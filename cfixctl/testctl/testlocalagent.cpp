@@ -108,6 +108,7 @@ public:
 			0,
 			0,
 			NULL,
+			NULL,
 			&LocalHost ) );
 
 		//
@@ -156,6 +157,7 @@ public:
 			CLSCTX_INPROC_SERVER,
 			0,
 			0,
+			NULL,
 			NULL,
 			&LocalHost ) );
 
@@ -241,6 +243,7 @@ public:
 					CLSCTX_LOCAL_SERVER,
 					FlagSets[ Flags ],
 					INFINITE,
+					NULL,
 					WorkingDir,
 					&Host ) );
 			SysFreeString( WorkingDir );
@@ -250,6 +253,7 @@ public:
 				CLSCTX_LOCAL_SERVER,
 				FlagSets[ Flags ],
 				INFINITE,
+				NULL,
 				NULL,
 				&Host ) );
 
@@ -292,6 +296,7 @@ public:
 					CLSCTX_LOCAL_SERVER,
 					FlagSets[ Flags ],
 					INFINITE,
+					NULL,
 					NULL,
 					&Host ) );
 

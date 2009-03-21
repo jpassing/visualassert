@@ -35,7 +35,6 @@ namespace Cfix.Control.Native
 		private uint timeout = DefaultTimeout;
 
 		private readonly HostCreationOptions flags;
-		private readonly String currentDirectory;
 
 		[Flags]
 		private enum Clsctx
@@ -52,8 +51,7 @@ namespace Cfix.Control.Native
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc,
-			HostCreationOptions flags,
-			String currentDirectory
+			HostCreationOptions flags
 			)
 		{
 			Debug.Assert( agent != null );
@@ -61,7 +59,6 @@ namespace Cfix.Control.Native
 			this.agent = agent;
 			this.arch = arch;
 			this.flags = flags;
-			this.currentDirectory = currentDirectory;
 
 			if ( allowInproc )
 			{
@@ -137,12 +134,29 @@ namespace Cfix.Control.Native
 
 		public virtual IHost CreateHost()
 		{
+			return CreateHost( null );
+		}
+
+		public virtual IHost CreateHost(
+			HostEnvironment env
+			)
+		{
+			string envString = null;
+			string currentDir = null;
+
+			if ( env != null )
+			{
+				envString = env.NativeFormat;
+				currentDir = env.CurrentDirectory;
+			}
+
 			ICfixHost host = this.agent.CreateHost(
 				this.arch, 
 				( uint ) this.clsctx,
 				( uint ) this.flags,
 				this.timeout,
-				currentDirectory );
+				envString,
+				currentDir );
 
 			Debug.Assert( host != null );
 
@@ -182,16 +196,14 @@ namespace Cfix.Control.Native
 		public static Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags,
-			String currentDirectory
+			HostCreationOptions flags
 			)
 		{
 			return new Agent(
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
 				allowInproc,
-				flags,
-				currentDirectory );
+				flags );
 		}
 
 		public static Agent CreateLocalAgent(
@@ -202,8 +214,7 @@ namespace Cfix.Control.Native
 			return CreateLocalAgent(
 				arch,
 				allowInproc,
-				HostCreationOptions.None,
-				null );
+				HostCreationOptions.None );
 		}
 
 	}

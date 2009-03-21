@@ -64,6 +64,7 @@ static HRESULT CfixhostsCreateLocalHost(
 				CLSCTX_INPROC_SERVER,
 				0,
 				0,
+				NULL,	// This process is already using the specified env.
 				NULL,	// Parent has set the current directory for us.
 				Host );
 

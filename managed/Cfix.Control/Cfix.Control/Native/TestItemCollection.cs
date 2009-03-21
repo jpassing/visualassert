@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
@@ -285,7 +286,17 @@ namespace Cfix.Control.Native
 
 		public virtual void Refresh()
 		{
-			using ( IHost host = this.Module.Agent.CreateHost() )
+			//
+			// N.B. This module may be importing symbols from a DLL
+			// that resides in the same directory. 
+			//
+			// Augment search path.
+			//
+			FileInfo pathInfo = new FileInfo( this.Module.Path );
+			HostEnvironment env = new HostEnvironment();
+			env.AddSearchPath( pathInfo.Directory.FullName );
+
+			using ( IHost host = this.Module.Agent.CreateHost( env ) )
 			{
 				ICfixTestItem ctlItem = null;
 				try

@@ -8,6 +8,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Invalid", "Invalid\Invalid.vcproj", "{EDBC456C-1371-4B78-9161-2D8F38F85073}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Valid", "Valid\Valid.vcproj", "{FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00} = {434D7F24-791F-4BFE-AC6B-6B73B95ADD00}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExportingDll", "ExportingDll\ExportingDll.vcproj", "{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +64,16 @@ Global
 		{FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25}.Release|Win32.ActiveCfg = Release|Win32
 		{FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25}.Release|Win32.Build.0 = Release|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Debug|Win32.ActiveCfg = Debug|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Debug|Win32.Build.0 = Debug|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Any CPU.ActiveCfg = Release|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Win32.ActiveCfg = Release|Win32
+		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

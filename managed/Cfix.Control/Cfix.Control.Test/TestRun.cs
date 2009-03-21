@@ -783,5 +783,45 @@ namespace Cfix.Control.Test
 			}
 		}
 
+		[Test]
+		public void TestDllDependencies()
+		{
+			//
+			// importingdll imports from exportingdll - DLL load path
+			// applies.
+			//
+			using ( IHost host = this.inProcTarget.CreateHost() )
+			using ( ITestItemCollection col = host.SearchModules(
+				new DirectoryInfo( this.testdataDir2 ),
+				"ImportingDll.dll",
+				this.multiTarget,
+				true ) )
+			{
+				col.Refresh();
+				Assert.AreEqual( 1, col.ItemCountRecursive );
+
+				IRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					SchedulingOptions.ShurtcutRunOnFailure,
+					ThreadingOptions.None );
+				comp.Add( ( IRunnableTestItem ) col );
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				}
+			}
+		}
 	}
 }

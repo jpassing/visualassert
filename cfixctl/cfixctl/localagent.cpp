@@ -82,6 +82,7 @@ public:
 
 	STDMETHOD( CreateProcessHost )(
 		__in CfixTestModuleArch Arch,
+		__in_opt PCWSTR Environment,
 		__in_opt PCWSTR CurrentDirectory,
 		__in ULONG Flags,
 		__in ULONG Timeout,
@@ -112,6 +113,7 @@ public:
 		__in DWORD Clsctx,
 		__in ULONG Flags,
 		__in ULONG Timeout,
+		__in const BSTR Environment,
 		__in const BSTR CurrentDirectory,
 		__out ICfixHost** Host
 		);
@@ -274,6 +276,7 @@ Cleanup:
 static HRESULT CfixctlsSpawnHost(
 	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
+	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL Suspend,
 	__out PPROCESS_INFORMATION ProcessInfo
@@ -335,8 +338,8 @@ static HRESULT CfixctlsSpawnHost(
 		NULL,
 		NULL,
 		FALSE,
-		Suspend ? CREATE_SUSPENDED : 0,
-		NULL,
+		CREATE_UNICODE_ENVIRONMENT | ( Suspend ? CREATE_SUSPENDED : 0 ),
+		( PVOID ) Environment,
 		CurrentDirectory,
 		&StartupInfo,
 		ProcessInfo ) )
@@ -364,6 +367,7 @@ Cleanup:
 static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
+	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
 	__out HANDLE *ProcessOrJob,
@@ -384,6 +388,7 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	HRESULT Hr = CfixctlsSpawnHost( 
 		Arch, 
 		Agent, 
+		Environment,
 		CurrentDirectory, 
 		SuspendInitialThread,
 		&ProcessInfo );
@@ -551,6 +556,7 @@ STDMETHODIMP LocalAgent::GetHostPath(
 
 STDMETHODIMP LocalAgent::CreateProcessHost(
 	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in ULONG Flags,
 	__in ULONG Timeout,
@@ -591,6 +597,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
 		Arch, 
 		this, 
+		Environment,
 		CurrentDirectory, 
 		UseJob,
 		&ProcessOrJob,
@@ -701,6 +708,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in DWORD Clsctx,
 	__in ULONG Flags,
 	__in ULONG Timeout,
+	__in const BSTR Environment,
 	__in const BSTR CurrentDirectory,
 	__out ICfixHost** Host
 	)
@@ -722,22 +730,8 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
-		HRESULT Hr = CfixctlpGetLocalHostFactory().CreateInstance(
+		return CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
-
-		if ( SUCCEEDED( Hr ) && 
-			 CurrentDirectory != NULL &&
-			 SysStringByteLen( CurrentDirectory ) > 0 )
-		{
-			if ( ! SetCurrentDirectory( CurrentDirectory ) )
-			{
-				( *Host )->Release();
-				*Host = NULL;
-				Hr = HRESULT_FROM_WIN32( GetLastError() );
-			}
-		}
-
-		return Hr;
 	}
 	else if ( Clsctx & CLSCTX_LOCAL_SERVER )
 	{
@@ -746,6 +740,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 		//
 		return CreateProcessHost(
 			Arch,
+			Environment,
 			CurrentDirectory,
 			Flags,
 			Timeout,

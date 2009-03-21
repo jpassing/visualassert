@@ -12,6 +12,8 @@ namespace Cfix.Control.RunControl
 		private readonly ThreadingOptions threadingOptions;
 		private readonly Run run;
 
+		private readonly HostEnvironment env = new HostEnvironment();
+
 		//
 		// One action list per architecture.
 		//
@@ -143,7 +145,7 @@ namespace Cfix.Control.RunControl
 					IAgent agent = this.agentSet.GetAgent( ( Architecture ) i );
 					Task task = new Task( 
 						agent, 
-						agent.CreateHost() );
+						agent.CreateHost( this.env ) );
 
 					foreach ( IAction act in this.actions[ i ] )
 					{
@@ -165,5 +167,9 @@ namespace Cfix.Control.RunControl
 			return this.run;
 		}
 
+		public HostEnvironment Environment
+		{
+			get { return this.env; }
+		}
 	}
 }

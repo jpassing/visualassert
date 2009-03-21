@@ -86,12 +86,33 @@ namespace Cfix.Addin.Windows.Explorer
 					ITestItem module;
 					try
 					{
-						using ( IHost host = this.agentSet.GetAgent( arch ).CreateHost() )
+						//
+						// N.B. This module may be importing symbols from a DLL
+						// that resides in the same directory. 
+						//
+						// Augment search path.
+						//
+						FileInfo pathInfo = new FileInfo( this.currentPath );
+						HostEnvironment env = new HostEnvironment();
+						env.AddSearchPath( pathInfo.Directory.FullName );
+
+						using ( IHost host = this.agentSet.GetAgent( arch ).CreateHost( env ) )
 						{
 							module = host.LoadModule(
 								this,
 								this.currentPath,
 								false );
+
+							ITestItemCollection moduleColl =
+								module as ITestItemCollection;
+
+							if ( moduleColl != null && moduleColl.ItemCountRecursive == 0 )
+							{
+								//
+								// Technically valid, but treat as invalid.
+								//
+								module = null;
+							}
 						}
 					}
 					catch ( Exception x )
@@ -102,7 +123,10 @@ namespace Cfix.Addin.Windows.Explorer
 							x );
 					}
 
-					Add( module );
+					if ( module != null )
+					{
+						Add( module );
+					}
 				}
 			}
 		}
