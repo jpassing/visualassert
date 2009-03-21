@@ -15,8 +15,9 @@ namespace Cfix.Addin.Windows.Run
 		public static readonly Guid Guid = 
 			new Guid( "80c3fde2-9f60-4709-b1d2-28561e3cff9f" );
 
-		private static readonly Color FailedColor = Color.Red;
-		private static readonly Color SuccessColor = Color.LawnGreen;
+		private static readonly Color FailedColor = Color.DarkOrange;
+		private static readonly Color SuccessColor = Color.PaleGreen;
+		private static readonly Color DefaultColor = Color.LightYellow;
 
 		private readonly object runLock = new object();
 		
@@ -52,6 +53,7 @@ namespace Cfix.Addin.Windows.Run
 					if ( total == completed )
 					{
 						this.progressBar.Value = 100;
+						this.progressBar.BackColor = this.progressBar.ForeColor;
 					}
 					else
 					{
@@ -64,6 +66,14 @@ namespace Cfix.Addin.Windows.Run
 					{
 						this.progressBar.ForeColor = FailedColor;
 					}
+
+					this.progressLabel.Text =
+						String.Format(
+							"Running, {0}/{1} completed.",
+							completed,
+							total );
+					this.progressBar.Invalidate();
+					this.progressLabel.Invalidate();
 				} );
 		}
 
@@ -77,6 +87,20 @@ namespace Cfix.Addin.Windows.Run
 			{
 				this.terminateButton.Enabled = false;
 				this.stopButton.Enabled = false;
+
+				this.progressLabel.Text = "Finished.";
+				this.progressBar.Invalidate();
+				this.progressLabel.Invalidate();
+			} );
+		}
+
+		private void run_Started( object sender, EventArgs e )
+		{
+			this.BeginInvoke( ( VoidDelegate ) delegate
+			{
+				this.progressLabel.Text = "Started.";
+				this.progressBar.Invalidate(); 
+				this.progressLabel.Invalidate();
 			} );
 		}
 
@@ -146,6 +170,8 @@ namespace Cfix.Addin.Windows.Run
 							throw new ConcurrentRunException();
 						}
 
+
+						this.run.Started -= new EventHandler( run_Started );
 						this.run.Finished -= new EventHandler<FinishedEventArgs>( run_Finished );
 						this.run.Log -= new EventHandler<LogEventArgs>( run_Log );
 						this.run.StatusChanged -= new EventHandler( run_StatusChanged );
@@ -155,6 +181,7 @@ namespace Cfix.Addin.Windows.Run
 
 					this.progressBar.Value = 0;
 					this.progressBar.ForeColor = SuccessColor;
+					this.progressBar.BackColor = DefaultColor;
 
 					this.terminateButton.Enabled = true;
 					this.stopButton.Enabled = true;
@@ -163,6 +190,7 @@ namespace Cfix.Addin.Windows.Run
 					this.aborted = false;
 					this.results.Run = value;
 
+					this.run.Started += new EventHandler( run_Started );
 					this.run.Finished += new EventHandler<FinishedEventArgs>( run_Finished );
 					this.run.Log += new EventHandler<LogEventArgs>( run_Log );
 					this.run.StatusChanged += new EventHandler( run_StatusChanged );

@@ -29,10 +29,11 @@ namespace Cfix.Addin.Windows.Run
 		private void InitializeComponent()
 		{
 			this.toolbar = new System.Windows.Forms.ToolStrip();
-			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
-			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.stopButton = new System.Windows.Forms.ToolStripButton();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
+			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
+			this.progressBar = new System.Windows.Forms.ProgressBar();
+			this.progressLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
 			this.toolbar.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -46,26 +47,6 @@ namespace Cfix.Addin.Windows.Run
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
 			this.toolbar.TabIndex = 0;
 			this.toolbar.Text = "toolStrip1";
-			// 
-			// results
-			// 
-			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.results.Location = new System.Drawing.Point( 3, 64 );
-			this.results.Name = "results";
-			this.results.Run = null;
-			this.results.Size = new System.Drawing.Size( 555, 201 );
-			this.results.TabIndex = 1;
-			// 
-			// progressBar
-			// 
-			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.progressBar.Location = new System.Drawing.Point( 3, 48 );
-			this.progressBar.Name = "progressBar";
-			this.progressBar.Size = new System.Drawing.Size( 552, 10 );
-			this.progressBar.TabIndex = 2;
 			// 
 			// stopButton
 			// 
@@ -89,10 +70,42 @@ namespace Cfix.Addin.Windows.Run
 			this.terminateButton.Text = "Terminate testrun (kills processes)";
 			this.terminateButton.Click += new System.EventHandler( this.terminateButton_Click );
 			// 
+			// results
+			// 
+			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+						| System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.results.Location = new System.Drawing.Point( 3, 64 );
+			this.results.Name = "results";
+			this.results.Run = null;
+			this.results.Size = new System.Drawing.Size( 555, 201 );
+			this.results.TabIndex = 1;
+			// 
+			// progressBar
+			// 
+			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.progressBar.BackColor = System.Drawing.Color.LightYellow;
+			this.progressBar.Location = new System.Drawing.Point( 3, 28 );
+			this.progressBar.Name = "progressBar";
+			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
+			this.progressBar.TabIndex = 2;
+			// 
+			// progressLabel
+			// 
+			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.progressLabel.Location = new System.Drawing.Point( 5, 31 );
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
+			this.progressLabel.TabIndex = 3;
+			this.progressLabel.TabStop = false;
+			// 
 			// RunWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add( this.progressLabel );
 			this.Controls.Add( this.progressBar );
 			this.Controls.Add( this.results );
 			this.Controls.Add( this.toolbar );
@@ -112,5 +125,6 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ProgressBar progressBar;
 		private System.Windows.Forms.ToolStripButton stopButton;
 		private System.Windows.Forms.ToolStripButton terminateButton;
+		private TransparentLabel progressLabel;
 	}
 }
