@@ -172,16 +172,33 @@ namespace Cfix.Control.Native
 		 */
 
 		public virtual IResultItem CreateResultItem(
-			IResultItemCollection parentResult ,
+			IResultItemCollection parentResult,
 			IActionEvents events,
 			ExecutionStatus interimStatus
 			)
 		{
-			return new TestItemResult(
-				events,
-				parentResult,
-				this,
-				interimStatus );
+			if ( parentResult == null )
+			{
+				//
+				// This is a single-testcase run. Single test cases
+				// execute within a fixture -- therefore, in order to provide
+				// a place for the fixture setup/teardown failures and status,
+				// we have to inject a parent result item.
+				//
+				Debug.Assert( this.parent != null );
+				return this.parent.CreateResultItemForSingleTestCaseRun(
+					events,
+					this,
+					interimStatus );
+			}
+			else
+			{
+				return new TestItemResult(
+					events,
+					parentResult,
+					this,
+					interimStatus );
+			}
 		}
 	}
 }

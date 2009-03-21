@@ -55,21 +55,21 @@ namespace Cfix.Control.Test
 			}
 		}
 
-		private ITestItemCollection GetFixture( TestModule mod, string name )
+		private ITestItem GetItemByName( ITestItemCollection coll, string name )
 		{
-			foreach ( ITestItem item in mod )
+			foreach ( ITestItem item in coll )
 			{
 				if ( item.Name == name )
 				{
-					return ( ITestItemCollection ) item;
+					return item;
 				}
 			}
 
-			Assert.Fail( "Fixture not available" );
+			Assert.Fail( "Item not available" );
 			return null;
 		}
 
-		private IRun CreateRun( TestModule mod, ITestItemCollection fixture )
+		private IRun CreateRun( TestModule mod, ITestItem item )
 		{
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				this.ooProcTarget,
@@ -77,7 +77,7 @@ namespace Cfix.Control.Test
 						Disposition.Continue, Disposition.Break ),
 				SchedulingOptions.None,
 				ThreadingOptions.ComNeutralThreading );
-			comp.Add( ( IRunnableTestItem ) fixture );
+			comp.Add( ( IRunnableTestItem ) item );
 			return comp.Compile();
 		}
 
@@ -106,7 +106,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "LogTwice" ) )
+			using ( ITestItemCollection fixture = 
+				( ITestItemCollection ) GetItemByName( mod, "LogTwice" ) )
 			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
@@ -202,7 +203,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "Inconclusive" ) )
+			using ( ITestItemCollection fixture = 
+				( ITestItemCollection ) GetItemByName( mod, "Inconclusive" ) )
 			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
@@ -253,6 +255,45 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
+		public void TestSingleTestCase()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "XSelectSingleTestCase" ) )
+			using ( ITestItem tc = GetItemByName( fixture, "Nop02" ) )
+			using ( IRun run = CreateRun( mod, tc ) )
+			{
+				Assert.AreEqual( TaskStatus.Ready, run.Status );
+
+				AutoResetEvent done = new AutoResetEvent( false );
+
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					done.Set();
+				};
+
+				run.Start();
+				done.WaitOne();
+				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+
+				Assert.AreEqual(
+					ExecutionStatus.Succeeded,
+					run.RootResult.Status );
+
+				Assert.AreEqual( 1, run.RootResult.ItemCount );
+				Assert.IsFalse( run.RootResult.GetItem( 0 ) is IResultItemCollection );
+
+				Assert.AreEqual(
+					ExecutionStatus.Succeeded,
+					run.RootResult.GetItem( 0 ).Status );
+			}
+		}
+
+		[Test]
 		public void TestFailedAssertion()
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )
@@ -260,7 +301,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "Fail" ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "Fail" ) )
 			using ( IRun run = CreateRun( mod, fixture ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
@@ -495,7 +537,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, fixtureName ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, fixtureName ) )
 			{
 				//
 				// Stop on first log message, check that the rest is skipped.
@@ -566,7 +609,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "StopInSetup" ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "StopInSetup" ) )
 			{
 				//
 				// Stop on first log message, check that the rest is skipped.
@@ -619,7 +663,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "StopInTeardown" ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "StopInTeardown" ) )
 			{
 				//
 				// Stop on first log message, check that the rest is skipped.
@@ -682,7 +727,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( ITestItemCollection fixture = GetFixture( mod, "StopInTest" ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "StopInTest" ) )
 			{
 				//
 				// Stop on first log message, check that the rest is skipped.

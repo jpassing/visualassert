@@ -22,6 +22,21 @@ namespace Cfix.Control
 			IResultItemCollection parent,
 			ITestItemCollection itemCollection,
 			ExecutionStatus status
+			)
+			: this( events, parent, itemCollection, itemCollection, status )
+		{
+		}
+
+		/*++
+		 * N.B. children can be explicitly provided to allow using
+		 * aubset of the ITestItemCollection's children.
+		 --*/
+		public GenericResultCollection(
+			IActionEvents events,
+			IResultItemCollection parent,
+			ITestItemCollection itemCollection,
+			IEnumerable< ITestItem > children,
+			ExecutionStatus status
 			) 
 			: base( events, parent, itemCollection, status )
 		{
@@ -36,7 +51,7 @@ namespace Cfix.Control
 			this.subItems = new List<IResultItem>(
 				( int ) itemCollection.ItemCount );
 
-			foreach ( ITestItem child in itemCollection )
+			foreach ( ITestItem child in children )
 			{
 				IRunnableTestItem fac = child as IRunnableTestItem;
 				IRunnableTestItemCollection facColl = child as IRunnableTestItemCollection;

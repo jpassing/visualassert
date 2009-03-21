@@ -331,6 +331,27 @@ namespace Cfix.Control.Native
 				interimStatus );
 		}
 
+		internal IResultItem CreateResultItemForSingleTestCaseRun(
+			IActionEvents events,
+			ITestItem testCase,
+			ExecutionStatus interimStatus
+			)
+		{
+			Debug.Assert( !( testCase is ITestItemCollection ) );
+			Debug.Assert( ReferenceEquals( testCase.Parent, this ) );
+
+			ITestItem[] children = new ITestItem[] { testCase };
+			TestItemCollectionResult result = new TestItemCollectionResult(
+				events,
+				null,
+				this,
+				children,
+				interimStatus );
+
+			Debug.Assert( result.ItemCount == 1 );
+			return result;
+		}
+
 		/*--------------------------------------------------------------
 		 * Events.
 		 */

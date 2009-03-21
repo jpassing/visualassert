@@ -322,6 +322,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testlib11"
+					>
+					<File
+						RelativePath=".\testlibs\testlib11\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib11\suite.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib11\testlib11.def"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

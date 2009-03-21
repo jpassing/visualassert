@@ -208,6 +208,7 @@ static HRESULT CfixctlsCreateModuleExecutionAction(
 		Hr = CfixCreateFixtureExecutionAction(
 			Module->Fixtures[ Index ],
 			Flags,
+			( ULONG ) -1, // All testcases.
 			&FixtureAction );
 		if ( FAILED( Hr ) )
 		{
@@ -474,14 +475,6 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 		return E_INVALIDARG;
 	}
 
-	if ( TestCaseOrdinal != CFIXCTL_EXECUTE_ALL )
-	{
-		//
-		// Single-testcase runs are currently not supported.
-		//
-		return E_NOTIMPL;
-	}
-
 	//
 	// Create cfix action.
 	//
@@ -508,6 +501,7 @@ STDMETHODIMP TestModule::CreateExecutionAction(
 		Hr = CfixCreateFixtureExecutionAction(
 			this->Module->Fixtures[ FixtureOrdinal ],
 			SchedulingFlags,
+			TestCaseOrdinal,
 			&ExecAction );
 
 		if ( FAILED( Hr ) )

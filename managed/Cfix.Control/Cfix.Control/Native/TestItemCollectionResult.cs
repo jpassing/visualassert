@@ -27,6 +27,17 @@ namespace Cfix.Control.Native
 		{
 		}
 
+		internal TestItemCollectionResult(
+			IActionEvents events,
+			IResultItemCollection parent,
+			ITestItemCollection itemCollection,
+			IEnumerable<ITestItem> children,
+			ExecutionStatus status
+			)
+			: base( events, parent, itemCollection, children, status )
+		{
+		}
+
 		/*----------------------------------------------------------------------
 		 * ICfixTestÌtemContainerEventSink.
 		 * 
@@ -49,7 +60,25 @@ namespace Cfix.Control.Native
 			uint threadId 
 			)
 		{
-			IResultItem item = this.GetItem( testCaseOrdinal );
+			IResultItem item;
+			if ( testCaseOrdinal < this.ItemCount )
+			{
+				item = this.GetItem( testCaseOrdinal );
+			}
+			else if ( this.ItemCount == 1 &&
+				this.ItemCollection.ItemCount > 1 )
+			{
+				//
+				// Mismatch between result item count and item count -- 
+				// must be due to this being a single-testcase run.
+				//
+				item = this.GetItem( 0 );
+			}
+			else
+			{
+				throw new CfixException( "Inconsistent result" );
+			}
+
 			Debug.Assert( item is TestItemResult );
 
 			if ( item == null )

@@ -48,7 +48,7 @@ static void __stdcall FailingAssertion()
 static void __stdcall SucceedingAssertionAndLog()
 {
 	CFIX_ASSERT( TRUE );
-	CFIX_LOG( L"test" );
+	CFIX_LOG( "test" );
 }
 
 static void __stdcall Throw()
@@ -106,4 +106,9 @@ CFIX_BEGIN_FIXTURE( SinkTest )
 	CFIX_FIXTURE_SETUP( SucceedingAssertionAndLog )
 	CFIX_FIXTURE_TEARDOWN( SucceedingAssertionAndLog )
 	CFIX_FIXTURE_ENTRY( SucceedingAssertionAndLog )
+CFIX_END_FIXTURE()
+
+CFIX_BEGIN_FIXTURE( XSelectSingleTestCase )
+	CFIX_FIXTURE_ENTRY( Nop01 )
+	CFIX_FIXTURE_ENTRY( Nop02 )
 CFIX_END_FIXTURE()

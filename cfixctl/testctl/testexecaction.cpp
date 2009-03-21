@@ -497,6 +497,59 @@ void RunFixturesFromTestlib10()
 	Module->Release();
 }
 
+void RunSingleTestCaseFromTestlib11()
+{
+	WCHAR Path[ MAX_PATH ];
+	CFIXCC_ASSERT( GetModuleFileName(
+		GetModuleHandle( L"testctl" ),
+		Path,
+		_countof( Path ) ) );
+	PathRemoveFileSpec( Path );
+	PathAppend( Path,  L"testlib11.dll" );
+
+	ICfixTestModule *Module;
+	CFIXCC_ASSERT_OK( Host->LoadModule( Path, &Module ) );
+
+	ICfixTestItem *Fixture;
+	CFIXCC_ASSERT_OK( Module->GetItem( 0, &Fixture ) );
+	Module->Release();
+
+	BSTR Name;
+	CFIXCC_ASSERT_OK( Fixture->GetName( &Name ) );
+	CFIXCC_ASSERT_EQUALS( L"TestExecActionDummy", ( PCWSTR ) Name );
+	SysFreeString( Name );
+
+	ICfixTestContainer *FixtureContainer;
+	CFIXCC_ASSERT_OK( Fixture->QueryInterface(
+		IID_ICfixTestContainer, ( PVOID* ) &FixtureContainer ) );
+	Fixture->Release();
+
+	ICfixTestItem *TestCase;
+	CFIXCC_ASSERT_OK( FixtureContainer->GetItem( 1, &TestCase ) );
+	FixtureContainer->Release();
+
+	CFIXCC_ASSERT_OK( TestCase->GetName( &Name ) );
+	CFIXCC_ASSERT_EQUALS( L"Two", ( PCWSTR ) Name );
+	SysFreeString( Name );
+
+	ICfixAction *Action;
+	CFIXCC_ASSERT_OK( TestCase->CreateExecutionAction(
+		0, 0, &Action ) );
+	TestCase->Release();
+
+	EventSink Sink( 0 );
+	CFIXCC_ASSERT_OK( Action->Run( &Sink, 0 ) );
+
+	CFIXCC_ASSERT_EQUALS( 
+		8UL + 256UL + 512UL + 1024UL + 2048UL + 4096UL + 8192UL, 
+		Sink.CallbackMask );
+
+	CFIXCC_ASSERT_EQUALS( 
+		7UL, 
+		Sink.CallbackCount );
+	Action->Release();
+}
+
 CFIX_BEGIN_FIXTURE( TestExecAction )
 	CFIX_FIXTURE_SETUP( SetUp )
 	CFIX_FIXTURE_TEARDOWN( TearDown )
@@ -505,4 +558,5 @@ CFIX_BEGIN_FIXTURE( TestExecAction )
 
 	CFIX_FIXTURE_ENTRY( CreateAndReleaseActions )
 	CFIX_FIXTURE_ENTRY( RunFixturesFromTestlib10 )
+	CFIX_FIXTURE_ENTRY( RunSingleTestCaseFromTestlib11 )
 CFIX_END_FIXTURE()
