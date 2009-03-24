@@ -44,6 +44,7 @@ namespace Cfix.Control.Ui.Result
 			// 
 			// tree
 			// 
+			this.tree.AllowColumnReorder = true;
 			this.tree.BackColor = System.Drawing.SystemColors.Window;
 			this.tree.Columns.Add( this.colName );
 			this.tree.Columns.Add( this.colStatus );

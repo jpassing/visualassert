@@ -45,6 +45,9 @@ namespace QuickTest
 			this.inTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
+
+			this.Results.ResultNodeContextMenu = this.contextMenuStrip1;
+			this.Results.FailureNodeContextMenu = this.contextMenuStrip2;
 		}
 
 		private void refresh_Click( object sender, EventArgs e )

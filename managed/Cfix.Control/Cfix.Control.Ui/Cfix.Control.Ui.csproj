@@ -14,7 +14,7 @@
     <NoWarn>1607</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\..\..\bin\fre\i386\</OutputPath>
+    <OutputPath>..\..\..\bin\chk\i386\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -68,6 +68,9 @@
     <Compile Include="Result\IResultNode.cs" />
     <Compile Include="Result\ResultItemNode.cs" />
     <Compile Include="Result\ResultModel.cs" />
+    <Compile Include="Result\TextNodeControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Result\ToolTipProvider.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>

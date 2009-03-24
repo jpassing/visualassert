@@ -43,6 +43,12 @@ namespace QuickTest
 			this.statusTxt = new System.Windows.Forms.TextBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.button5 = new System.Windows.Forms.Button();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.resultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.failToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuStrip1.SuspendLayout();
+			this.contextMenuStrip2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// refresh
@@ -109,8 +115,10 @@ namespace QuickTest
 			this.Results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.Results.FailureNodeContextMenu = null;
 			this.Results.Location = new System.Drawing.Point( 0, 227 );
 			this.Results.Name = "Results";
+			this.Results.ResultNodeContextMenu = null;
 			this.Results.Run = null;
 			this.Results.Size = new System.Drawing.Size( 808, 251 );
 			this.Results.TabIndex = 4;
@@ -179,6 +187,32 @@ namespace QuickTest
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler( this.button5_Click );
 			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.resultToolStripMenuItem} );
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size( 105, 26 );
+			// 
+			// resultToolStripMenuItem
+			// 
+			this.resultToolStripMenuItem.Name = "resultToolStripMenuItem";
+			this.resultToolStripMenuItem.Size = new System.Drawing.Size( 104, 22 );
+			this.resultToolStripMenuItem.Text = "Result";
+			// 
+			// contextMenuStrip2
+			// 
+			this.contextMenuStrip2.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.failToolStripMenuItem} );
+			this.contextMenuStrip2.Name = "contextMenuStrip2";
+			this.contextMenuStrip2.Size = new System.Drawing.Size( 91, 26 );
+			// 
+			// failToolStripMenuItem
+			// 
+			this.failToolStripMenuItem.Name = "failToolStripMenuItem";
+			this.failToolStripMenuItem.Size = new System.Drawing.Size( 90, 22 );
+			this.failToolStripMenuItem.Text = "Fail";
+			// 
 			// ExplorerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -198,6 +232,8 @@ namespace QuickTest
 			this.Controls.Add( this.explorer );
 			this.Name = "ExplorerForm";
 			this.Text = "ExplorerForm";
+			this.contextMenuStrip1.ResumeLayout( false );
+			this.contextMenuStrip2.ResumeLayout( false );
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -218,5 +254,9 @@ namespace QuickTest
 		private System.Windows.Forms.TextBox statusTxt;
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem resultToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+		private System.Windows.Forms.ToolStripMenuItem failToolStripMenuItem;
 	}
 }

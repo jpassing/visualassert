@@ -19,14 +19,17 @@ namespace Cfix.Control.Ui.Result
 		private readonly ResultModel model;
 
 		private readonly NodeIcon iconBinding = new NodeIcon();
-		private readonly NodeTextBox statusBinding = new NodeTextBox();
-		private readonly NodeTextBox nameBinding = new NodeTextBox();
-		private readonly NodeTextBox expressionBinding = new NodeTextBox();
-		private readonly NodeTextBox messageBinding = new NodeTextBox();
-		private readonly NodeTextBox locationBinding = new NodeTextBox();
-		private readonly NodeTextBox routineBinding = new NodeTextBox();
-		private readonly NodeTextBox durationBinding = new NodeTextBox();
-		private readonly NodeTextBox lastErrorBinding = new NodeTextBox();
+		private readonly TextNodeControl statusBinding;
+		private readonly TextNodeControl nameBinding;
+		private readonly TextNodeControl expressionBinding;
+		private readonly TextNodeControl messageBinding;
+		private readonly TextNodeControl locationBinding;
+		private readonly TextNodeControl routineBinding;
+		private readonly TextNodeControl durationBinding;
+		private readonly TextNodeControl lastErrorBinding;
+
+		private ContextMenuStrip resultNodeContextMenu;
+		private ContextMenuStrip failureNodeContextMenu;
 
 		public ResultExplorer()
 		{
@@ -38,11 +41,13 @@ namespace Cfix.Control.Ui.Result
 			//
 			// Bind node fields to columns.
 			//
+			this.iconBinding = new NodeIcon();
 			this.iconBinding.DataPropertyName = "Icon";
 			this.iconBinding.ParentColumn = this.colName;
 			this.iconBinding.LeftMargin = 3;
 			this.tree.NodeControls.Add( this.iconBinding );
 
+			this.nameBinding = new TextNodeControl( this );
 			this.nameBinding.DataPropertyName = "Name";
 			this.nameBinding.IncrementalSearchEnabled = true;
 			this.nameBinding.ParentColumn = this.colName;
@@ -58,6 +63,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.nameBinding );
 
+			this.statusBinding = new TextNodeControl( this );
 			this.statusBinding.DataPropertyName = "Status";
 			this.statusBinding.ParentColumn = this.colStatus;
 			this.statusBinding.Trimming = StringTrimming.EllipsisCharacter;
@@ -71,6 +77,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.statusBinding );
 
+			this.expressionBinding = new TextNodeControl( this );
 			this.expressionBinding.DataPropertyName = "Expression";
 			this.expressionBinding.IncrementalSearchEnabled = true;
 			this.expressionBinding.ParentColumn = this.colExpression;
@@ -85,6 +92,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.expressionBinding );
 
+			this.messageBinding = new TextNodeControl( this );
 			this.messageBinding.DataPropertyName = "Message";
 			this.messageBinding.IncrementalSearchEnabled = true;
 			this.messageBinding.ParentColumn = this.colMessage;
@@ -99,6 +107,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.messageBinding );
 
+			this.locationBinding = new TextNodeControl( this );
 			this.locationBinding.DataPropertyName = "Location";
 			this.locationBinding.ParentColumn = this.colLocation;
 			this.locationBinding.Trimming = StringTrimming.EllipsisCharacter;
@@ -112,6 +121,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.locationBinding );
 
+			this.routineBinding = new TextNodeControl( this );
 			this.routineBinding.DataPropertyName = "Routine";
 			this.routineBinding.ParentColumn = this.colRoutine;
 			this.routineBinding.Trimming = StringTrimming.EllipsisCharacter;
@@ -125,6 +135,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.routineBinding );
 
+			this.durationBinding = new TextNodeControl( this );
 			this.durationBinding.DataPropertyName = "Duration";
 			this.durationBinding.ParentColumn = this.colDuration;
 			this.durationBinding.Trimming = StringTrimming.EllipsisCharacter;
@@ -138,6 +149,7 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.durationBinding );
 
+			this.lastErrorBinding = new TextNodeControl( this );
 			this.lastErrorBinding.DataPropertyName = "LastError";
 			this.lastErrorBinding.ParentColumn = this.colLastError;
 			this.lastErrorBinding.Trimming = StringTrimming.EllipsisCharacter;
@@ -153,10 +165,28 @@ namespace Cfix.Control.Ui.Result
 
 		}
 
+		internal TreeNodeAdv CurrentNode
+		{
+			get { return this.tree.CurrentNode; }
+		}
+
 		public IRun Run
 		{
 			get { return this.model.Run; }
 			set { this.model.Run = value; }
 		}
+
+		public ContextMenuStrip ResultNodeContextMenu
+		{
+			get { return this.resultNodeContextMenu; }
+			set { this.resultNodeContextMenu = value; }
+		}
+
+		public ContextMenuStrip FailureNodeContextMenu
+		{
+			get { return this.failureNodeContextMenu; }
+			set { this.failureNodeContextMenu = value; }
+		}
+
 	}
 }
