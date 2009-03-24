@@ -41,13 +41,13 @@ namespace Cfix.Addin.Windows.Explorer
 			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
-			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.statusText = new System.Windows.Forms.TextBox();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.toolbar.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
 			this.ctxMenu.SuspendLayout();
@@ -134,13 +134,6 @@ namespace Cfix.Addin.Windows.Explorer
 			this.runButton.Name = "runButton";
 			this.runButton.Click += new System.EventHandler( this.runButton_Click );
 			// 
-			// explorer
-			// 
-			resources.ApplyResources( this.explorer, "explorer" );
-			this.explorer.Name = "explorer";
-			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
-			// 
 			// statusText
 			// 
 			resources.ApplyResources( this.statusText, "statusText" );
@@ -186,6 +179,13 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuRefreshButton.Image = global::Cfix.Addin.Icons.Refresh;
 			resources.ApplyResources( this.ctxMenuRefreshButton, "ctxMenuRefreshButton" );
 			this.ctxMenuRefreshButton.Name = "ctxMenuRefreshButton";
+			// 
+			// explorer
+			// 
+			resources.ApplyResources( this.explorer, "explorer" );
+			this.explorer.Name = "explorer";
+			this.explorer.NodeContextMenu = null;
+			this.explorer.NodeFactory = nodeFactory1;
 			// 
 			// ExplorerWindow
 			// 

@@ -84,8 +84,9 @@ namespace Cfix.Control
 		event EventHandler StatusChanged;
 		event EventHandler<NotificationEventArgs> Notification;
 		event EventHandler<HostEventArgs> BeforeTerminate;
-		
 
+
+		uint TaskCount { get; }
 		IEnumerable<ITask> Tasks { get; }
 		IResultItemCollection RootResult { get; }
 

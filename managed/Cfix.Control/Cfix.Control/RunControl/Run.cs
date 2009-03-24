@@ -89,6 +89,11 @@ namespace Cfix.Control.RunControl
 			get { return this.tasks; }
 		}
 
+		public uint TaskCount
+		{
+			get { return ( uint ) this.tasks.Count; }
+		}
+
 		public uint ItemCount
 		{
 			get 

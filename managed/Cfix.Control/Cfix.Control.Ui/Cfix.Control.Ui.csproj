@@ -36,7 +36,10 @@
     <AssemblyName>Cfix.Control.Ui</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aga.Controls, Version=1.6.1.0, Culture=neutral, PublicKeyToken=fcc90fbf924463a3, processorArchitecture=MSIL" />
+    <Reference Include="Aga.Controls, Version=1.6.1.0, Culture=neutral, PublicKeyToken=fcc90fbf924463a3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Cfix.Addin\redist\Aga.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -65,6 +68,7 @@
     <Compile Include="Result\IResultNode.cs" />
     <Compile Include="Result\ResultItemNode.cs" />
     <Compile Include="Result\ResultModel.cs" />
+    <Compile Include="Result\ToolTipProvider.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

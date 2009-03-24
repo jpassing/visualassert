@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
 
 namespace Cfix.Control.Ui.Result
@@ -49,13 +50,25 @@ namespace Cfix.Control.Ui.Result
 			this.nameBinding.UseCompatibleTextRendering = true;
 			this.nameBinding.LeftMargin = 3;
 			this.nameBinding.EditEnabled = false;
+			this.nameBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Name : null;
+				} );
 			this.tree.NodeControls.Add( this.nameBinding );
 
 			this.statusBinding.DataPropertyName = "Status";
 			this.statusBinding.ParentColumn = this.colStatus;
 			this.statusBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.statusBinding.UseCompatibleTextRendering = true;
-			this.statusBinding.EditEnabled = false; 
+			this.statusBinding.EditEnabled = false;
+			this.statusBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Status : null;
+				} );
 			this.tree.NodeControls.Add( this.statusBinding );
 
 			this.expressionBinding.DataPropertyName = "Expression";
@@ -63,7 +76,13 @@ namespace Cfix.Control.Ui.Result
 			this.expressionBinding.ParentColumn = this.colExpression;
 			this.expressionBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.expressionBinding.UseCompatibleTextRendering = true;
-			this.expressionBinding.EditEnabled = false; 
+			this.expressionBinding.EditEnabled = false;
+			this.expressionBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Expression : null;
+				} );
 			this.tree.NodeControls.Add( this.expressionBinding );
 
 			this.messageBinding.DataPropertyName = "Message";
@@ -71,21 +90,39 @@ namespace Cfix.Control.Ui.Result
 			this.messageBinding.ParentColumn = this.colMessage;
 			this.messageBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.messageBinding.UseCompatibleTextRendering = true;
-			this.messageBinding.EditEnabled = false; 
+			this.messageBinding.EditEnabled = false;
+			this.messageBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Message : null;
+				} );
 			this.tree.NodeControls.Add( this.messageBinding );
 
 			this.locationBinding.DataPropertyName = "Location";
 			this.locationBinding.ParentColumn = this.colLocation;
 			this.locationBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.locationBinding.UseCompatibleTextRendering = true;
-			this.locationBinding.EditEnabled = false; 
+			this.locationBinding.EditEnabled = false;
+			this.locationBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Location : null;
+				} );
 			this.tree.NodeControls.Add( this.locationBinding );
 
 			this.routineBinding.DataPropertyName = "Routine";
 			this.routineBinding.ParentColumn = this.colRoutine;
 			this.routineBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.routineBinding.UseCompatibleTextRendering = true;
-			this.routineBinding.EditEnabled = false; 
+			this.routineBinding.EditEnabled = false;
+			this.routineBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Routine : null;
+				} );
 			this.tree.NodeControls.Add( this.routineBinding );
 
 			this.durationBinding.DataPropertyName = "Duration";
@@ -93,13 +130,25 @@ namespace Cfix.Control.Ui.Result
 			this.durationBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.durationBinding.UseCompatibleTextRendering = true;
 			this.durationBinding.EditEnabled = false;
+			this.durationBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.Duration : null;
+				} );
 			this.tree.NodeControls.Add( this.durationBinding );
 
 			this.lastErrorBinding.DataPropertyName = "LastError";
 			this.lastErrorBinding.ParentColumn = this.colLastError;
 			this.lastErrorBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.lastErrorBinding.UseCompatibleTextRendering = true;
-			this.lastErrorBinding.EditEnabled = false; 
+			this.lastErrorBinding.EditEnabled = false;
+			this.lastErrorBinding.ToolTipProvider = new ToolTipProvider(
+				delegate( TreeNodeAdv node )
+				{
+					IResultNode resNode = node.Tag as IResultNode;
+					return ( resNode != null ) ? resNode.LastError : null;
+				} );
 			this.tree.NodeControls.Add( this.lastErrorBinding );
 
 		}

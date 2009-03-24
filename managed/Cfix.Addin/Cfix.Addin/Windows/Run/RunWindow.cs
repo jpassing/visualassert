@@ -69,9 +69,10 @@ namespace Cfix.Addin.Windows.Run
 
 					this.progressLabel.Text =
 						String.Format(
-							"Running, {0}/{1} completed.",
+							Strings.ProgressInfo,
 							completed,
-							total );
+							total,
+							this.run.TaskCount );
 					this.progressBar.Invalidate();
 					this.progressLabel.Invalidate();
 				} );
@@ -88,7 +89,15 @@ namespace Cfix.Addin.Windows.Run
 				this.terminateButton.Enabled = false;
 				this.stopButton.Enabled = false;
 
-				this.progressLabel.Text = "Finished.";
+				if ( this.run.Status == TaskStatus.Suceeded )
+				{
+					this.progressLabel.Text = this.run.RootResult.Status.ToString();
+				}
+				else
+				{
+					this.progressLabel.Text = this.run.Status.ToString();
+				}
+
 				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
 			} );

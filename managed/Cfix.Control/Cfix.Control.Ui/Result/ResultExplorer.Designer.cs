@@ -65,6 +65,7 @@ namespace Cfix.Control.Ui.Result
 			this.tree.Name = "tree";
 			this.tree.RowHeight = 18;
 			this.tree.SelectedNode = null;
+			this.tree.ShowNodeToolTips = true;
 			this.tree.Size = new System.Drawing.Size( 488, 314 );
 			this.tree.TabIndex = 0;
 			this.tree.UseColumns = true;
