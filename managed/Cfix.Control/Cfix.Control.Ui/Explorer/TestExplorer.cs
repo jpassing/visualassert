@@ -47,7 +47,8 @@ namespace Cfix.Control.Ui.Explorer
 		public event EventHandler RefreshStarted;
 		public event EventHandler RefreshFinished;
 		public event EventHandler<ExplorerNodeEventArgs> BeforeContextMenuPopup;
-		
+		public event KeyEventHandler TreeKeyDown;
+
 		private ContextMenuStrip nodeContextMenu;
 
 		/*----------------------------------------------------------------------
@@ -220,6 +221,12 @@ namespace Cfix.Control.Ui.Explorer
 						PopupContextMenu( explNode, new Point( coord.X, coord.Y ) );
 					}
 				}
+
+				e.Handled = true;
+			}
+			else if ( this.TreeKeyDown != null )
+			{
+				this.TreeKeyDown( this, e );
 			}
 		}
 

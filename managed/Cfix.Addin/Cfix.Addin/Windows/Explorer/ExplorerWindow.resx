@@ -328,11 +328,8 @@
   <data name="ctxMenuDebugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="ctxMenuDebugButton.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+D</value>
-  </data>
   <data name="ctxMenuDebugButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>193, 22</value>
   </data>
   <data name="ctxMenuDebugButton.Text" xml:space="preserve">
     <value>Start Debugging</value>
@@ -340,11 +337,8 @@
   <data name="ctxMenuRunButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="ctxMenuRunButton.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+R</value>
-  </data>
   <data name="ctxMenuRunButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>193, 22</value>
   </data>
   <data name="ctxMenuRunButton.Text" xml:space="preserve">
     <value>Start Without Debugging</value>
@@ -353,13 +347,13 @@
     <value>Black</value>
   </data>
   <data name="ctxMenuRefreshButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>193, 22</value>
   </data>
   <data name="ctxMenuRefreshButton.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 92</value>
+    <value>194, 92</value>
   </data>
   <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
     <value>ctxMenu</value>

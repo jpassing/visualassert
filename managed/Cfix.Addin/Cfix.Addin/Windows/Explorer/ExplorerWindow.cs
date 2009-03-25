@@ -64,6 +64,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer.RefreshFinished += new EventHandler( explorer_RefreshFinished );
 			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
 			this.explorer.BeforeContextMenuPopup += new EventHandler<ExplorerNodeEventArgs>( explorer_BeforeContextMenuPopup );
+			this.explorer.TreeKeyDown +=new KeyEventHandler( explorer_TreeKeyDown );
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
@@ -75,7 +76,7 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Context Menu.
 		 */
 
-		void explorer_BeforeContextMenuPopup( 
+		private void explorer_BeforeContextMenuPopup( 
 			object sender, 
 			ExplorerNodeEventArgs e )
 		{
@@ -502,5 +503,17 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			RunItem( this.contextMenuReferenceNode.Item, false );
 		}
+
+		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
+		{
+			IRunnableTestItem item = this.explorer.SelectedItem as IRunnableTestItem;
+			if ( item != null && e.KeyCode == Keys.Enter )
+			{
+				RunItem( item, ! e.Control );
+
+				e.Handled = true;
+			}
+		}
+		
 	}
 }

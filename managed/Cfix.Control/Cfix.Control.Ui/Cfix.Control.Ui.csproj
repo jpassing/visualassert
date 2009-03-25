@@ -36,10 +36,6 @@
     <AssemblyName>Cfix.Control.Ui</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aga.Controls, Version=1.6.1.0, Culture=neutral, PublicKeyToken=fcc90fbf924463a3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Cfix.Addin\redist\Aga.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -94,6 +90,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cfix.Control.TreeView\Cfix.Control.TreeView.csproj">
+      <Project>{E73BB233-D88B-44A7-A98F-D71EE158381D}</Project>
+      <Name>Cfix.Control.TreeView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cfix.Control\Cfix.Control.csproj">
       <Project>{C48FD013-1C86-4C95-B4BA-126C8749E008}</Project>
       <Name>Cfix.Control</Name>

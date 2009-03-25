@@ -10,28 +10,9 @@ namespace Cfix.Control.Ui.Result
 	{
 		private readonly ResultExplorer explorer;
 
-		private void PopupContextMenu( IResultNode node, Point pt )
+		private void RequestContextMenu( IResultNode node, Point pt )
 		{
-			ContextMenuStrip strip = null;
-
-			ResultItemNode resNode = node as ResultItemNode;
-			if ( resNode != null )
-			{
-				strip = this.explorer.ResultNodeContextMenu;
-			}
-			else
-			{
-				FailureNode failNode = node as FailureNode;
-				if ( failNode != null )
-				{
-					strip = this.explorer.FailureNodeContextMenu;
-				}
-			}
-
-			if ( strip != null )
-			{
-				strip.Show( this.explorer, pt );
-			}
+			this.explorer.OnContextMenuRequested( node, pt );
 		}
 
 		public TextNodeControl( ResultExplorer explorer )
@@ -47,7 +28,7 @@ namespace Cfix.Control.Ui.Result
 		{
 			if ( args.Button == MouseButtons.Right )
 			{
-				PopupContextMenu(
+				RequestContextMenu(
 					( IResultNode ) args.Node.Tag, 
 					args.Location );
 			}
@@ -58,12 +39,13 @@ namespace Cfix.Control.Ui.Result
 			if ( e.KeyCode == Keys.Apps ||
 				 ( e.KeyCode == Keys.F10 && e.Shift ) )
 			{
-				TreeNodeAdv node = this.explorer.CurrentNode;
+				TreeNodeAdv node = this.explorer.Tree.CurrentNode;
 				if ( node != null )
 				{
-					PopupContextMenu(
+					Point pt = this.explorer.Tree.GetNodeLocation( node, true );
+					RequestContextMenu(
 						( IResultNode ) node.Tag,
-						GetBounds( node, new DrawContext() ).Location );
+						new Point( 100, pt.Y ) );
 				}
 			}
 		}

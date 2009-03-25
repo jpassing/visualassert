@@ -16,6 +16,8 @@ namespace Cfix.Control.Ui.Result
 		public const int UnhandledExceptionIconIndex = 10;
 		public const int FailedAssertionIconIndex = 10;
 
+		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
+
 		private readonly ResultModel model;
 
 		private readonly NodeIcon iconBinding = new NodeIcon();
@@ -55,6 +57,7 @@ namespace Cfix.Control.Ui.Result
 			this.nameBinding.UseCompatibleTextRendering = true;
 			this.nameBinding.LeftMargin = 3;
 			this.nameBinding.EditEnabled = false;
+			this.nameBinding.DisplayHiddenContentInToolTip = true;
 			this.nameBinding.ToolTipProvider = new ToolTipProvider(
 				delegate( TreeNodeAdv node )
 				{
@@ -165,10 +168,31 @@ namespace Cfix.Control.Ui.Result
 
 		}
 
-		internal TreeNodeAdv CurrentNode
+		/*----------------------------------------------------------------------
+		 * Internal.
+		 */
+
+		internal TreeViewAdv Tree
 		{
-			get { return this.tree.CurrentNode; }
+			get { return this.tree; }
 		}
+
+		internal void OnContextMenuRequested(
+			IResultNode node,
+			Point location
+			)
+		{
+			if ( this.ContextMenuRequested != null )
+			{
+				this.ContextMenuRequested(
+					node,
+					new ContextMenuEventArgs( location ) );
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Public.
+		 */ 
 
 		public IRun Run
 		{
@@ -187,6 +211,22 @@ namespace Cfix.Control.Ui.Result
 			get { return this.failureNodeContextMenu; }
 			set { this.failureNodeContextMenu = value; }
 		}
+	}
 
+	public class ContextMenuEventArgs : EventArgs
+	{
+		private readonly Point location;
+
+		public ContextMenuEventArgs(
+			Point location
+			)
+		{
+			this.location = location;
+		}
+
+		public Point Location
+		{
+			get { return location; }
+		} 
 	}
 }
