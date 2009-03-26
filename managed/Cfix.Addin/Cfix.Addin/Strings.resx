@@ -136,7 +136,7 @@
     <value>cfix</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
-    <value>Running, {2} host process(es), {0}/{1} test cases completed.</value>
+    <value>{3}, {2} host process(es), {0}/{1} test cases completed.</value>
   </data>
   <data name="RunActive" xml:space="preserve">
     <value>Run still active</value>

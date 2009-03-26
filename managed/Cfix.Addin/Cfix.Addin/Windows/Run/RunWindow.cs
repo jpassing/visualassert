@@ -7,6 +7,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Cfix.Control;
+using Cfix.Control.Ui.Result;
 
 namespace Cfix.Addin.Windows.Run
 {
@@ -26,6 +27,9 @@ namespace Cfix.Addin.Windows.Run
 		//
 		private IRun run;
 		private bool aborted;
+
+		private IResultNode contextMenuReferenceItem;
+		private Workspace workspace;
 
 		/*----------------------------------------------------------------------
 		 * Private - Run events.
@@ -72,7 +76,8 @@ namespace Cfix.Addin.Windows.Run
 							Strings.ProgressInfo,
 							completed,
 							total,
-							this.run.TaskCount );
+							this.run.TaskCount,
+							this.run.Status );
 					this.progressBar.Invalidate();
 					this.progressLabel.Invalidate();
 				} );
@@ -107,7 +112,13 @@ namespace Cfix.Addin.Windows.Run
 		{
 			this.BeginInvoke( ( VoidDelegate ) delegate
 			{
-				this.progressLabel.Text = "Started.";
+				this.progressLabel.Text =
+					String.Format(
+						Strings.ProgressInfo,
+						0,
+						this.run.ItemCount,
+						this.run.TaskCount,
+						this.run.Status );
 				this.progressBar.Invalidate(); 
 				this.progressLabel.Invalidate();
 			} );
@@ -119,19 +130,108 @@ namespace Cfix.Addin.Windows.Run
 
 		private void stopButton_Click( object sender, EventArgs e )
 		{
-			lock ( this.runLock )
+			try
 			{
-				this.aborted = true;
-				this.run.Stop();
+				lock ( this.runLock )
+				{
+					this.aborted = true;
+					this.run.Stop();
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 
 		private void terminateButton_Click( object sender, EventArgs e )
 		{
-			lock ( this.runLock )
+			try
 			{
-				this.aborted = true;
-				this.run.Terminate();
+				lock ( this.runLock )
+				{
+					this.aborted = true;
+					this.run.Terminate();
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Context Menu.
+		 */
+
+		private void results_ContextMenuRequested(
+			object sender, 
+			ContextMenuEventArgs e
+			)
+		{
+			try
+			{
+				IResultNode item = ( IResultNode ) sender;
+				ResultItemNode resultItem = item as ResultItemNode;
+				if ( resultItem != null )
+				{
+					this.resultCtxMenu.Show( this.results, e.Location );
+
+					//
+					// Remember node to associate menu item clicks with
+					// this node.
+					//
+					this.contextMenuReferenceItem = item;
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Run/Debug.
+		 */
+
+		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
+		{
+			ResultItemNode resultItem = this.contextMenuReferenceItem as ResultItemNode;
+			if ( resultItem != null )
+			{
+				CommonUiOperations.RunItem(
+					this.workspace,
+					resultItem.ResultItem.Item,
+					true );
+			}
+		}
+
+		private void ctxMenuRunButton_Click( object sender, EventArgs e )
+		{
+			ResultItemNode resultItem = this.contextMenuReferenceItem as ResultItemNode;
+			if ( resultItem != null )
+			{
+				CommonUiOperations.RunItem(
+					this.workspace,
+					resultItem.ResultItem.Item,
+					false );
+			}
+		}
+
+		private void results_TreeKeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Enter && e.Control )
+			{
+				ResultItemNode resultNode = sender as ResultItemNode;
+				if ( resultNode != null )
+				{
+					CommonUiOperations.RunItem(
+						this.workspace,
+						resultNode.ResultItem.Item,
+						e.Shift );
+				}
+
+				e.Handled = true;
 			}
 		}
 
@@ -142,10 +242,14 @@ namespace Cfix.Addin.Windows.Run
 		public RunWindow()
 		{
 			InitializeComponent();
+
+			this.results.ContextMenuRequested += new EventHandler<Cfix.Control.Ui.Result.ContextMenuEventArgs>(results_ContextMenuRequested);
+			this.results.TreeKeyDown += new KeyEventHandler( results_TreeKeyDown );
 		}
 
 		public void Initialize( Workspace ws )
 		{
+			this.workspace = ws;
 		}
 
 		public IRun Run

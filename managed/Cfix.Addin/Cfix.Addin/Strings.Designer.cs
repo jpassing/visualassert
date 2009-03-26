@@ -115,7 +115,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Running, {2} host process(es), {0}/{1} test cases completed..
+        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed..
         /// </summary>
         internal static string ProgressInfo {
             get {

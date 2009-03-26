@@ -36,17 +36,25 @@ namespace Cfix.Control.Ui.Result
 
 		public override void KeyDown( KeyEventArgs e )
 		{
-			if ( e.KeyCode == Keys.Apps ||
-				 ( e.KeyCode == Keys.F10 && e.Shift ) )
+			TreeNodeAdv node = this.explorer.Tree.CurrentNode;
+			if ( node != null )
 			{
-				TreeNodeAdv node = this.explorer.Tree.CurrentNode;
-				if ( node != null )
+				if ( e.KeyCode == Keys.Apps ||
+					( e.KeyCode == Keys.F10 && e.Shift ) )
 				{
 					Point pt = this.explorer.Tree.GetNodeLocation( node, true );
 					RequestContextMenu(
 						( IResultNode ) node.Tag,
 						new Point( 100, pt.Y ) );
 				}
+				else
+				{
+					this.explorer.OnTreeKeyDown( 
+						( IResultNode ) node.Tag, 
+						e );
+				}
+
+				e.Handled = true;
 			}
 		}
 	}

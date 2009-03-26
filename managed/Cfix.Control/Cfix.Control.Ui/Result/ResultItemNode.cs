@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Result
 {
-	internal class ResultItemNode : IResultNode
+	public class ResultItemNode : IResultNode
 	{
 		private readonly ResultItemNode parent;
 		private readonly IResultItem result;

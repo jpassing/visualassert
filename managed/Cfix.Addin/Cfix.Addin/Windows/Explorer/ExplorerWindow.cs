@@ -88,6 +88,10 @@ namespace Cfix.Addin.Windows.Explorer
 			
 			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
 
+			//
+			// Remember node to associate menu item clicks with
+			// this node.
+			//
 			this.contextMenuReferenceNode = e.Node;
 		}
 
@@ -454,62 +458,47 @@ namespace Cfix.Addin.Windows.Explorer
 		 * Run/Debug.
 		 */
 
-		private void RunItem( ITestItem item, bool debug )
-		{
-			try
-			{
-				IRunnableTestItem runItem = item as IRunnableTestItem;
-				if ( item != null )
-				{
-					this.workspace.RunItem( runItem, debug );
-				}
-			}
-			catch ( ConcurrentRunException )
-			{
-				//
-				// Ok, error dialog should have been provided.
-				//
-			}
-			catch ( ArchitectureMismatchException )
-			{
-				CfixPlus.ShowInfo( Strings.ArchitectureMismatch );
-			}
-			catch ( EmptyRunException )
-			{
-				CfixPlus.ShowInfo( Strings.EmptyRun );
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
-		}
-
 		private void debugButton_Click( object sender, EventArgs e )
 		{
-			RunItem( this.explorer.SelectedItem, true );
+			CommonUiOperations.RunItem( 
+				this.workspace,
+				this.explorer.SelectedItem, 
+				true );
 		}
 
 		private void runButton_Click( object sender, EventArgs e )
 		{
-			RunItem( this.explorer.SelectedItem, false );
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.explorer.SelectedItem,
+				false );
 		}
 
 		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
 		{
-			RunItem( this.contextMenuReferenceNode.Item, true );
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item, 
+				true );
 		}
 
 		private void ctxMenuRunButton_Click( object sender, EventArgs e )
 		{
-			RunItem( this.contextMenuReferenceNode.Item, false );
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item, 
+				false );
 		}
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
 		{
 			IRunnableTestItem item = this.explorer.SelectedItem as IRunnableTestItem;
-			if ( item != null && e.KeyCode == Keys.Enter )
+			if ( item != null && e.KeyCode == Keys.Enter && e.Control )
 			{
-				RunItem( item, ! e.Control );
+				CommonUiOperations.RunItem(
+					this.workspace,
+					item, 
+					! e.Shift );
 
 				e.Handled = true;
 			}

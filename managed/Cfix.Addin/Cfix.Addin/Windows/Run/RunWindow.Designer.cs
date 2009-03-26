@@ -28,13 +28,18 @@ namespace Cfix.Addin.Windows.Run
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.stopButton = new System.Windows.Forms.ToolStripButton();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.progressLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
+			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
+			this.resultCtxMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolbar
@@ -75,8 +80,10 @@ namespace Cfix.Addin.Windows.Run
 			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.results.FailureNodeContextMenu = null;
 			this.results.Location = new System.Drawing.Point( 3, 64 );
 			this.results.Name = "results";
+			this.results.ResultNodeContextMenu = null;
 			this.results.Run = null;
 			this.results.Size = new System.Drawing.Size( 555, 201 );
 			this.results.TabIndex = 1;
@@ -101,6 +108,32 @@ namespace Cfix.Addin.Windows.Run
 			this.progressLabel.TabIndex = 3;
 			this.progressLabel.TabStop = false;
 			// 
+			// resultCtxMenu
+			// 
+			this.resultCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuDebugButton,
+            this.ctxMenuRunButton} );
+			this.resultCtxMenu.Name = "resultCtxMenu";
+			this.resultCtxMenu.Size = new System.Drawing.Size( 206, 70 );
+			// 
+			// ctxMenuDebugButton
+			// 
+			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
+			this.ctxMenuDebugButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
+			this.ctxMenuDebugButton.Size = new System.Drawing.Size( 205, 22 );
+			this.ctxMenuDebugButton.Text = "Restart Debugging";
+			this.ctxMenuDebugButton.Click += new System.EventHandler( this.ctxMenuDebugButton_Click );
+			// 
+			// ctxMenuRunButton
+			// 
+			this.ctxMenuRunButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			this.ctxMenuRunButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.ctxMenuRunButton.Name = "ctxMenuRunButton";
+			this.ctxMenuRunButton.Size = new System.Drawing.Size( 205, 22 );
+			this.ctxMenuRunButton.Text = "Restart Without Debugging";
+			this.ctxMenuRunButton.Click += new System.EventHandler( this.ctxMenuRunButton_Click );
+			// 
 			// RunWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -113,6 +146,7 @@ namespace Cfix.Addin.Windows.Run
 			this.Size = new System.Drawing.Size( 558, 268 );
 			this.toolbar.ResumeLayout( false );
 			this.toolbar.PerformLayout();
+			this.resultCtxMenu.ResumeLayout( false );
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -126,5 +160,8 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStripButton stopButton;
 		private System.Windows.Forms.ToolStripButton terminateButton;
 		private TransparentLabel progressLabel;
+		private System.Windows.Forms.ContextMenuStrip resultCtxMenu;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuDebugButton;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunButton;
 	}
 }

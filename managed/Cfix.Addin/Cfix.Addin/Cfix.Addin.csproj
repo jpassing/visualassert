@@ -110,6 +110,7 @@
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="ToolWindows.cs" />
+    <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Windows\Explorer\VCProjectTestCollection.cs" />
     <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>

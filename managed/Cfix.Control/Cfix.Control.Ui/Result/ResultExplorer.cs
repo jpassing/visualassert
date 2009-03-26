@@ -17,6 +17,7 @@ namespace Cfix.Control.Ui.Result
 		public const int FailedAssertionIconIndex = 10;
 
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
+		public event KeyEventHandler TreeKeyDown;
 
 		private readonly ResultModel model;
 
@@ -187,6 +188,17 @@ namespace Cfix.Control.Ui.Result
 				this.ContextMenuRequested(
 					node,
 					new ContextMenuEventArgs( location ) );
+			}
+		}
+
+		internal void OnTreeKeyDown(
+			IResultNode node,
+			KeyEventArgs e 
+			)
+		{
+			if ( this.TreeKeyDown != null )
+			{
+				this.TreeKeyDown( node, e );
 			}
 		}
 
