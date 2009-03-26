@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Control.Ui.Result;
+using EnvDTE80;
 
 namespace Cfix.Addin.Windows.Run
 {
@@ -29,6 +30,8 @@ namespace Cfix.Addin.Windows.Run
 		private bool aborted;
 
 		private IResultNode contextMenuReferenceItem;
+
+		private DTE2 dte;
 		private Workspace workspace;
 
 		/*----------------------------------------------------------------------
@@ -191,7 +194,7 @@ namespace Cfix.Addin.Windows.Run
 		}
 
 		/*----------------------------------------------------------------------
-		 * Run/Debug.
+		 * Run/Debug/GotoSource.
 		 */
 
 		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
@@ -220,21 +223,53 @@ namespace Cfix.Addin.Windows.Run
 
 		private void results_TreeKeyDown( object sender, KeyEventArgs e )
 		{
-			if ( e.KeyCode == Keys.Enter && e.Control )
+			if ( e.KeyCode == Keys.Enter )
 			{
-				ResultItemNode resultNode = sender as ResultItemNode;
-				if ( resultNode != null )
+				if ( e.Control )
 				{
-					CommonUiOperations.RunItem(
-						this.workspace,
-						resultNode.ResultItem.Item,
-						e.Shift );
-				}
+					ResultItemNode resultNode = sender as ResultItemNode;
+					if ( resultNode != null )
+					{
+						CommonUiOperations.RunItem(
+							this.workspace,
+							resultNode.ResultItem.Item,
+							e.Shift );
+					}
 
-				e.Handled = true;
+					e.Handled = true;
+				}
+				else
+				{
+					FailureNode failNode = sender as FailureNode;
+					if ( failNode != null )
+					{
+						if ( failNode.File != null )
+						{
+							CommonUiOperations.GoToSource(
+								this.dte,
+								failNode.File,
+								failNode.Line );
+						}
+					}
+				}
 			}
 		}
 
+		private void results_TreeDoubleClick( object sender, MouseEventArgs e )
+		{
+			FailureNode failNode = sender as FailureNode;
+			if ( failNode != null )
+			{
+				if ( failNode.File != null )
+				{
+					CommonUiOperations.GoToSource(
+						this.dte,
+						failNode.File,
+						failNode.Line );
+				}
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -245,11 +280,15 @@ namespace Cfix.Addin.Windows.Run
 
 			this.results.ContextMenuRequested += new EventHandler<Cfix.Control.Ui.Result.ContextMenuEventArgs>(results_ContextMenuRequested);
 			this.results.TreeKeyDown += new KeyEventHandler( results_TreeKeyDown );
+			this.results.TreeDoubleClick += new MouseEventHandler( results_TreeDoubleClick );
 		}
 
-		public void Initialize( Workspace ws )
+		public void Initialize(
+			Workspace ws,
+			DTE2 dte )
 		{
 			this.workspace = ws;
+			this.dte = dte;
 		}
 
 		public IRun Run

@@ -57,5 +57,12 @@ namespace Cfix.Control.Ui.Result
 				e.Handled = true;
 			}
 		}
+
+		public override void MouseDoubleClick( TreeNodeAdvMouseEventArgs args )
+		{
+			this.explorer.OnTreeDoubleClick(
+				( IResultNode ) args.Node.Tag, 
+				args );
+		}
 	}
 }

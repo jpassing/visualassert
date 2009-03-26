@@ -107,6 +107,16 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
+		public string File
+		{
+			get { return this.file; }
+		}
+
+		public uint Line
+		{
+			get { return this.line; }
+		}
+
 		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */

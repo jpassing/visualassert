@@ -101,7 +101,8 @@ namespace Cfix.Addin
 						RunWindow.Guid,
 						Icons.cfix );
 					this.run.UserControl.Initialize(
-						this.addin.Workspace );
+						this.addin.Workspace,
+						this.addin.DTE );
 					this.run.Visible = true;
 
 					try

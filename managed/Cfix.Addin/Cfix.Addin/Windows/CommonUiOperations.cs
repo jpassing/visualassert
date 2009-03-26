@@ -1,5 +1,7 @@
 using System;
 using Cfix.Control;
+using EnvDTE;
+using EnvDTE80;
 
 namespace Cfix.Addin.Windows
 {
@@ -35,6 +37,34 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
-		
+		public static bool GoToSource(
+			DTE2 dte,
+			string file,
+			uint line
+			)
+		{
+			try
+			{
+				Window wnd = dte.ItemOperations.OpenFile( file, Constants.vsViewKindCode );
+				if ( wnd != null )
+				{
+					TextSelection sel = dte.ActiveDocument.Selection as TextSelection;
+					if ( sel != null )
+					{
+						sel.GotoLine( ( int ) line, false );
+						return true;
+					}
+				}
+
+				return false;
+			}
+			catch ( Exception x )
+			{
+				//
+				// File not found, ignore. 
+				//
+				return false;
+			}
+		}
 	}
 }

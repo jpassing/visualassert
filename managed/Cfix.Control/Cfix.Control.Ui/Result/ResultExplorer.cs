@@ -18,6 +18,7 @@ namespace Cfix.Control.Ui.Result
 
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
 		public event KeyEventHandler TreeKeyDown;
+		public event MouseEventHandler TreeDoubleClick;
 
 		private readonly ResultModel model;
 
@@ -199,6 +200,17 @@ namespace Cfix.Control.Ui.Result
 			if ( this.TreeKeyDown != null )
 			{
 				this.TreeKeyDown( node, e );
+			}
+		}
+
+		internal void OnTreeDoubleClick(
+			IResultNode node,
+			MouseEventArgs e
+			)
+		{
+			if ( this.TreeDoubleClick != null )
+			{
+				this.TreeDoubleClick( node, e );
 			}
 		}
 
