@@ -69,7 +69,14 @@ namespace Cfix.Addin.Windows.Explorer
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
-			this.autoRefreshButton.Checked = this.workspace.Configuration.AutoRefreshAfterBuild;
+			Configuration config = this.workspace.Configuration;
+			this.autoRefreshButton.Checked = config.AutoRefreshAfterBuild;
+			
+			SchedulingOptions schedOpts = config.SchedulingOptions;
+			this.shurtcutFixtureOnFailureButton.Checked =
+				( schedOpts == SchedulingOptions.ShortcutFixtureOnFailure );
+			this.shurtcutRunOnFailureButton.Checked =
+				( schedOpts == SchedulingOptions.ShurtcutRunOnFailure );
 		}
 
 		/*----------------------------------------------------------------------
@@ -503,6 +510,40 @@ namespace Cfix.Addin.Windows.Explorer
 				e.Handled = true;
 			}
 		}
+
+		private void shurtcutFixtureOnFailureButton_Click( object sender, EventArgs e )
+		{
+			if ( this.shurtcutFixtureOnFailureButton.Checked )
+			{
+				this.shurtcutRunOnFailureButton.Checked = false;
+
+				this.workspace.Configuration.SchedulingOptions =
+					SchedulingOptions.ShortcutFixtureOnFailure;
+			}
+			else
+			{
+				this.workspace.Configuration.SchedulingOptions =
+					SchedulingOptions.None;
+			}
+		}
+
+		private void shurtcutRunOnFailureButton_Click( object sender, EventArgs e )
+		{
+			if ( this.shurtcutRunOnFailureButton.Checked )
+			{
+				this.shurtcutFixtureOnFailureButton.Checked = false;
+
+				this.workspace.Configuration.SchedulingOptions =
+					SchedulingOptions.ShurtcutRunOnFailure;
+			}
+			else
+			{
+				this.workspace.Configuration.SchedulingOptions =
+					SchedulingOptions.None;
+			}
+		}
+
+		
 		
 	}
 }

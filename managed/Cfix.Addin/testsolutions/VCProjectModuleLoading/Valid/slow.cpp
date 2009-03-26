@@ -5,6 +5,7 @@ static void __stdcall Slow()
 	for ( int i = 0; i < 400; i++ )
 	{
 		Sleep( 10 );
+		CFIX_ASSERT( !"Fail" );
 		CFIX_LOG( "Lap %d", i );
 	}
 }
@@ -15,7 +16,6 @@ static void __stdcall Slow2()
 	{
 		Sleep( 10 );
 
-		CFIX_ASSERT( !"Fail" );
 		CFIX_LOG( "Lap %d", i );
 	}
 }

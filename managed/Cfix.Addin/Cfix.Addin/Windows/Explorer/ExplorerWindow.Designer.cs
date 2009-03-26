@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,6 +41,10 @@ namespace Cfix.Addin.Windows.Explorer
 			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
+			this.separator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.optionsButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.shurtcutFixtureOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.shurtcutRunOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusText = new System.Windows.Forms.TextBox();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
@@ -62,7 +66,9 @@ namespace Cfix.Addin.Windows.Explorer
             this.autoRefreshButton,
             this.separator1,
             this.debugButton,
-            this.runButton} );
+            this.runButton,
+            this.separator2,
+            this.optionsButton} );
 			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
 			// 
@@ -134,6 +140,34 @@ namespace Cfix.Addin.Windows.Explorer
 			this.runButton.Name = "runButton";
 			this.runButton.Click += new System.EventHandler( this.runButton_Click );
 			// 
+			// separator2
+			// 
+			this.separator2.Name = "separator2";
+			resources.ApplyResources( this.separator2, "separator2" );
+			// 
+			// optionsButton
+			// 
+			this.optionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.optionsButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.shurtcutFixtureOnFailureButton,
+            this.shurtcutRunOnFailureButton} );
+			resources.ApplyResources( this.optionsButton, "optionsButton" );
+			this.optionsButton.Name = "optionsButton";
+			// 
+			// shurtcutFixtureOnFailureButton
+			// 
+			this.shurtcutFixtureOnFailureButton.CheckOnClick = true;
+			this.shurtcutFixtureOnFailureButton.Name = "shurtcutFixtureOnFailureButton";
+			resources.ApplyResources( this.shurtcutFixtureOnFailureButton, "shurtcutFixtureOnFailureButton" );
+			this.shurtcutFixtureOnFailureButton.Click += new System.EventHandler( this.shurtcutFixtureOnFailureButton_Click );
+			// 
+			// shurtcutRunOnFailureButton
+			// 
+			this.shurtcutRunOnFailureButton.CheckOnClick = true;
+			this.shurtcutRunOnFailureButton.Name = "shurtcutRunOnFailureButton";
+			resources.ApplyResources( this.shurtcutRunOnFailureButton, "shurtcutRunOnFailureButton" );
+			this.shurtcutRunOnFailureButton.Click += new System.EventHandler( this.shurtcutRunOnFailureButton_Click );
+			// 
 			// statusText
 			// 
 			resources.ApplyResources( this.statusText, "statusText" );
@@ -185,7 +219,7 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.NodeFactory = nodeFactory2;
 			// 
 			// ExplorerWindow
 			// 
@@ -224,5 +258,9 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRefreshButton;
 		private System.Windows.Forms.ToolStripButton debugButton;
 		private System.Windows.Forms.ToolStripButton runButton;
+		private System.Windows.Forms.ToolStripSeparator separator2;
+		private System.Windows.Forms.ToolStripDropDownButton optionsButton;
+		private System.Windows.Forms.ToolStripMenuItem shurtcutFixtureOnFailureButton;
+		private System.Windows.Forms.ToolStripMenuItem shurtcutRunOnFailureButton;
 	}
 }

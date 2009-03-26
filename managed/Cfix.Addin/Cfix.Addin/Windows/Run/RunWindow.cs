@@ -233,7 +233,7 @@ namespace Cfix.Addin.Windows.Run
 						CommonUiOperations.RunItem(
 							this.workspace,
 							resultNode.ResultItem.Item,
-							e.Shift );
+							! e.Shift );
 					}
 
 					e.Handled = true;
