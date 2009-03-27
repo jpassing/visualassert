@@ -11,14 +11,63 @@ namespace Cfix.Addin
 {
 	public class Workspace : IDisposable
 	{
+		private readonly string VSStd97CmdID = "{5EFC7975-14BC-11CF-9B2B-00AA00573819}";
+
 		private readonly CfixPlus addin;
 		private readonly Configuration config;
 		private readonly ToolWindows toolWindows;
 		private readonly Agent searchAgent;
 		private readonly AgentSet runAgents;
 		private readonly ISession session;
+		private readonly CommandEvents cmdEvents;
 
 		private readonly object runLock = new object();
+
+		private class DebugTerminator
+		{
+			private readonly CommandEvents cmdEvents;
+			private readonly IRun run;
+
+			private void cmdEvents_BeforeExecute(
+				string guid,
+				int id,
+				object customIn,
+				object customOut,
+				ref bool cancelDefault )
+			{
+				Debug.Assert( id == ( int ) Dte.VSStd97CmdID.Stop );
+
+				try
+				{
+					this.run.Terminate();
+				}
+				catch ( Exception x )
+				{
+					CfixPlus.HandleError( x );
+				}
+			}
+
+			public DebugTerminator( CommandEvents cmdEvents, IRun run )
+			{
+				this.cmdEvents = cmdEvents;
+				this.run = run;
+			}
+
+			public void Activate()
+			{
+				this.cmdEvents.BeforeExecute +=
+					new _dispCommandEvents_BeforeExecuteEventHandler(
+						cmdEvents_BeforeExecute );
+			}
+
+			public void Deactivate()
+			{
+				this.cmdEvents.BeforeExecute -= 
+					new _dispCommandEvents_BeforeExecuteEventHandler( 
+						cmdEvents_BeforeExecute );
+			}
+
+		}
 
 		/*----------------------------------------------------------------------
 		 * Private - Agent creation.
@@ -176,6 +225,14 @@ namespace Cfix.Addin
 			this.runAgents = CreateRunAgent();
 			this.config = Configuration.Load();
 			this.session = new Session();
+
+			//
+			// N.B. We only need the Stop command for the Terminator.
+			//
+			Events2 events = ( Events2 ) addin.Events;
+			this.cmdEvents = events.get_CommandEvents( 
+				VSStd97CmdID, 
+				( int ) Dte.VSStd97CmdID.Stop );
 		}
 
 		~Workspace()
@@ -305,9 +362,19 @@ namespace Cfix.Addin
 
 			IRun run = compiler.Compile();
 			run.Log +=new EventHandler<LogEventArgs>( run_Log );
-
+			
 			if ( debug )
 			{
+				//
+				// N.B. As we late-attach the debugger, hitting 'Stop'
+				// in the IDE will merely detach, but not kill the process.
+				//
+				// Therefore, the Stop command is trapped and the Terminator 
+				// object is used to kill the host when the Stop command is
+				// issued.
+				//
+				DebugTerminator terminator = new DebugTerminator( this.cmdEvents, run );
+
 				run.HostSpawned += delegate( object sender, HostEventArgs e )
 				{
 					try
@@ -322,6 +389,7 @@ namespace Cfix.Addin
 							return;
 						}
 
+						terminator.Activate();
 						process.Attach();
 
 						//
@@ -335,6 +403,11 @@ namespace Cfix.Addin
 						CfixPlus.HandleError( x );
 						run.Terminate();
 					}
+				};
+
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					terminator.Deactivate();
 				};
 
 				//run.BeforeTerminate += delegate( object sender, HostEventArgs e )

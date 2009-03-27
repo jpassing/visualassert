@@ -14,7 +14,9 @@ static void __stdcall Slow2()
 {
 	for ( int i = 0; i < 400; i++ )
 	{
-		Sleep( 10 );
+		Sleep( 5000 );
+
+		MessageBox( NULL, "test", "test", 0 );
 
 		CFIX_LOG( "Lap %d", i );
 	}

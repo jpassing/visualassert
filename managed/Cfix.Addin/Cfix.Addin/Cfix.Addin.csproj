@@ -68,6 +68,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CfixAddinException.cs" />
+    <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
     <Compile Include="Native.cs" />

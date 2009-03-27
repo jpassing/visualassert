@@ -58,7 +58,7 @@ namespace Cfix.Addin.Windows
 
 				return false;
 			}
-			catch ( Exception x )
+			catch ( Exception )
 			{
 				//
 				// File not found, ignore. 
