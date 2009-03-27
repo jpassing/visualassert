@@ -174,13 +174,6 @@ namespace Cfix.Control.Ui.Result
 			{
 				lock ( this.runLock )
 				{
-					if ( value == null )
-					{
-						return;
-					}
-
-					Debug.Assert( value.Status == TaskStatus.Ready );
-
 					if ( this.run != null )
 					{
 						this.run.StatusChanged -= new EventHandler( run_StatusChanged );
@@ -192,14 +185,20 @@ namespace Cfix.Control.Ui.Result
 
 					this.run = value;
 					this.rootExpanded = false;
-					this.root = new ResultItemNode(
-						this.run.RootResult,
-						this.iconsList,
-						null );
-					this.nodeTable = new Dictionary<IResultItem, ResultItemNode>();
-					this.nodeTable[ this.run.RootResult ] = this.root;
-					
-					this.run.StatusChanged += new EventHandler( run_StatusChanged );
+
+					if ( this.run != null )
+					{
+						Debug.Assert( value.Status == TaskStatus.Ready );
+
+						this.root = new ResultItemNode(
+							this.run.RootResult,
+							this.iconsList,
+							null );
+						this.nodeTable = new Dictionary<IResultItem, ResultItemNode>();
+						this.nodeTable[ this.run.RootResult ] = this.root;
+
+						this.run.StatusChanged += new EventHandler( run_StatusChanged );
+					}
 
 					if ( this.StructureChanged != null )
 					{

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+//
+// From: http://www.koders.com/csharp/fidEF11D49B5E8F93DBC9C21BA53CD2D54E7AA4F8A8.aspx.
+//
 namespace Cfix.Addin.Dte
 {
 	public enum VSStd97CmdID

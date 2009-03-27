@@ -329,6 +329,12 @@ namespace Cfix.Addin
 		{
 			Debug.Assert( IsDebuggingPossible );
 
+			//
+			// Make sure the run window is reset while the build
+			// is active.
+			//
+			this.toolWindows.Run.UserControl.Run = null;
+
 			if ( !BuildNodeIfRequired( item ) )
 			{
 				//
@@ -361,7 +367,7 @@ namespace Cfix.Addin
 			compiler.Add( item );
 
 			IRun run = compiler.Compile();
-			run.Log +=new EventHandler<LogEventArgs>( run_Log );
+			run.Log += new EventHandler<LogEventArgs>( run_Log );
 			
 			if ( debug )
 			{
@@ -409,26 +415,6 @@ namespace Cfix.Addin
 				{
 					terminator.Deactivate();
 				};
-
-				//run.BeforeTerminate += delegate( object sender, HostEventArgs e )
-				//{
-				//    //
-				//    // To allow terminating via our own UI while being
-				//    // broken in, terminate via DTE API.
-				//    //
-
-				//    Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
-				//    Process2 process = FindProcess( debugger, e.HostProcessId );
-				//    if ( process == null )
-				//    {
-				//        //
-				//        // Weird, must be gone already. Nop.
-				//        //
-				//        return;
-				//    }
-
-				//    process.Terminate( false );
-				//};
 			}
 
 			try

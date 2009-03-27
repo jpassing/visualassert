@@ -342,10 +342,13 @@ namespace Cfix.Addin.Windows.Run
 					this.aborted = false;
 					this.results.Run = value;
 
-					this.run.Started += new EventHandler( run_Started );
-					this.run.Finished += new EventHandler<FinishedEventArgs>( run_Finished );
-					this.run.Log += new EventHandler<LogEventArgs>( run_Log );
-					this.run.StatusChanged += new EventHandler( run_StatusChanged );
+					if ( this.run != null )
+					{
+						this.run.Started += new EventHandler( run_Started );
+						this.run.Finished += new EventHandler<FinishedEventArgs>( run_Finished );
+						this.run.Log += new EventHandler<LogEventArgs>( run_Log );
+						this.run.StatusChanged += new EventHandler( run_StatusChanged );
+					}
 				}
 			}
 		}
