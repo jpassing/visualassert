@@ -123,7 +123,7 @@ static VOID CfixctlsExecCtxDereference(
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
 	LONG Refs = InterlockedDecrement( &Context->ReferenceCount );
-	COM_TRACE( ( L"Dereference ExecCtxAdapter: %d", Refs ) );
+	COM_TRACE( ( L"Dereference ExecCtxAdapter: %d\n", Refs ) );
 	if ( 0 == Refs )
 	{
 		Context->Module->Release();
@@ -223,22 +223,24 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	CFIXCTL_REPORT_DISPOSITION Disp;
 	HRESULT Hr;
 
+	ICfixStackTrace *StackTrace;
+	Hr = Context->Module->CreateStackTrace(
+		&Event->StackTrace,				
+		&StackTrace );
+	if ( FAILED( Hr ) )
+	{
+		//
+		// Do not use a stack trace - they are optional.
+		//
+		StackTrace = NULL;
+
+		CFIXCTLP_TRACE( ( L"Stack trace creation failed: %x\n", Hr ) );
+	}
+
 	switch ( Event->Type )
 	{
 	case CfixEventFailedAssertion:
 		{
-			ICfixStackTrace *StackTrace;
-			Hr = Context->Module->CreateStackTrace(
-				&Event->StackTrace,				
-				&StackTrace );
-			if ( FAILED( Hr ) )
-			{
-				//
-				// Do not use a stack trace - they are optional.
-				//
-				StackTrace = NULL;
-			}
-
 			BSTR Routine	= SysAllocString( Event->Info.FailedAssertion.Routine );
 			BSTR Expression = SysAllocString( Event->Info.FailedAssertion.Expression );
 			BSTR File		= SysAllocString( Event->Info.FailedAssertion.File );
@@ -258,7 +260,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 			SysFreeString( Routine );
 			SysFreeString( Expression );
 			SysFreeString( File );
-
+			
 			break;
 		}
 
@@ -267,7 +269,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 			Hr = Sink->UnhandledException(
 				Event->Info.UncaughtException.ExceptionRecord.ExceptionCode,
 				0,
-				NULL,	// TODO.
+				StackTrace,
 				&Disp );
 			break;
 		}
@@ -278,7 +280,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 			Hr = Sink->Inconclusive(
 				Message,
 				0,
-				NULL );	// TODO.
+				StackTrace );
 			SysFreeString( Message );
 			
 			Disp = CfixctlDispositionContinue;
@@ -291,7 +293,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 			Hr = Sink->Log(
 				Message,
 				0,
-				NULL );	// TODO.
+				StackTrace );
 			SysFreeString( Message );
 
 			Disp = CfixctlDispositionContinue;
@@ -304,6 +306,15 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 		Disp = CfixctlDispositionBreak;
 	}
 
+	if ( StackTrace )
+	{
+		LONG Refs = StackTrace->Release();
+
+		CFIXCTLP_TRACE( ( L"Stack trace released. Refs: %d\n", Refs ) );
+	}
+
+	CFIXCTLP_TRACE( ( L"Disposition is: %d\n", Disp) );
+
 	if ( SUCCEEDED( Hr ) )
 	{
 		return ( CFIX_REPORT_DISPOSITION ) Disp;
@@ -311,7 +322,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	else
 	{
 		//
-		// Try passing a notofication. If it fails, ignore.
+		// Try passing a notification. If it fails, ignore.
 		//
 		( VOID ) Context->ProcessSink->Notification(
 			CFIXCTL_E_REPORT_EVENT_FAILED );

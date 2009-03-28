@@ -626,6 +626,7 @@ STDMETHODIMP TestModule::CreateStackTrace(
 		this->Module->Routines.GetInformationStackFrame );
 	if ( FAILED( Hr ) )
 	{
+		StackTraceInit->Release();
 		return Hr;
 	}
 

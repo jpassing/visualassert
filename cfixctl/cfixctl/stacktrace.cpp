@@ -150,9 +150,11 @@ public:
 			return E_INVALIDARG;
 		}
 
-		this->Frames.Initialize( StackTrace->FrameCount );
-		
-		HRESULT Hr;
+		HRESULT Hr = this->Frames.Initialize( StackTrace->FrameCount );
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
 
 		IClassFactory& Factory = CfixctlpGetStackTraceFrameFactory();
 		for ( ULONG Index = 0; Index < StackTrace->FrameCount; Index++ )

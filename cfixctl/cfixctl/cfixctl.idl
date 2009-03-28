@@ -466,27 +466,27 @@ library Cfixctl
 	interface ICfixStackTraceFrame : IUnknown
 	{
 		HRESULT GetModuleName( 
-			[out] BSTR *Module 
+			[out, retval] BSTR *Module 
 			);
 
 		HRESULT GetFunctionName( 
-			[out] BSTR *Function 
+			[out, retval] BSTR *Function 
 			);
 
 		HRESULT GetDisplacement( 
-			[out] ULONG *Displacement 
+			[out, retval] ULONG *Displacement 
 			);
 
 		HRESULT GetSourceFile( 
-			[out] BSTR *Path 
+			[out, retval] BSTR *Path 
 			);
 
 		HRESULT GetSourceLine( 
-			[out] ULONG *Line 
+			[out, retval] ULONG *Line 
 			);
 
 		HRESULT GetParameterCount( 
-			[out] ULONG *Count 
+			[out, retval] ULONG *Count 
 			);
 
 		HRESULT GetParameter( 
@@ -511,7 +511,7 @@ library Cfixctl
 
 		HRESULT GetFrame(
 			[in] ULONG Index,
-			[out] ICfixStackTraceFrame **Frame
+			[out, retval] ICfixStackTraceFrame **Frame
 			);
 	}
 

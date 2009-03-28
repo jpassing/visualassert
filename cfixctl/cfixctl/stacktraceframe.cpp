@@ -158,7 +158,7 @@ public:
 		__out ULONG *Line 
 		)
 	{
-		if ( ! Displacement )
+		if ( ! Line )
 		{
 			return E_POINTER;
 		}
@@ -236,14 +236,29 @@ public:
 			_countof( SourceFile ),
 			SourceFile,
 			&this->SourceLine );
-		if ( FAILED( Hr ) )
+		if ( Hr == HRESULT_FROM_WIN32( ERROR_INVALID_ADDRESS ) )
+		{
+			//
+			// This can occur frequently when resolving failed.
+			//
+			// Provide pseudo values.
+			//
+			this->ModuleName = SysAllocString( L"[unknown]" );
+			this->FunctionName = SysAllocString( L"[unknown]" );
+			this->SourceFile = SysAllocString( L"[unknown]" );
+			this->Displacement = 0;
+			this->SourceLine = 0;
+		}
+		else if ( FAILED( Hr ) )
 		{
 			return Hr;
 		}
-
-		this->ModuleName = SysAllocString( ModuleName );
-		this->FunctionName = SysAllocString( FunctionName );
-		this->SourceFile = SysAllocString( SourceFile );
+		else
+		{
+			this->ModuleName = SysAllocString( ModuleName );
+			this->FunctionName = SysAllocString( FunctionName );
+			this->SourceFile = SysAllocString( SourceFile );
+		}
 
 		if ( ! this->ModuleName ||
 			 ! this->FunctionName ||

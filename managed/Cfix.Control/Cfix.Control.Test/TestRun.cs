@@ -358,6 +358,9 @@ namespace Cfix.Control.Test
 					Assert.IsNull( f.Message );
 					Assert.AreEqual( 5, fass.LastError );
 					Assert.AreEqual( "FailingAssertion", fass.Routine );
+
+					Assert.IsNotNull( fass.StackTrace );
+					Assert.Greater( fass.StackTrace.FrameCount, 2 );
 					Assert.IsTrue( fass.File.EndsWith( "basic.c" ) );
 				}
 
