@@ -43,7 +43,7 @@ typedef struct _CFIXCTLP_EXEC_CONTEXT
 
 	volatile LONG ReferenceCount;
 
-	ICfixTestModule *Module;
+	ICfixTestModuleInternal *Module;
 
 	ICfixProcessEventSink *ProcessSink;
 	ICfixTestÌtemContainerEventSink *FixtureSink;		// May be NULL.
@@ -227,6 +227,18 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	{
 	case CfixEventFailedAssertion:
 		{
+			ICfixStackTrace *StackTrace;
+			Hr = Context->Module->CreateStackTrace(
+				&Event->StackTrace,				
+				&StackTrace );
+			if ( FAILED( Hr ) )
+			{
+				//
+				// Do not use a stack trace - they are optional.
+				//
+				StackTrace = NULL;
+			}
+
 			BSTR Routine	= SysAllocString( Event->Info.FailedAssertion.Routine );
 			BSTR Expression = SysAllocString( Event->Info.FailedAssertion.Expression );
 			BSTR File		= SysAllocString( Event->Info.FailedAssertion.File );
@@ -240,7 +252,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 				Event->Info.FailedAssertion.LastError,
 				0,
 				0,
-				NULL,	// TODO.
+				StackTrace,
 				&Disp );
 
 			SysFreeString( Routine );
@@ -556,12 +568,21 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT NewContext;
+	ICfixTestModuleInternal *ModuleInternal;
 
 	if ( ! Module || ! ProcessSink || ! Context )
 	{
 		return E_INVALIDARG;
 	}
 
+	HRESULT Hr = Module->QueryInterface( 
+		IID_ICfixTestModuleInternal, 
+		( PVOID* ) &ModuleInternal );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+	
 	NewContext = ( PCFIXCTLP_EXEC_CONTEXT ) 
 		malloc( sizeof( CFIXCTLP_EXEC_CONTEXT ) );
 	if ( ! NewContext )
@@ -571,11 +592,10 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 
 	ZeroMemory( NewContext, sizeof( CFIXCTLP_EXEC_CONTEXT ) );
 
-	Module->AddRef();
 	ProcessSink->AddRef();
 
 	NewContext->ReferenceCount				= 1;
-	NewContext->Module						= Module;
+	NewContext->Module						= ModuleInternal;
 	NewContext->ProcessSink					= ProcessSink;
 	NewContext->IssueAbort					= FALSE;
 

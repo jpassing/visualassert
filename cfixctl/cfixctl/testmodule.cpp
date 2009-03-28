@@ -140,6 +140,11 @@ public:
 		__in CfixTestModuleArch Architecture,
 		__in PCFIX_TEST_MODULE Module
 		);
+
+	STDMETHOD( CreateStackTrace )(
+		__in PCFIX_STACKTRACE RawTrace,
+		__out ICfixStackTrace **Trace
+		);
 };
 
 class TestModuleEnumerator : public ComAbstractEnumerator< IUnknown >
@@ -582,6 +587,49 @@ STDMETHODIMP TestModule::Initialize(
 	this->Architecture = Architecture;
 	this->Type = Type;
 
+	return S_OK;
+}
+
+STDMETHODIMP TestModule::CreateStackTrace(
+	__in PCFIX_STACKTRACE RawTrace,
+	__out ICfixStackTrace **Trace
+	)
+{
+	if ( ! Trace )
+	{
+		return E_POINTER;
+	}
+	else
+	{
+		*Trace = NULL;
+	}
+
+	if ( ! RawTrace )
+	{
+		return E_INVALIDARG;
+	}
+
+	IClassFactory& Factory = CfixctlpGetStackTraceFactory();
+	ICfixStackTraceInternal *StackTraceInit;
+
+	HRESULT Hr = Factory.CreateInstance( 
+		NULL,
+		IID_ICfixStackTraceInternal,
+		( PVOID* ) &StackTraceInit );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	Hr = StackTraceInit->Initialize(
+		RawTrace,
+		this->Module->Routines.GetInformationStackFrame );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	*Trace = StackTraceInit;
 	return S_OK;
 }
 

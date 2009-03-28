@@ -237,6 +237,11 @@ ICfixTestModuleInternal : public ICfixTestModule
 		__in CfixTestModuleArch Architecture,
 		__in PCFIX_TEST_MODULE Module
 		) PURE;
+
+	STDMETHOD( CreateStackTrace )(
+		__in PCFIX_STACKTRACE RawTrace,
+		__out ICfixStackTrace **Trace
+		) PURE;
 };
 
 DEFINE_GUID( IID_ICfixExecutionActionInternal, 
