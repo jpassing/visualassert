@@ -1,24 +1,29 @@
 import "oaidl.idl";
 import "ocidl.idl";
 
-// 
 //
 //
 //
+//d010ca02-1b6d-11de-b555-0016d3b98f9b
+//d010ca03-1b6d-11de-b555-0016d3b98f9b
+//d010ca04-1b6d-11de-b555-0016d3b98f9b
+//d010ca05-1b6d-11de-b555-0016d3b98f9b
+//d010ca06-1b6d-11de-b555-0016d3b98f9b
+//d010ca07-1b6d-11de-b555-0016d3b98f9b
+//d010ca08-1b6d-11de-b555-0016d3b98f9b
+//d010ca09-1b6d-11de-b555-0016d3b98f9b
+//d010ca0a-1b6d-11de-b555-0016d3b98f9b
+//d010ca0b-1b6d-11de-b555-0016d3b98f9b
+//d010ca0c-1b6d-11de-b555-0016d3b98f9b
+//d010ca0d-1b6d-11de-b555-0016d3b98f9b
+//d010ca0e-1b6d-11de-b555-0016d3b98f9b
+//d010ca0f-1b6d-11de-b555-0016d3b98f9b
+//d010ca10-1b6d-11de-b555-0016d3b98f9b
+//d010ca11-1b6d-11de-b555-0016d3b98f9b
+//d010ca12-1b6d-11de-b555-0016d3b98f9b
+//d010ca13-1b6d-11de-b555-0016d3b98f9b
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//57f93e53-d44f-11dd-99e2-0016d3b98f9b
-//
-//
+
 
 
 [
@@ -454,6 +459,46 @@ library Cfixctl
 
 	[
 	  object,
+	  uuid( 57f93e53-d44f-11dd-99e2-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixStackTraceFrame : IUnknown
+	{
+		HRESULT GetModuleName( 
+			[out] BSTR *Module 
+			);
+
+		HRESULT GetFunctionName( 
+			[out] BSTR *Function 
+			);
+
+		HRESULT GetDisplacement( 
+			[out] ULONG *Displacement 
+			);
+
+		HRESULT GetSourceFile( 
+			[out] BSTR *Path 
+			);
+
+		HRESULT GetSourceLine( 
+			[out] ULONG *Line 
+			);
+
+		HRESULT GetParameterCount( 
+			[out] ULONG *Count 
+			);
+
+		HRESULT GetParameter( 
+			[in] ULONG Index,
+			[out] BSTR *Name,
+			[out] BSTR *TypeName,
+			[out] BSTR *Value
+			);
+	}
+
+	[
+	  object,
 	  uuid( 57f93e49-d44f-11dd-99e2-0016d3b98f9b ),
 	  version( 1.0 ),
 	  oleautomation
@@ -466,12 +511,7 @@ library Cfixctl
 
 		HRESULT GetFrame(
 			[in] ULONG Index,
-			[out] ULONGLONG *Address,
-			[out] BSTR *ModuleName,
-			[out] BSTR *FunctionName,
-			[out] ULONG *Displacement,
-			[out] BSTR *SourceFile,
-			[out] ULONG *SourceLine 
+			[out] ICfixStackTraceFrame **Frame
 			);
 	}
 
@@ -651,6 +691,12 @@ library Cfixctl
 			);
 	}
 
+	/*--------------------------------------------------------------------------
+     *
+	 * CoClasses.
+	 *
+	 */
+
 	[
 		uuid( 57f93e43-d44f-11dd-99e2-0016d3b98f9b ),
 		noncreatable 
@@ -658,7 +704,6 @@ library Cfixctl
 	coclass LocalHost
 	{
 		interface IUnknown;
-		//interface ICfixHost;
 	}
 
 	[
@@ -668,7 +713,6 @@ library Cfixctl
 	coclass ProcessHost
 	{
 		interface IUnknown;
-		//interface ICfixHost;
 	}
 
 	[
@@ -678,9 +722,6 @@ library Cfixctl
 	coclass TestModule
 	{
 		interface IUnknown;
-		//interface ICfixTestModule;
-		//interface ICfixActionFactory;
-		//interface ICfixTestContainer;
 	}
 
 	[
@@ -690,8 +731,6 @@ library Cfixctl
 	coclass TestFixture
 	{
 		interface IUnknown;
-		//interface ICfixTestItem;
-		//interface ICfixTestContainer;
 	}
 
 	[
@@ -701,7 +740,6 @@ library Cfixctl
 	coclass TestCase
 	{
 		interface IUnknown;
-		//interface ICfixTestItem;
 	}
 
 	[
@@ -711,7 +749,6 @@ library Cfixctl
 	coclass FixtureExecutionAction
 	{
 		interface IUnknown;
-		//interface ICfixAction;
 	}
 
 	[
@@ -729,6 +766,23 @@ library Cfixctl
 	coclass MessageResolver
 	{
 		interface IUnknown;
-		//interface ICfixAction;
+	}
+
+	[
+		uuid( d010ca00-1b6d-11de-b555-0016d3b98f9b ),
+		noncreatable 
+	]
+	coclass StackTrace
+	{
+		interface IUnknown;
+	}
+
+	[
+		uuid( d010ca01-1b6d-11de-b555-0016d3b98f9b ),
+		noncreatable 
+	]
+	coclass StackTraceFrame
+	{
+		interface IUnknown;
 	}
 }

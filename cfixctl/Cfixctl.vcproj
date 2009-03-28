@@ -143,10 +143,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cfixctl\messageresolver.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>
@@ -230,6 +226,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="other"
+					>
+					<File
+						RelativePath=".\cfixctl\messageresolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cfixctl\stacktrace.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cfixctl\stacktraceframe.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="testctl"
@@ -268,6 +280,10 @@
 				</File>
 				<File
 					RelativePath=".\testctl\testserver.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\testctl\teststacktrace.cpp"
 					>
 				</File>
 				<File

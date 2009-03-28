@@ -100,6 +100,8 @@ IClassFactory& CfixctlpGetProcessHostFactory();
 IClassFactory& CfixctlpGetExecutionActionFactory();
 IClassFactory& CfixctlpGetLocalAgentFactory();
 IClassFactory& CfixctlpGetMessageResolverFactory();
+IClassFactory& CfixctlpGetStackTraceFactory();
+IClassFactory& CfixctlpGetStackTraceFrameFactory();
 
 /*----------------------------------------------------------------------
  *
@@ -262,5 +264,31 @@ ICfixProcessHostInternal : public ICfixHost
 		__in ICfixHost *RemoteHost,
 		__in HANDLE ProcessOrJob,
 		__in BOOL UsesJob
+		) PURE;
+};
+
+DEFINE_GUID( IID_ICfixStackTraceInternal, 
+	0x6dca5f7c, 0xab9a, 0x4262, 0x8f, 0x11, 0xa4, 0xde, 0x27, 0x1e, 0xc1, 0x52);
+
+interface
+DECLSPEC_UUID( "6DCA5F7C-AB9A-4262-8F11-A4DE271EC152" ) 
+ICfixStackTraceInternal : public ICfixStackTrace
+{
+	STDMETHOD( Initialize )(
+		__in PCFIX_STACKTRACE StackTrace,
+		__in CFIX_GET_INFORMATION_STACKFRAME_ROUTINE GetInfFrameRoutine
+		) PURE;
+};
+
+DEFINE_GUID( IID_ICfixStackTraceFrameInternal, 
+	0x6157cffd, 0x3680, 0x49ce, 0x8b, 0xbc, 0x2c, 0x82, 0xf3, 0xce, 0x3f, 0xb0);
+
+interface
+DECLSPEC_UUID( "6157CFFD-3680-49ce-8BBC-2C82F3CE3FB0" ) 
+ICfixStackTraceFrameInternal : public ICfixStackTraceFrame
+{
+	STDMETHOD( Initialize )(
+		__in ULONGLONG FramePc,
+		__in CFIX_GET_INFORMATION_STACKFRAME_ROUTINE GetInfFrameRoutine
 		) PURE;
 };

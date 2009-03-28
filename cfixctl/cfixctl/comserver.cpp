@@ -47,7 +47,7 @@ struct CFIXCTLS_SERVER
 static CFIXCTLS_SERVER CfixctlsServers[] =
 {
 	{ 
-		CfixctlpGetTestCaseFactory,		// Creatable due to MBV.
+		CfixctlpGetTestCaseFactory,			// Creatable due to MBV.
 		CLSID_TestCase, 
 		L"Cfix TestCase",
 		L"Cfix.Control.TestCase",
@@ -55,11 +55,27 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"both"
 	},
 	{
-		CfixctlpGetTestFixtureFactory,	// Creatable due to MBV.
+		CfixctlpGetTestFixtureFactory,		// Creatable due to MBV.
 		CLSID_TestFixture,
 		L"Cfix TestCase",
 		L"Cfix.Control.TestFixture",
 		L"Cfix.Control.TestFixture.1",
+		L"both"
+	},
+	{
+		CfixctlpGetStackTraceFactory,		// Creatable due to MBV.
+		CLSID_StackTrace,
+		L"Cfix StackTrace",
+		L"Cfix.Control.StackTrace",
+		L"Cfix.Control.StackTrace.1",
+		L"both"
+	},
+	{
+		CfixctlpGetStackTraceFrameFactory,	// Creatable due to MBV.
+		CLSID_StackTraceFrame,
+		L"Cfix StackTraceFrame",
+		L"Cfix.Control.StackTraceFrame",
+		L"Cfix.Control.StackTraceFrame.1",
 		L"both"
 	},
 	{

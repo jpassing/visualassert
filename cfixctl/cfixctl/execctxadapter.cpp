@@ -32,7 +32,7 @@ C_ASSERT( CfixctlDispositionAbort		== CfixAbort );
 // Note on locking:
 //   This adapter assumes that there may be multiple concurrent
 //   threads issueing assertions etc, but fixture and test case 
-//   begin/end events are serielized.
+//   begin/end events are serialized.
 //
 //   That is, there is only one 'main thread', all other threads are
 //   child threads created cvia CfixCreateThread.

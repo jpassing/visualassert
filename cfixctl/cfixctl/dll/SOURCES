@@ -70,6 +70,8 @@ PASS0_SERVERDIR=..\..\..\include
 
 SOURCES=\
 	..\cfixctl.idl \
+	..\stacktraceframe.cpp \
+	..\stacktrace.cpp \
 	..\testcase.cpp \
 	..\testfixture.cpp \
 	..\testmodule.cpp \
