@@ -15,6 +15,7 @@ namespace Cfix.Control.Ui.Result
 		public const int InconclusiveneIconIndex = 9;
 		public const int UnhandledExceptionIconIndex = 10;
 		public const int FailedAssertionIconIndex = 10;
+		public const int StackFrameIconIndex = 11;
 
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
 		public event KeyEventHandler TreeKeyDown;
@@ -28,7 +29,7 @@ namespace Cfix.Control.Ui.Result
 		private readonly TextNodeControl expressionBinding;
 		private readonly TextNodeControl messageBinding;
 		private readonly TextNodeControl locationBinding;
-		private readonly TextNodeControl routineBinding;
+		//private readonly TextNodeControl routineBinding;
 		private readonly TextNodeControl durationBinding;
 		private readonly TextNodeControl lastErrorBinding;
 
@@ -126,19 +127,19 @@ namespace Cfix.Control.Ui.Result
 				} );
 			this.tree.NodeControls.Add( this.locationBinding );
 
-			this.routineBinding = new TextNodeControl( this );
-			this.routineBinding.DataPropertyName = "Routine";
-			this.routineBinding.ParentColumn = this.colRoutine;
-			this.routineBinding.Trimming = StringTrimming.EllipsisCharacter;
-			this.routineBinding.UseCompatibleTextRendering = true;
-			this.routineBinding.EditEnabled = false;
-			this.routineBinding.ToolTipProvider = new ToolTipProvider(
-				delegate( TreeNodeAdv node )
-				{
-					IResultNode resNode = node.Tag as IResultNode;
-					return ( resNode != null ) ? resNode.Routine : null;
-				} );
-			this.tree.NodeControls.Add( this.routineBinding );
+			//this.routineBinding = new TextNodeControl( this );
+			//this.routineBinding.DataPropertyName = "Routine";
+			//this.routineBinding.ParentColumn = this.colRoutine;
+			//this.routineBinding.Trimming = StringTrimming.EllipsisCharacter;
+			//this.routineBinding.UseCompatibleTextRendering = true;
+			//this.routineBinding.EditEnabled = false;
+			//this.routineBinding.ToolTipProvider = new ToolTipProvider(
+			//    delegate( TreeNodeAdv node )
+			//    {
+			//        IResultNode resNode = node.Tag as IResultNode;
+			//        return ( resNode != null ) ? resNode.Routine : null;
+			//    } );
+			//this.tree.NodeControls.Add( this.routineBinding );
 
 			this.durationBinding = new TextNodeControl( this );
 			this.durationBinding.DataPropertyName = "Duration";

@@ -22,6 +22,24 @@ namespace Cfix.Control.Native
 			this.displacement = frame.GetDisplacement();
 			this.sourceFile = frame.GetSourceFile();
 			this.sourceLine = frame.GetSourceLine();
+
+			//
+			// Favor null over empty strings.
+			//
+			if ( String.IsNullOrEmpty( this.module ) )
+			{
+				this.module = null;
+			}
+
+			if ( String.IsNullOrEmpty( this.function ) )
+			{
+				this.function = null;
+			}
+			
+			if ( String.IsNullOrEmpty( this.sourceFile ) )
+			{
+				this.sourceFile = null;
+			}
 		}
 
 		public string Module

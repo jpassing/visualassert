@@ -123,6 +123,9 @@
   <data name="Inconclusiveness" xml:space="preserve">
     <value>Inconclusive</value>
   </data>
+  <data name="MissingUnwindInfo" xml:space="preserve">
+    <value>WARNING: Stack unwind information not available. Following frames may be wrong.</value>
+  </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>Unhandled Exception</value>
   </data>

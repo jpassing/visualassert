@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Result
 {
-	public class FailureNode : IResultNode
+	public class FailureNode : IResultNode, ISourceReference
 	{
 		private readonly String name;
 		private readonly String message;
@@ -107,6 +107,10 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
+		/*----------------------------------------------------------------------
+		 * ISourceReference.
+		 */
+
 		public string File
 		{
 			get { return this.file; }
@@ -131,8 +135,9 @@ namespace Cfix.Control.Ui.Result
 
 		public IEnumerable<IResultNode> GetChildren()
 		{
-			// TODO Stack Trace.
-			yield break;
+			return StackFrameNode.EnumerateFrames( 
+				this.stackTrace,
+				this.iconsList );
 		}
 
 		public String Status

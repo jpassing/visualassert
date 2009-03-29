@@ -79,6 +79,15 @@ namespace Cfix.Control.Ui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WARNING: Stack unwind information not available. Following frames may be wrong..
+        /// </summary>
+        internal static string MissingUnwindInfo {
+            get {
+                return ResourceManager.GetString("MissingUnwindInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled Exception.
         /// </summary>
         internal static string UnhandledException {

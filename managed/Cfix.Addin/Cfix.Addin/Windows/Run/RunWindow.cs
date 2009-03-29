@@ -240,15 +240,15 @@ namespace Cfix.Addin.Windows.Run
 				}
 				else
 				{
-					FailureNode failNode = sender as FailureNode;
-					if ( failNode != null )
+					ISourceReference src = sender as ISourceReference;
+					if ( src != null )
 					{
-						if ( failNode.File != null )
+						if ( src.File != null )
 						{
 							CommonUiOperations.GoToSource(
 								this.dte,
-								failNode.File,
-								failNode.Line );
+								src.File,
+								src.Line );
 						}
 					}
 				}
@@ -257,15 +257,15 @@ namespace Cfix.Addin.Windows.Run
 
 		private void results_TreeDoubleClick( object sender, MouseEventArgs e )
 		{
-			FailureNode failNode = sender as FailureNode;
-			if ( failNode != null )
+			ISourceReference src = sender as ISourceReference;
+			if ( src != null )
 			{
-				if ( failNode.File != null )
+				if ( src.File != null )
 				{
 					CommonUiOperations.GoToSource(
 						this.dte,
-						failNode.File,
-						failNode.Line );
+						src.File,
+						src.Line );
 				}
 			}
 		}

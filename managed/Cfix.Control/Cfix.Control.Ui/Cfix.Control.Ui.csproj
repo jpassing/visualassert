@@ -64,6 +64,8 @@
     <Compile Include="Result\IResultNode.cs" />
     <Compile Include="Result\ResultItemNode.cs" />
     <Compile Include="Result\ResultModel.cs" />
+    <Compile Include="Result\ISourceReference.cs" />
+    <Compile Include="Result\StackFrameNode.cs" />
     <Compile Include="Result\TextNodeControl.cs">
       <SubType>Component</SubType>
     </Compile>
