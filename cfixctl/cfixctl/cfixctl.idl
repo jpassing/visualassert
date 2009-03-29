@@ -465,6 +465,11 @@ library Cfixctl
 	]
 	interface ICfixStackTraceFrame : IUnknown
 	{
+		//
+		// N.B. ALl methods may return empty strings in case symbol resolving
+		// failed.
+		//
+
 		HRESULT GetModuleName( 
 			[out, retval] BSTR *Module 
 			);

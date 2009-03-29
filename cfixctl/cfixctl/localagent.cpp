@@ -308,7 +308,7 @@ static HRESULT CfixctlsSpawnHost(
 	//
 	// Prepare command line.
 	//
-	SIZE_T CommandLineCch = wcslen( AgentMkDisplayName ) + 32;
+	SIZE_T CommandLineCch = wcslen( AgentMkDisplayName ) + MAX_PATH + 1;
 	PWSTR CommandLine = new WCHAR[ CommandLineCch ];
 	if ( CommandLine == NULL )
 	{
@@ -318,7 +318,8 @@ static HRESULT CfixctlsSpawnHost(
 	Hr = StringCchPrintf(
 		CommandLine,
 		CommandLineCch,
-		L"cfixhost %s",
+		L"\"%s\" %s",
+		HostPath,
 		AgentMkDisplayName );
 	if ( FAILED( Hr ) )
 	{

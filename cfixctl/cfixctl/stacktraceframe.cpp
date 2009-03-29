@@ -243,9 +243,9 @@ public:
 			//
 			// Provide pseudo values.
 			//
-			this->ModuleName = SysAllocString( L"[unknown]" );
-			this->FunctionName = SysAllocString( L"[unknown]" );
-			this->SourceFile = SysAllocString( L"[unknown]" );
+			this->ModuleName = SysAllocString( L"" );
+			this->FunctionName = SysAllocString( L"" );
+			this->SourceFile = SysAllocString( L"" );
 			this->Displacement = 0;
 			this->SourceLine = 0;
 		}

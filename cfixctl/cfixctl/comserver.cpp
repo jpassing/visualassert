@@ -116,7 +116,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 		L"Cfix LocalAgent",
 		L"Cfix.Control.LocalAgent",
 		L"Cfix.Control.LocalAgent.1",
-		L"both"
+		L"free"							// Mind the blocking operations.
 	},
 	{
 		NULL,
@@ -245,6 +245,8 @@ void CfixctlServerLock::LockServer(
 		ASSERT( CfixctlsServerLocks > 0 );
 		if ( 0 == InterlockedDecrement( &CfixctlsServerLocks ) )
 		{
+			CFIXCTLP_TRACE( ( L"Last server lock released\n" ) );
+
 			if ( CfixctlsUnlockCallback )
 			{
 				( CfixctlsUnlockCallback )();
