@@ -18,6 +18,21 @@ namespace Cfix.Control.Ui.Result
 		public TextNodeControl( ResultExplorer explorer )
 		{
 			this.explorer = explorer;
+
+			this.DrawText += new EventHandler<DrawEventArgs>( TextNodeControl_DrawText );
+		}
+
+		private void TextNodeControl_DrawText( object sender, DrawEventArgs args )
+		{
+			IResultNode node = args.Node.Tag as IResultNode;
+			if ( node != null )
+			{
+				Color? txtColor = node.TextColor;
+				if ( txtColor != null )
+				{
+					args.TextColor = ( Color ) txtColor;
+				}
+			}
 		}
 
 		/*----------------------------------------------------------------------

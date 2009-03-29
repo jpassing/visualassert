@@ -209,5 +209,10 @@ namespace Cfix.Control.Ui.Result
 		{
 			get { return this.iconsList.Images[ this.iconIndex ]; }
 		}
+
+		public Color? TextColor
+		{
+			get { return null; }
+		}
 	}
 }

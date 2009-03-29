@@ -9,6 +9,7 @@ namespace Cfix.Control.Ui.Result
 		bool IsLeaf { get; }
 		IEnumerable<IResultNode> GetChildren();
 
+		Color? TextColor { get; }
 		Image Icon { get; }
 		string Status { get; }
 		string Name { get; }

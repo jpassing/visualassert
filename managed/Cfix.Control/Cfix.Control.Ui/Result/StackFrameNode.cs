@@ -8,33 +8,35 @@ namespace Cfix.Control.Ui.Result
 {
 	public class StackFrameNode : IResultNode, ISourceReference
 	{
+		private enum FrameType { CapturingCode, UserCode, FrameworkCode }
+
 		private readonly IStackTraceFrame frame;
 		private readonly string name;
 		private readonly ImageList iconsList;
+		private readonly FrameType type;
 		
 		private bool IsProperlyUnwound
 		{
 			get { return this.frame.Function != null; }
 		}
 
-		private bool IsCfixFrame
+		private static bool IsCfixFrame( string module )
 		{
-			get
-			{
-				return this.frame.Module.Equals(
-						"cfix",
-						StringComparison.OrdinalIgnoreCase );
-			}
+			return module != null && module.Equals(
+					"cfix",
+					StringComparison.OrdinalIgnoreCase );
 		}
 
-		public StackFrameNode( 
+		private StackFrameNode( 
 			IStackTraceFrame frame, 
 			string name,
+			FrameType type,
 			ImageList iconsList )
 		{
 			this.frame = frame;
 			this.name = name;
 			this.iconsList = iconsList;
+			this.type = type;
 		}
 
 		public static IEnumerable<IResultNode> EnumerateFrames(
@@ -48,28 +50,38 @@ namespace Cfix.Control.Ui.Result
 			}
 			else
 			{
-				bool inCapturingCode = true;
+				FrameType frameType = FrameType.CapturingCode;
 				bool warningShown = false;
 				int i = 0;
 				foreach ( IStackTraceFrame frame in stackTrace )
 				{
-					StackFrameNode node = new StackFrameNode( 
-						frame, 
-						i.ToString(),
-						iconsList );
-					if ( inCapturingCode && node.IsCfixFrame )
+					if ( frameType == FrameType.CapturingCode )
 					{
-						//
-						// Ignore CfixpCatureStackTrace etc.
-						//
-						continue;
+						if ( IsCfixFrame( frame.Module ) )
+						{
+							//
+							// Ignore CfixpCatureStackTrace etc.
+							//
+							continue;
+						}
+						else
+						{
+							frameType = FrameType.UserCode;
+						}
 					}
-					else
+					else if ( frameType == FrameType.UserCode && 
+						      IsCfixFrame( frame.Module ) )
 					{
-						inCapturingCode = false;
+						frameType = FrameType.FrameworkCode;
 					}
 
-					if ( ! warningShown && ! node.IsProperlyUnwound )
+					StackFrameNode node = new StackFrameNode(
+						frame,
+						i.ToString(),
+						frameType,
+						iconsList );
+					
+					if ( !warningShown && !node.IsProperlyUnwound )
 					{
 						warningShown = true;
 						yield return new UnwindWarningNode();
@@ -185,6 +197,21 @@ namespace Cfix.Control.Ui.Result
 		{
 			get { return this.iconsList.Images[ ResultExplorer.StackFrameIconIndex ]; }
 		}
+
+		public Color? TextColor
+		{
+			get
+			{
+				if ( this.type != FrameType.UserCode )
+				{
+					return Color.Gray;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
 	}
 
 	public class UnwindWarningNode : IResultNode
@@ -240,6 +267,11 @@ namespace Cfix.Control.Ui.Result
 		}
 
 		public string Duration
+		{
+			get { return null; }
+		}
+
+		public Color? TextColor
 		{
 			get { return null; }
 		}

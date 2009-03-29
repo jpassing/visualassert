@@ -130,5 +130,10 @@ namespace Cfix.Control.Ui.Result
 		{
 			get { return this.result.Status.ToString(); }
 		}
+
+		public Color? TextColor
+		{
+			get { return null; }
+		}
 	}
 }
