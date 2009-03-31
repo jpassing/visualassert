@@ -50,13 +50,13 @@ version:
 	
 i386chk: version
 	cmd /C ddkbuild -WNETW2K checked . -cZ
-	devenv managed\Cfix.Control\Cfix.Control.sln /rebuild "Debug|x86"
-	devenv managed\Cfix.Addin\Cfix.Addin.sln /rebuild "Debug|x86"
+	msbuild managed\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
+	msbuild managed\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
 	
 i386fre: version
 	cmd /C ddkbuild -WNETW2K free . -cZ
-	devenv managed\Cfix.Control\Cfix.Control.sln /rebuild "Release|x86"
-	devenv managed\Cfix.Addin\Cfix.Addin.sln /rebuild "Release|x86"
+	msbuild managed\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
+	msbuild managed\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
 	
 amd64chk: version
 	cmd /C ddkbuild -WLHNETA64 checked . -cZ
@@ -103,7 +103,7 @@ testi386chk:
 	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\chk\i386\cfix32.exe __cfixtests
 	cd ..\..\..
 	
-	gallio.echo bin\chk\i386\Cfix.Control.Test.dll
+	nunit-console-x86 bin\chk\i386\Cfix.Control.Test.dll
 
 testi386fre:
 	echo i386 free
@@ -116,7 +116,7 @@ testi386fre:
 	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\fre\i386\cfix32.exe __cfixtests
 	cd ..\..\..
 
-	gallio.echo bin\fre\i386\Cfix.Control.Test.dll
+	nunit-console-x86 bin\fre\i386\Cfix.Control.Test.dll
 
 testamd64chk:
 	echo amd64 checked

@@ -311,6 +311,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 		LONG Refs = StackTrace->Release();
 
 		CFIXCTLP_TRACE( ( L"Stack trace released. Refs: %d\n", Refs ) );
+		UNREFERENCED_PARAMETER( Refs );
 	}
 
 	CFIXCTLP_TRACE( ( L"Disposition is: %d\n", Disp) );

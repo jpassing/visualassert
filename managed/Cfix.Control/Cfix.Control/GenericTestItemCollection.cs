@@ -15,8 +15,8 @@ namespace Cfix.Control
 	{
 		private readonly ITestItemCollection parent;
 		private readonly String name;
-		private readonly Object listLock = new Object();
-		private readonly List<ITestItem> list = new List<ITestItem>();
+		protected readonly Object listLock = new Object();
+		protected readonly List<ITestItem> list = new List<ITestItem>();
 		private bool disposed;
 
 		public event EventHandler Disposed;
