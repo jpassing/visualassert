@@ -108,6 +108,12 @@ namespace Cfix.Addin.Windows.Run
 
 				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
+
+				Exception excp = e.Exception;
+				if ( excp != null )
+				{
+					CfixPlus.HandleError( excp );
+				}
 			} );
 		}
 

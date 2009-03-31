@@ -327,7 +327,7 @@ namespace Cfix.Addin
 
 		public void RunItem( IRunnableTestItem item, bool debug )
 		{
-			Debug.Assert( IsDebuggingPossible );
+			Debug.Assert( !debug || IsDebuggingPossible );
 
 			//
 			// Make sure the run window is reset while the build
