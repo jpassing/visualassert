@@ -4,12 +4,13 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Explorer
 {
+	[Serializable]
 	public class AbstractExplorerCollectionNode : AbstractExplorerNode
 	{
 		private readonly TreeView treeView;
 		private readonly ITestItemCollection testItemCollection;
 
-		protected readonly NodeFactory nodeFactory;
+		protected internal readonly NodeFactory nodeFactory;
 		
 		private delegate void VoidDelegate();
 

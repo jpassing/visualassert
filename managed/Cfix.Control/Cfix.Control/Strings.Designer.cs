@@ -68,5 +68,14 @@ namespace Cfix.Control {
                 return ResourceManager.GetString("EmptyModule", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This test item is not available any more..
+        /// </summary>
+        internal static string TestItemDisappeared {
+            get {
+                return ResourceManager.GetString("TestItemDisappeared", resourceCulture);
+            }
+        }
     }
 }

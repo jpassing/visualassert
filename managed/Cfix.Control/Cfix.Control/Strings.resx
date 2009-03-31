@@ -120,4 +120,7 @@
   <data name="EmptyModule" xml:space="preserve">
     <value>The module does not contain and tests.</value>
   </data>
+  <data name="TestItemDisappeared" xml:space="preserve">
+    <value>This test item is not available any more.</value>
+  </data>
 </root>

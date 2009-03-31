@@ -8,7 +8,7 @@ namespace Cfix.Control
 	{
 		private readonly ITestItem item;
 
-		protected IActionEvents events;
+		protected internal readonly IActionEvents events;
 		
 		private volatile ExecutionStatus status;
 		private volatile bool inconclusive;

@@ -64,6 +64,7 @@ namespace Cfix.Control
     public class TestItemDisappearedException : CfixException
     {
         public TestItemDisappearedException()
+			: this( Strings.TestItemDisappeared )
         {}
 
         protected TestItemDisappearedException( SerializationInfo info, StreamingContext ctx )

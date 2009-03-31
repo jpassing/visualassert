@@ -66,7 +66,11 @@ namespace Cfix.Control.RunControl
 			if ( this.tasksFinished == this.tasks.Count &&
 				 this.Finished != null )
 			{
-				this.Finished( this, FinishedEventArgs.Empty );
+				//
+				// XXX: e may be less severe than the previous 
+				// FinishedEventArgs.
+				//
+				this.Finished( this, e );
 			}
 		}
 

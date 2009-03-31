@@ -10,7 +10,7 @@ namespace Cfix.Control
 		private readonly IDictionary<string, string > env
 			= new Dictionary<string, string>();
 
-		private string currentDirectory = null;
+		private string currentDirectory;
 
 		public string CurrentDirectory
 		{

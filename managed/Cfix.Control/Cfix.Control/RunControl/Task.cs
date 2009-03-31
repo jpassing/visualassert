@@ -95,6 +95,22 @@ namespace Cfix.Control.RunControl
 
 		private delegate void AsyncRunDelegate();
 
+		private void ForceComplete()
+		{
+			//
+			// Run did not complete -- either because of a severe
+			// error or because the run hsa been shortcut.
+			//
+			// In either case, we have to update the results of 
+			// not-yet-run actions.
+			//
+			foreach ( IAction action in this.actions )
+			{
+				IResultItem actionResult = action.Result;
+				actionResult.ForceCompletion( true );
+			}
+		}
+
 		private void AsyncRun()
 		{
 			Debug.Assert( this.host != null );
@@ -114,24 +130,20 @@ namespace Cfix.Control.RunControl
 			}
 			catch ( COMException x )
 			{
-				//
-				// Run did not complete -- either because of a severe
-				// error or because the run hsa been shortcut.
-				//
-				// In either case, we have to update the results of 
-				// not-yet-run actions.
-				//
-				foreach ( IAction action in this.actions )
-				{
-					IResultItem actionResult = action.Result;
-					actionResult.ForceCompletion( true );
-				}
+				ForceComplete();
 
 				throw new CfixException(
 					this.agent.ResolveMessage( x.ErrorCode ) );
 			}
+			catch ( CfixException )
+			{
+				ForceComplete();
+
+				throw;
+			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		private void AsyncRunCompletionCallback( IAsyncResult ar )
 		{
 			try

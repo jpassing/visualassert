@@ -5,6 +5,7 @@ using Cfix.Control;
 
 namespace Cfix.Control.Ui.Explorer
 {
+	[Serializable]
 	public abstract class AbstractExplorerNode : TreeNode
 	{
 		private readonly ITestItem testItem;

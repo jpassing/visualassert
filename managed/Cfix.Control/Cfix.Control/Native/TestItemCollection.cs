@@ -55,18 +55,23 @@ namespace Cfix.Control.Native
 
 		protected override void Dispose( bool disposing )
 		{
-			if ( this.subItems != null )
+			try
 			{
-				foreach ( ITestItem item in this.subItems )
+				if ( this.subItems != null )
 				{
-					if ( item != null )
+					foreach ( ITestItem item in this.subItems )
 					{
-						item.Dispose();
+						if ( item != null )
+						{
+							item.Dispose();
+						}
 					}
 				}
 			}
-
-			base.Dispose( disposing );
+			finally
+			{
+				base.Dispose( disposing );
+			}
 		}
 
 		public bool IgnoreDuplicates

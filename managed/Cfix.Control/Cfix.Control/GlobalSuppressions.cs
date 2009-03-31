@@ -3,3 +3,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2209:AssembliesShouldDeclareMinimumSecurity" )]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly" )]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Scope = "member", Target = "Cfix.Control.Native.TestItem.CreateAction(Cfix.Control.ICompositeAction,Cfix.Control.SchedulingOptions,Cfix.Control.CompositionOptions):System.Void" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "Cfix.Control.RunControl" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Scope = "member", Target = "Cfix.Control.GenericTestItemCollection.Add(Cfix.Control.IRunCompiler,Cfix.Control.IActionEvents,Cfix.Control.IResultItem):System.Void" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1805:DoNotInitializeUnnecessarily", Scope = "member", Target = "Cfix.Control.Native.StackTraceFrame..ctor(Cfixctl.ICfixStackTraceFrame)" )]

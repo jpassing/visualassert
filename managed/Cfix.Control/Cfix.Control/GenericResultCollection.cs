@@ -237,11 +237,11 @@ namespace Cfix.Control
 			return this.subItems[ ( int ) ordinal ];
 		}
 
-		public IResultItem GetItem( ITestItem item )
+		public IResultItem GetItem( ITestItem testItem )
 		{
 			foreach ( IResultItem child in this.subItems )
 			{
-				if ( ReferenceEquals( item, child.Item ) )
+				if ( ReferenceEquals( testItem, child.Item ) )
 				{
 					return child;
 				}
