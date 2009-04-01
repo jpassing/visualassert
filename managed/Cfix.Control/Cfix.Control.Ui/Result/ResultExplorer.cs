@@ -49,7 +49,6 @@ namespace Cfix.Control.Ui.Result
 			this.iconBinding = new NodeIcon();
 			this.iconBinding.DataPropertyName = "Icon";
 			this.iconBinding.ParentColumn = this.colName;
-			this.iconBinding.LeftMargin = 3;
 			this.tree.NodeControls.Add( this.iconBinding );
 
 			this.nameBinding = new TextNodeControl( this );
@@ -58,7 +57,6 @@ namespace Cfix.Control.Ui.Result
 			this.nameBinding.ParentColumn = this.colName;
 			this.nameBinding.Trimming = StringTrimming.EllipsisCharacter;
 			this.nameBinding.UseCompatibleTextRendering = true;
-			this.nameBinding.LeftMargin = 3;
 			this.nameBinding.EditEnabled = false;
 			this.nameBinding.DisplayHiddenContentInToolTip = true;
 			this.nameBinding.ToolTipProvider = new ToolTipProvider(

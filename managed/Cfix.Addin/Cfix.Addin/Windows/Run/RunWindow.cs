@@ -17,9 +17,10 @@ namespace Cfix.Addin.Windows.Run
 		public static readonly Guid Guid = 
 			new Guid( "80c3fde2-9f60-4709-b1d2-28561e3cff9f" );
 
-		private static readonly Color FailedColor = Color.DarkOrange;
+		private static readonly Color FailedColor = Color.Tomato;
 		private static readonly Color SuccessColor = Color.PaleGreen;
-		private static readonly Color DefaultColor = Color.LightYellow;
+		private static readonly Color DefaultColor = SystemColors.Control;
+		private static readonly Color InitialColor = Color.LightYellow;
 
 		private readonly object runLock = new object();
 		
@@ -66,6 +67,9 @@ namespace Cfix.Addin.Windows.Run
 					{
 						this.progressBar.Value = 
 							( int ) ( completed * 100 / total );
+
+						this.progressBar.BackColor =
+							completed > 0 ? DefaultColor : InitialColor;
 					}
 
 					if ( item.Status == ExecutionStatus.Failed &&
@@ -95,7 +99,6 @@ namespace Cfix.Addin.Windows.Run
 			this.BeginInvoke( ( VoidDelegate ) delegate
 			{
 				this.terminateButton.Enabled = false;
-				this.stopButton.Enabled = false;
 
 				if ( this.run.Status == TaskStatus.Suceeded )
 				{
@@ -106,6 +109,7 @@ namespace Cfix.Addin.Windows.Run
 					this.progressLabel.Text = this.run.Status.ToString();
 				}
 
+				this.progressBar.Value = 100;
 				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
 
@@ -136,22 +140,6 @@ namespace Cfix.Addin.Windows.Run
 		/*----------------------------------------------------------------------
 		 * Private - Events.
 		 */
-
-		private void stopButton_Click( object sender, EventArgs e )
-		{
-			try
-			{
-				lock ( this.runLock )
-				{
-					this.aborted = true;
-					this.run.Stop();
-				}
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
-		}
 
 		private void terminateButton_Click( object sender, EventArgs e )
 		{
@@ -339,10 +327,9 @@ namespace Cfix.Addin.Windows.Run
 
 					this.progressBar.Value = 0;
 					this.progressBar.ForeColor = SuccessColor;
-					this.progressBar.BackColor = DefaultColor;
+					this.progressBar.BackColor = InitialColor;
 
 					this.terminateButton.Enabled = true;
-					this.stopButton.Enabled = true;
 
 					this.run = value;
 					this.aborted = false;

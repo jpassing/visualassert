@@ -30,69 +30,106 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
-			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.selectSlnModeButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.separator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.statusText = new System.Windows.Forms.TextBox();
+			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.separator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.separator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.throbberPic = new System.Windows.Forms.PictureBox();
+			this.debugButton = new System.Windows.Forms.ToolStripButton();
+			this.runButton = new System.Windows.Forms.ToolStripButton();
 			this.refreshButton = new System.Windows.Forms.ToolStripButton();
 			this.abortRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.autoRefreshButton = new System.Windows.Forms.ToolStripButton();
-			this.separator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.debugButton = new System.Windows.Forms.ToolStripButton();
-			this.runButton = new System.Windows.Forms.ToolStripButton();
-			this.separator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.optionsButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.shurtcutFixtureOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.shurtcutRunOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.statusText = new System.Windows.Forms.TextBox();
-			this.throbberPic = new System.Windows.Forms.PictureBox();
-			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.selectSlnModeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.toolbar.SuspendLayout();
-			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
 			this.ctxMenu.SuspendLayout();
+			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
 			this.SuspendLayout();
 			// 
 			// toolbar
 			// 
 			this.toolbar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.selectModeButton,
-            this.refreshButton,
-            this.abortRefreshButton,
-            this.autoRefreshButton,
-            this.separator1,
             this.debugButton,
             this.runButton,
             this.separator2,
-            this.optionsButton} );
+            this.refreshButton,
+            this.abortRefreshButton,
+            this.separator3,
+            this.autoRefreshButton,
+            this.optionsButton,
+            this.separator4,
+            this.selectModeButton} );
 			resources.ApplyResources( this.toolbar, "toolbar" );
 			this.toolbar.Name = "toolbar";
 			// 
-			// selectModeButton
+			// separator2
 			// 
-			this.selectModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.selectModeButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.selectDirModeButton,
-            this.selectSlnModeButton} );
-			resources.ApplyResources( this.selectModeButton, "selectModeButton" );
-			this.selectModeButton.Name = "selectModeButton";
+			this.separator2.Name = "separator2";
+			resources.ApplyResources( this.separator2, "separator2" );
 			// 
-			// selectDirModeButton
+			// statusText
 			// 
-			resources.ApplyResources( this.selectDirModeButton, "selectDirModeButton" );
-			this.selectDirModeButton.Name = "selectDirModeButton";
-			this.selectDirModeButton.Click += new System.EventHandler( this.selectDirModeButton_Click );
+			resources.ApplyResources( this.statusText, "statusText" );
+			this.statusText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.statusText.HideSelection = false;
+			this.statusText.Name = "statusText";
+			this.statusText.ReadOnly = true;
+			this.statusText.ShortcutsEnabled = false;
 			// 
-			// selectSlnModeButton
+			// ctxMenu
 			// 
-			this.selectSlnModeButton.Image = global::Cfix.Addin.Icons.Solution;
-			resources.ApplyResources( this.selectSlnModeButton, "selectSlnModeButton" );
-			this.selectSlnModeButton.Name = "selectSlnModeButton";
-			this.selectSlnModeButton.Click += new System.EventHandler( this.selectSlnModeButton_Click );
+			this.ctxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuDebugButton,
+            this.ctxMenuRunButton,
+            this.ctxMenuRefreshButton} );
+			this.ctxMenu.Name = "ctxMenu";
+			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
+			// 
+			// separator3
+			// 
+			this.separator3.Name = "separator3";
+			resources.ApplyResources( this.separator3, "separator3" );
+			// 
+			// separator4
+			// 
+			this.separator4.Name = "separator4";
+			resources.ApplyResources( this.separator4, "separator4" );
+			// 
+			// throbberPic
+			// 
+			resources.ApplyResources( this.throbberPic, "throbberPic" );
+			this.throbberPic.Image = global::Cfix.Addin.Icons.Throb;
+			this.throbberPic.InitialImage = null;
+			this.throbberPic.Name = "throbberPic";
+			this.throbberPic.TabStop = false;
+			// 
+			// debugButton
+			// 
+			this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			resources.ApplyResources( this.debugButton, "debugButton" );
+			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
+			this.debugButton.Name = "debugButton";
+			this.debugButton.Click += new System.EventHandler( this.debugButton_Click );
+			// 
+			// runButton
+			// 
+			this.runButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			resources.ApplyResources( this.runButton, "runButton" );
+			this.runButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			this.runButton.Name = "runButton";
+			this.runButton.Click += new System.EventHandler( this.runButton_Click );
 			// 
 			// refreshButton
 			// 
@@ -119,32 +156,6 @@ namespace Cfix.Addin.Windows.Explorer
 			this.autoRefreshButton.Name = "autoRefreshButton";
 			this.autoRefreshButton.Click += new System.EventHandler( this.autoRefreshButton_Click );
 			// 
-			// separator1
-			// 
-			this.separator1.Name = "separator1";
-			resources.ApplyResources( this.separator1, "separator1" );
-			// 
-			// debugButton
-			// 
-			this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			resources.ApplyResources( this.debugButton, "debugButton" );
-			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
-			this.debugButton.Name = "debugButton";
-			this.debugButton.Click += new System.EventHandler( this.debugButton_Click );
-			// 
-			// runButton
-			// 
-			this.runButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			resources.ApplyResources( this.runButton, "runButton" );
-			this.runButton.Image = global::Cfix.Addin.Icons.Ffwd;
-			this.runButton.Name = "runButton";
-			this.runButton.Click += new System.EventHandler( this.runButton_Click );
-			// 
-			// separator2
-			// 
-			this.separator2.Name = "separator2";
-			resources.ApplyResources( this.separator2, "separator2" );
-			// 
 			// optionsButton
 			// 
 			this.optionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -168,31 +179,27 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.shurtcutRunOnFailureButton, "shurtcutRunOnFailureButton" );
 			this.shurtcutRunOnFailureButton.Click += new System.EventHandler( this.shurtcutRunOnFailureButton_Click );
 			// 
-			// statusText
+			// selectModeButton
 			// 
-			resources.ApplyResources( this.statusText, "statusText" );
-			this.statusText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.statusText.HideSelection = false;
-			this.statusText.Name = "statusText";
-			this.statusText.ReadOnly = true;
-			this.statusText.ShortcutsEnabled = false;
+			this.selectModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.selectModeButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.selectDirModeButton,
+            this.selectSlnModeButton} );
+			resources.ApplyResources( this.selectModeButton, "selectModeButton" );
+			this.selectModeButton.Name = "selectModeButton";
 			// 
-			// throbberPic
+			// selectDirModeButton
 			// 
-			resources.ApplyResources( this.throbberPic, "throbberPic" );
-			this.throbberPic.Image = global::Cfix.Addin.Icons.Throb;
-			this.throbberPic.InitialImage = null;
-			this.throbberPic.Name = "throbberPic";
-			this.throbberPic.TabStop = false;
+			resources.ApplyResources( this.selectDirModeButton, "selectDirModeButton" );
+			this.selectDirModeButton.Name = "selectDirModeButton";
+			this.selectDirModeButton.Click += new System.EventHandler( this.selectDirModeButton_Click );
 			// 
-			// ctxMenu
+			// selectSlnModeButton
 			// 
-			this.ctxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.ctxMenuDebugButton,
-            this.ctxMenuRunButton,
-            this.ctxMenuRefreshButton} );
-			this.ctxMenu.Name = "ctxMenu";
-			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
+			this.selectSlnModeButton.Image = global::Cfix.Addin.Icons.Solution;
+			resources.ApplyResources( this.selectSlnModeButton, "selectSlnModeButton" );
+			this.selectSlnModeButton.Name = "selectSlnModeButton";
+			this.selectSlnModeButton.Click += new System.EventHandler( this.selectSlnModeButton_Click );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -219,7 +226,7 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory2;
+			this.explorer.NodeFactory = nodeFactory1;
 			// 
 			// ExplorerWindow
 			// 
@@ -232,8 +239,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.Name = "ExplorerWindow";
 			this.toolbar.ResumeLayout( false );
 			this.toolbar.PerformLayout();
-			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).EndInit();
 			this.ctxMenu.ResumeLayout( false );
+			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).EndInit();
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -247,7 +254,6 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripDropDownButton selectModeButton;
 		private System.Windows.Forms.ToolStripMenuItem selectDirModeButton;
 		private System.Windows.Forms.ToolStripMenuItem selectSlnModeButton;
-		private System.Windows.Forms.ToolStripSeparator separator1;
 		private System.Windows.Forms.PictureBox throbberPic;
 		private System.Windows.Forms.TextBox statusText;
 		private System.Windows.Forms.ToolStripButton abortRefreshButton;
@@ -262,5 +268,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripDropDownButton optionsButton;
 		private System.Windows.Forms.ToolStripMenuItem shurtcutFixtureOnFailureButton;
 		private System.Windows.Forms.ToolStripMenuItem shurtcutRunOnFailureButton;
+		private System.Windows.Forms.ToolStripSeparator separator3;
+		private System.Windows.Forms.ToolStripSeparator separator4;
 	}
 }

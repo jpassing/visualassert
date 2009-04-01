@@ -132,8 +132,19 @@ namespace Cfix.Control.RunControl
 			{
 				ForceComplete();
 
-				throw new CfixException(
-					this.agent.ResolveMessage( x.ErrorCode ) );
+				if ( this.status == TaskStatus.Terminated &&
+					( uint ) x.ErrorCode == ( uint ) 0x800706BE )
+				{
+					//
+					// Remote procedure call failed -- this is expected
+					// after termination.
+					//
+				}
+				else
+				{
+					throw new CfixException(
+						this.agent.ResolveMessage( x.ErrorCode ) );
+				}
 			}
 			catch ( CfixException )
 			{

@@ -109,6 +109,7 @@ namespace Cfix.Control.Ui.Result
 			this.colDuration.Header = "Duration";
 			this.colDuration.SortOrder = System.Windows.Forms.SortOrder.None;
 			this.colDuration.TooltipText = null;
+			this.colDuration.Width = 100;
 			// 
 			// colLastError
 			// 
