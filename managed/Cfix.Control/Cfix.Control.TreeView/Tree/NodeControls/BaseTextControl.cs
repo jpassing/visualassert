@@ -173,8 +173,18 @@ namespace Aga.Controls.Tree.NodeControls
 			Font font;
 			CreateBrushes(node, context, label, out backgroundBrush, out textColor, out font, ref label);
 
-			if (backgroundBrush != null)
-				context.Graphics.FillRectangle(backgroundBrush, focusRect);
+			//
+			// JP: Fill entire cell
+			//
+			focusRect.Width -= 2 - LeftMargin;
+			focusRect.Height -= 1;
+			focusRect.X -= LeftMargin;
+			focusRect.Y += 1;
+
+			if ( backgroundBrush != null && context.DrawSelection != DrawSelectionMode.FullRowSelect )
+			{
+				context.Graphics.FillRectangle( backgroundBrush, focusRect );
+			}
 			if (context.DrawFocus)
 			{
 				focusRect.Width--;

@@ -10,6 +10,9 @@ namespace Cfix.Control.Ui.Result
 	{
 		private readonly ResultExplorer explorer;
 
+		private Brush FailBrush = new SolidBrush(
+			Color.FromArgb( 255, 229, 229 ) );
+
 		private void RequestContextMenu( IResultNode node, Point pt )
 		{
 			this.explorer.OnContextMenuRequested( node, pt );
@@ -31,6 +34,13 @@ namespace Cfix.Control.Ui.Result
 				if ( txtColor != null )
 				{
 					args.TextColor = ( Color ) txtColor;
+				}
+
+				ResultItemNode resNode = node as ResultItemNode;
+				if ( resNode != null && 
+				     resNode.ResultItem.Status == ExecutionStatus.Failed )
+				{
+					args.BackgroundBrush = FailBrush;
 				}
 			}
 		}
