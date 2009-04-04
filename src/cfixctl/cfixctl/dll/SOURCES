@@ -22,7 +22,7 @@ BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
 
 MSC_WARNING_LEVEL=/W4 /Wp64
 
-INCLUDES=$(SDKBASE)\Include;..\..\..\include;$(SDK_INC_PATH)\..\mfc42;$(CFIX_TREE)\include
+INCLUDES=$(SDKBASE)\Include;..\..\..\..\include;$(SDK_INC_PATH)\..\mfc42;$(CFIX_TREE)\include
 
 C_DEFINES=/D_UNICODE /DUNICODE
 
@@ -57,16 +57,16 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cdiag.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixutil.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixkl.lib \
-		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	   
+		   $(MAKEDIR)\..\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	   
 
 TARGETNAME=cfixctl
-TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
+TARGETPATH=..\..\..\..\bin\$(DDKBUILDENV)
 TARGETTYPE=DYNLINK
 
-PASS0_HEADERDIR=..\..\..\include
+PASS0_HEADERDIR=..\..\..\..\include
 PASS0_SOURCEDIR=.
-PASS0_CLIENTDIR=..\..\..\include
-PASS0_SERVERDIR=..\..\..\include
+PASS0_CLIENTDIR=..\..\..\..\include
+PASS0_SERVERDIR=..\..\..\..\include
 
 SOURCES=\
 	..\cfixctl.idl \

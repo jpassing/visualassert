@@ -22,7 +22,7 @@ BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
 
 MSC_WARNING_LEVEL=/W4 /WX /Wp64
 
-INCLUDES=..\..\include;$(SDK_INC_PATH)\..\mfc42
+INCLUDES=..\..\..\include;$(SDK_INC_PATH)\..\mfc42
 
 !if "$(TARGET_DIRECTORY)"=="i386"
 USER_C_FLAGS=/D_UNICODE /DUNICODE /analyze
@@ -49,7 +49,7 @@ TARGETLIBS=$(SDK_LIB_PATH)\shlwapi.lib \
 		   $(TARGETPATH)\$(TARGET_DIRECTORY)\cfixctl.lib \
 		   $(TARGETPATH)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib
 
-TARGETPATH=..\..\bin\$(DDKBUILDENV)
+TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
 TARGETTYPE=PROGRAM
 SOURCES=\
 	cfixhost.rc \

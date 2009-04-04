@@ -22,7 +22,7 @@ BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
 
 MSC_WARNING_LEVEL=/W4 /Wp64
 
-INCLUDES=$(SDKBASE)\Include;..\..\include;$(CFIX_TREE)\include
+INCLUDES=$(SDKBASE)\Include;..\..\..\include;$(CFIX_TREE)\include
 
 C_DEFINES=/D_UNICODE /DUNICODE /EHa
 
@@ -47,14 +47,14 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\ole32.lib \
 		   $(SDK_LIB_PATH)\oleaut32.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
-		   $(MAKEDIR)\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl.lib \
-		   $(MAKEDIR)\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl.lib \
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	
 
 TARGETNAME=testctl
-TARGETPATH=..\..\bin\$(DDKBUILDENV)
+TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
 TARGETTYPE=DYNLINK
 
-PASS0_HEADERDIR=..\..\include
+PASS0_HEADERDIR=..\..\..\include
 PASS0_SOURCEDIR=obj$(BUILD_ALT_DIR)\$(TARGET_DIRECTORY)
 
 SOURCES=\
