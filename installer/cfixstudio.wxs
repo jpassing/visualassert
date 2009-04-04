@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+  <Product
+			Id="$(var.ProductCode)"
+			Name="cfix studio"
+			Language="1033"
+			Version="$(var.ProductVersion)"
+			UpgradeCode="e62e11e1-3058-42cd-b855-e0a3743b380a"
+			Manufacturer="Johannes Passing">
+    <Package
+			Id="$(var.PackageCode)"
+			Description="VisualSudio addin for cfix"
+			InstallerVersion="200"
+			Compressed="yes"
+			Platforms="Intel"/>
+
+    <Upgrade Id="e62e11e1-3058-42cd-b855-e0a3743b380a">
+      <!-- Prevent over-installing newer versions -->
+      <UpgradeVersion MigrateFeatures='yes' Minimum="$(var.ProductVersion)" Property="NEWERPRODUCTFOUND" OnlyDetect="yes" IncludeMinimum="no" />
+      <Property Id="NEWERPRODUCTFOUND" Secure="yes" />
+
+      <!-- Upgrade older versions -->
+      <UpgradeVersion MigrateFeatures='yes' Minimum="1.0.0.0" Maximum="$(var.ProductVersion)" Property="PREVIOUSVERSIONSINSTALLED" IncludeMaximum="yes" />
+      <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    </Upgrade>
+
+    <CustomAction Id="ERRCA_CANCELNEWERVERSION" Return="check" Error="$(loc.NewerVersionInstalled)" />
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize" />
+      <Custom Action="ERRCA_CANCELNEWERVERSION" After="FindRelatedProducts"><![CDATA[NEWERPRODUCTFOUND AND NOT Installed]]></Custom>
+    </InstallExecuteSequence>
+
+    <Media Id="1" Cabinet="cfixstudio.cab" EmbedCab="yes" />
+
+    <!-- Retain install location on upgrade -->
+    <Property Id="INSTALLLOCATION" Secure="yes">
+      <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="directory" />
+    </Property>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="DirProgMenu" Name="cfix">
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="cfixstud" LongName="cfixstudio">
+          <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
+            <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
+          </Component>
+
+          <Directory Id="DirBin" Name="bin">
+            <Directory Id="DirBinI386" Name="i386">
+              <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
+                <?include cfix_bin_i386.wxs?>
+                <RemoveFolder Id="RemoveDirBinI386" On="uninstall"/>
+              </Component>
+            </Directory>
+
+            <Directory Id="DirBinAmd64" Name="amd64">
+              <Component Id="CompBinAmd64" Guid="f65055f8-2e34-4b4c-aaeb-1519ee606bfa">
+                <?include cfix_bin_amd64.wxs?>
+                <RemoveFolder Id="RemoveDirBinAmd64" On="uninstall"/>
+              </Component>
+            </Directory>
+          </Directory>
+
+          <Directory Id="DirInclude" Name="include">
+            <Component Id="CompIncludes" DiskId="1" Guid="916f5c8b-64a5-4aaa-9e41-3dc890a4d454">
+              <?include cfix_include.wxs?>
+              <?include cfix_include_winunit.wxs?>
+              <RemoveFolder Id="RemoveDirInclude" On="uninstall"/>
+            </Component>
+          </Directory>
+
+          <Directory Id="DirLib" Name="lib">
+            <Directory Id="DirLibI386" Name="i386">
+              <Component Id="CompLibI386" DiskId="1" Guid="b2a9d73f-a3fc-462f-b4e8-a4c1506be0fa">
+                <?include cfix_lib_i386.wxs?>
+                <RemoveFolder Id="RemoveDirLibI386" On="uninstall"/>
+              </Component>
+            </Directory>
+            <Directory Id="DirLibAmd64" Name="amd64">
+              <Component Id="CompLibAmd64" DiskId="1" Guid="8b1d09b5-4b0f-46d9-b44a-c3abbd3ffb2a">
+                <?include cfix_lib_amd64.wxs?>
+                <RemoveFolder Id="RemoveDirLibAmd64" On="uninstall"/>
+              </Component>
+            </Directory>
+          </Directory>
+
+          <Directory Id="DirDoc" Name="doc">
+            <Component Id="CompDoc" DiskId="1" Guid="8cadd6d3-5a46-420f-bedb-c7ba2832735b">
+              <File Id="FileCfixChm" Name="cfix.chm" Source="$(var.CFIX_TREE)\doc\docbook\cfix.chm" Vital="yes">
+                <Shortcut
+									Id="ShortcutCfixChm"
+									Description="cfix studio Documentation"
+									Directory="DirProgMenu"
+									Icon="CfixIco"
+									Name="Doc"
+									LongName="cfix Documentation"/>
+              </File>
+              <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
+      <ComponentRef Id="CompInstallLocation"/>
+
+      <Feature Id="FeatureBinI386"
+               Absent="disallow" 
+               Title="i386 (x86) binaries" 
+               Level="1" 
+               AllowAdvertise="no" 
+               Description="Binaries for i386 (x86). Required if you intend to write tests for this platform.">
+        <ComponentRef Id="CompBinI386"/>
+        <ComponentRef Id="CompLibI386"/>
+      </Feature>
+      <Feature Id="FeatureBinAmd64"
+               Absent="allow"
+               Title="AMD64 (x64) binaries" 
+               Level="1" 
+               AllowAdvertise="no" 
+               Description="Binaries for AMD64 (x64). Required if you intend to write tests for this platform.">
+        <Condition Level="2"><![CDATA[NOT VersionNT64]]></Condition>
+
+        <ComponentRef Id="CompBinAmd64"/>
+        <ComponentRef Id="CompLibAmd64"/>
+      </Feature>
+
+      <ComponentRef Id="CompDoc"/>
+      <ComponentRef Id="CompIncludes"/>
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
+    <UIRef Id="CfixUi" />
+
+    <Property Id='ARPHELPLINK'>http://www.cfix-studio.com/</Property>
+    <Property Id='ARPURLINFOABOUT'>http://www.cfix-studio.com/</Property>
+    <Property Id='ARPPRODUCTICON'>CfixIco</Property>
+
+    <Property Id='OPENTUTORIALAFTERFINISH'>1</Property>
+
+    <Property Id='HTMLHELP'>hh.exe</Property>
+    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfix.chm::ch04s01.html" />
+
+    <Icon Id="CfixIco" SourceFile="icon.ico" />
+  </Product>
+</Wix>
