@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Include>
+    <TypeLib 
+        Id="{57F93E5A-D44F-11DD-99E2-0016D3B98F9B}" 
+        Description="Cfix Control Library" 
+        Language="0" 
+        MajorVersion="1" 
+        MinorVersion="0">
+      
+      <!--
+      
+      N.B. We only do 32 bit activation, therefore all COM registration will
+           go into the 32 bit registry only!
+      
+      -->
+      
+      <Interface Id="{57F93E40-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixHost" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E41-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixAction" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E42-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixTestItem" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E44-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixProcessEventSink" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E45-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixTestÌtemContainerEventSink" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E46-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixReportEventSink" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E47-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixTestÌtemEventSink" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E48-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixEventSink" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E49-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixStackTrace" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E4B-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixAgent" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E50-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixSearchModulesCallback" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E51-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixMessageResolver" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E53-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixStackTraceFrame" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E58-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixTestContainer" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E59-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixActionFactory" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+      <Interface Id="{57F93E5B-D44F-11DD-99E2-0016D3B98F9B}" Name="ICfixTestModule" ProxyStubClassId="{00020424-0000-0000-C000-000000000046}" ProxyStubClassId32="{00020424-0000-0000-C000-000000000046}" />
+
+      <Class Id="57f93e57-d44f-11dd-99e2-0016d3b98f9b" Description="TestCase" ThreadingModel="both" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.TestCase">
+          <ProgId Id="Cfix.Control.TestCase.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e56-d44f-11dd-99e2-0016d3b98f9b" Description="TestFixture" ThreadingModel="both" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.TestFixture">
+          <ProgId Id="Cfix.Control.TestFixture.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="d010ca00-1b6d-11de-b555-0016d3b98f9b" Description="StackTrace" ThreadingModel="both" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.StackTrace">
+          <ProgId Id="Cfix.Control.StackTrace.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="d010ca01-1b6d-11de-b555-0016d3b98f9b" Description="StackTraceFrame" ThreadingModel="both" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.StackTraceFrame">
+          <ProgId Id="Cfix.Control.StackTraceFrame.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e55-d44f-11dd-99e2-0016d3b98f9b" Description="TestModule" ThreadingModel="free" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.TestModule">
+          <ProgId Id="Cfix.Control.TestModule.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e43-d44f-11dd-99e2-0016d3b98f9b" Description="LocalHost" ThreadingModel="free" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.LocalHost">
+          <ProgId Id="Cfix.Control.LocalHost.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e4f-d44f-11dd-99e2-0016d3b98f9b" Description="ProcessHost" ThreadingModel="free" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.ProcessHost">
+          <ProgId Id="Cfix.Control.ProcessHost.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e54-d44f-11dd-99e2-0016d3b98f9b" Description="ExecutionAction" ThreadingModel="free" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.ExecutionAction">
+          <ProgId Id="Cfix.Control.ExecutionAction.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e4c-d44f-11dd-99e2-0016d3b98f9b" Description="LocalAgent" ThreadingModel="free" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.LocalAgent">
+          <ProgId Id="Cfix.Control.LocalAgent.1"/>
+        </ProgId>
+      </Class>
+      <Class Id="57f93e52-d44f-11dd-99e2-0016d3b98f9b" Description="MessageResolver" ThreadingModel="both" Context="InprocServer32">
+        <ProgId Id="Cfix.Control.MessageResolver">
+          <ProgId Id="Cfix.Control.MessageResolver.1"/>
+        </ProgId>
+      </Class>
+    </TypeLib>
+</Include>

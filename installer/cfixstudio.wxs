@@ -37,11 +37,82 @@
       <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="directory" />
     </Property>
 
+    <!-- Search VS installations -->
+    <Property Id="VS80INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs80" Root="HKCR" Key="VisualStudio.DTE.8.0" Type="raw" />
+    </Property>
+
+    <Property Id="VS90INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
+    </Property>
+
+
+
+    <Condition Message='Windows 2000 SP4 or better required'>
+      <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
+    </Condition>
+
+    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for cfix studio.'>
+      <![CDATA[ VS80INSTALLED OR VS90INSTALLED ]]>
+    </Condition>
+
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
         <Directory Id="DirProgMenu" Name="cfix">
         </Directory>
       </Directory>
+
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs8080" Name="80" LongName="8.0">
+              <Directory Id="DirAppDataMsVs80Addins80" Name="Addins">
+                <Component Id="CompVs80" Guid="71f3193d-ba2e-4293-a44c-b1bf868f80ef">
+                  <File Id="FileVs80Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile 
+                    Id="XmlConfigAssemblyVs80" 
+                    Action="setValue" 
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin" 
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="8.0"/>
+                  </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="DirAppDataMs90" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs90" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs9090" Name="90" LongName="9.0">
+              <Directory Id="DirAppDataMsVs90Addins90" Name="Addins">
+                <Component Id="CompVs90" Guid="ab230fe7-5107-45d7-b636-e1f8442622ea">
+                  <File Id="FileVs90Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="9.0"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+      
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="cfixstud" LongName="cfixstudio">
           <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
@@ -53,13 +124,30 @@
               <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
                 <?include cfix_bin_i386.wxs?>
                 <RemoveFolder Id="RemoveDirBinI386" On="uninstall"/>
+
+                <File Id="FileCfixctDllI386" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\i386\cfixctl.dll" DiskId="1">
+                  <?include cfixctl-comreg.wxs?>
+                </File>
+                <File Id="FileCfixhsExeI386" Name="cfixhs32.exe" Source="bin\fre\i386\cfixhs32.exe" DiskId="1"/>
+
+                <File Id="FileInteropCfixctlI386" Name="cfintero.dll" LongName="interop.cfixctl.dll" Source="bin\fre\i386\interop.cfixctl.dll" DiskId="1"/>
+                <File Id="FileCfixControlDllI386" Name="cfcontr.dll" LongName="cfix.control.dll" Source="bin\fre\i386\cfix.control.dll" DiskId="1"/>
+                <File Id="FileCfixControlUiDllI386" Name="cfcontui.dll" LongName="cfix.control.ui.dll" Source="bin\fre\i386\cfix.control.ui.dll" DiskId="1"/>
+                <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
+                <File Id="FileCfixAddinDllI386" Name="cfaddin.dll" LongName="cfix.addin.dll" Source="bin\fre\i386\cfix.addin.dll" DiskId="1"/>
               </Component>
             </Directory>
 
             <Directory Id="DirBinAmd64" Name="amd64">
-              <Component Id="CompBinAmd64" Guid="f65055f8-2e34-4b4c-aaeb-1519ee606bfa">
+              <Component Id="CompBinAmd64" Guid="f65055f8-2e34-4b4c-aaeb-1519ee606bfa" Win64="yes">
                 <?include cfix_bin_amd64.wxs?>
                 <RemoveFolder Id="RemoveDirBinAmd64" On="uninstall"/>
+
+                <File Id="FileCfixctAmd64" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\amd64\cfixctl.dll" DiskId="1">
+                  <?include cfixctl-comreg.wxs?>
+                </File>
+                <File Id="FileCfixhsExeAmd64" Name="cfixhs64.exe" Source="bin\fre\amd64\cfixhs64.exe" DiskId="1"/>
+
               </Component>
             </Directory>
           </Directory>
@@ -108,15 +196,6 @@
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompInstallLocation"/>
 
-      <Feature Id="FeatureBinI386"
-               Absent="disallow" 
-               Title="i386 (x86) binaries" 
-               Level="1" 
-               AllowAdvertise="no" 
-               Description="Binaries for i386 (x86). Required if you intend to write tests for this platform.">
-        <ComponentRef Id="CompBinI386"/>
-        <ComponentRef Id="CompLibI386"/>
-      </Feature>
       <Feature Id="FeatureBinAmd64"
                Absent="allow"
                Title="AMD64 (x64) binaries" 
@@ -129,6 +208,31 @@
         <ComponentRef Id="CompLibAmd64"/>
       </Feature>
 
+      <Feature Id="FeatureVs80"
+               Absent="allow"
+               Title="Visual Studio 2005 integration"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Installs the cfix studio addin for Visual Studio 2005.">
+        <Condition Level="0"><![CDATA[NOT VS80INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs80"/>
+      </Feature>
+
+      <Feature Id="FeatureVs90"
+               Absent="allow"
+               Title="Visual Studio 2008 integration"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Installs the cfix studio addin for Visual Studio 2008.">
+        <Condition Level="0"><![CDATA[NOT VS90INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs90"/>
+      </Feature>
+
+      <ComponentRef Id="CompBinI386"/>
+      <ComponentRef Id="CompLibI386"/>
+      
       <ComponentRef Id="CompDoc"/>
       <ComponentRef Id="CompIncludes"/>
     </Feature>
@@ -136,6 +240,8 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
     <UIRef Id="CfixUi" />
 
+    <Property Id='ALLUSERS'>1</Property>
+    
     <Property Id='ARPHELPLINK'>http://www.cfix-studio.com/</Property>
     <Property Id='ARPURLINFOABOUT'>http://www.cfix-studio.com/</Property>
     <Property Id='ARPPRODUCTICON'>CfixIco</Property>
