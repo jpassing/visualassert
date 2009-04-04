@@ -57,7 +57,7 @@ static CFIXCTLS_SERVER CfixctlsServers[] =
 	{
 		CfixctlpGetTestFixtureFactory,		// Creatable due to MBV.
 		CLSID_TestFixture,
-		L"Cfix TestCase",
+		L"Cfix TestFixture",
 		L"Cfix.Control.TestFixture",
 		L"Cfix.Control.TestFixture.1",
 		L"both"
