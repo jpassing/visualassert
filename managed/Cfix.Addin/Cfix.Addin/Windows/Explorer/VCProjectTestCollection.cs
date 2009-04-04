@@ -11,7 +11,9 @@ using Microsoft.VisualStudio.VCProjectEngine;
 namespace Cfix.Addin.Windows.Explorer
 {
 	internal class VCProjectTestCollection 
-		: GenericTestItemCollection, IBuildableTestItem
+		: GenericTestItemCollection, 
+		  IBuildableTestItem,
+		  IRelativePathReferenceItem
 	{
 		private readonly Configuration config;
 		private readonly string uniqueName;
@@ -227,6 +229,17 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 
 			return build.LastBuildInfo == 0;
+		}
+
+		/*----------------------------------------------------------------------
+		 * IRelativePathReferenceItem.
+		 */
+
+		public string GetFullPath( string relativePath )
+		{
+			DirectoryInfo projectDir = 
+				new FileInfo( this.project.FullName ).Directory;
+			return projectDir.FullName + "\\" + relativePath;
 		}
 	}
 }

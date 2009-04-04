@@ -229,8 +229,6 @@ namespace Cfix.Addin.Windows.Run
 							resultNode.ResultItem.Item,
 							! e.Shift );
 					}
-
-					e.Handled = true;
 				}
 				else
 				{
@@ -246,6 +244,8 @@ namespace Cfix.Addin.Windows.Run
 						}
 					}
 				}
+
+				e.Handled = true;
 			}
 		}
 

@@ -88,6 +88,7 @@ namespace Cfix.Control.Ui.Result
 			this.explorer.OnTreeDoubleClick(
 				( IResultNode ) args.Node.Tag, 
 				args );
+			args.Handled = true;
 		}
 	}
 }
