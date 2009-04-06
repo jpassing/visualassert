@@ -306,20 +306,6 @@ namespace Cfix.Addin
 			}
 		}
 
-		public bool IsDebuggingPossible
-		{
-			get
-			{
-				//
-				// Without a project, debugging does not work properly.
-				// Moreover, we need a project to ontain the architecture
-				// to be used for debugging.
-				//
-				Solution curSolution = this.addin.DTE.Solution;
-				return ( curSolution.Projects.Count > 0 );
-			}
-		}
-
 		public ISession Session
 		{
 			get { return this.session; }
@@ -327,8 +313,6 @@ namespace Cfix.Addin
 
 		public void RunItem( IRunnableTestItem item, bool debug )
 		{
-			Debug.Assert( !debug || IsDebuggingPossible );
-
 			//
 			// Make sure the run window is reset while the build
 			// is active.

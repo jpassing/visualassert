@@ -88,9 +88,8 @@ namespace Cfix.Addin.Windows.Explorer
 			ExplorerNodeEventArgs e )
 		{
 			bool runnable = e.Item is IRunnableTestItem;
-			bool debugPossible = this.workspace.IsDebuggingPossible;
 
-			this.ctxMenuDebugButton.Enabled = runnable && debugPossible;
+			this.ctxMenuDebugButton.Enabled = runnable;
 			this.ctxMenuRunButton.Enabled = runnable;
 			
 			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
@@ -132,9 +131,8 @@ namespace Cfix.Addin.Windows.Explorer
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
 			bool runnable = e.Item is IRunnableTestItem;
-			bool debugPossible = this.workspace.IsDebuggingPossible;
 
-			this.debugButton.Enabled = runnable && debugPossible;
+			this.debugButton.Enabled = runnable;
 			this.runButton.Enabled = runnable;
 
 			UpdateRefreshButtonStatus();
