@@ -133,7 +133,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				return ( ( int ) this.key.GetValue( "ExplorerWindowVisible", 0 ) ) == 1;
+				return ( ( int ) this.key.GetValue( "ExplorerWindowVisible", 1 ) ) == 1;
 			}
 			set
 			{
@@ -148,7 +148,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				return ( ( int ) this.key.GetValue( "RunWindowVisible", 0 ) ) == 1;
+				return ( ( int ) this.key.GetValue( "RunWindowVisible", 1 ) ) == 1;
 			}
 			set
 			{
