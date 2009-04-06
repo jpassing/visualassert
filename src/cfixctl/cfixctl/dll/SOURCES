@@ -45,8 +45,6 @@ LINKER_FLAGS=/nxcompat /dynamicbase
 USE_LIBCMT=1
 USE_STL=1
 
-DELAYLOAD=cfixkl.dll
-
 TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\advapi32.lib \
 		   $(SDK_LIB_PATH)\shlwapi.lib \

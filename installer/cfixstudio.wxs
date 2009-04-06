@@ -119,6 +119,10 @@
             <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
           </Component>
 
+          <Component Id="CompStdole" Guid="579ce302-450f-4192-82c0-3289c8829c4a">
+            <File Id="FileStdoleDll" Name="stdole.dll" KeyPath="yes" Source="redist\stdole.dll" DiskId="1" Assembly=".net"/>
+          </Component>
+
           <Directory Id="DirBin" Name="bin">
             <Directory Id="DirBinI386" Name="i386">
               <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
@@ -230,6 +234,7 @@
         <ComponentRef Id="CompVs90"/>
       </Feature>
 
+      <ComponentRef Id="CompStdole"/>
       <ComponentRef Id="CompBinI386"/>
       <ComponentRef Id="CompLibI386"/>
       

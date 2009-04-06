@@ -16,7 +16,7 @@ VERSION = 1.0.0.$(BUILDNUMBER)
 #
 #----------------------------------------------------------------------
 
-cfixstudio.msi: cfixstudio.wixobj ui.wixobj dialogs.wixlib 
+cfixstudio.msi: clean cfixstudio.wixobj ui.wixobj dialogs.wixlib 
 	if not exist wixca.dll copy /Y $(WIXBINPATH)\wixca.dll .
 	if not exist wixca.wixlib copy /Y $(WIXBINPATH)\wixca.wixlib .
 	$(WIXBINPATH)\light -b .. -nologo -w0 -loc dialogs\WixUI_en-us.wxl -loc cfixstudio_en-us.wxl wixca.wixlib dialogs.wixlib cfixstudio.wixobj ui.wixobj -out cfixstudio_$(VERSION).msi

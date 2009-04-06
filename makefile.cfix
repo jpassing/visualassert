@@ -49,6 +49,7 @@ version:
 	rcstamp cfixctl\cfixhost\cfixhost.rc $(VERSION)
 	
 i386chk: version
+	if not exist bin\chk\i386 md bin\chk\i386
 	copy $(CFIX_TREE)\bin\chk\i386\cfix.dll 	bin\chk\i386
 	copy $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
 	copy $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
@@ -58,6 +59,7 @@ i386chk: version
 	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
 	
 i386fre: version
+	if not exist bin\fre\i386 md bin\fre\i386
 	copy $(CFIX_TREE)\bin\fre\i386\cfix.dll 	bin\fre\i386
 	copy $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
 	copy $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
@@ -67,6 +69,7 @@ i386fre: version
 	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
 	
 amd64chk: version
+	if not exist bin\chk\amd64 md bin\chk\amd64
 	copy $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
 	copy $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
 	copy $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
@@ -74,6 +77,7 @@ amd64chk: version
 	cmd /C ddkbuild -WLHNETA64 checked . -cZ
 	
 amd64fre: version
+	if not exist bin\fre\amd64 md bin\fre\amd64
 	copy $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
 	copy $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
 	copy $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
