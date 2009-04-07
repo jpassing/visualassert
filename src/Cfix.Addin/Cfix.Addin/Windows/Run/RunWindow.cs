@@ -196,21 +196,39 @@ namespace Cfix.Addin.Windows.Run
 			try
 			{
 				IResultNode item = ( IResultNode ) sender;
+
+				//
+				// Remember node to associate menu item clicks with
+				// this node.
+				//
+				this.contextMenuReferenceItem = item;
+
 				ResultItemNode resultItem = item as ResultItemNode;
 				if ( resultItem != null )
 				{
 					this.resultCtxMenu.Show( this.results, e.Location );
+					return;
+				}
 
-					//
-					// Remember node to associate menu item clicks with
-					// this node.
-					//
-					this.contextMenuReferenceItem = item;
+				FailureNode failNode = item as FailureNode;
+				if ( failNode != null && failNode.StackTrace != null )
+				{
+					this.stackTraceCtxMenu.Show( this.results, e.Location );
+					return;
 				}
 			}
 			catch ( Exception x )
 			{
 				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void ctxMenuCopyTraceButton_Click( object sender, EventArgs e )
+		{
+			FailureNode failNode = this.contextMenuReferenceItem as FailureNode;
+			if ( failNode != null && failNode.StackTrace != null )
+			{
+				Clipboard.SetText( failNode.StackTrace.ToString() );
 			}
 		}
 

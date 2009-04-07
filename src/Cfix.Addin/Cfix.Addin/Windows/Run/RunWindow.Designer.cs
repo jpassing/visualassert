@@ -37,8 +37,11 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
+			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
+			this.stackTraceCtxMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolbar
@@ -87,7 +90,7 @@ namespace Cfix.Addin.Windows.Run
             this.ctxMenuDebugButton,
             this.ctxMenuRunButton} );
 			this.resultCtxMenu.Name = "resultCtxMenu";
-			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 70 );
+			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 48 );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -120,6 +123,20 @@ namespace Cfix.Addin.Windows.Run
 			this.results.Size = new System.Drawing.Size( 555, 201 );
 			this.results.TabIndex = 1;
 			// 
+			// stackTraceCtxMenu
+			// 
+			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuCopyTraceButton} );
+			this.stackTraceCtxMenu.Name = "stackTraceCtxMenu";
+			this.stackTraceCtxMenu.Size = new System.Drawing.Size( 156, 48 );
+			// 
+			// ctxMenuCopyTraceButton
+			// 
+			this.ctxMenuCopyTraceButton.Name = "ctxMenuCopyTraceButton";
+			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
+			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
+			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
+			// 
 			// RunWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -133,6 +150,7 @@ namespace Cfix.Addin.Windows.Run
 			this.toolbar.ResumeLayout( false );
 			this.toolbar.PerformLayout();
 			this.resultCtxMenu.ResumeLayout( false );
+			this.stackTraceCtxMenu.ResumeLayout( false );
 			this.ResumeLayout( false );
 			this.PerformLayout();
 
@@ -148,5 +166,7 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ContextMenuStrip resultCtxMenu;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuDebugButton;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunButton;
+		private System.Windows.Forms.ContextMenuStrip stackTraceCtxMenu;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuCopyTraceButton;
 	}
 }

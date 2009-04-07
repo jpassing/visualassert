@@ -107,6 +107,11 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
+		public IStackTrace StackTrace
+		{
+			get { return this.stackTrace; }
+		}
+
 		/*----------------------------------------------------------------------
 		 * ISourceReference.
 		 */

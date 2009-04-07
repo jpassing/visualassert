@@ -5,16 +5,16 @@ static void __stdcall Slow()
 	for ( int i = 0; i < 400; i++ )
 	{
 		Sleep( 10 );
-		CFIX_ASSERT( !"Fail" );
+		CFIX_ASSERT_MESSAGE( !"Fail", "sample %x", 0xF00 );
 		CFIX_LOG( "Lap %d", i );
 	}
 }
 
 static void __stdcall Slow2()
 {
-	for ( int i = 0; i < 400; i++ )
+	for ( int i = 0; i < 10; i++ )
 	{
-		Sleep( 5000 );
+		Sleep( 500 );
 
 		//MessageBox( NULL, "test", "test", 0 );
 
