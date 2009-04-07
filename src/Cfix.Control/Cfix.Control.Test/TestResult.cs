@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using NUnit.Framework;
 using Cfix.Control;
 using Cfix.Control.Native;
@@ -98,6 +99,7 @@ namespace Cfix.Control.Test
 			Cfixctl.ICfixTestÌtemEventSink tcSink =
 				( Cfixctl.ICfixTestÌtemEventSink ) fixture.GetItem( 0 );
 			tcSink.BeforeTestCaseStart();
+			Thread.Sleep( 10 );
 			tcSink.AfterTestCaseFinish( 1 );
 			Assert.AreEqual( 
 				ExecutionStatus.Succeeded,

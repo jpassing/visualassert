@@ -35,10 +35,10 @@ namespace Cfix.Control.Test
 				Assembly.GetExecutingAssembly().FullName ).Directory.FullName;
 			this.testdataDir =
 				binDir +
-				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata\i386";
+				@"\..\..\..\src\Cfix.Control\Cfix.Control.Test\testdata\i386";
 			this.testdataDir2 =
 				binDir +
-				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata2\i386";
+				@"\..\..\..\src\Cfix.Control\Cfix.Control.Test\testdata2\i386";
 		}
 
 		[TearDown]
@@ -361,6 +361,7 @@ namespace Cfix.Control.Test
 
 					Assert.IsNotNull( fass.StackTrace );
 					Assert.Greater( fass.StackTrace.FrameCount, 2 );
+					Assert.That( fass.StackTrace.ToString().Contains( "testmanaged!FailingAssertion\r\n" ) );
 					Assert.IsTrue( fass.File.EndsWith( "basic.c" ) );
 				}
 

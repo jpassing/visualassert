@@ -26,7 +26,7 @@ namespace Cfix.Control.Test
 
 			this.testdataDir =
 				binDir +
-				@"\..\..\..\managed\Cfix.Control\Cfix.Control.Test\testdata\i386";
+				@"\..\..\..\src\Cfix.Control\Cfix.Control.Test\testdata\i386";
 		}
 
 		[TearDown]
