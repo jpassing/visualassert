@@ -12,6 +12,11 @@ namespace Cfix.Control.RunControl
 	 --*/
 	internal class Task : IProcessTask
 	{
+		private const uint CFIX_E_SETUP_ROUTINE_FAILED = ( uint ) 0x8004800b;
+		private const uint CFIX_E_TEARDOWN_ROUTINE_FAILED = ( uint ) 0x8004800c;
+		private const uint CFIX_E_TEST_ROUTINE_FAILED = ( uint ) 0x8004800e;
+		private const uint RPC_S_CALL_FAILED = ( uint ) 0x800706BE;
+
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
 		
@@ -132,12 +137,21 @@ namespace Cfix.Control.RunControl
 			{
 				ForceComplete();
 
-				if ( this.status == TaskStatus.Terminated &&
-					( uint ) x.ErrorCode == ( uint ) 0x800706BE )
+				if ( this.status == TaskStatus.Terminated && 
+					( uint ) x.ErrorCode == RPC_S_CALL_FAILED )
 				{
 					//
 					// Remote procedure call failed -- this is expected
 					// after termination.
+					//
+				}
+				else if ( 
+					( uint ) x.ErrorCode == CFIX_E_SETUP_ROUTINE_FAILED ||
+					( uint ) x.ErrorCode == CFIX_E_TEARDOWN_ROUTINE_FAILED ||
+					( uint ) x.ErrorCode == CFIX_E_TEST_ROUTINE_FAILED )
+				{
+					//
+					// Expected cfix failures.
 					//
 				}
 				else

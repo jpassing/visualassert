@@ -35,6 +35,17 @@ namespace Cfix.Addin.Windows.Run
 		private DTE2 dte;
 		private Workspace workspace;
 
+		private static string GetStatusText( ExecutionStatus status )
+		{
+			string text = Strings.ResourceManager.GetString( status.ToString() );
+			if ( text == null )
+			{
+				text = status.ToString();
+			}
+
+			return text;
+		}
+
 		/*----------------------------------------------------------------------
 		 * Private - Run events.
 		 * 
@@ -84,7 +95,9 @@ namespace Cfix.Addin.Windows.Run
 							completed,
 							total,
 							this.run.TaskCount,
-							this.run.Status );
+							this.run.Status.ToString(),
+							this.run.ItemsFailed,
+							this.run.ItemsInconclusive );
 					this.progressBar.Invalidate();
 					this.progressLabel.Invalidate();
 				} );
@@ -102,11 +115,23 @@ namespace Cfix.Addin.Windows.Run
 
 				if ( this.run.Status == TaskStatus.Suceeded )
 				{
-					this.progressLabel.Text = this.run.RootResult.Status.ToString();
+					//
+					// Run succeeded, but may have produced failures.
+					//
+					this.progressLabel.Text =
+						String.Format(
+							Strings.ProgressInfoFinish,
+							GetStatusText( this.run.RootResult.Status ),
+							this.run.ItemsFailed,
+							this.run.ItemsInconclusive );
 				}
 				else
 				{
+					//
+					// Run failed.
+					//
 					this.progressLabel.Text = this.run.Status.ToString();
+					this.progressBar.ForeColor = FailedColor;
 				}
 
 				this.progressBar.Value = 100;
@@ -131,7 +156,9 @@ namespace Cfix.Addin.Windows.Run
 						0,
 						this.run.ItemCount,
 						this.run.TaskCount,
-						this.run.Status );
+						this.run.Status.ToString(),
+						0,
+						0 );
 				this.progressBar.Invalidate(); 
 				this.progressLabel.Invalidate();
 			} );

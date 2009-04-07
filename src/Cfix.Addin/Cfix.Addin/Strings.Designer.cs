@@ -115,11 +115,20 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed..
+        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive..
         /// </summary>
         internal static string ProgressInfo {
             get {
                 return ResourceManager.GetString("ProgressInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: {1} failed, {2} inconclusive..
+        /// </summary>
+        internal static string ProgressInfoFinish {
+            get {
+                return ResourceManager.GetString("ProgressInfoFinish", resourceCulture);
             }
         }
         
@@ -165,6 +174,24 @@ namespace Cfix.Addin {
         internal static string SelectFileOrFolder {
             get {
                 return ResourceManager.GetString("SelectFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succeeded, partly inconclusive.
+        /// </summary>
+        internal static string SucceededWithInconclusiveParts {
+            get {
+                return ResourceManager.GetString("SucceededWithInconclusiveParts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succeeded, partly skipped.
+        /// </summary>
+        internal static string SucceededWithSkippedParts {
+            get {
+                return ResourceManager.GetString("SucceededWithSkippedParts", resourceCulture);
             }
         }
         

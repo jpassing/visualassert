@@ -136,7 +136,10 @@
     <value>cfix</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
-    <value>{3}, {2} host process(es), {0}/{1} test cases completed.</value>
+    <value>{3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive.</value>
+  </data>
+  <data name="ProgressInfoFinish" xml:space="preserve">
+    <value>{0}: {1} failed, {2} inconclusive.</value>
   </data>
   <data name="RunActive" xml:space="preserve">
     <value>Run still active</value>
@@ -152,6 +155,12 @@
   </data>
   <data name="SelectFileOrFolder" xml:space="preserve">
     <value>Please select a test library or a folder to explore.</value>
+  </data>
+  <data name="SucceededWithInconclusiveParts" xml:space="preserve">
+    <value>Succeeded, partly inconclusive</value>
+  </data>
+  <data name="SucceededWithSkippedParts" xml:space="preserve">
+    <value>Succeeded, partly skipped</value>
   </data>
   <data name="TerminateActiveRun" xml:space="preserve">
     <value>The test run has not finished yet. Do you wish to terminate it?</value>
