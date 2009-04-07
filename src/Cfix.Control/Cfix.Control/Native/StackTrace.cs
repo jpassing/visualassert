@@ -1,6 +1,7 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -40,6 +41,13 @@ namespace Cfix.Control.Native
 			{
 				this.sourceFile = null;
 			}
+		}
+
+		public override string ToString()
+		{
+			return 
+				( this.module ?? "[unknown]" ) + "!" + 
+				( this.function ?? "[unknown]" );
 		}
 
 		public string Module
@@ -100,6 +108,18 @@ namespace Cfix.Control.Native
 
 			Marshal.ReleaseComObject( trace );
 			return new StackTrace( frames );
+		}
+
+		public override string ToString()
+		{
+			StringBuilder buf = new StringBuilder();
+			foreach ( IStackTraceFrame frame in this.frames )
+			{
+				buf.Append( frame.ToString() );
+				buf.Append( "\r\n" );
+			}
+
+			return buf.ToString();
 		}
 
 		/*--------------------------------------------------------------
