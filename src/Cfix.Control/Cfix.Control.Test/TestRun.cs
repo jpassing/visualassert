@@ -497,10 +497,7 @@ namespace Cfix.Control.Test
 
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
-						//
-						// Premature abort due to shortcutting.
-						//
-						Assert.AreEqual( TaskStatus.Failed, run.Status );
+						Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 						done.Set();
 					};
 
