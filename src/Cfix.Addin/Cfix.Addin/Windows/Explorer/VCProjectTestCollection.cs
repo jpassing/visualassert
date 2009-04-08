@@ -29,6 +29,37 @@ namespace Cfix.Addin.Windows.Explorer
 		//
 		private string currentPath;
 
+		private static bool vcDirectoriesRegistered;
+
+		/*++
+		 * Register cfix directories s.t. the compiler finds them. 
+		 --*/
+		private static void RegisterVcDirectories( VCProjectEngine engine )
+		{
+			if ( vcDirectoriesRegistered )
+			{
+				return;
+			}
+
+			IVCCollection platforms = ( IVCCollection ) engine.Platforms;
+			foreach ( VCPlatform platform in platforms )
+			{
+				if ( !IsArchitectureSupported( platform ) )
+				{
+					continue;
+				}
+
+				Architecture arch = GetArchitecture( platform );
+				platform.IncludeDirectories +=
+					";" + Directories.IncludeDirectory;
+
+				platform.LibraryDirectories +=
+					";" + Directories.GetLibDirectory( arch );
+			}
+
+			vcDirectoriesRegistered = true;
+		}
+		
 		private VCConfiguration CurrentConfiguration
 		{
 			get
@@ -56,7 +87,12 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private static Architecture GetArchitecture( VCConfiguration config )
 		{
-			string plafName = ( ( VCPlatform ) config.Platform ).Name;
+			return GetArchitecture( ( VCPlatform ) config.Platform );
+		}
+
+		private static Architecture GetArchitecture( VCPlatform plaf )
+		{
+			string plafName = plaf.Name;
 			switch ( plafName )
 			{
 				case "Win32":
@@ -68,6 +104,22 @@ namespace Cfix.Addin.Windows.Explorer
 				default:
 					throw new CfixAddinException(
 						String.Format( Strings.UnrecognizedPlatform, plafName ) );
+			}
+		}
+
+		private static bool IsArchitectureSupported( VCPlatform plaf )
+		{
+			string plafName = plaf.Name;
+			switch ( plafName )
+			{
+				case "Win32":
+					return true;
+
+				case "x64":
+					return true;
+
+				default:
+					return false;
 			}
 		}
 
@@ -151,7 +203,19 @@ namespace Cfix.Addin.Windows.Explorer
 			this.agentSet = agents;
 			this.config = config;
 
-			LoadPrimaryOutputModule( CurrentConfiguration );
+			VCConfiguration currentConfig = CurrentConfiguration;
+
+			//
+			// If not happened yet, register VC directories.
+			//
+			// N.B. We need a Project to get hold of the VCProjectEngine,
+			// thus, this has to occur here.
+			//
+			VCCLCompilerTool clTool = ( VCCLCompilerTool )
+				( ( IVCCollection ) currentConfig.Tools ).Item( "VCCLCompilerTool" );
+			RegisterVcDirectories( ( VCProjectEngine ) clTool.VCProjectEngine );
+
+			LoadPrimaryOutputModule( currentConfig );
 		}
 
 		public string UniqueName
