@@ -50,9 +50,11 @@ version:
 	
 i386chk: version
 	if not exist bin\chk\i386 md bin\chk\i386
-	copy $(CFIX_TREE)\bin\chk\i386\cfix.dll 	bin\chk\i386
-	copy $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
-	copy $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\chk\i386
 	
 	cmd /C ddkbuild -WNETW2K checked . -cZ
 	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
@@ -60,9 +62,11 @@ i386chk: version
 	
 i386fre: version
 	if not exist bin\fre\i386 md bin\fre\i386
-	copy $(CFIX_TREE)\bin\fre\i386\cfix.dll 	bin\fre\i386
-	copy $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
-	copy $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\chk\i386
 	                                           
 	cmd /C ddkbuild -WNETW2K free . -cZ
 	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
@@ -70,17 +74,21 @@ i386fre: version
 	
 amd64chk: version
 	if not exist bin\chk\amd64 md bin\chk\amd64
-	copy $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
-	copy $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
-	copy $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\i386
                                                      
 	cmd /C ddkbuild -WLHNETA64 checked . -cZ
 	
 amd64fre: version
 	if not exist bin\fre\amd64 md bin\fre\amd64
-	copy $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
-	copy $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
-	copy $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\i386
 	                                                   
 	cmd /C ddkbuild -WLHNETA64 free . -cZ	
 	

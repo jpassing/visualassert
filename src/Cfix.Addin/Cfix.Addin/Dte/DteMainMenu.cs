@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------
+ * Purpose:
+ *		Menu handling.
+ *
+ * Copyright:
+ *		2009, Johannes Passing. All rights reserved.
+ */
+
 using System;
 using System.Globalization;
 using System.Drawing;

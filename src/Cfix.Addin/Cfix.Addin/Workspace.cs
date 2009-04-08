@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------
+ * Purpose:
+ *		Workspace.
+ *
+ * Copyright:
+ *		2009, Johannes Passing. All rights reserved.
+ */
+
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;

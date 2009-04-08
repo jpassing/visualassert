@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------
+ * Purpose:
+ *		Solution.
+ *
+ * Copyright:
+ *		2009, Johannes Passing. All rights reserved.
+ */
+
 using System;
 using System.IO;
 using System.Diagnostics;

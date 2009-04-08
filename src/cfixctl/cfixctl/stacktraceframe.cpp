@@ -3,8 +3,7 @@
  *		Stack Trace Frame.
  *
  * Copyright:
- *		2009, Johannes Passing (passing at users.sourceforge.net)
- *
+ *		2009, Johannes Passing. All rights reserved.
  */
 
 #include "cfixctlp.h"

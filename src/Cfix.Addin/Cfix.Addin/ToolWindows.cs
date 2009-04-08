@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------
+ * Purpose:
+ *		Tool Window Collection.
+ *
+ * Copyright:
+ *		2009, Johannes Passing. All rights reserved.
+ */
+
 using System;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;

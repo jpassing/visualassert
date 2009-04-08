@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------
+ * Purpose:
+ *		Run window.
+ *
+ * Copyright:
+ *		2009, Johannes Passing. All rights reserved.
+ */
+
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;

@@ -378,15 +378,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\cfix-cfixctl\include\cfixapi.h"
+				RelativePath="..\..\include\cfixctl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\cfixctl.h"
+				RelativePath="..\..\include\cfixctlmsg.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\cfixctlsvr.h"
+				RelativePath="..\..\include\cfixctlsvr.h"
 				>
 			</File>
 		</Filter>
