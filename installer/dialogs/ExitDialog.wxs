@@ -16,8 +16,8 @@
           <Condition Action="show"><![CDATA[NOT Installed]]></Condition>
         </Control>
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
-        <Control Id="Description" Type="Text" X="135" Y="70" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogDescription)" />
-        <Control Id="Title" Type="Text" X="20" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogTitle)" />
+        <Control Id="Description" Type="Text" X="135" Y="70" Width="300" Height="60" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogDescription)" />
+        <Control Id="Title" Type="Text" X="20" Y="20" Width="300" Height="60" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogTitle)" />
 		<Control Id="LaunchText" Type="Text" X="150" Y="90" Width="200" Height="17" Transparent="yes" NoPrefix="yes" Text="$(loc.OpenTutorial)">
           <Condition Action="hide"><![CDATA[Installed]]></Condition>
           <Condition Action="show"><![CDATA[NOT Installed]]></Condition>
