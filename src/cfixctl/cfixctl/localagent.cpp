@@ -357,6 +357,7 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
 	__out HANDLE *ProcessOrJob,
+	__out PBOOL InJob,
 	__out DWORD *Cookie
 	)
 {
@@ -405,6 +406,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 
 		PutInJob = PutInJob && ! InJob;
 	}
+
+	*InJob = PutInJob;
 
 	if ( ! PutInJob )
 	{
@@ -587,6 +590,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 		CurrentDirectory, 
 		UseJob,
 		&ProcessOrJob,
+		&UseJob,			// Just because we want a job, we may still not get one.
 		&Cookie );
 	if ( SUCCEEDED( Hr ) )
 	{

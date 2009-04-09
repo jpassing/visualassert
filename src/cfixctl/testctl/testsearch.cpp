@@ -6,7 +6,7 @@
  *		2009, Johannes Passing. All rights reserved.
  */
 
-#define TESTDATA_FOLDER L"..\\..\\..\\cfixctl\\testctl\\testdata"
+#define TESTDATA_FOLDER L"..\\..\\..\\src\\cfixctl\\testctl\\testdata"
 
 #define E_FNF HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND )
 
