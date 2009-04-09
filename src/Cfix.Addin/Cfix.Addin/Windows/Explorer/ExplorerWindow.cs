@@ -85,6 +85,8 @@ namespace Cfix.Addin.Windows.Explorer
 				( schedOpts == SchedulingOptions.ShortcutFixtureOnFailure );
 			this.shurtcutRunOnFailureButton.Checked =
 				( schedOpts == SchedulingOptions.ShurtcutRunOnFailure );
+
+			ExploreSolution();
 		}
 
 		/*----------------------------------------------------------------------
@@ -359,12 +361,15 @@ namespace Cfix.Addin.Windows.Explorer
 			this.autoRefreshButton.Enabled = true;
 
 			Solution curSolution = this.dte.Solution;
-			SolutionTestCollection slnCollection = new SolutionTestCollection(
-				( Solution2 ) curSolution,
-				this.workspace.RunAgent,
-				this.workspace.Configuration );
-			slnCollection.Closed += new EventHandler( slnCollection_Closed );
-			this.workspace.Session.Tests = slnCollection;
+			if ( curSolution != null && curSolution.Projects.Count > 0 )
+			{
+				SolutionTestCollection slnCollection = new SolutionTestCollection(
+					( Solution2 ) curSolution,
+					this.workspace.RunAgent,
+					this.workspace.Configuration );
+				slnCollection.Closed += new EventHandler( slnCollection_Closed );
+				this.workspace.Session.Tests = slnCollection;
+			}
 		}
 
 		private void slnCollection_Closed( object sender, EventArgs e )
