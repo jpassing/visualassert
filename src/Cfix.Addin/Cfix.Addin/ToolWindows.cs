@@ -10,7 +10,7 @@ using System;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
 using Cfix.Addin.Windows.Run;
-
+using EnvDTE;
 namespace Cfix.Addin
 {
 	internal class ToolWindows : IDisposable
@@ -18,6 +18,7 @@ namespace Cfix.Addin
 		private readonly CfixPlus addin;
 		private DteToolWindow<ExplorerWindow> explorer;
 		private DteToolWindow<RunWindow> run;
+		private OutputWindowPane logOutputWindow;
 
 		internal ToolWindows( CfixPlus addin )
 		{
@@ -123,6 +124,37 @@ namespace Cfix.Addin
 				}
 
 				return this.run;
+			}
+		}
+
+		public OutputWindowPane LogWindow
+		{
+			get
+			{
+				if ( this.logOutputWindow == null )
+				{
+					//
+					// Try using existing.
+					//
+					OutputWindowPanes panes = 
+						this.addin.DTE.ToolWindows.OutputWindow.OutputWindowPanes;
+					try
+					{
+						this.logOutputWindow = panes.Item( "cfix" );
+					}
+					catch ( Exception )
+					{ }
+
+					//
+					// Create new if no existing found.
+					//
+					if ( this.logOutputWindow == null )
+					{
+						this.logOutputWindow = panes.Add( "cfix" );
+					}
+				}
+
+				return this.logOutputWindow;
 			}
 		}
 

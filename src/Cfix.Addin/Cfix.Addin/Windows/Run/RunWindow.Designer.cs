@@ -29,6 +29,7 @@ namespace Cfix.Addin.Windows.Run
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( RunWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -39,6 +40,7 @@ namespace Cfix.Addin.Windows.Run
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -47,7 +49,8 @@ namespace Cfix.Addin.Windows.Run
 			// toolbar
 			// 
 			this.toolbar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.terminateButton} );
+            this.terminateButton,
+            this.showLogButton} );
 			this.toolbar.Location = new System.Drawing.Point( 0, 0 );
 			this.toolbar.Name = "toolbar";
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
@@ -128,7 +131,7 @@ namespace Cfix.Addin.Windows.Run
 			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.ctxMenuCopyTraceButton} );
 			this.stackTraceCtxMenu.Name = "stackTraceCtxMenu";
-			this.stackTraceCtxMenu.Size = new System.Drawing.Size( 156, 48 );
+			this.stackTraceCtxMenu.Size = new System.Drawing.Size( 156, 26 );
 			// 
 			// ctxMenuCopyTraceButton
 			// 
@@ -136,6 +139,16 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
 			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
 			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
+			// 
+			// showLogButton
+			// 
+			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.showLogButton.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "showLogButton.Image" ) ) );
+			this.showLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.showLogButton.Name = "showLogButton";
+			this.showLogButton.Size = new System.Drawing.Size( 54, 22 );
+			this.showLogButton.Text = "Show log";
+			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
 			// 
 			// RunWindow
 			// 
@@ -168,5 +181,6 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunButton;
 		private System.Windows.Forms.ContextMenuStrip stackTraceCtxMenu;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuCopyTraceButton;
+		private System.Windows.Forms.ToolStripButton showLogButton;
 	}
 }

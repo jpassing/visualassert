@@ -113,6 +113,11 @@ namespace Cfix.Addin.Windows.Run
 
 		private void run_Log( object sender, LogEventArgs e )
 		{
+			IResultItem item = ( IResultItem ) sender;
+			this.workspace.ToolWindows.LogWindow.OutputString(
+				String.Format( "[{0}] {1}\n",
+					item.Name,
+					e.Message ) );
 		}
 
 		private void run_Finished( object sender, FinishedEventArgs e )
@@ -188,6 +193,19 @@ namespace Cfix.Addin.Windows.Run
 						this.run.Terminate();
 					}
 				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		private void showLogButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				this.dte.ToolWindows.OutputWindow.Parent.Activate();
+				this.workspace.ToolWindows.LogWindow.Activate();
 			}
 			catch ( Exception x )
 			{
