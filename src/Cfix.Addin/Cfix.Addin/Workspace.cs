@@ -335,8 +335,9 @@ namespace Cfix.Addin
 			if ( !BuildNodeIfRequired( item ) )
 			{
 				//
-				// Bail out. Errors should have been provided by VS.
+				// Bail out. Show error window.
 				//
+				this.addin.DTE.ToolWindows.ErrorList.Parent.Activate();
 				return;
 			}
 
