@@ -219,9 +219,28 @@ namespace Cfix.Addin.Windows.Explorer
 			// N.B. We need a Project to get hold of the VCProjectEngine,
 			// thus, this has to occur here.
 			//
+			VCProjectEngine engine = null;
 			VCCLCompilerTool clTool = ( VCCLCompilerTool )
 				( ( IVCCollection ) currentConfig.Tools ).Item( "VCCLCompilerTool" );
-			RegisterVcDirectories( ( VCProjectEngine ) clTool.VCProjectEngine );
+			if ( clTool != null )
+			{
+				engine = ( VCProjectEngine ) clTool.VCProjectEngine;
+			}
+			else
+			{
+				VCNMakeTool nmakeTool = ( VCNMakeTool )
+					( ( IVCCollection ) currentConfig.Tools ).Item( "VCNMakeTool" );
+				if ( nmakeTool != null )
+				{
+					engine = ( VCProjectEngine ) nmakeTool.VCProjectEngine;
+				}
+			}
+
+			if ( engine != null )
+			{
+				RegisterVcDirectories( engine );
+			}
+
 
 			LoadPrimaryOutputModule( currentConfig );
 		}

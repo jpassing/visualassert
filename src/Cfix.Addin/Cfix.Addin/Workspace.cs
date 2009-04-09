@@ -106,8 +106,10 @@ namespace Cfix.Addin
 		/*++
 		 * Create AgentSet for all supported architectures.
 		 --*/
-		private static AgentSet CreateRunAgent()
+		private AgentSet CreateRunAgent()
 		{
+			Debug.Assert( this.config != null );
+
 			AgentSet target = new AgentSet();
 			switch ( GetNativeArchitecture() )
 			{
@@ -115,11 +117,13 @@ namespace Cfix.Addin
 					target.AddArchitecture(
 						Agent.CreateLocalAgent(
 							Architecture.Amd64,
-							false ) );
+							false,
+							this.config.HostCreationOptions ) );
 					target.AddArchitecture(
 						Agent.CreateLocalAgent(
 							Architecture.I386,
-							false ) );
+							false,
+							this.config.HostCreationOptions ) );
 
 					break;
 
@@ -127,7 +131,8 @@ namespace Cfix.Addin
 					target.AddArchitecture(
 						Agent.CreateLocalAgent(
 							Architecture.I386,
-							false ) );
+							false,
+							this.config.HostCreationOptions ) );
 					break;
 
 				default:
@@ -230,8 +235,8 @@ namespace Cfix.Addin
 			//
 			this.searchAgent = Agent.CreateLocalAgent( Architecture.I386, true );
 			
-			this.runAgents = CreateRunAgent();
 			this.config = Configuration.Load();
+			this.runAgents = CreateRunAgent();
 			this.session = new Session();
 
 			//

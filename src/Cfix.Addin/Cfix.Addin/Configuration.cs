@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 using Cfix.Control;
+using Cfix.Control.Native;
 
 namespace Cfix.Addin
 {
@@ -163,6 +164,30 @@ namespace Cfix.Addin
 				this.key.SetValue(
 					"RunWindowVisible",
 					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public HostCreationOptions HostCreationOptions
+		{
+			get
+			{
+				HostCreationOptions val = ( HostCreationOptions ) this.key.GetValue(
+					"HostCreationOptions", HostCreationOptions.None );
+				if ( Enum.IsDefined( typeof( HostCreationOptions ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return HostCreationOptions.None;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"HostCreationOptions",
+					value,
 					RegistryValueKind.DWord );
 			}
 		}

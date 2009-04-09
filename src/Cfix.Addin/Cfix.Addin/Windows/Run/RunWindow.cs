@@ -183,7 +183,10 @@ namespace Cfix.Addin.Windows.Run
 				lock ( this.runLock )
 				{
 					this.aborted = true;
-					this.run.Terminate();
+					if ( this.run != null )
+					{
+						this.run.Terminate();
+					}
 				}
 			}
 			catch ( Exception x )
