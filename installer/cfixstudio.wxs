@@ -28,6 +28,9 @@
     <InstallExecuteSequence>
       <RemoveExistingProducts After="InstallInitialize" />
       <Custom Action="ERRCA_CANCELNEWERVERSION" After="FindRelatedProducts"><![CDATA[NEWERPRODUCTFOUND AND NOT Installed]]></Custom>
+
+      <Custom Action='UninstallAddinVs80' After='RemoveFiles'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
+      <Custom Action='UninstallAddinVs90' After='RemoveFiles'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
     </InstallExecuteSequence>
 
     <Media Id="1" Cabinet="cfixstudio.cab" EmbedCab="yes" />
@@ -37,16 +40,26 @@
       <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="directory" />
     </Property>
 
+    
     <!-- Search VS installations -->
     <Property Id="VS80INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs80" Root="HKCR" Key="VisualStudio.DTE.8.0" Type="raw" />
     </Property>
 
+    <Property Id="VS80INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0" Name="InstallDir" Type="directory" />
+    </Property>
+
+    
     <Property Id="VS90INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
     </Property>
 
+    <Property Id="VS90INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0" Name="InstallDir" Type="directory" />
+    </Property>
 
+    
 
     <Condition Message='Windows 2000 SP4 or better required'>
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
@@ -255,6 +268,12 @@
 
     <Property Id='HTMLHELP'>hh.exe</Property>
     <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfix.chm::ch04s01.html" />
+
+    <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
+    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin Cfix.Addin.CfixPlus /Command File.Exit" />
+
+    <Property Id='VS90DEVENV'>[VS90INSTALLDIR]devenv.exe</Property>
+    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin Cfix.Addin.CfixPlus /Command File.Exit" />
 
     <Icon Id="CfixIco" SourceFile="icon.ico" />
   </Product>
