@@ -361,6 +361,7 @@ namespace Cfix.Addin
 				this.DispositionPolicy,
 				this.config.SchedulingOptions,
 				this.config.ThreadingOptions,
+				this.config.ExecutionOptions,
 				allowArchMixing );
 			compiler.Add( item );
 

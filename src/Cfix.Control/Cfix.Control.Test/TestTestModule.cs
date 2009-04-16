@@ -70,7 +70,8 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					SchedulingOptions.None,
-					ThreadingOptions.ComNeutralThreading );
+					ThreadingOptions.ComNeutralThreading,
+					ExecutionOptions.AutoAdjustCurrentDirectory );
 				mod.Add(
 					comp,
 					sink,
@@ -118,7 +119,8 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					SchedulingOptions.None,
-					ThreadingOptions.ComNeutralThreading );
+					ThreadingOptions.ComNeutralThreading,
+					ExecutionOptions.None );
 				mod.Add(
 					comp,
 					sink,
@@ -175,7 +177,8 @@ namespace Cfix.Control.Test
 						new StandardDispositionPolicy(
 							Disposition.Break, Disposition.Break ),
 						SchedulingOptions.None,
-						ThreadingOptions.ComNeutralThreading );
+						ThreadingOptions.ComNeutralThreading,
+						ExecutionOptions.None );
 					comp.Add( mod );
 					IRun run = comp.Compile();
 					AutoResetEvent done = new AutoResetEvent( false );

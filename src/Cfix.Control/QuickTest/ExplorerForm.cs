@@ -89,6 +89,7 @@ namespace QuickTest
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.None,
 					ThreadingOptions.None,
+					ExecutionOptions.None,
 					true );
 				comp.Add( ( IRunnableTestItem ) mod );
 				IRun run = comp.Compile();

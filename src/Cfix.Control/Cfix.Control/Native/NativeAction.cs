@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
 
@@ -25,6 +26,8 @@ namespace Cfix.Control.Native
 		private readonly TestItem item;
 		private readonly SchedulingOptions schedOptions;
 		private readonly ThreadingOptions threadingOptions;
+		private readonly ExecutionOptions executionOptions;
+
 		private readonly IResultItem result;
 		private readonly IActionEvents events;
 
@@ -37,11 +40,14 @@ namespace Cfix.Control.Native
 			private readonly Agent agent;
 			private readonly IResultItem result;
 			private readonly IActionEvents events;
+			private readonly bool autoAdjustCurrentDirectory;
 
 			public Sink( 
 				Agent agent,
 				IResultItem result, 
-				IActionEvents events )
+				IActionEvents events,
+				bool autoAdjustCurrentDirectory 
+				)
 			{
 				//
 				// Result has to refer to a native item, i.e. a module,
@@ -59,6 +65,7 @@ namespace Cfix.Control.Native
 				this.agent = agent;
 				this.result = result;
 				this.events = events;
+				this.autoAdjustCurrentDirectory = autoAdjustCurrentDirectory;
 			}
 
 			/*------------------------------------------------------------------
@@ -86,6 +93,15 @@ namespace Cfix.Control.Native
 			{
 				try
 				{
+					if ( this.autoAdjustCurrentDirectory )
+					{
+						//
+						// Set CWD to directory the module resides in.
+						//
+						Environment.CurrentDirectory =
+							new FileInfo( module.GetPath() ).Directory.FullName;
+					}
+					
 					if ( this.result.Item is TestModule )
 					{
 						//
@@ -154,7 +170,8 @@ namespace Cfix.Control.Native
 			IActionEvents events,
 			IResultItem result,
 			SchedulingOptions schedOptions,
-			ThreadingOptions threadingOptions
+			ThreadingOptions threadingOptions,
+			ExecutionOptions executionOptions
 			)
 		{
 			Debug.Assert( item != null );
@@ -164,6 +181,7 @@ namespace Cfix.Control.Native
 			this.events = events;
 			this.schedOptions = schedOptions;
 			this.threadingOptions = threadingOptions;
+			this.executionOptions = executionOptions;
 
 			this.result = result;
 		}
@@ -270,7 +288,8 @@ namespace Cfix.Control.Native
 						new Sink(
 							this.item.Module.Agent,
 							this.result,
-							this.events ),
+							this.events,
+							( this.executionOptions & ExecutionOptions.AutoAdjustCurrentDirectory ) != 0 ),
 						( uint ) this.threadingOptions );
 				}
 			}

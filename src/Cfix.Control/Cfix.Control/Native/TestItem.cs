@@ -161,7 +161,8 @@ namespace Cfix.Control.Native
 					events,
 					result,
 					compiler.SchedulingOptions,
-					compiler.ThreadingOptions ) );
+					compiler.ThreadingOptions,
+					compiler.ExecutionOptions ) );
 
 			FileInfo modInfo = new FileInfo( this.Module.Path );
 			compiler.Environment.AddSearchPath( modInfo.Directory.FullName );

@@ -12,18 +12,6 @@ namespace Cfix.Control
 		ShurtcutRunOnFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCUT_RUN_ON_FAILURE,
 	}
 
-	[Flags]
-	public enum ThreadingOptions
-	{
-		None = 0,
-
-		//
-		// Run tests on threads that are COM-neutral, i.e. have not
-		// joined any apartment.
-		//
-		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL
-	}
-
 	public interface ITestItem : IDisposable
     {
 		event EventHandler Disposed;

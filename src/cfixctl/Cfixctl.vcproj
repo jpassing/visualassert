@@ -69,7 +69,7 @@
 				BuildCommandLine="ddkbuild -WNETW2K free $(SolutionDir)"
 				ReBuildCommandLine="ddkbuild -WNETW2K free $(SolutionDir) -cZ"
 				CleanCommandLine=""
-				Output="..\bin\fre\i386\testcpp.dll"
+				Output="..\..\bin\fre\i386\testctl.dll"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""

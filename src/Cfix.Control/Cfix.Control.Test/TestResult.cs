@@ -33,7 +33,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy, 
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
@@ -82,7 +83,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy,
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
@@ -159,7 +161,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy,
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
@@ -239,7 +242,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy,
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
@@ -371,7 +375,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy,
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 
@@ -459,7 +464,8 @@ namespace Cfix.Control.Test
 				target,
 				this.policy,
 				SchedulingOptions.None,
-				ThreadingOptions.ComNeutralThreading );
+				ThreadingOptions.ComNeutralThreading,
+				ExecutionOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
 			IRun run = comp.Compile();
 

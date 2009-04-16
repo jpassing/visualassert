@@ -287,5 +287,29 @@ namespace Cfix.Addin
 					RegistryValueKind.DWord );
 			}
 		}
+
+		public ExecutionOptions ExecutionOptions
+		{
+			get
+			{
+				ExecutionOptions val = ( ExecutionOptions ) this.key.GetValue(
+					"ExecutionOptions", ExecutionOptions.AutoAdjustCurrentDirectory );
+				if ( Enum.IsDefined( typeof( ExecutionOptions ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return ExecutionOptions.AutoAdjustCurrentDirectory;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"ExecutionOptions",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
 	}
 }
