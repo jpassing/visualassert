@@ -20,7 +20,7 @@ namespace Cfix.Addin
 			get
 			{
 				string imagePath = typeof( Directories ).Assembly.Location;
-				return new DirectoryInfo( imagePath ).Parent.Parent.FullName;
+				return new DirectoryInfo( imagePath ).Parent.Parent.Parent.FullName;
 			}
 		}
 
