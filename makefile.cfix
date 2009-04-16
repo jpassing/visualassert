@@ -58,7 +58,7 @@ i386chk: version
 	
 	cmd /C ddkbuild -WNETW2K checked . -cZ
 	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
-	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
+	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release	
 	
 i386fre: version
 	if not exist bin\fre\i386 md bin\fre\i386

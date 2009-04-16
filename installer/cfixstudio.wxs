@@ -88,7 +88,7 @@
                     Action="setValue" 
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin" 
                     ElementPath="//Extensibility/Addin/Assembly"
-                    Value="[DirBinI386]cfix.addin.dll"/>
+                    Value="[DirBinI386]cfix.addin.80.dll"/>
                   <XmlFile
                     Id="XmlConfigVersionVs80"
                     Action="setValue"
@@ -112,7 +112,7 @@
                     Action="setValue"
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/Addin/Assembly"
-                    Value="[DirBinI386]cfix.addin.dll"/>
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
                   <XmlFile
                     Id="XmlConfigVersionVs90"
                     Action="setValue"
@@ -151,7 +151,8 @@
                 <File Id="FileCfixControlDllI386" Name="cfcontr.dll" LongName="cfix.control.dll" Source="bin\fre\i386\cfix.control.dll" DiskId="1"/>
                 <File Id="FileCfixControlUiDllI386" Name="cfcontui.dll" LongName="cfix.control.ui.dll" Source="bin\fre\i386\cfix.control.ui.dll" DiskId="1"/>
                 <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
-                <File Id="FileCfixAddinDllI386" Name="cfaddin.dll" LongName="cfix.addin.dll" Source="bin\fre\i386\cfix.addin.dll" DiskId="1"/>
+                <File Id="FileCfixAddin80DllI386" Name="cfaddin8.dll" LongName="cfix.addin.80.dll" Source="bin\fre\i386\cfix.addin.80.dll" DiskId="1"/>
+                <File Id="FileCfixAddin90DllI386" Name="cfaddin9.dll" LongName="cfix.addin.90.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
               </Component>
             </Directory>
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Addin", "Cfix.Addin\Cfix.Addin.csproj", "{052333CA-B105-48D5-8821-0802729438F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Addin80", "Cfix.Addin\Cfix.Addin80.csproj", "{052333CA-B105-48D5-8821-0802729438F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control", "..\Cfix.Control\Cfix.Control\Cfix.Control.csproj", "{C48FD013-1C86-4C95-B4BA-126C8749E008}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control.Test", "..\Cfix.Control\Cfix.Control.Test\Cfix.Control.Test.csproj", "{43932BBA-0D20-45F1-B716-F0C4BCAF36F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Control.TreeView", "..\Cfix.Control\Cfix.Control.TreeView\Cfix.Control.TreeView.csproj", "{E73BB233-D88B-44A7-A98F-D71EE158381D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Addin90", "Cfix.Addin\Cfix.Addin90.csproj", "{B7446865-8EE3-4DA8-9702-B43B3A386C42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Debug|x86.Build.0 = Debug|x86
 		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Release|x86.ActiveCfg = Release|x86
 		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Release|x86.Build.0 = Release|x86
+		{B7446865-8EE3-4DA8-9702-B43B3A386C42}.Debug|x86.ActiveCfg = Debug|x86
+		{B7446865-8EE3-4DA8-9702-B43B3A386C42}.Debug|x86.Build.0 = Debug|x86
+		{B7446865-8EE3-4DA8-9702-B43B3A386C42}.Release|x86.ActiveCfg = Release|x86
+		{B7446865-8EE3-4DA8-9702-B43B3A386C42}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -127,7 +127,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				return ( ( int ) this.key.GetValue( "AutoRefreshAfterBuild", 0 ) ) == 1;
+				return ( ( int ) this.key.GetValue( "AutoRefreshAfterBuild", 1 ) ) == 1;
 			}
 			set
 			{
