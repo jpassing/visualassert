@@ -398,13 +398,13 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	//
 	if ( PutInJob )
 	{
-		BOOL InJob;
-		if ( ! CfixctlpIsProcessInJob( ProcessInfo.hProcess, NULL, &InJob ) )
+		BOOL AlreadyInJob;
+		if ( ! CfixctlpIsProcessInJob( ProcessInfo.hProcess, NULL, &AlreadyInJob ) )
 		{
-			InJob = TRUE;
+			AlreadyInJob = TRUE;
 		}
 
-		PutInJob = PutInJob && ! InJob;
+		PutInJob = PutInJob && ! AlreadyInJob;
 	}
 
 	*InJob = PutInJob;

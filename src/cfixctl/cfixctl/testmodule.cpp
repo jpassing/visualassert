@@ -247,7 +247,31 @@ TestModule::~TestModule()
 
 	if ( this->Module != NULL )
 	{
-		this->Module->Routines.Dereference( this->Module );
+		//
+		// N.B. Dereferece calls FreeLibrary, which may cause Avrf
+		// to kick in in case of policy violations. Avrf raises an
+		// EXCEPTION_BREAKPOINT, which, thanks to OLE, does not cause a 
+		// JIT dialog to appear but unconditionally invokes WER.
+		//
+
+		__try
+		{
+			this->Module->Routines.Dereference( this->Module );
+		}
+		__except( 
+			( GetExceptionCode() == EXCEPTION_BREAKPOINT &&
+			  ! IsDebuggerPresent() ) 
+			? EXCEPTION_EXECUTE_HANDLER
+			: EXCEPTION_CONTINUE_SEARCH )
+		{
+			//
+			// Eat.
+			//
+			OutputDebugString( 
+				L"WARNING: Application Verifier caused an exception during "
+				L"module unload. Rerun this test with debugger attached to "
+				L"see details." );
+		}
 	}
 }
 

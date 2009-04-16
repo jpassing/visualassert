@@ -88,7 +88,7 @@ namespace Cfix.Addin
 					try
 					{
 						this.explorer.Height = 400;
-						this.explorer.Width = 300;
+						this.explorer.Width = 350;
 					}
 					catch ( Exception )
 					{ }
