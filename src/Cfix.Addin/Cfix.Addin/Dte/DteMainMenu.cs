@@ -22,20 +22,23 @@ namespace Cfix.Addin.Dte
 	{
 		private CommandBarPopup popup;
 
+		private static string GetToolsMenuName( DteConnect connect  )
+		{
+			string resourceName = String.Concat( 
+				new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
+
+			ResourceManager resourceManager = new ResourceManager(
+				"Cfix.Addin.VSStrings", Assembly.GetExecutingAssembly() );
+			return resourceManager.GetString( resourceName );
+		}
+
 		private static int GetToolsMenuIndex( DteConnect connect  )
 		{
 			try
 			{
-				string resourceName = String.Concat( 
-					new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
-
-				ResourceManager resourceManager = new ResourceManager(
-					"Cfix.Addin.VSStrings", Assembly.GetExecutingAssembly() );
-				String name = resourceManager.GetString( resourceName );
-
 				CommandBar menuBarCommandBar = 
 					( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
-				return menuBarCommandBar.Controls[ name ].Index + 1;
+				return menuBarCommandBar.Controls[ GetToolsMenuName( connect ) ].Index + 1;
 			}
 			catch
 			{
@@ -92,6 +95,43 @@ namespace Cfix.Addin.Dte
 			return new DteMainMenu( connect, popup );
 		}
 
+		public static DteMainMenu CreatePermanent( DteConnect connect, String name, String caption )
+		{
+			CommandBars cmdBars = ( CommandBars ) connect.DTE.CommandBars;
+
+			CommandBars dteCommandBars = ( CommandBars ) connect.DTE.CommandBars;
+			CommandBar dteMainMenuBar = dteCommandBars[ "MenuBar" ];
+
+			//
+			// If already installed, delete them.
+			//
+			try
+			{
+				cmdBars[ name ].Delete();
+				dteMainMenuBar.Controls[ caption ].Delete( false );
+			}
+			catch ( Exception )
+			{ }
+			
+			CommandBar menu = ( CommandBar ) connect.DTE.Commands.AddCommandBar(
+				name,
+				vsCommandBarType.vsCommandBarTypeMenu,
+				dteMainMenuBar,
+				CalculateMenuIndex( connect ) );
+			CommandBarPopup popup = ( CommandBarPopup ) menu.Parent;
+			popup.Caption = caption;
+			return new DteMainMenu( connect, popup );
+		}
+
+		public static DteMainMenu GetToolsMenu( DteConnect connect )
+		{
+			CommandBar menuBarCommandBar =
+				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
+			CommandBarPopup popup = ( CommandBarPopup )
+				menuBarCommandBar.Controls[ GetToolsMenuName( connect ) ];
+			return new DteMainMenu( connect, popup );
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -100,13 +140,16 @@ namespace Cfix.Addin.Dte
 			DteCommand item, 
 			int ordinal, 
 			Image icon, 
-			Image maskIcon 
+			Image maskIcon,
+			bool beginGroup
 			)
 		{
 			CommandBarButton buttonCtl = ( CommandBarButton ) 
 				item.Command.AddControl(
 					this.popup.CommandBar, 
 					ordinal );
+
+			buttonCtl.BeginGroup = beginGroup;
 
 			//
 			// N.B. See KB555417 for details on icon handling.

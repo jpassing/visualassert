@@ -124,7 +124,7 @@
     <value>Selection does not include any test item</value>
   </data>
   <data name="ExplorerCmdCaption" xml:space="preserve">
-    <value>Test Exlorer</value>
+    <value>cfix Test Explorer Window</value>
   </data>
   <data name="ExplorerWindowCaption" xml:space="preserve">
     <value>cfix Test Explorer</value>
@@ -145,7 +145,7 @@
     <value>Run still active</value>
   </data>
   <data name="RunCmdCaption" xml:space="preserve">
-    <value>Run</value>
+    <value>cfix Run Window</value>
   </data>
   <data name="RunWindowCaption" xml:space="preserve">
     <value>cfix Run</value>

@@ -79,7 +79,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Exlorer.
+        ///   Looks up a localized string similar to cfix Test Explorer Window.
         /// </summary>
         internal static string ExplorerCmdCaption {
             get {
@@ -142,7 +142,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run.
+        ///   Looks up a localized string similar to cfix Run Window.
         /// </summary>
         internal static string RunCmdCaption {
             get {
