@@ -32,6 +32,7 @@ namespace Cfix.Addin.Windows.Run
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( RunWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
+			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.progressLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
@@ -40,7 +41,6 @@ namespace Cfix.Addin.Windows.Run
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -67,6 +67,16 @@ namespace Cfix.Addin.Windows.Run
 			this.terminateButton.Text = "Terminate Run";
 			this.terminateButton.Click += new System.EventHandler( this.terminateButton_Click );
 			// 
+			// showLogButton
+			// 
+			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.showLogButton.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "showLogButton.Image" ) ) );
+			this.showLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.showLogButton.Name = "showLogButton";
+			this.showLogButton.Size = new System.Drawing.Size( 54, 22 );
+			this.showLogButton.Text = "Show log";
+			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
+			// 
 			// progressBar
 			// 
 			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
@@ -75,6 +85,7 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Location = new System.Drawing.Point( 3, 28 );
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
+			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar.TabIndex = 2;
 			// 
 			// progressLabel
@@ -139,16 +150,6 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
 			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
 			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
-			// 
-			// showLogButton
-			// 
-			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.showLogButton.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "showLogButton.Image" ) ) );
-			this.showLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.showLogButton.Name = "showLogButton";
-			this.showLogButton.Size = new System.Drawing.Size( 54, 22 );
-			this.showLogButton.Text = "Show log";
-			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
 			// 
 			// RunWindow
 			// 

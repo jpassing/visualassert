@@ -689,7 +689,7 @@ STDMETHODIMP LocalAgent::QueryInterface(
 }
 
 /*------------------------------------------------------------------
- * ICfixHost methods.
+ * ICfixAgent methods.
  */
 
 	
@@ -780,6 +780,8 @@ STDMETHODIMP LocalAgent::RegisterHost(
 
 	LeaveCriticalSection( &this->RegistrationLock );
 
+	CFIXCTLP_TRACE( ( L"LocalAgent: Registered %d: %x", Cookie, Hr ) );
+
 	return Hr;
 }
 
@@ -803,6 +805,8 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 	{
 		return E_INVALIDARG;
 	}
+
+	CFIXCTLP_TRACE( ( L"LocalAgent: Waiting for %d", Cookie ) );
 
 	HRESULT Hr = E_FAIL;
 	BOOL KeepSpinning = TRUE;

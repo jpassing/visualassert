@@ -299,6 +299,8 @@ library Cfixctl
 
 				For every call to RegisterHost, there must be a call
 				made to WaitForHostConnection.
+
+				Only for use by the cfix host process.
 		--*/
 		HRESULT RegisterHost(
 			[in] DWORD Cookie,
@@ -310,6 +312,8 @@ library Cfixctl
 				Wait for a registration. Once the registration is
 				available, the corresponding host pointer is returned.
 				A registration cnnot be waited for twice.
+
+				Exposed for testing purposes only -- do not use.
 		--*/
 		HRESULT WaitForHostConnection(
 			[in] DWORD Cookie,
