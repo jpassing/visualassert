@@ -23,9 +23,10 @@ BOOL CfixctlpIsProcessInJob(
 	HMODULE Kernel32Module = GetModuleHandle( L"kernel32" );
 	ASSERT( Kernel32Module != NULL );
 
-	ISPROCESSINJOB_ROUTINE Routine = ( ISPROCESSINJOB_ROUTINE ) GetProcAddress( 
-		Kernel32Module,
-		"IsProcessInJob" );
+	ISPROCESSINJOB_ROUTINE Routine = ( ISPROCESSINJOB_ROUTINE ) 
+		GetProcAddress( 
+			Kernel32Module,
+			"IsProcessInJob" );
 
 	if ( Routine != NULL )
 	{

@@ -10,8 +10,67 @@
 #include <ole2.h>
 #include <cfixctl.h>
 #include <cfixctlsvr.h>
+#include <crtdbg.h>
 
 static HANDLE CfixhostsShutdownEvent = NULL;
+
+/*----------------------------------------------------------------------
+ *
+ * Heap compatibility routines.
+ *
+ */
+
+#ifndef HeapEnableTerminationOnCorruption
+#   define HeapEnableTerminationOnCorruption ( HEAP_INFORMATION_CLASS ) 1
+#endif
+
+typedef BOOL ( * HEAPSETINFORMATION_ROUTINE )(
+	__in HANDLE HeapHandle,
+	__in HEAP_INFORMATION_CLASS HeapInformationClass,
+	__in PVOID HeapInformation,
+	__in SIZE_T HeapInformationLength
+	);
+
+static BOOL CfixctlsHeapSetInformation(
+	__in HANDLE HeapHandle,
+	__in HEAP_INFORMATION_CLASS HeapInformationClass,
+	__in PVOID HeapInformation,
+	__in SIZE_T HeapInformationLength
+	)
+{
+	HMODULE Kernel32Module = GetModuleHandle( L"kernel32" );
+	_ASSERTE( Kernel32Module != NULL );
+
+	HEAPSETINFORMATION_ROUTINE Routine = ( HEAPSETINFORMATION_ROUTINE ) 
+		GetProcAddress( 
+			Kernel32Module,
+			"HeapSetInformation" );
+
+	if ( Routine != NULL )
+	{
+		//
+		// Windows XP or above.
+		//
+		return ( Routine )( 
+			HeapHandle, 
+			HeapInformationClass,
+			HeapInformation,
+			HeapInformationLength );
+	}
+	else
+	{
+		//
+		// Windows 2000 or below.
+		//
+		return TRUE;
+	}
+}
+
+/*----------------------------------------------------------------------
+ *
+ * Initialization.
+ *
+ */
 
 static VOID CfixhostsServerUnlocked()
 {
@@ -122,6 +181,17 @@ int wWinMain(
 	//
 	SetErrorMode( SetErrorMode( 0 ) | SEM_FAILCRITICALERRORS );
 
+#ifndef _WIN64
+	//
+	// Fail early on heap corruptions.
+	//
+	CfixctlsHeapSetInformation(
+		NULL, 
+		HeapEnableTerminationOnCorruption, 
+		NULL, 
+		0 );
+#endif
+	
 	//
 	// Initialize.
 	//

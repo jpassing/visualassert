@@ -159,7 +159,6 @@ BOOL CfixctlpIsProcessInJob(
 	__out PBOOL Result
 	);
 
-
 /*----------------------------------------------------------------------
  *
  * Internal interfaces.
