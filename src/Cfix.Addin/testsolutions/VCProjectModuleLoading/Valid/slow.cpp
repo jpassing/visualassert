@@ -1,6 +1,6 @@
 #include <cfix.h>
 
-static void __stdcall Slow()
+static void __stdcall Slow()                 
 {
 	for ( int i = 0; i < 400; i++ )
 	{

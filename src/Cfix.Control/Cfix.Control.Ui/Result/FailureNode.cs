@@ -6,13 +6,11 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Result
 {
-	public class FailureNode : IResultNode, ISourceReference
+	public class FailureNode : SourceReference, IResultNode
 	{
 		private readonly String name;
 		private readonly String message;
 		private readonly IStackTrace stackTrace;
-		private readonly String file;
-		private readonly uint line;
 		private readonly String routine;
 		private readonly String expression;
 		private readonly int lastError;
@@ -37,12 +35,11 @@ namespace Cfix.Control.Ui.Result
 			ImageList iconsList,
 			int iconIndex 
 			)
+			: base( file, line )
 		{
 			this.name = name;
 			this.message = message;
 			this.stackTrace = stackTrace;
-			this.file = file;
-			this.line = line;
 			this.routine = routine;
 			this.expression = expression;
 			this.lastError = lastError;
@@ -113,20 +110,6 @@ namespace Cfix.Control.Ui.Result
 		}
 
 		/*----------------------------------------------------------------------
-		 * ISourceReference.
-		 */
-
-		public string File
-		{
-			get { return this.file; }
-		}
-
-		public uint Line
-		{
-			get { return this.line; }
-		}
-
-		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */
 
@@ -163,22 +146,6 @@ namespace Cfix.Control.Ui.Result
 		public String Expression
 		{
 			get { return this.expression; }
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)" )]
-		public String Location
-		{
-			get 
-			{ 
-				if ( this.file != null )
-				{
-					return String.Format( "{0}:{1}", this.file, this.line ); 
-				}
-				else
-				{
-					return null;
-				}
-			}
 		}
 
 		public String Routine

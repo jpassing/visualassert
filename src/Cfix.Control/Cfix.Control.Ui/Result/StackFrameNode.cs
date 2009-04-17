@@ -6,7 +6,7 @@ using Cfix.Control;
 
 namespace Cfix.Control.Ui.Result
 {
-	public class StackFrameNode : IResultNode, ISourceReference
+	public class StackFrameNode : SourceReference, IResultNode
 	{
 		private enum FrameType { CapturingCode, UserCode, FrameworkCode }
 
@@ -31,7 +31,9 @@ namespace Cfix.Control.Ui.Result
 			IStackTraceFrame frame, 
 			string name,
 			FrameType type,
-			ImageList iconsList )
+			ImageList iconsList 
+			)
+			: base( frame.SourceFile, frame.SourceLine )
 		{
 			this.frame = frame;
 			this.name = name;
@@ -94,20 +96,6 @@ namespace Cfix.Control.Ui.Result
 		}
 
 		/*----------------------------------------------------------------------
-		 * ISourceReference.
-		 */
-
-		public string File
-		{
-			get { return this.frame.SourceFile; }
-		}
-
-		public uint Line
-		{
-			get { return this.frame.SourceLine; }
-		}
-
-		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */
 
@@ -151,25 +139,6 @@ namespace Cfix.Control.Ui.Result
 				{
 					return String.Format(
 						"{0}!{1}", this.frame.Module, this.frame.Function );
-				}
-			}
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)" )]
-		public String Location
-		{
-			get
-			{
-				if ( this.frame.SourceFile != null )
-				{
-					return String.Format( 
-						"{0}:{1}", 
-						this.frame.SourceFile, 
-						this.frame.SourceLine );
-				}
-				else
-				{
-					return null;
 				}
 			}
 		}

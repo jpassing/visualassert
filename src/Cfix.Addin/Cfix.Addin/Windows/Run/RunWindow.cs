@@ -262,10 +262,19 @@ namespace Cfix.Addin.Windows.Run
 
 		private void ctxMenuCopyTraceButton_Click( object sender, EventArgs e )
 		{
-			FailureNode failNode = this.contextMenuReferenceItem as FailureNode;
-			if ( failNode != null && failNode.StackTrace != null )
+			try
 			{
-				Clipboard.SetText( failNode.StackTrace.ToString() );
+				FailureNode failNode = this.contextMenuReferenceItem as FailureNode;
+				if ( failNode != null && 
+					 failNode.StackTrace != null &&
+					 failNode.StackTrace.FrameCount > 0 )
+				{
+					Clipboard.SetText( failNode.StackTrace.ToString() );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 
