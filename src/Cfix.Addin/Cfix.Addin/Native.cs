@@ -36,5 +36,30 @@ namespace Cfix.Addin
 		public static extern void CfixklGetNativeSystemInfo( 
 			ref SYSTEM_INFO SystemInfo 
 			);
+
+		[StructLayout( LayoutKind.Sequential )]
+		public struct CDIAG_MODULE_VERSION
+		{
+			public ushort Major;
+			public ushort Minor;
+			public ushort Revision;
+			public ushort Build;
+
+			public override string ToString()
+			{
+				return String.Format(
+					"{0}.{1}.{2}.{3}",
+					this.Major,
+					this.Minor,
+					this.Revision,
+					this.Build );
+			}
+		}
+
+		[DllImport( "cdiag.dll", CharSet=CharSet.Unicode )]
+		public static extern uint CdiagGetModuleVersion(
+			string modulePath,
+			ref CDIAG_MODULE_VERSION Version
+			);
 	}
 }

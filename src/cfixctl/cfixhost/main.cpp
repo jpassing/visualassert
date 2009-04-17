@@ -20,6 +20,8 @@ static HANDLE CfixhostsShutdownEvent = NULL;
  *
  */
 
+#ifndef _WIN64
+
 #ifndef HeapEnableTerminationOnCorruption
 #   define HeapEnableTerminationOnCorruption ( HEAP_INFORMATION_CLASS ) 1
 #endif
@@ -65,6 +67,8 @@ static BOOL CfixctlsHeapSetInformation(
 		return TRUE;
 	}
 }
+
+#endif
 
 /*----------------------------------------------------------------------
  *

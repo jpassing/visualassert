@@ -22,23 +22,27 @@ namespace Cfix.Addin.Dte
 	{
 		private CommandBarPopup popup;
 
-		private static string GetToolsMenuName( DteConnect connect  )
+		private static string GetMenuName( 
+			DteConnect connect, 
+			string genericName 
+			)
 		{
 			string resourceName = String.Concat( 
-				new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName, "Tools" );
+				new CultureInfo( connect.DTE.LocaleID ).TwoLetterISOLanguageName,
+				genericName );
 
 			ResourceManager resourceManager = new ResourceManager(
 				"Cfix.Addin.VSStrings", Assembly.GetExecutingAssembly() );
 			return resourceManager.GetString( resourceName );
 		}
 
-		private static int GetToolsMenuIndex( DteConnect connect  )
+		private static int GetMenuIndex( DteConnect connect, string genericName )
 		{
 			try
 			{
 				CommandBar menuBarCommandBar = 
 					( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
-				return menuBarCommandBar.Controls[ GetToolsMenuName( connect ) ].Index + 1;
+				return menuBarCommandBar.Controls[ GetMenuName( connect, genericName ) ].Index + 1;
 			}
 			catch
 			{
@@ -51,7 +55,7 @@ namespace Cfix.Addin.Dte
 			//
 			// Use Tools menu as starting point.
 			//
-			int toolsIndex = GetToolsMenuIndex( connect );
+			int toolsIndex = GetMenuIndex( connect, "Tools" );
 			if ( toolsIndex > 0 )
 			{
 				return toolsIndex;
@@ -128,7 +132,16 @@ namespace Cfix.Addin.Dte
 			CommandBar menuBarCommandBar =
 				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
 			CommandBarPopup popup = ( CommandBarPopup )
-				menuBarCommandBar.Controls[ GetToolsMenuName( connect ) ];
+				menuBarCommandBar.Controls[ GetMenuName( connect, "Tools" ) ];
+			return new DteMainMenu( connect, popup );
+		}
+
+		public static DteMainMenu GetHelpMenu( DteConnect connect )
+		{
+			CommandBar menuBarCommandBar =
+				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
+			CommandBarPopup popup = ( CommandBarPopup )
+				menuBarCommandBar.Controls[ GetMenuName( connect, "Help" ) ];
 			return new DteMainMenu( connect, popup );
 		}
 
