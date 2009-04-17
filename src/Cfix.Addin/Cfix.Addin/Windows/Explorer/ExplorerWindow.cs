@@ -74,6 +74,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer.BeforeContextMenuPopup += new EventHandler<ExplorerNodeEventArgs>( explorer_BeforeContextMenuPopup );
 			this.explorer.TreeKeyDown +=new KeyEventHandler( explorer_TreeKeyDown );
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
+			this.solutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
@@ -135,7 +136,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void DisableRefresh()
 		{
 			this.refreshButton.Enabled = false;
-			this.abortRefreshButton.Enabled = true;
+			this.abortRefreshButton.Enabled = false;
 		}
 
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
@@ -278,9 +279,19 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
+		private void solutionEvents_BeforeClosing()
+		{
+			DisableRefresh();
+
+			this.debugButton.Enabled = false;
+			this.runButton.Enabled = false;
+		}
+
 		private void ExplorerWindow_Disposed( object sender, EventArgs e )
 		{
 			this.solutionEvents.Opened -= new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
+			this.solutionEvents.BeforeClosing -= new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
+			
 			this.buildEvents.OnBuildProjConfigDone -= new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone -= new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 		
@@ -553,8 +564,5 @@ namespace Cfix.Addin.Windows.Explorer
 					SchedulingOptions.None;
 			}
 		}
-
-		
-		
 	}
 }

@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Control.Ui.Result;
+using EnvDTE;
 using EnvDTE80;
 
 namespace Cfix.Addin.Windows.Run
@@ -43,6 +44,8 @@ namespace Cfix.Addin.Windows.Run
 		private DTE2 dte;
 		private Workspace workspace;
 
+		private SolutionEvents solutionEvents;
+		
 		private static string GetStatusText( ExecutionStatus status )
 		{
 			string text = Strings.ResourceManager.GetString( status.ToString() );
@@ -342,7 +345,24 @@ namespace Cfix.Addin.Windows.Run
 				}
 			}
 		}
-		
+
+		/*----------------------------------------------------------------------
+		 * Misc events.
+		 */
+
+		private void RunWindow_Disposed( object sender, EventArgs e )
+		{
+			this.solutionEvents.BeforeClosing -= new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
+		}
+
+		private void solutionEvents_BeforeClosing()
+		{
+			//
+			// Clear results.
+			//
+			this.results.Run = null;
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -354,6 +374,8 @@ namespace Cfix.Addin.Windows.Run
 			this.results.ContextMenuRequested += new EventHandler<Cfix.Control.Ui.Result.ContextMenuEventArgs>(results_ContextMenuRequested);
 			this.results.TreeKeyDown += new KeyEventHandler( results_TreeKeyDown );
 			this.results.TreeDoubleClick += new MouseEventHandler( results_TreeDoubleClick );
+
+			this.Disposed += new EventHandler( RunWindow_Disposed );
 		}
 
 		public void Initialize(
@@ -362,6 +384,9 @@ namespace Cfix.Addin.Windows.Run
 		{
 			this.workspace = ws;
 			this.dte = dte;
+			this.solutionEvents = dte.Events.SolutionEvents;
+
+			this.solutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
 		}
 
 		public IRun Run
