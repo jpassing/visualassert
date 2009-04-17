@@ -25,7 +25,8 @@ namespace Cfix.Control.Test
 		{
 			Environment.SetEnvironmentVariable( "__TEST", "1" );
 			HostEnvironment env = new HostEnvironment();
-			env.Merge( EnvironmentVariableTarget.Process );
+			env.MergeEnvironmentVariables( 
+				Environment.GetEnvironmentVariables( EnvironmentVariableTarget.Process ) );
 			env.Add( "FOO", "2" );
 
 			Assert.IsTrue( env.NativeFormat.Contains( "__TEST=1\0" ) );

@@ -36,6 +36,11 @@ namespace Cfix.Control.Native
 
 		private readonly HostCreationOptions flags;
 
+		//
+		// Default environment; merged with specific environment.
+		//
+		private readonly HostEnvironment defaultHostEnv = new HostEnvironment();
+
 		[Flags]
 		private enum Clsctx
 		{
@@ -132,6 +137,15 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public virtual void ReleaseObject( Object obj )
+		{
+			Marshal.ReleaseComObject( obj );
+		}
+
+		/*--------------------------------------------------------------
+		 * IAgent.
+		 */
+
 		public virtual IHost CreateHost()
 		{
 			return CreateHost( null );
@@ -146,6 +160,11 @@ namespace Cfix.Control.Native
 
 			if ( env != null )
 			{
+				//
+				// Bring in the default settings.
+				//
+				env = env.Merge( this.defaultHostEnv );
+
 				envString = env.NativeFormat;
 				currentDir = env.CurrentDirectory;
 			}
@@ -184,9 +203,9 @@ namespace Cfix.Control.Native
 			}
 		}
 
-		public virtual void ReleaseObject( Object obj )
+		public HostEnvironment DefaultEnvironment
 		{
-			Marshal.ReleaseComObject( obj );
+			get { return this.defaultHostEnv; }
 		}
 
 		/*--------------------------------------------------------------

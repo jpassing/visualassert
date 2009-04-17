@@ -24,7 +24,7 @@ namespace Cfix.Addin
 		private readonly CfixPlus addin;
 		private readonly Configuration config;
 		private readonly ToolWindows toolWindows;
-		private readonly Agent searchAgent;
+		private readonly IAgent searchAgent;
 		private readonly AgentSet runAgents;
 		private readonly ISession session;
 		private readonly CommandEvents cmdEvents;
@@ -103,6 +103,28 @@ namespace Cfix.Addin
 			}
 		}
 
+		private IAgent CreateLocalAgent( Architecture arch )
+		{
+			Debug.Assert( this.config != null );
+
+			IAgent agent = Agent.CreateLocalAgent(
+				arch,
+				false,
+				this.config.HostCreationOptions );
+
+			//
+			// Inherit own environment variables.
+			//
+			// N.B. It is absolutely crucial to inherit %SystemRoot% - 
+			// otherwise, SXS will fail to load any SXS-based library,
+			// including the CRT.
+			//
+			agent.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
+
+			return agent;
+		}
+
 		/*++
 		 * Create AgentSet for all supported architectures.
 		 --*/
@@ -115,24 +137,18 @@ namespace Cfix.Addin
 			{
 				case Architecture.Amd64:
 					target.AddArchitecture(
-						Agent.CreateLocalAgent(
-							Architecture.Amd64,
-							false,
-							this.config.HostCreationOptions ) );
+						CreateLocalAgent(
+							Architecture.Amd64 ) );
 					target.AddArchitecture(
-						Agent.CreateLocalAgent(
-							Architecture.I386,
-							false,
-							this.config.HostCreationOptions ) );
+						CreateLocalAgent(
+							Architecture.I386 ) );
 
 					break;
 
 				case Architecture.I386:
 					target.AddArchitecture(
-						Agent.CreateLocalAgent(
-							Architecture.I386,
-							false,
-							this.config.HostCreationOptions ) );
+						CreateLocalAgent(
+							Architecture.I386 ) );
 					break;
 
 				default:
@@ -230,15 +246,15 @@ namespace Cfix.Addin
 			this.addin = addin;
 			this.toolWindows = new ToolWindows( addin );
 
-			//
-			// N.B. Search target is always i386 and inproc.
-			//
-			this.searchAgent = Agent.CreateLocalAgent( Architecture.I386, true );
-			
 			this.config = Configuration.Load();
 			this.runAgents = CreateRunAgent();
 			this.session = new Session();
 
+			//
+			// N.B. Search target is always i386 and inproc.
+			//
+			this.searchAgent = CreateLocalAgent( Architecture.I386 );
+			
 			//
 			// N.B. We only need the Stop command for the Terminator.
 			//
@@ -300,7 +316,7 @@ namespace Cfix.Addin
 			get { return this.config; }
 		}
 
-		public Agent SearchAgent
+		public IAgent SearchAgent
 		{
 			get { return this.searchAgent; }
 		}

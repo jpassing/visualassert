@@ -38,7 +38,10 @@ namespace Cfix.Control
 			{
 				foreach ( ITestItem item in this.list )
 				{
-					item.Dispose();
+					if ( item != null )
+					{
+						item.Dispose();
+					}
 				}
 			}
 

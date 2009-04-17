@@ -18,16 +18,47 @@ namespace Cfix.Control
 			set { this.currentDirectory = value; }
 		}
 
-		public void Merge( EnvironmentVariableTarget target )
+		public void MergeEnvironmentVariables( System.Collections.IDictionary vars )
 		{
-			foreach ( System.Collections.DictionaryEntry pair in
-				Environment.GetEnvironmentVariables( target ) )
+			foreach ( System.Collections.DictionaryEntry pair in vars )
 			{
 				//
 				// N.B. Values may be composite, ignore.
 				//
 				Add( ( string ) pair.Key, ( string ) pair.Value );
 			}
+		}
+
+		public HostEnvironment Merge( HostEnvironment other )
+		{
+			HostEnvironment merged = new HostEnvironment();
+			foreach ( KeyValuePair< string, string > p in this.env )
+			{
+				merged.Add( p.Key, p.Value );
+			}
+
+			foreach ( KeyValuePair<string, string> p in other.env )
+			{
+				merged.Add( p.Key, p.Value );
+			}
+
+			if ( this.currentDirectory != null && 
+				 other.currentDirectory != null &&
+				 this.currentDirectory != other.currentDirectory )
+			{
+				throw new ArgumentException(
+					"Conflicting current directory settings" );
+			}
+			else if ( this.currentDirectory != null )
+			{
+				merged.currentDirectory = this.currentDirectory;
+			}
+			else if ( other.currentDirectory != null )
+			{
+				merged.currentDirectory = other.currentDirectory;
+			}
+
+			return merged;
 		}
 
 		public void AddSearchPath( string module )
