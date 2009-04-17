@@ -222,6 +222,8 @@ namespace Cfix.Addin.Windows.Run
 			ContextMenuEventArgs e
 			)
 		{
+			bool running = ( this.run.Status == TaskStatus.Running );
+
 			try
 			{
 				IResultNode item = ( IResultNode ) sender;
@@ -235,6 +237,9 @@ namespace Cfix.Addin.Windows.Run
 				ResultItemNode resultItem = item as ResultItemNode;
 				if ( resultItem != null )
 				{
+					this.ctxMenuDebugButton.Enabled = !running;
+					this.ctxMenuRunButton.Enabled = !running;
+						
 					this.resultCtxMenu.Show( this.results, e.Location );
 					return;
 				}
@@ -373,7 +378,7 @@ namespace Cfix.Addin.Windows.Run
 							//
 							// Run still active - there is an imminent 
 							// danger to deadlock (waiting for finish/disposal)
-							// vs. UP updates being delivered via Invoke to
+							// vs. UI updates being delivered via Invoke to
 							// this (UI) thread.
 							//
 							// Ask whether to terminate.
@@ -382,6 +387,13 @@ namespace Cfix.Addin.Windows.Run
 							{
 								this.aborted = true;
 								this.run.Terminate();
+
+								try
+								{
+									this.dte.Debugger.Stop( false );
+								}
+								catch
+								{ }
 							}
 
 							//
