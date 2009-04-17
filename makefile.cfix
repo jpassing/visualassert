@@ -77,8 +77,8 @@ amd64chk: version
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
-	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\i386
-	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\amd64
                                                      
 	cmd /C ddkbuild -WLHNETA64 checked . -cZ
 	
@@ -87,8 +87,8 @@ amd64fre: version
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
-	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\i386
-	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\amd64
 	                                                   
 	cmd /C ddkbuild -WLHNETA64 free . -cZ	
 	
