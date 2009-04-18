@@ -81,6 +81,7 @@ HRESULT CfixlicCreateKey(
 		 MajorVersion > 0xF ||
 		 MinorVersion > 0xF ||
 		 Serial == 0 ||
+		 Serial > 1000000000 ||
 		 ! Key )
 	{
 		return E_INVALIDARG;
