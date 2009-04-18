@@ -1,0 +1,53 @@
+#----------------------------------------------------------------------
+# Purpose:
+#		Auxiliary header file. 
+#
+# Copyright:
+#		2009, Johannes Passing. All rights reserved.
+#
+
+BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
+
+MSC_WARNING_LEVEL=/W4 /Wp64
+
+INCLUDES=$(SDKBASE)\Include;..\..\..\include
+
+C_DEFINES=/D_UNICODE /DUNICODE
+
+!if "$(DDKBUILDENV)"=="chk"
+DEBUG_CRTS=1
+C_DEFINES = $(C_DEFINES) /D_DEBUG
+!endif
+
+USER_C_FLAGS=/wd4505
+
+#
+# N.B. No /SafeSEH due to oleaut32.lib.
+#
+!if "$(TARGET_DIRECTORY)"=="i386"
+USER_C_FLAGS=$(USER_C_FLAGS) /analyze
+!endif
+
+LINKER_FLAGS=/nxcompat /dynamicbase
+
+USE_LIBCMT=1
+USE_STL=1
+
+TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
+		   $(SDK_LIB_PATH)\advapi32.lib
+
+TARGETNAME=cfixlic
+TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
+TARGETTYPE=LIBRARY
+
+PASS0_HEADERDIR=..\..\..\include
+PASS0_SOURCEDIR=.
+PASS0_CLIENTDIR=..\..\..\include
+PASS0_SERVERDIR=..\..\..\include
+
+SOURCES=\
+	verify.c \
+	crc16.c \
+	scramble.c \
+	encode.c
+	

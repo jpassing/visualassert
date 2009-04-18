@@ -1,0 +1,45 @@
+#----------------------------------------------------------------------
+# Purpose:
+#		Auxiliary header file. 
+#
+# Copyright:
+#		2009, Johannes Passing. All rights reserved.
+#
+ 
+BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
+
+MSC_WARNING_LEVEL=/W4 /Wp64
+
+INCLUDES=$(SDKBASE)\Include;..\..\..\include;$(CFIX_TREE)\include
+
+C_DEFINES=/D_UNICODE /DUNICODE /EHa
+
+!if "$(DDKBUILDENV)"=="chk"
+DEBUG_CRTS=1
+C_DEFINES = $(C_DEFINES) /D_DEBUG
+!endif
+
+#
+# N.B. No /SafeSEH due to oleaut32.lib.
+#
+!if "$(TARGET_DIRECTORY)"=="i386"
+USER_C_FLAGS=/analyze
+!endif
+
+USE_LIBCMT=1
+USE_STL=1
+
+TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
+		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixlic.lib
+
+TARGETNAME=testlic
+TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
+TARGETTYPE=DYNLINK
+
+PASS0_HEADERDIR=..\..\..\include
+PASS0_SOURCEDIR=obj$(BUILD_ALT_DIR)\$(TARGET_DIRECTORY)
+
+SOURCES=\
+	testvalidate.c
+	
