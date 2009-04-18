@@ -19,7 +19,7 @@ namespace Cfix.Addin
 	{
 		private readonly String[] supportedExtensions = new String[] { ".DLL", ".SYS" };
 
-		private const String BaseKeyPath = "Software\\cfix\\addin\\1.0";
+		private const String BaseKeyPath = "Software\\cfix\\cfix-studio\\1.0";
 		private readonly RegistryKey key;
 
 		private Configuration(
