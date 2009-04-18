@@ -45,8 +45,8 @@ symadd:
 	symstore add /r /f bin\fre\amd64\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
 	
 version:
-	rcstamp cfixctl\cfixctl\cfixctl.rc $(VERSION)
-	rcstamp cfixctl\cfixhost\cfixhost.rc $(VERSION)
+	rcstamp src\cfixctl\cfixctl\cfixctl.rc $(VERSION)
+	rcstamp src\cfixctl\cfixhost\cfixhost.rc $(VERSION)
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Addin\Cfix.Addin\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control\Properties\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.TreeView\Properties\AssemblyInfo.cs
