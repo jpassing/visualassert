@@ -47,6 +47,10 @@ symadd:
 version:
 	rcstamp cfixctl\cfixctl\cfixctl.rc $(VERSION)
 	rcstamp cfixctl\cfixhost\cfixhost.rc $(VERSION)
+	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Addin\Cfix.Addin\AssemblyInfo.cs
+	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control\Properties\AssemblyInfo.cs
+	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.TreeView\Properties\AssemblyInfo.cs
+	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.Ui\Properties\AssemblyInfo.cs
 	
 i386chk: version
 	if not exist bin\chk\i386 md bin\chk\i386
