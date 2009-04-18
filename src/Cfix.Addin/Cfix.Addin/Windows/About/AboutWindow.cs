@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Reflection;
@@ -57,7 +57,13 @@ namespace Cfix.Addin.Windows.About
 		{
 			InitializeComponent();
 
-			this.versionLabel.Text += GetType().Assembly.GetName().Version;
+			Version version = GetType().Assembly.GetName().Version;
+			this.versionLabel.Text += String.Format(
+				"{0}.{1}.{2} Build {3}",
+				version.Major,
+				version.Minor,
+				version.MajorRevision,
+				version.MinorRevision );
 
 			try
 			{
@@ -65,6 +71,20 @@ namespace Cfix.Addin.Windows.About
 			}
 			catch
 			{ }
+		}
+
+		private void linkLabel_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		{
+			try
+			{
+				Process proc = new Process();
+				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
 		}
 	}
 }

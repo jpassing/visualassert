@@ -35,6 +35,7 @@ namespace Cfix.Addin.Windows.About
 			this.fileCol = new System.Windows.Forms.ColumnHeader();
 			this.archCol = new System.Windows.Forms.ColumnHeader();
 			this.versionCol = new System.Windows.Forms.ColumnHeader();
+			this.linkLabel = new System.Windows.Forms.LinkLabel();
 			this.fileVersionsLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
 			this.copyrightLabel2 = new Cfix.Addin.Windows.Run.TransparentLabel();
 			this.copyrightLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
@@ -95,6 +96,20 @@ namespace Cfix.Addin.Windows.About
 			this.versionCol.Text = "Version";
 			this.versionCol.Width = 160;
 			// 
+			// linkLabel
+			// 
+			this.linkLabel.ActiveLinkColor = System.Drawing.Color.Green;
+			this.linkLabel.AutoSize = true;
+			this.linkLabel.BackColor = System.Drawing.Color.Black;
+			this.linkLabel.LinkColor = System.Drawing.Color.Lime;
+			this.linkLabel.Location = new System.Drawing.Point( 333, 27 );
+			this.linkLabel.Name = "linkLabel";
+			this.linkLabel.Size = new System.Drawing.Size( 140, 13 );
+			this.linkLabel.TabIndex = 4;
+			this.linkLabel.TabStop = true;
+			this.linkLabel.Text = "http://www.cfix-studio.com/";
+			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler( this.linkLabel_LinkClicked );
+			// 
 			// fileVersionsLabel
 			// 
 			this.fileVersionsLabel.ForeColor = System.Drawing.Color.White;
@@ -143,6 +158,7 @@ namespace Cfix.Addin.Windows.About
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.okButton;
 			this.ClientSize = new System.Drawing.Size( 485, 311 );
+			this.Controls.Add( this.linkLabel );
 			this.Controls.Add( this.okButton );
 			this.Controls.Add( this.fileVersionsList );
 			this.Controls.Add( this.fileVersionsLabel );
@@ -158,6 +174,7 @@ namespace Cfix.Addin.Windows.About
 			this.Text = "About cfix studio";
 			( ( System.ComponentModel.ISupportInitialize ) ( this.pictureBox1 ) ).EndInit();
 			this.ResumeLayout( false );
+			this.PerformLayout();
 
 		}
 
@@ -173,5 +190,6 @@ namespace Cfix.Addin.Windows.About
 		private Cfix.Addin.Windows.Run.TransparentLabel copyrightLabel;
 		private Cfix.Addin.Windows.Run.TransparentLabel copyrightLabel2;
 		private System.Windows.Forms.ColumnHeader archCol;
+		private System.Windows.Forms.LinkLabel linkLabel;
 	}
 }
