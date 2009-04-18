@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cfix.Addin
+namespace Cfix.Control.Ui
 {
 	public interface IRelativePathReferenceItem
 	{

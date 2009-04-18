@@ -66,7 +66,7 @@ namespace Cfix.Control.Ui.Result
 			{
 				foreach ( Failure f in this.result.Failures )
 				{
-					yield return FailureNode.Create( f, this.iconsList );
+					yield return FailureNode.Create( f, this.iconsList, this );
 				}
 			}
 		}

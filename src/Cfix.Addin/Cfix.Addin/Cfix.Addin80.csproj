@@ -67,7 +67,6 @@
     <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
-    <Compile Include="IRelativePathReferenceItem.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
     <Compile Include="Directories.cs" />

@@ -14,7 +14,9 @@ namespace Cfix.Control.Ui.Result
 		private readonly string name;
 		private readonly ImageList iconsList;
 		private readonly FrameType type;
-		
+
+		private readonly ResultItemNode parent;
+
 		private bool IsProperlyUnwound
 		{
 			get { return this.frame.Function != null; }
@@ -31,19 +33,22 @@ namespace Cfix.Control.Ui.Result
 			IStackTraceFrame frame, 
 			string name,
 			FrameType type,
-			ImageList iconsList 
+			ImageList iconsList,
+			ResultItemNode parent
 			)
-			: base( frame.SourceFile, frame.SourceLine )
+			: base( frame.SourceFile, frame.SourceLine, parent )
 		{
 			this.frame = frame;
 			this.name = name;
 			this.iconsList = iconsList;
 			this.type = type;
+			this.parent = parent;
 		}
 
 		public static IEnumerable<IResultNode> EnumerateFrames(
 			IStackTrace stackTrace,
-			ImageList iconsList 
+			ImageList iconsList,
+			ResultItemNode parent
 			)
 		{
 			if ( stackTrace == null )
@@ -81,7 +86,8 @@ namespace Cfix.Control.Ui.Result
 						frame,
 						i.ToString(),
 						frameType,
-						iconsList );
+						iconsList,
+						parent );
 					
 					if ( !warningShown && !node.IsProperlyUnwound )
 					{

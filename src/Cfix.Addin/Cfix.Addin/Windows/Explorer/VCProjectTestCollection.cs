@@ -14,6 +14,7 @@ using EnvDTE;
 using EnvDTE80;
 using Cfix.Control;
 using Cfix.Control.Native;
+using Cfix.Control.Ui;
 using Microsoft.VisualStudio.VCProjectEngine;
 
 namespace Cfix.Addin.Windows.Explorer

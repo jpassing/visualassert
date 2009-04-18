@@ -18,6 +18,8 @@ namespace Cfix.Control.Ui.Result
 		private readonly ImageList iconsList;
 		private readonly int iconIndex;
 
+		private readonly ResultItemNode parent;
+
 		private static string Resolve( int errorCode )
 		{
 			return new Win32Exception( errorCode ).Message;
@@ -33,9 +35,10 @@ namespace Cfix.Control.Ui.Result
 			int lastError,
 			IStackTrace stackTrace,
 			ImageList iconsList,
-			int iconIndex 
+			int iconIndex,
+			ResultItemNode parent
 			)
-			: base( file, line )
+			: base( file, line, parent )
 		{
 			this.name = name;
 			this.message = message;
@@ -45,10 +48,14 @@ namespace Cfix.Control.Ui.Result
 			this.lastError = lastError;
 			this.iconsList = iconsList;
 			this.iconIndex = iconIndex;
+			this.parent = parent;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)" ), System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily" )]
-		public static FailureNode Create( Failure f, ImageList iconsList )
+		public static FailureNode Create( 
+			Failure f, 
+			ImageList iconsList, 
+			ResultItemNode parent )
 		{
 			if ( f is Inconclusiveness )
 			{
@@ -63,7 +70,8 @@ namespace Cfix.Control.Ui.Result
 					-1,
 					i.StackTrace,
 					iconsList,
-					ResultExplorer.InconclusiveneIconIndex );
+					ResultExplorer.InconclusiveneIconIndex,
+					parent );
 			}
 			else if ( f is UnhandledExceptionFailure )
 			{
@@ -81,7 +89,8 @@ namespace Cfix.Control.Ui.Result
 					-1,
 					u.StackTrace,
 					iconsList,
-					ResultExplorer.UnhandledExceptionIconIndex );
+					ResultExplorer.UnhandledExceptionIconIndex,
+					parent );
 			}
 			else if ( f is FailedAssertionFailure )
 			{
@@ -96,7 +105,8 @@ namespace Cfix.Control.Ui.Result
 					( int ) a.LastError,
 					a.StackTrace,
 					iconsList,
-					ResultExplorer.FailedAssertionIconIndex );
+					ResultExplorer.FailedAssertionIconIndex,
+					parent );
 			}
 			else
 			{
@@ -125,7 +135,8 @@ namespace Cfix.Control.Ui.Result
 		{
 			return StackFrameNode.EnumerateFrames( 
 				this.stackTrace,
-				this.iconsList );
+				this.iconsList,
+				this.parent );
 		}
 
 		public String Status

@@ -102,7 +102,10 @@ namespace Cfix.Control.Ui.Result
 						foreach ( Failure f in affectedNode.Failures )
 						{
 							indices[ index ] = index;
-							children[ index++ ] = FailureNode.Create( f, this.iconsList );
+							children[ index++ ] = FailureNode.Create( 
+								f, 
+								this.iconsList,
+								affectedNode );
 						}
 
 						this.NodesInserted(
