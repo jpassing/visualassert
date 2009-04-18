@@ -47,7 +47,7 @@ namespace Cfix.Addin.Windows.About
 			// 
 			this.okButton.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point( 398, 276 );
+			this.okButton.Location = new System.Drawing.Point( 387, 276 );
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size( 75, 23 );
 			this.okButton.TabIndex = 0;
@@ -76,7 +76,7 @@ namespace Cfix.Addin.Windows.About
 			this.fileVersionsList.MultiSelect = false;
 			this.fileVersionsList.Name = "fileVersionsList";
 			this.fileVersionsList.ShowGroups = false;
-			this.fileVersionsList.Size = new System.Drawing.Size( 449, 98 );
+			this.fileVersionsList.Size = new System.Drawing.Size( 438, 98 );
 			this.fileVersionsList.TabIndex = 3;
 			this.fileVersionsList.UseCompatibleStateImageBehavior = false;
 			this.fileVersionsList.View = System.Windows.Forms.View.Details;
@@ -100,9 +100,9 @@ namespace Cfix.Addin.Windows.About
 			// 
 			this.linkLabel.ActiveLinkColor = System.Drawing.Color.Green;
 			this.linkLabel.AutoSize = true;
-			this.linkLabel.BackColor = System.Drawing.Color.Black;
+			this.linkLabel.BackColor = System.Drawing.Color.FromArgb( ( ( int ) ( ( ( byte ) ( 0 ) ) ) ), ( ( int ) ( ( ( byte ) ( 3 ) ) ) ), ( ( int ) ( ( ( byte ) ( 24 ) ) ) ) );
 			this.linkLabel.LinkColor = System.Drawing.Color.Lime;
-			this.linkLabel.Location = new System.Drawing.Point( 333, 27 );
+			this.linkLabel.Location = new System.Drawing.Point( 322, 27 );
 			this.linkLabel.Name = "linkLabel";
 			this.linkLabel.Size = new System.Drawing.Size( 140, 13 );
 			this.linkLabel.TabIndex = 4;
