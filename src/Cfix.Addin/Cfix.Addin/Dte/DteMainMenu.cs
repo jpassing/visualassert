@@ -172,6 +172,14 @@ namespace Cfix.Addin.Dte
 			this.commands.Add( item );
 		}
 
+		public int LastOrdinal
+		{
+			get
+			{
+				return this.popup.Controls.Count;
+			}
+		}
+
 		public override void Delete()
 		{
 			base.Delete();
