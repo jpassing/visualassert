@@ -64,6 +64,14 @@ namespace Cfix.Addin.Windows.Explorer
 
 				platform.LibraryDirectories +=
 					";" + Directories.GetLibDirectory( arch );
+
+				//
+				// Write to disk.
+				//
+				// N.B. VS seems to be smart enough to avoid saving
+				// duplicate paths.
+				//
+				platform.CommitChanges();
 			}
 
 			vcDirectoriesRegistered = true;

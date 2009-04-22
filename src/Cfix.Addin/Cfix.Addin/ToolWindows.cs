@@ -53,19 +53,22 @@ namespace Cfix.Addin
 
 		public void RestoreWindowState()
 		{
-			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
-			{
-				Explorer.Visible = true;
-				Run.Visible = true;
-			}
+			Explorer.Visible = this.addin.Workspace.Configuration.ExplorerWindowVisible;
+			Run.Visible = this.addin.Workspace.Configuration.RunWindowVisible;
 		}
 
 		public void SaveWindowState()
 		{
-			if ( this.explorer != null && this.explorer.Visible )
+			if ( this.explorer != null )
 			{
-				this.addin.Workspace.Configuration.ExplorerWindowVisible = true;
-				this.addin.Workspace.Configuration.RunWindowVisible = true;
+				this.addin.Workspace.Configuration.ExplorerWindowVisible = 
+					this.explorer.Visible;
+			}
+
+			if ( this.run != null )
+			{
+				this.addin.Workspace.Configuration.RunWindowVisible =
+					this.run.Visible;
 			}
 		}
 
@@ -83,15 +86,9 @@ namespace Cfix.Addin
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
 						this.addin.DTE );
-					this.explorer.Visible = true;
 
-					try
-					{
-						this.explorer.Height = 400;
-						this.explorer.Width = 350;
-					}
-					catch ( Exception )
-					{ }
+					this.explorer.DefaultHeight = 400;
+					this.explorer.DefaultWidth = 350;
 				}
 
 				return this.explorer;
@@ -112,15 +109,9 @@ namespace Cfix.Addin
 					this.run.UserControl.Initialize(
 						this.addin.Workspace,
 						this.addin.DTE );
-					this.run.Visible = true;
 
-					try
-					{
-						this.run.Height = 300;
-						this.run.Width = 700;
-					}
-					catch ( Exception )
-					{ }
+					this.run.DefaultHeight = 300;
+					this.run.DefaultWidth = 700;
 				}
 
 				return this.run;

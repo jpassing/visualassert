@@ -20,6 +20,10 @@ namespace Cfix.Addin.Dte
 		private ControlT userControl;
 		private WindowEvents events;
 
+		private bool sizeInitialized;
+		private int defaultHeight;
+		private int defaultWidth;
+
 		public delegate void WindowClosingDelegate();
 		public event WindowClosingDelegate WindowClosing;
 
@@ -126,7 +130,27 @@ namespace Cfix.Addin.Dte
 		public bool Visible
 		{
 			get { return this.window.Visible; }
-			set { this.window.Visible = value; }
+			set 
+			{
+				this.window.Visible = value; 
+
+				//
+				// N.B. Setting the size is not allowed until the
+				// window has been made visible.
+				//
+				if ( value && !this.sizeInitialized )
+				{
+					try
+					{
+						this.Height = this.defaultHeight;
+						this.Width = this.defaultWidth;
+
+						this.sizeInitialized = true;
+					}
+					catch ( Exception )
+					{ }
+				}
+			}
 		}
 
 		public bool ToggleVisibility()
@@ -134,6 +158,18 @@ namespace Cfix.Addin.Dte
 			bool newState = !this.window.Visible;
 			this.window.Visible = newState;
 			return newState;
+		}
+
+		public int DefaultHeight
+		{
+			get { return this.defaultHeight; }
+			set { this.defaultHeight = value; }
+		}
+
+		public int DefaultWidth
+		{
+			get { return this.defaultWidth; }
+			set { this.defaultWidth = value; }
 		}
 
 		public int Height
@@ -147,6 +183,7 @@ namespace Cfix.Addin.Dte
 			get { return this.window.Width; }
 			set { this.window.Width = value; }
 		}
+
 
 		public bool IsFloating
 		{

@@ -54,7 +54,7 @@ namespace Cfix.Addin.Dte
 			}
 		}
 
-		private static void FindAndDeleteCommand(
+		private static Command FindCommand(
 			DteConnect connect, 
 			String name
 			)
@@ -64,10 +64,11 @@ namespace Cfix.Addin.Dte
 			{
 				if ( cmd.Name == name )
 				{
-					cmd.Delete();
-					return;
+					return cmd;
 				}
 			}
+
+			return null;
 		}
 
 		private static Command CreateCommand( 
@@ -92,23 +93,39 @@ namespace Cfix.Addin.Dte
 		 * Publics.
 		 */
 
-		public DteCommand( DteConnect connect, String name, String caption )
+		public DteCommand( 
+			DteConnect connect, 
+			String name, 
+			String caption,
+			String shortcut,
+			bool forceRecreation,
+			out bool created
+			)
 		{
 			this.connect = connect;
 			this.name = name;
 			this.caption = caption;
 
-			try
+			this.command = FindCommand( connect, name );
+			if ( this.command != null && forceRecreation )
 			{
-				this.command = CreateCommand( connect, name, caption );
+				this.command.Delete();
+				this.command = null;
 			}
-			catch ( ArgumentException )
+
+			if ( this.command == null )
 			{
-				//
-				// Already exists - delete and try again.
-				//
-				FindAndDeleteCommand( connect, name );
 				this.command = CreateCommand( connect, name, caption );
+				created = true;
+
+				if ( shortcut != null )
+				{
+					SetShortcut( shortcut );
+				}
+			}
+			else
+			{
+				created = false;
 			}
 
 			connect.RegisterCommand( name, QueryStatus, Exec );
@@ -123,12 +140,6 @@ namespace Cfix.Addin.Dte
 		public void Delete()
 		{
 			this.connect.UnregisterCommand( this.name );
-
-			//
-			// XXX:# Do not delete the command
-			// (this.command.Delete();) as this would destroy
-			// keybindings.
-			//
 			this.command.Delete();
 		}
 
