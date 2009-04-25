@@ -53,8 +53,20 @@ namespace Cfix.Addin
 
 		public void RestoreWindowState()
 		{
-			Explorer.Visible = this.addin.Workspace.Configuration.ExplorerWindowVisible;
-			Run.Visible = this.addin.Workspace.Configuration.RunWindowVisible;
+			//
+			// N.B. Avoid creating the windows unless we intend to 
+			// activate them.
+			//
+
+			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
+			{
+				Explorer.Visible = true;
+			}
+
+			if ( this.addin.Workspace.Configuration.RunWindowVisible )
+			{
+				Run.Visible = true;
+			}
 		}
 
 		public void SaveWindowState()

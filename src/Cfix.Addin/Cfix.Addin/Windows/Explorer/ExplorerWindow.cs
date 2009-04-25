@@ -369,6 +369,15 @@ namespace Cfix.Addin.Windows.Explorer
 		private void ExploreSolution()
 		{
 			Debug.Assert( this.workspace != null );
+			if ( !this.workspace.ToolWindows.Explorer.Visible )
+			{
+				//
+				// Continueing would not only be futil, it would also
+				// cause problems as the controls may not be avaible
+				// yet.
+				//
+				return;
+			}
 
 			DisableRefresh();
 			this.autoRefreshButton.Enabled = true;

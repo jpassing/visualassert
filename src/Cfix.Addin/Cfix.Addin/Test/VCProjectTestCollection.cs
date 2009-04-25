@@ -84,13 +84,31 @@ namespace Cfix.Addin.Test
 				VCProject vcProject = this.project.Object as VCProject;
 				Debug.Assert( vcProject != null );
 
-				EnvDTE.Configuration activeConfig =
-					this.project.ConfigurationManager.ActiveConfiguration;
+				EnvDTE.Configuration activeConfig = null;
+				try
+				{
+					activeConfig =
+						this.project.ConfigurationManager.ActiveConfiguration;
+				}
+				catch ( ArgumentException )
+				{
+					//
+					// Most likely due to a configuration being active that
+					// is not fully supported, e.g. amd64 on a i386 system.
+					//
+				}
 
 				IVCCollection vcConfigs = ( IVCCollection ) vcProject.Configurations;
 				foreach ( VCConfiguration vcConfig in vcConfigs )
 				{
-					if ( activeConfig.ConfigurationName == vcConfig.ConfigurationName &&
+					if ( activeConfig == null )
+					{
+						//
+						// Just choose the first.
+						//
+						return vcConfig;
+					}
+					else if ( activeConfig.ConfigurationName == vcConfig.ConfigurationName &&
 						 activeConfig.PlatformName == ( ( VCPlatform ) vcConfig.Platform ).Name )
 					{
 						return vcConfig;
