@@ -34,7 +34,7 @@ namespace Cfix.Addin.Windows.Run
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
 			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
-			this.progressLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
+			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();

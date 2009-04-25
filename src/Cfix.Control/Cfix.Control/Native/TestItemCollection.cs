@@ -236,6 +236,15 @@ namespace Cfix.Control.Native
 		}
 
 		/*--------------------------------------------------------------
+		 * ITestItem overrides.
+		 */
+
+		public override String FullName
+		{
+			get { return "__CfixFixturePe" + this.Name; }
+		}
+
+		/*--------------------------------------------------------------
 		 * ITestItemContainer.
 		 */
 

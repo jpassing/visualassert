@@ -306,6 +306,28 @@ namespace Cfix.Addin.Windows.Run
 			}
 		}
 
+		private void GoTo( object node )
+		{
+			ISourceReference src = node as ISourceReference;
+			if ( src != null )
+			{
+				if ( src.File != null )
+				{
+					CommonUiOperations.GoToSource(
+						this.dte,
+						src.File,
+						src.Line );
+					return;
+				}
+			}
+
+			ResultItemNode resNode = node as ResultItemNode;
+			if ( resNode != null )
+			{
+				CommonUiOperations.GoToTestItem( this.dte, resNode.ResultItem.Item );
+			}
+		}
+
 		private void results_TreeKeyDown( object sender, KeyEventArgs e )
 		{
 			if ( e.KeyCode == Keys.Enter )
@@ -323,17 +345,7 @@ namespace Cfix.Addin.Windows.Run
 				}
 				else
 				{
-					ISourceReference src = sender as ISourceReference;
-					if ( src != null )
-					{
-						if ( src.File != null )
-						{
-							CommonUiOperations.GoToSource(
-								this.dte,
-								src.File,
-								src.Line );
-						}
-					}
+					GoTo( sender );
 				}
 
 				e.Handled = true;
@@ -342,17 +354,7 @@ namespace Cfix.Addin.Windows.Run
 
 		private void results_TreeDoubleClick( object sender, MouseEventArgs e )
 		{
-			ISourceReference src = sender as ISourceReference;
-			if ( src != null )
-			{
-				if ( src.File != null )
-				{
-					CommonUiOperations.GoToSource(
-						this.dte,
-						src.File,
-						src.Line );
-				}
-			}
+			GoTo( sender );
 		}
 
 		/*----------------------------------------------------------------------

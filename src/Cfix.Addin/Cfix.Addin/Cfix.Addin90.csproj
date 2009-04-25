@@ -54,6 +54,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.VCCodeModel, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\redist\Vs90\Microsoft.VisualStudio.VCCodeModel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.VCProjectEngine, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\redist\Vs90\Microsoft.VisualStudio.VCProjectEngine.dll</HintPath>
@@ -90,6 +94,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Test\SolutionTestCollection.cs" />
+    <Compile Include="Test\VCProjectTestCollection.cs" />
+    <Compile Include="Test\VSNodeFactory.cs" />
     <Compile Include="VSStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -121,22 +128,19 @@
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\CommonUiOperations.cs" />
-    <Compile Include="Windows\Explorer\VCProjectTestCollection.cs" />
     <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\Explorer\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Explorer\SolutionTestCollection.cs" />
-    <Compile Include="Windows\Explorer\VSNodeFactory.cs" />
     <Compile Include="Windows\Run\RunWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\Run\RunWindow.Designer.cs">
       <DependentUpon>RunWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Run\TransparentLabel.cs">
+    <Compile Include="Windows\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Workspace.cs" />

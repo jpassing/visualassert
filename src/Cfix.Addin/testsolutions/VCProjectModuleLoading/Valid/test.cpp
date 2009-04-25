@@ -5,6 +5,10 @@ static void __stdcall Dummy()
 	//CFIX_ASSERT( !"fail" );
 }
 
+
+
+
+
 static void __stdcall Dummy2()
 {}
 

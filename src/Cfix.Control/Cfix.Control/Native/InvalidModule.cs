@@ -74,6 +74,11 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public String FullName
+		{
+			get { return null; }
+		}
+
 		public uint Ordinal
 		{
 			get

@@ -135,6 +135,18 @@ namespace Cfix.Control.Native
 			get { return this.name; }
 		}
 
+		public virtual String FullName
+		{
+			get 
+			{ 
+				//
+				// Depending on the type of API used, this may or
+				// may not be correct.
+				//
+				return this.name; 
+			}
+		}
+
 		public uint Ordinal
 		{
 			get { return this.ordinal; }

@@ -48,6 +48,7 @@ namespace Cfix.Control.Ui.Explorer
 		public event EventHandler RefreshFinished;
 		public event EventHandler<ExplorerNodeEventArgs> BeforeContextMenuPopup;
 		public event KeyEventHandler TreeKeyDown;
+		public event TreeNodeMouseClickEventHandler TreeDoubleClick;
 
 		private ContextMenuStrip nodeContextMenu;
 
@@ -170,6 +171,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.AfterCollapse += treeView_AfterCollapse;
 			this.treeView.MouseDown += new MouseEventHandler( treeView_MouseDown );
 			this.treeView.KeyDown += new KeyEventHandler( treeView_KeyDown );
+			this.treeView.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler( treeView_NodeMouseDoubleClick );
 			this.Disposed += this_Disposed;
 		}
 
@@ -227,6 +229,14 @@ namespace Cfix.Control.Ui.Explorer
 			else if ( this.TreeKeyDown != null )
 			{
 				this.TreeKeyDown( this, e );
+			}
+		}
+
+		private void treeView_NodeMouseDoubleClick( object sender, TreeNodeMouseClickEventArgs e )
+		{
+			if ( this.TreeDoubleClick != null )
+			{
+				this.TreeDoubleClick( sender, e );
 			}
 		}
 

@@ -18,6 +18,12 @@ namespace Cfix.Control
 		bool IsDisposed { get; }
 
         String Name { get; }
+
+		//
+		// Full name of function backing this test, e.g. Foo::Bar. Max be null.
+		//
+		String FullName { get; }
+
         uint Ordinal { get; }
 
 		ITestItemCollection Parent { get; }

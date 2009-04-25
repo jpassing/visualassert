@@ -36,10 +36,10 @@ namespace Cfix.Addin.Windows.About
 			this.archCol = new System.Windows.Forms.ColumnHeader();
 			this.versionCol = new System.Windows.Forms.ColumnHeader();
 			this.linkLabel = new System.Windows.Forms.LinkLabel();
-			this.fileVersionsLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
-			this.copyrightLabel2 = new Cfix.Addin.Windows.Run.TransparentLabel();
-			this.copyrightLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
-			this.versionLabel = new Cfix.Addin.Windows.Run.TransparentLabel();
+			this.fileVersionsLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.copyrightLabel2 = new Cfix.Addin.Windows.TransparentLabel();
+			this.copyrightLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.versionLabel = new Cfix.Addin.Windows.TransparentLabel();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.pictureBox1 ) ).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -182,13 +182,13 @@ namespace Cfix.Addin.Windows.About
 
 		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.PictureBox pictureBox1;
-		private Cfix.Addin.Windows.Run.TransparentLabel versionLabel;
+		private Cfix.Addin.Windows.TransparentLabel versionLabel;
 		private System.Windows.Forms.ListView fileVersionsList;
 		private System.Windows.Forms.ColumnHeader fileCol;
 		private System.Windows.Forms.ColumnHeader versionCol;
-		private Cfix.Addin.Windows.Run.TransparentLabel fileVersionsLabel;
-		private Cfix.Addin.Windows.Run.TransparentLabel copyrightLabel;
-		private Cfix.Addin.Windows.Run.TransparentLabel copyrightLabel2;
+		private Cfix.Addin.Windows.TransparentLabel fileVersionsLabel;
+		private Cfix.Addin.Windows.TransparentLabel copyrightLabel;
+		private Cfix.Addin.Windows.TransparentLabel copyrightLabel2;
 		private System.Windows.Forms.ColumnHeader archCol;
 		private System.Windows.Forms.LinkLabel linkLabel;
 	}

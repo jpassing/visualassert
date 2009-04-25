@@ -146,6 +146,11 @@ namespace Cfix.Control
 			}
 		}
 
+		public String FullName
+		{
+			get { return null; }
+		}
+
 		public uint Ordinal
 		{
 			get

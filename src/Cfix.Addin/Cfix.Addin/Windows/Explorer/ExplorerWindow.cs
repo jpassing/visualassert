@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using EnvDTE80;
 using Cfix.Addin.ShellBrowse;
+using Cfix.Addin.Test;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
@@ -73,6 +74,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.explorer.AfterSelected += new EventHandler<ExplorerNodeEventArgs>( explorer_AfterSelected );
 			this.explorer.BeforeContextMenuPopup += new EventHandler<ExplorerNodeEventArgs>( explorer_BeforeContextMenuPopup );
 			this.explorer.TreeKeyDown +=new KeyEventHandler( explorer_TreeKeyDown );
+			this.explorer.TreeDoubleClick += new TreeNodeMouseClickEventHandler( explorer_TreeDoubleClick );
 			this.solutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler( solutionEvents_Opened );
 			this.solutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
@@ -521,9 +523,19 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
 		{
-			IRunnableTestItem item = this.explorer.SelectedItem as IRunnableTestItem;
-			if ( item != null && e.KeyCode == Keys.Enter && e.Control )
+			if ( this.explorer.SelectedItem == null )
 			{
+				return;
+			}
+
+			if ( e.KeyCode == Keys.Enter && e.Control )
+			{
+				IRunnableTestItem item = this.explorer.SelectedItem as IRunnableTestItem;
+				if ( item == null )
+				{
+					return;
+				}
+
 				CommonUiOperations.RunItem(
 					this.workspace,
 					item, 
@@ -531,6 +543,25 @@ namespace Cfix.Addin.Windows.Explorer
 
 				e.Handled = true;
 			}
+			else if ( e.KeyCode == Keys.Enter )
+			{
+				CommonUiOperations.GoToTestItem( 
+					this.dte,
+					this.explorer.SelectedItem );
+
+				e.Handled = true;
+			}
+		}
+
+		private void explorer_TreeDoubleClick( object sender, TreeNodeMouseClickEventArgs e )
+		{
+			AbstractExplorerNode explNode = e.Node as AbstractExplorerNode;
+			if ( explNode == null )
+			{
+				return;
+			}
+
+			CommonUiOperations.GoToTestItem( this.dte, explNode.Item );					
 		}
 
 		private void shurtcutFixtureOnFailureButton_Click( object sender, EventArgs e )
