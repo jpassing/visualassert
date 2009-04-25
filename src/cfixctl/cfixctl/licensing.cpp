@@ -10,6 +10,7 @@
 
 #include <windows.h>
 #include <cfixlic.h>
+#include <cfixctllic.h>
 #include "cfixctlp.h"
 
 static HRESULT CfixctlsStoreLicenseKey(
@@ -17,10 +18,12 @@ static HRESULT CfixctlsStoreLicenseKey(
 	__in CONST PCFIXLIC_LICENSE_KEY LicKey
 	)
 {
+	ASSERT( LicKey->Scrambled );
+
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
-		CFIXCTLP_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICNESE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -35,14 +38,62 @@ static HRESULT CfixctlsStoreLicenseKey(
 
 	Result = RegSetValueEx(
 		Key,
-		L"License",
+		CFIXCTL_LICNESE_REG_KEY_NAME,
 		0,
 		REG_BINARY,
 		( LPBYTE ) LicKey,
 		sizeof( CFIXLIC_LICENSE_KEY ) );
 
-	RegCloseKey( Key );
+	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) ); 
 	return HRESULT_FROM_WIN32( Result );
+}
+
+static HRESULT CfixctlsRemoveLicenseKey(
+	__in BOOL MachineWide
+	)
+{
+	HKEY Key;
+	LONG Result = RegCreateKeyEx(
+		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
+		CFIXCTL_LICNESE_REG_KEYPATH,
+		0,
+		NULL,
+		0,
+		KEY_WRITE,
+		NULL,
+		&Key,
+		NULL );
+	if ( Result == ERROR_FILE_NOT_FOUND ||
+		 Result == ERROR_PATH_NOT_FOUND )
+	{
+		//
+		// None installed, ok.
+		//
+		return S_OK;
+	}
+	else if ( Result != ERROR_SUCCESS )
+	{
+		return HRESULT_FROM_WIN32( Result );
+	}
+
+	Result = RegDeleteValue(
+		Key,
+		CFIXCTL_LICNESE_REG_KEY_NAME );
+
+	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) );
+
+	if ( Result == ERROR_FILE_NOT_FOUND ||
+		 Result == ERROR_PATH_NOT_FOUND )
+	{
+		//
+		// None installed, ok.
+		//
+		return S_OK;
+	}
+	else 
+	{
+		return HRESULT_FROM_WIN32( Result );
+	}
 }
 
 static HRESULT CfixctlsLoadLicenseKey(
@@ -53,7 +104,7 @@ static HRESULT CfixctlsLoadLicenseKey(
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
-		CFIXCTLP_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICNESE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -70,14 +121,19 @@ static HRESULT CfixctlsLoadLicenseKey(
 	DWORD CbRead = sizeof( CFIXLIC_LICENSE_KEY );
 	Result = RegQueryValueEx(
 		Key,
-		L"License", 
+		CFIXCTL_LICNESE_REG_KEY_NAME, 
 		0,
 		&Type,
 		( LPBYTE ) LicKey,
 		&CbRead );
 
 	HRESULT Hr;
-	if ( Result == ERROR_SUCCESS &&
+	if ( Result == ERROR_FILE_NOT_FOUND ||
+		 Result == ERROR_PATH_NOT_FOUND )
+	{
+		Hr = CFIXCTL_E_NO_LIC_INSTALLED;
+	}
+	else if ( Result == ERROR_SUCCESS &&
 		 ( Type != REG_BINARY || CbRead != sizeof( CFIXLIC_LICENSE_KEY ) ) )
 	{
 		Hr = CFIXCTL_E_LIC_TAMPERED;
@@ -87,7 +143,7 @@ static HRESULT CfixctlsLoadLicenseKey(
 		Hr = HRESULT_FROM_WIN32( Result );
 	}
 
-	RegCloseKey( Key );
+	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) );
 	return Hr;
 }
 
@@ -124,16 +180,9 @@ static HRESULT CfixctlsValidateScrambledLicenseKey(
 	}
 
 	//
-	// Check that the key matches the product/version.
+	// N.B. We do not know which product we are, so someone else
+	// has to check that.
 	//
-	if ( KeyUnscrambled.u.Fields.BaseInfo.Product != CFIXCTL_LIC_PRODUCT ||
-	     KeyUnscrambled.u.Fields.BaseInfo.SubProduct != CFIXCTL_LIC_SUBPRODUCT )
-	{
-		//
-		// Wrong product.
-		//
-		return CFIXCTL_E_LIC_INVALID;
-	}
 
 	UCHAR MinVersionAllowed = 
 		CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR << 4 |
@@ -149,7 +198,6 @@ static HRESULT CfixctlsValidateScrambledLicenseKey(
 
 	ASSERT( MinVersionAllowed > 0xF );
 	ASSERT( MaxVersionAllowed > 0xF );
-	ASSERT( LicVersion > 0xF );
 
 	if ( LicVersion < MinVersionAllowed ||
 		 LicVersion > MaxVersionAllowed )
@@ -168,7 +216,11 @@ HRESULT CfixctlInstallLicense(
 	__in PCWSTR KeyString
 	)
 {
-	if ( ! KeyString || wcslen( KeyString ) != CFIXLIC_ENCODED_KEY_LENGTH )
+	if ( ! KeyString )
+	{
+		return CfixctlsRemoveLicenseKey( MachineWide );
+	}
+	else if ( wcslen( KeyString ) != CFIXLIC_ENCODED_KEY_LENGTH )
 	{
 		return E_INVALIDARG;
 	}
@@ -213,7 +265,7 @@ HRESULT CfixctlQueryLicenseInfo(
 
 	CFIXLIC_LICENSE_KEY Key;
 	Hr = CfixctlsLoadLicenseKey( MachineWide, &Key );
-	if ( Hr == HRESULT_FROM_WIN32( ERROR_PATH_NOT_FOUND ) )
+	if ( Hr == CFIXCTL_E_NO_LIC_INSTALLED )
 	{
 		//
 		// No key installed -> trial.
@@ -221,6 +273,9 @@ HRESULT CfixctlQueryLicenseInfo(
 		Info->Type = CfixctlTrial;
 
 		Info->Key[ 0 ]	= L'\0';
+
+		Info->Product		= 0;
+		Info->SubProduct	= 0;
 
 		Hr = CfixctlpIsTrialPeriodActive(
 			Info->DaysInstalled,
@@ -246,6 +301,16 @@ HRESULT CfixctlQueryLicenseInfo(
 		{
 			return Hr;
 		}
+
+		CFIXLIC_LICENSE_KEY KeyUnscrambled = Key;
+		Hr = CfixlicUnscrambleKey( &KeyUnscrambled );
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
+
+		Info->Product		= KeyUnscrambled.u.Fields.BaseInfo.Product;
+		Info->SubProduct	= KeyUnscrambled.u.Fields.BaseInfo.SubProduct;
 
 		Info->Valid = ( S_OK == CfixctlsValidateScrambledLicenseKey( &Key ) );
 		Info->DaysLeft = 0;

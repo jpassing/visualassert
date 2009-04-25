@@ -38,8 +38,6 @@
 	#define CFIXCTLP_TRACE( Args ) 
 #endif
 
-#define CFIXCTLP_LICNESE_REG_KEYPATH L"Software\\cfixstudio\\1.0"
-
 __inline VOID CfixctlpDbgPrint(
 	__in PCWSTR Format,
 	...

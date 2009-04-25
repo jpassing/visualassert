@@ -8,6 +8,7 @@
 
 #include <windows.h>
 #include <shlwapi.h>
+#include <cfixctllic.h>
 #include "cfixctlp.h"
 
 static ULONG CfixctlsDaysFromFileTime( 
@@ -18,29 +19,13 @@ static ULONG CfixctlsDaysFromFileTime(
 	Int.HighPart = Ft.dwHighDateTime;
 	Int.LowPart = Ft.dwLowDateTime;
 
-	return ( ULONG ) Int.QuadPart 
+	return ( ULONG ) ( Int.QuadPart 
 		/ 10	// us
 		/ 1000	// ms
 		/ 1000	// s
 		/ 60	// m
 		/ 60	// h
-		/ 24;	// d
-}
-
-static VOID CfixctlsGetBaseDate(
-	__out FILETIME *BaseDate
-	)
-{
-	SYSTEMTIME Time;
-	Time.wYear = 2007;
-	Time.wMonth = 1;
-	Time.wDayOfWeek = 0;
-	Time.wHour = 0;
-	Time.wMinute = 0;
-	Time.wSecond = 0;
-	Time.wMilliseconds = 0;
-
-	( VOID ) SystemTimeToFileTime( &Time, BaseDate );
+		/ 24 );	// d
 }
 
 static ULONG CfixctlsDaysBetween(
@@ -87,7 +72,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		HKEY_CURRENT_USER,
-		CFIXCTLP_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICNESE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -124,7 +109,8 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 			Hr = S_OK;
 		}
 	}
-	else if ( Result == ERROR_PATH_NOT_FOUND )
+	else if ( Result == ERROR_FILE_NOT_FOUND ||
+		      Result == ERROR_PATH_NOT_FOUND )
 	{
 		//
 		// No date in registry -- create.
@@ -133,9 +119,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 		Hr = CoFileTimeNow( &Now );
 		if ( SUCCEEDED( Hr ) )
 		{
-			FILETIME Base;
-			CfixctlsGetBaseDate( &Base );
-			Value = CfixctlsDaysBetween( Base, Now );
+			Value = CfixctlsDaysFromFileTime( Now );
 	
 			DWORD ValueXored = Value  ^ 'CFIX';
 
@@ -162,7 +146,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 		Hr = HRESULT_FROM_WIN32( Result );
 	}
 
-	RegCloseKey( Key );
+	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) );
 	return Hr;
 }
 

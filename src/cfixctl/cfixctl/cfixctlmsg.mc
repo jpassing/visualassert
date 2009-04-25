@@ -129,3 +129,11 @@ SymbolicName	= CFIXCTL_E_LIC_INVALID
 Language		= English
 The license key is invalid or not applicable for this product version.
 .
+
+MessageId		= 0xB00d
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_NO_LIC_INSTALLED
+Language		= English
+No license key installed.
+.

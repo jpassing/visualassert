@@ -279,6 +279,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\testctl\testlic.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\testctl\testlocalagent.cpp"
 					>
 				</File>
@@ -390,11 +394,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\cfixctllic.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\cfixctlmsg.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\cfixctlsvr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\cfixlic.h"
 				>
 			</File>
 		</Filter>

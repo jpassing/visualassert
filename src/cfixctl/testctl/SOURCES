@@ -31,12 +31,14 @@ USE_STL=1
 
 TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\shlwapi.lib \
+		   $(SDK_LIB_PATH)\advapi32.lib \
 		   $(SDK_LIB_PATH)\uuid.lib \
 		   $(SDK_LIB_PATH)\ole32.lib \
 		   $(SDK_LIB_PATH)\oleaut32.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
 		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl.lib \
-		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib \
+		   $(MAKEDIR)\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixlic.lib	   
 
 TARGETNAME=testctl
 TARGETPATH=..\..\..\bin\$(DDKBUILDENV)
@@ -46,6 +48,7 @@ PASS0_HEADERDIR=..\..\..\include
 PASS0_SOURCEDIR=obj$(BUILD_ALT_DIR)\$(TARGET_DIRECTORY)
 
 SOURCES=\
+	testlic.cpp \
 	testserver.cpp \
 	teststacktrace.cpp \
 	testcom.cpp \
