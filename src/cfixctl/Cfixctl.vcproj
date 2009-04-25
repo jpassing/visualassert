@@ -143,6 +143,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cfixctl\licensing.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\cfixctl\licensingage.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>

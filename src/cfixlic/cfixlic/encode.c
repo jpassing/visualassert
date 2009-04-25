@@ -92,7 +92,7 @@ HRESULT CfixlicDecode(
 	)
 {
 	if ( ! KeyString ||
-		 wcslen( KeyString ) != 29 ||
+		 wcslen( KeyString ) != CFIXLIC_ENCODED_KEY_LENGTH ||
 		 ! Key )
 	{
 		return E_INVALIDARG;

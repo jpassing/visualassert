@@ -105,3 +105,27 @@ SymbolicName	= CFIXCTL_E_TESTMODULE_NOT_FOUND
 Language		= English
 Test module not found.
 .
+
+MessageId		= 0xB00a
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_REG_CORRUPT
+Language		= English
+Corrupt registry settings detected - please reinstall.
+.
+
+MessageId		= 0xB00b
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_LIC_TAMPERED
+Language		= English
+The licensing data has been tampered with.
+.
+
+MessageId		= 0xB00c
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_LIC_INVALID
+Language		= English
+The license key is invalid or not applicable for this product version.
+.

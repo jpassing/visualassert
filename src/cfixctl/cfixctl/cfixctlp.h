@@ -38,6 +38,8 @@
 	#define CFIXCTLP_TRACE( Args ) 
 #endif
 
+#define CFIXCTLP_LICNESE_REG_KEYPATH L"Software\\cfixstudio\\1.0"
+
 __inline VOID CfixctlpDbgPrint(
 	__in PCWSTR Format,
 	...
@@ -157,6 +159,35 @@ BOOL CfixctlpIsProcessInJob(
 	__in HANDLE ProcessHandle,
 	__in HANDLE JobHandle,
 	__out PBOOL Result
+	);
+
+/*++
+	Routine Description:
+		Calculates the effective age of the installation, based on:
+			* ExternalDate - date the client must pass.
+			* Creation date of the folder the DLL has been loaded from.
+			* Date of first use stored in registry
+
+			The oldest date is taken as the basis for calulating the 
+			effective age. The redudany is merely driven by the intent
+			to confuse people trying to circumvent licensing.
+
+		Parameters:
+			ExternalDate - date of first use, in days since 2007-1-1.
+--*/
+HRESULT CfixctlpGetTrialInstallationAge(
+	__in ULONG ExternalDate,
+	__out ULONG *DaysInstalled,
+	__out ULONG *DaysLeft
+	);
+
+/*++
+	Routine Description:
+		Check whether the trial period or the hard expiry date is over.
+--*/
+HRESULT CfixctlpIsTrialPeriodActive(
+	__in ULONG DaysInstalled,
+	__out BOOL *Active 
 	);
 
 /*----------------------------------------------------------------------

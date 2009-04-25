@@ -12,11 +12,24 @@ MSC_WARNING_LEVEL=/W4 /Wp64
 
 INCLUDES=$(SDKBASE)\Include;..\..\..\..\include;$(SDK_INC_PATH)\..\mfc42;$(CFIX_TREE)\include
 
-C_DEFINES=/D_UNICODE /DUNICODE
+#
+# N.B. All versions numbers may not exceed 0xF.
+#
+
+C_DEFINES=\
+	/D_UNICODE \
+	/DUNICODE \
+	/DCFIXCTL_LIC_TRIAL_PERIOD=30 \
+	/DCFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR=1 \
+	/DCFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR=0 \
+	/DCFIXCTL_LIC_MAX_ALLOWED_VERSION_MAJOR=1 \
+	/DCFIXCTL_LIC_MAX_ALLOWED_VERSION_MINOR=0 \
+	/DCFIXCTL_LIC_PRODUCT=1 \
+	/DCFIXCTL_LIC_SUBPRODUCT=0
 
 !if "$(DDKBUILDENV)"=="chk"
 DEBUG_CRTS=1
-C_DEFINES = $(C_DEFINES) /D_DEBUG
+C_DEFINES = $(C_DEFINES) /D_DEBUG 
 !endif
 
 USER_C_FLAGS=/wd4505
@@ -43,7 +56,8 @@ TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cdiag.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixutil.lib \
 		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixkl.lib \
-		   $(MAKEDIR)\..\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib	   
+		   $(MAKEDIR)\..\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixctl_uuid.lib \
+		   $(MAKEDIR)\..\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfixlic.lib	   
 
 TARGETNAME=cfixctl
 TARGETPATH=..\..\..\..\bin\$(DDKBUILDENV)
@@ -56,6 +70,8 @@ PASS0_SERVERDIR=..\..\..\..\include
 
 SOURCES=\
 	..\cfixctl.idl \
+	..\licensing.cpp \
+	..\licensingage.cpp \
 	..\stacktraceframe.cpp \
 	..\stacktrace.cpp \
 	..\testcase.cpp \
