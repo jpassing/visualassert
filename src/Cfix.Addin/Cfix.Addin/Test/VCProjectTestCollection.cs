@@ -59,17 +59,20 @@ namespace Cfix.Addin.Test
 				}
 
 				Architecture arch = GetArchitecture( platform );
-				platform.IncludeDirectories +=
-					";" + Directories.IncludeDirectory;
+				if ( !platform.IncludeDirectories.Contains( Directories.IncludeDirectory ) )
+				{
+					platform.IncludeDirectories +=
+						";" + Directories.IncludeDirectory;
+				}
 
-				platform.LibraryDirectories +=
-					";" + Directories.GetLibDirectory( arch );
+				if ( ! platform.LibraryDirectories.Contains( Directories.GetLibDirectory( arch ) ) )
+				{
+					platform.LibraryDirectories +=
+						";" + Directories.GetLibDirectory( arch );
+				}
 
 				//
 				// Write to disk.
-				//
-				// N.B. VS seems to be smart enough to avoid saving
-				// duplicate paths.
 				//
 				platform.CommitChanges();
 			}
