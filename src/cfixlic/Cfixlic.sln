@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ABE079F2-12E6-4946-87C4-69413A2A957A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cfixctl", "Cfixlic.vcproj", "{0863C80F-B68A-457E-9F08-F0C814438266}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cfixlic", "Cfixlic.vcproj", "{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Debug|Win32.Build.0 = Debug|Win32
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Debug|x64.ActiveCfg = Debug|x64
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Debug|x64.Build.0 = Debug|x64
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|Win32.ActiveCfg = Release|Win32
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|Win32.Build.0 = Release|Win32
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|x64.ActiveCfg = Release|x64
-		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|x64.Build.0 = Release|x64
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|Win32.Build.0 = Debug|Win32
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|x64.ActiveCfg = Debug|x64
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|x64.Build.0 = Debug|x64
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|Win32.ActiveCfg = Release|Win32
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|Win32.Build.0 = Release|Win32
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|x64.ActiveCfg = Release|x64
+		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

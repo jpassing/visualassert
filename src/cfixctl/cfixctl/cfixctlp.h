@@ -177,8 +177,7 @@ BOOL CfixctlpIsProcessInJob(
 --*/
 HRESULT CfixctlpGetTrialInstallationAge(
 	__in ULONG ExternalDate,
-	__out ULONG *DaysInstalled,
-	__out ULONG *DaysLeft
+	__out ULONG *DaysInstalled
 	);
 
 /*++
@@ -187,7 +186,8 @@ HRESULT CfixctlpGetTrialInstallationAge(
 --*/
 HRESULT CfixctlpIsTrialPeriodActive(
 	__in ULONG DaysInstalled,
-	__out BOOL *Active 
+	__out BOOL *Active,
+	__out ULONG *DaysLeft
 	);
 
 /*----------------------------------------------------------------------

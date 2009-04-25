@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cfixctl", "Cfixctl.vcproj", "{0863C80F-B68A-457E-9F08-F0C814438266}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cfixlic", "..\cfixlic\Cfixlic.vcproj", "{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,14 +19,6 @@ Global
 		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|Win32.Build.0 = Release|Win32
 		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|x64.ActiveCfg = Release|x64
 		{0863C80F-B68A-457E-9F08-F0C814438266}.Release|x64.Build.0 = Release|x64
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|Win32.Build.0 = Debug|Win32
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|x64.ActiveCfg = Debug|x64
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Debug|x64.Build.0 = Debug|x64
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|Win32.ActiveCfg = Release|Win32
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|Win32.Build.0 = Release|Win32
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|x64.ActiveCfg = Release|x64
-		{CDDF8E83-F6F7-4C0E-853E-FE3E5C030918}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

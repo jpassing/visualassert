@@ -224,19 +224,11 @@ HRESULT CfixctlQueryLicenseInfo(
 
 		Hr = CfixctlpIsTrialPeriodActive(
 			Info->DaysInstalled,
-			&Info->Valid );
+			&Info->Valid,
+			&Info->DaysLeft );
 		if ( FAILED( Hr ) )
 		{
 			return Hr;
-		}
-
-		if ( Info->Valid )
-		{
-			Info->DaysLeft = CFIXCTL_LIC_TRIAL_PERIOD - Info->DaysInstalled;
-		}
-		else
-		{
-			Info->DaysLeft = 0;
 		}
 	}
 	else if ( SUCCEEDED( Hr ) )

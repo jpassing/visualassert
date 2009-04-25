@@ -226,17 +226,17 @@ HRESULT CfixctlpIsTrialPeriodActive(
 	}
 
 	FILETIME Now;
-	Hr = CoFileTimeNow( &Now );
+	HRESULT Hr = CoFileTimeNow( &Now );
 	if ( FAILED( Hr ) )
 	{
 		return Hr;
 	}
 
-	ULONG NowDaysSince = CfixctlsDaysFromFileTime( Now );
-
 #ifdef CFIXCTL_LIC_HARD_EXPIRY_DATE
+	ULONG NowDaysSince = CfixctlsDaysFromFileTime( Now );
 	if ( NowDaysSince > CFIXCTL_HARD_EXPIRY_DATE )
 	{
+
 		//
 		// Age-wise, the installation may be ok, but the hard expiry
 		// date is over.

@@ -106,7 +106,7 @@ static void EnDecode()
 		memcpy( &KeyScrambled, &Key, sizeof( CFIXLIC_LICENSE_KEY ) );
 
 		CfixlicEncode( &Key, _countof( Buffer ), Buffer );
-		CFIX_LOG( Buffer );
+		//CFIX_LOG( Buffer );
 		CfixlicDecode( Buffer, &Key );
 
 		CFIX_ASSERT( Key.u.Qwords[ 0 ] == KeyScrambled.u.Qwords[ 0 ] );
