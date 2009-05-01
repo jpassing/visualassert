@@ -38,7 +38,7 @@ static HRESULT CfixctlsStoreLicenseKey(
 
 	Result = RegSetValueEx(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE,
+		CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE,
 		0,
 		REG_BINARY,
 		( LPBYTE ) LicKey,
@@ -78,7 +78,7 @@ static HRESULT CfixctlsRemoveLicenseKey(
 
 	Result = RegDeleteValue(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE );
+		CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE );
 
 	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) );
 
@@ -122,7 +122,7 @@ static HRESULT CfixctlsLoadLicenseKey(
 	DWORD CbRead = sizeof( CFIXLIC_LICENSE_KEY );
 	Result = RegQueryValueEx(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE, 
+		CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE, 
 		0,
 		&Type,
 		( LPBYTE ) LicKey,
@@ -319,4 +319,23 @@ HRESULT CfixctlQueryLicenseInfo(
 	}
 	
 	return Hr;
+}
+
+HRESULT CfixctlValidateLicense(
+	__in PCWSTR KeyString
+	)
+{
+	if ( ! KeyString )
+	{
+		return E_INVALIDARG;
+	}
+
+	CFIXLIC_LICENSE_KEY Key;
+	HRESULT Hr = CfixlicDecode( KeyString, &Key );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	return CfixctlsValidateScrambledLicenseKey( &Key );
 }

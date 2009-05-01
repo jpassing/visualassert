@@ -90,7 +90,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 	DWORD CbRead = sizeof( DWORD );
 	Result = RegQueryValueEx(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE_DATE,
+		CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE_DATE,
 		0,
 		&Type,
 		( LPBYTE ) &Value,
@@ -125,7 +125,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 
 			Result = RegSetValueEx(
 				Key,
-				CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE_DATE,
+				CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE_DATE,
 				0,
 				REG_DWORD,
 				( LPBYTE ) &ValueXored,

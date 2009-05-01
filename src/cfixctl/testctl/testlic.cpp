@@ -81,7 +81,7 @@ private:
 
 		CFIXCC_ASSERT_EQUALS( ERROR_SUCCESS, RegSetValueEx(
 			Key,
-			CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE,
+			CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE,
 			0,
 			REG_BINARY,
 			( LPBYTE ) &LicKey,
@@ -106,7 +106,7 @@ private:
 
 		RegDeleteValue(
 			Key,
-			CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE_DATE );
+			CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE_DATE );
 
 		CFIXCC_ASSERT_EQUALS( ERROR_SUCCESS, RegCloseKey( Key ) ); 
 	}
@@ -144,6 +144,8 @@ public:
 		CFIXCC_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
+		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, CfixctlValidateLicense( NULL ) );
+		CFIXCC_ASSERT_OK( CfixctlValidateLicense( KeyString ) );
 		CFIXCC_ASSERT_OK( CfixctlInstallLicense( FALSE, KeyString ) );
 
 		CFIXCTL_LICENSE_INFO Info;
@@ -362,7 +364,7 @@ public:
 		DWORD Junk = 'Junk';
 		CFIXCC_ASSERT_EQUALS( ERROR_SUCCESS, RegSetValueEx(
 			Key,
-			CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE,
+			CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE,
 			0,
 			REG_BINARY,
 			( LPBYTE ) &Junk,
