@@ -72,7 +72,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		HKEY_CURRENT_USER,
-		CFIXCTL_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICENSE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -90,7 +90,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 	DWORD CbRead = sizeof( DWORD );
 	Result = RegQueryValueEx(
 		Key,
-		L"State", // Be unspecific
+		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE_DATE,
 		0,
 		&Type,
 		( LPBYTE ) &Value,
@@ -125,7 +125,7 @@ static HRESULT CfixctlsLazyCreateAndGetDateFromRegistry(
 
 			Result = RegSetValueEx(
 				Key,
-				L"State",
+				CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE_DATE,
 				0,
 				REG_DWORD,
 				( LPBYTE ) &ValueXored,

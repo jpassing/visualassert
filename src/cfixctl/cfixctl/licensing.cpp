@@ -23,7 +23,7 @@ static HRESULT CfixctlsStoreLicenseKey(
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
-		CFIXCTL_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICENSE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -38,7 +38,7 @@ static HRESULT CfixctlsStoreLicenseKey(
 
 	Result = RegSetValueEx(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME,
+		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE,
 		0,
 		REG_BINARY,
 		( LPBYTE ) LicKey,
@@ -55,7 +55,7 @@ static HRESULT CfixctlsRemoveLicenseKey(
 	HKEY Key;
 	LONG Result = RegCreateKeyEx(
 		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
-		CFIXCTL_LICNESE_REG_KEYPATH,
+		CFIXCTL_LICENSE_REG_KEYPATH,
 		0,
 		NULL,
 		0,
@@ -78,7 +78,7 @@ static HRESULT CfixctlsRemoveLicenseKey(
 
 	Result = RegDeleteValue(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME );
+		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE );
 
 	VERIFY( ERROR_SUCCESS == RegCloseKey( Key ) );
 
@@ -102,17 +102,18 @@ static HRESULT CfixctlsLoadLicenseKey(
 	)
 {
 	HKEY Key;
-	LONG Result = RegCreateKeyEx(
+	LONG Result = RegOpenKeyEx(
 		MachineWide ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER,
-		CFIXCTL_LICNESE_REG_KEYPATH,
-		0,
-		NULL,
+		CFIXCTL_LICENSE_REG_KEYPATH,
 		0,
 		KEY_READ,
-		NULL,
-		&Key,
-		NULL );
-	if ( Result != ERROR_SUCCESS )
+		&Key );
+	if ( Result == ERROR_FILE_NOT_FOUND ||
+		 Result == ERROR_PATH_NOT_FOUND )
+	{
+		return CFIXCTL_E_NO_LIC_INSTALLED;
+	}
+	else if ( Result != ERROR_SUCCESS )
 	{
 		return HRESULT_FROM_WIN32( Result );
 	}
@@ -121,7 +122,7 @@ static HRESULT CfixctlsLoadLicenseKey(
 	DWORD CbRead = sizeof( CFIXLIC_LICENSE_KEY );
 	Result = RegQueryValueEx(
 		Key,
-		CFIXCTL_LICNESE_REG_KEY_NAME, 
+		CFIXCTL_LICNESE_REG_KEY_NAME_LICENSE, 
 		0,
 		&Type,
 		( LPBYTE ) LicKey,
@@ -250,7 +251,8 @@ HRESULT CfixctlQueryLicenseInfo(
 	__out PCFIXCTL_LICENSE_INFO Info
 	)
 {
-	if ( ! Info )
+	if ( ! Info || 
+		 Info->SizeOfStruct != ( ULONG ) sizeof( CFIXCTL_LICENSE_INFO ) )
 	{
 		return E_INVALIDARG;
 	}

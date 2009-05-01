@@ -272,6 +272,11 @@ library Cfixctl
 			Method Description:
 				Create a new Host object.
 
+				N.B. This method checks for a valid license or, in case
+					 no license has been installed and SetTrialLicenseCookie
+					 has previously been called, whether the trial period
+					 is still active.
+
 			Arguments:
 				Arch		- CPU architecture.
 				Clsctx		- inproc/local server.
@@ -329,6 +334,22 @@ library Cfixctl
 		HRESULT CreateMessageResolver(
 			[out, retval] ICfixMessageResolver **Resolver
 			);
+
+		/*++
+			Method Description:
+				Specify cookie that should be used in case no license
+				is installed and the state of the trial period
+				has to be checked.
+
+				If this method is NOT called, a valid license MUST be
+				present, i.e. the agent is not subject to trial licensing.
+
+			Arguments:
+				Cookie	- Date of first use, in days since 1601-1-1.
+		--*/
+		/*HRESULT SetTrialLicenseCookie(
+			[in] ULONG Cookie
+			);*/
 	}
 
 	/*----------------------------------------------------------------------
