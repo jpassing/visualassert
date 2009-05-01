@@ -17,16 +17,51 @@ namespace Cfix.Addin
 {
 	public class Configuration : IDisposable
 	{
+		public const uint ProductId = 1;
+		public const uint SubProductId = 0;
+
+		private const string CookieName = "CfixCookie";
 		private readonly String[] supportedExtensions = new String[] { ".DLL", ".SYS" };
 
 		private const String BaseKeyPath = "Software\\cfix\\cfixstudio\\1.0";
 		private readonly RegistryKey key;
 
+		//
+		// Days elapsed since first use.
+		//
+		private readonly uint cookie;
+
 		private Configuration(
-			RegistryKey key 
+			RegistryKey key, 
+			CfixPlus addin 
 			)
 		{
 			this.key = key;
+
+			if ( addin.DTE.Globals.get_VariableExists( CookieName ) )
+			{
+				//
+				// Try using it.
+				//
+				try
+				{
+					this.cookie = uint.Parse( ( string ) addin.DTE.Globals[ CookieName ] );
+				}
+				catch
+				{
+				}
+			}
+
+			if ( this.cookie == 0 )
+			{
+				//
+				// Calculate and save.
+				//
+				this.cookie = ( uint ) DateTime.Now.Subtract( DateTime.FromFileTime( 0 ) ).Days;
+
+				addin.DTE.Globals[ CookieName ] = this.cookie.ToString();
+				addin.DTE.Globals.set_VariablePersists( CookieName, true );
+			}
 		}
 
 		~Configuration()
@@ -45,11 +80,17 @@ namespace Cfix.Addin
 			GC.SuppressFinalize( this );
 		}
 
-		public static Configuration Load()
+		public static Configuration Load( CfixPlus addin )
 		{
 			return new Configuration(
-				Registry.CurrentUser.CreateSubKey( BaseKeyPath )
+				Registry.CurrentUser.CreateSubKey( BaseKeyPath ), 
+				addin
 				);
+		}
+
+		internal uint Cookie
+		{
+			get { return this.cookie; }
 		}
 
 		/*----------------------------------------------------------------------

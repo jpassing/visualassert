@@ -36,10 +36,13 @@ namespace Cfix.Addin.Windows.About
 			this.archCol = new System.Windows.Forms.ColumnHeader();
 			this.versionCol = new System.Windows.Forms.ColumnHeader();
 			this.linkLabel = new System.Windows.Forms.LinkLabel();
+			this.licenseValueLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.licenseLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.fileVersionsLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.copyrightLabel2 = new Cfix.Addin.Windows.TransparentLabel();
 			this.copyrightLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.versionLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.enterLicenseButton = new Cfix.Addin.Windows.ElevatedButton();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.pictureBox1 ) ).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -47,7 +50,7 @@ namespace Cfix.Addin.Windows.About
 			// 
 			this.okButton.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point( 387, 276 );
+			this.okButton.Location = new System.Drawing.Point( 387, 312 );
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size( 75, 23 );
 			this.okButton.TabIndex = 0;
@@ -61,7 +64,7 @@ namespace Cfix.Addin.Windows.About
 			this.pictureBox1.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "pictureBox1.Image" ) ) );
 			this.pictureBox1.Location = new System.Drawing.Point( 0, 0 );
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size( 493, 312 );
+			this.pictureBox1.Size = new System.Drawing.Size( 493, 348 );
 			this.pictureBox1.TabIndex = 1;
 			this.pictureBox1.TabStop = false;
 			// 
@@ -72,7 +75,7 @@ namespace Cfix.Addin.Windows.About
             this.archCol,
             this.versionCol} );
 			this.fileVersionsList.FullRowSelect = true;
-			this.fileVersionsList.Location = new System.Drawing.Point( 24, 115 );
+			this.fileVersionsList.Location = new System.Drawing.Point( 24, 105 );
 			this.fileVersionsList.MultiSelect = false;
 			this.fileVersionsList.Name = "fileVersionsList";
 			this.fileVersionsList.ShowGroups = false;
@@ -110,10 +113,30 @@ namespace Cfix.Addin.Windows.About
 			this.linkLabel.Text = "http://www.cfix-studio.com/";
 			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler( this.linkLabel_LinkClicked );
 			// 
+			// licenseValueLabel
+			// 
+			this.licenseValueLabel.ForeColor = System.Drawing.Color.White;
+			this.licenseValueLabel.Location = new System.Drawing.Point( 107, 56 );
+			this.licenseValueLabel.Name = "licenseValueLabel";
+			this.licenseValueLabel.Size = new System.Drawing.Size( 241, 23 );
+			this.licenseValueLabel.TabIndex = 2;
+			this.licenseValueLabel.TabStop = false;
+			this.licenseValueLabel.Text = " ";
+			// 
+			// licenseLabel
+			// 
+			this.licenseLabel.ForeColor = System.Drawing.Color.White;
+			this.licenseLabel.Location = new System.Drawing.Point( 24, 56 );
+			this.licenseLabel.Name = "licenseLabel";
+			this.licenseLabel.Size = new System.Drawing.Size( 77, 23 );
+			this.licenseLabel.TabIndex = 2;
+			this.licenseLabel.TabStop = false;
+			this.licenseLabel.Text = "License:";
+			// 
 			// fileVersionsLabel
 			// 
 			this.fileVersionsLabel.ForeColor = System.Drawing.Color.White;
-			this.fileVersionsLabel.Location = new System.Drawing.Point( 24, 97 );
+			this.fileVersionsLabel.Location = new System.Drawing.Point( 24, 85 );
 			this.fileVersionsLabel.Name = "fileVersionsLabel";
 			this.fileVersionsLabel.Size = new System.Drawing.Size( 221, 23 );
 			this.fileVersionsLabel.TabIndex = 2;
@@ -123,7 +146,7 @@ namespace Cfix.Addin.Windows.About
 			// copyrightLabel2
 			// 
 			this.copyrightLabel2.ForeColor = System.Drawing.Color.White;
-			this.copyrightLabel2.Location = new System.Drawing.Point( 24, 230 );
+			this.copyrightLabel2.Location = new System.Drawing.Point( 24, 247 );
 			this.copyrightLabel2.Name = "copyrightLabel2";
 			this.copyrightLabel2.Size = new System.Drawing.Size( 426, 59 );
 			this.copyrightLabel2.TabIndex = 2;
@@ -133,7 +156,7 @@ namespace Cfix.Addin.Windows.About
 			// copyrightLabel
 			// 
 			this.copyrightLabel.ForeColor = System.Drawing.Color.White;
-			this.copyrightLabel.Location = new System.Drawing.Point( 24, 55 );
+			this.copyrightLabel.Location = new System.Drawing.Point( 24, 215 );
 			this.copyrightLabel.Name = "copyrightLabel";
 			this.copyrightLabel.Size = new System.Drawing.Size( 426, 26 );
 			this.copyrightLabel.TabIndex = 2;
@@ -143,6 +166,7 @@ namespace Cfix.Addin.Windows.About
 			// 
 			// versionLabel
 			// 
+			this.versionLabel.Font = new System.Drawing.Font( "Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ( ( byte ) ( 0 ) ) );
 			this.versionLabel.ForeColor = System.Drawing.Color.White;
 			this.versionLabel.Location = new System.Drawing.Point( 24, 27 );
 			this.versionLabel.Name = "versionLabel";
@@ -151,16 +175,29 @@ namespace Cfix.Addin.Windows.About
 			this.versionLabel.TabStop = false;
 			this.versionLabel.Text = "cfix studio, Version ";
 			// 
+			// enterLicenseButton
+			// 
+			this.enterLicenseButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.enterLicenseButton.Location = new System.Drawing.Point( 258, 312 );
+			this.enterLicenseButton.Name = "enterLicenseButton";
+			this.enterLicenseButton.Size = new System.Drawing.Size( 123, 23 );
+			this.enterLicenseButton.TabIndex = 5;
+			this.enterLicenseButton.Text = "Enter License Key";
+			this.enterLicenseButton.UseVisualStyleBackColor = true;
+			// 
 			// AboutWindow
 			// 
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.okButton;
-			this.ClientSize = new System.Drawing.Size( 485, 311 );
+			this.ClientSize = new System.Drawing.Size( 485, 347 );
+			this.Controls.Add( this.enterLicenseButton );
 			this.Controls.Add( this.linkLabel );
 			this.Controls.Add( this.okButton );
 			this.Controls.Add( this.fileVersionsList );
+			this.Controls.Add( this.licenseValueLabel );
+			this.Controls.Add( this.licenseLabel );
 			this.Controls.Add( this.fileVersionsLabel );
 			this.Controls.Add( this.copyrightLabel2 );
 			this.Controls.Add( this.copyrightLabel );
@@ -191,5 +228,8 @@ namespace Cfix.Addin.Windows.About
 		private Cfix.Addin.Windows.TransparentLabel copyrightLabel2;
 		private System.Windows.Forms.ColumnHeader archCol;
 		private System.Windows.Forms.LinkLabel linkLabel;
+		private TransparentLabel licenseLabel;
+		private TransparentLabel licenseValueLabel;
+		private ElevatedButton enterLicenseButton;
 	}
 }

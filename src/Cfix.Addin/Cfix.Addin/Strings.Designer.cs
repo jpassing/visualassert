@@ -214,6 +214,24 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluation copy, expired..
+        /// </summary>
+        internal static string TrialLicenseInalid {
+            get {
+                return ResourceManager.GetString("TrialLicenseInalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation copy, {0} days left..
+        /// </summary>
+        internal static string TrialLicenseValid {
+            get {
+                return ResourceManager.GetString("TrialLicenseValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unrecognized platform: {0}.
         /// </summary>
         internal static string UnrecognizedPlatform {
@@ -228,6 +246,15 @@ namespace Cfix.Addin {
         internal static string UnsupportedArchitecture {
             get {
                 return ResourceManager.GetString("UnsupportedArchitecture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The installed license is not applicable for this product..
+        /// </summary>
+        internal static string WrongLicense {
+            get {
+                return ResourceManager.GetString("WrongLicense", resourceCulture);
             }
         }
     }

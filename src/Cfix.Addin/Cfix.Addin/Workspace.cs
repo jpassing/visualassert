@@ -244,9 +244,8 @@ namespace Cfix.Addin
 		internal Workspace( CfixPlus addin )
 		{
 			this.addin = addin;
-			this.toolWindows = new ToolWindows( addin );
 
-			this.config = Configuration.Load();
+			this.config = Configuration.Load( addin );
 			this.runAgents = CreateRunAgent();
 			this.session = new Session();
 
@@ -262,6 +261,11 @@ namespace Cfix.Addin
 			this.cmdEvents = events.get_CommandEvents( 
 				VSStd97CmdID, 
 				( int ) Dte.VSStd97CmdID.Stop );
+
+			//
+			// N.B. Uses agents and config, therefore, create last.
+			//
+			this.toolWindows = new ToolWindows( addin, this );
 		}
 
 		~Workspace()
@@ -305,6 +309,37 @@ namespace Cfix.Addin
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
+
+		internal Native.CFIXCTL_LICENSE_INFO License
+		{
+			get
+			{
+				Native.CFIXCTL_LICENSE_INFO license = new Native.CFIXCTL_LICENSE_INFO();
+				license.SizeOfStruct = ( uint ) 
+					System.Runtime.InteropServices.Marshal.SizeOf( license );
+
+				int hr = Native.CfixctlQueryLicenseInfo(
+					true,
+					this.config.Cookie,
+					ref license );
+				if ( hr != 0 )
+				{
+					throw new CfixException(
+						this.searchAgent.ResolveMessage( hr ) );
+				}
+				else if ( license.Type == Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed &&
+						  ( license.Product != Configuration.ProductId ||
+						    license.SubProduct != Configuration.SubProductId ) )
+				{
+					throw new CfixAddinException(
+						Strings.WrongLicense );
+				}
+				else
+				{
+					return license;
+				}
+			}
+		}
 
 		internal ToolWindows ToolWindows
 		{

@@ -168,10 +168,19 @@
   <data name="TerminateActiveRun" xml:space="preserve">
     <value>The test run has not finished yet. Do you wish to terminate it?</value>
   </data>
+  <data name="TrialLicenseInalid" xml:space="preserve">
+    <value>Evaluation copy, expired.</value>
+  </data>
+  <data name="TrialLicenseValid" xml:space="preserve">
+    <value>Evaluation copy, {0} days left.</value>
+  </data>
   <data name="UnrecognizedPlatform" xml:space="preserve">
     <value>Unrecognized platform: {0}</value>
   </data>
   <data name="UnsupportedArchitecture" xml:space="preserve">
     <value>Unsupported processor architecture.</value>
+  </data>
+  <data name="WrongLicense" xml:space="preserve">
+    <value>The installed license is not applicable for this product.</value>
   </data>
 </root>

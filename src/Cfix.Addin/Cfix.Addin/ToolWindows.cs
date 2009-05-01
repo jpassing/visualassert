@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
 using Cfix.Addin.Windows.Run;
@@ -16,13 +17,43 @@ namespace Cfix.Addin
 	internal class ToolWindows : IDisposable
 	{
 		private readonly CfixPlus addin;
+		private readonly string extraCaption;
+
 		private DteToolWindow<ExplorerWindow> explorer;
 		private DteToolWindow<RunWindow> run;
 		private OutputWindowPane logOutputWindow;
 
-		internal ToolWindows( CfixPlus addin )
+		internal ToolWindows( 
+			CfixPlus addin,
+			Workspace ws
+			)
 		{
 			this.addin = addin;
+
+			Native.CFIXCTL_LICENSE_INFO license = ws.License;
+			switch ( license.Type )
+			{
+				case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
+					this.extraCaption = "";
+					break;
+
+				case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
+					if ( license.Valid )
+					{
+						this.extraCaption = "(" + String.Format(
+							Strings.TrialLicenseValid, license.DaysLeft ) + ")";
+					}
+					else
+					{
+						this.extraCaption = "(" + 
+							Strings.TrialLicenseInalid + ")";
+					}
+					break;
+
+				default:
+					Debug.Fail( "Invalid license type" );
+					break;
+			}
 		}
 
 		~ToolWindows()
@@ -92,7 +123,7 @@ namespace Cfix.Addin
 				{
 					this.explorer = DteToolWindow<ExplorerWindow>.Create(
 						this.addin,
-						Strings.ExplorerWindowCaption,
+						Strings.ExplorerWindowCaption + " " + this.extraCaption,
 						ExplorerWindow.Guid,
 						Icons.cfix );
 					this.explorer.UserControl.Initialize( 
@@ -115,7 +146,7 @@ namespace Cfix.Addin
 				{
 					this.run= DteToolWindow<RunWindow>.Create(
 						this.addin,
-						Strings.RunWindowCaption,
+						Strings.RunWindowCaption + " " + this.extraCaption,
 						RunWindow.Guid,
 						Icons.cfix );
 					this.run.UserControl.Initialize(

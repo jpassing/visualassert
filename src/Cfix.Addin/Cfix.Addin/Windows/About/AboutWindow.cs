@@ -8,6 +8,8 @@ using System.Text;
 using System.Reflection;
 using System.Windows.Forms;
 using Cfix.Control;
+using Cfix.Addin.Windows;
+using System.Runtime.InteropServices;
 
 namespace Cfix.Addin.Windows.About
 {
@@ -53,7 +55,54 @@ namespace Cfix.Addin.Windows.About
 			PopulateFileVersionsList( Architecture.Amd64 );
 		}
 
-		public AboutWindow()
+		private void PopulateLicenseInfo( Workspace workspace )
+		{
+			Native.CFIXCTL_LICENSE_INFO license = workspace.License;
+
+			switch ( license.Type )
+			{
+				case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
+					this.licenseValueLabel.Text = license.Key;
+					break;
+
+				case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
+					if ( license.Valid )
+					{
+						this.licenseValueLabel.Text = String.Format(
+							Strings.TrialLicenseValid, license.DaysLeft );
+					}
+					else
+					{
+						this.licenseValueLabel.Text =
+							Strings.TrialLicenseInalid;
+					}
+					break;
+
+				default:
+					Debug.Fail( "Invalid license type" );
+					break;
+			}
+		}
+
+		private void linkLabel_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		{
+			try
+			{
+				Process proc = new Process();
+				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
+		public AboutWindow() : this( null )
+		{
+		}
+
+		public AboutWindow( Workspace ws )
 		{
 			InitializeComponent();
 
@@ -71,19 +120,17 @@ namespace Cfix.Addin.Windows.About
 			}
 			catch
 			{ }
-		}
 
-		private void linkLabel_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
-		{
-			try
+			if ( ws != null )
 			{
-				Process proc = new Process();
-				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
-				proc.Start();
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
+				try
+				{
+					PopulateLicenseInfo( ws );
+				}
+				catch ( Exception x )
+				{
+					CfixPlus.HandleError( x );
+				}
 			}
 		}
 	}
