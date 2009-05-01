@@ -120,9 +120,6 @@
     </Compile>
     <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Test\VCProjectTestCollection.cs" />
-    <Compile Include="Windows\ElevatedButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>

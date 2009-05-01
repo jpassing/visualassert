@@ -42,7 +42,7 @@ namespace Cfix.Addin.Windows.About
 			this.copyrightLabel2 = new Cfix.Addin.Windows.TransparentLabel();
 			this.copyrightLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.versionLabel = new Cfix.Addin.Windows.TransparentLabel();
-			this.enterLicenseButton = new Cfix.Addin.Windows.ElevatedButton();
+			this.enterLicenseButton = new System.Windows.Forms.Button();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.pictureBox1 ) ).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -184,6 +184,7 @@ namespace Cfix.Addin.Windows.About
 			this.enterLicenseButton.TabIndex = 5;
 			this.enterLicenseButton.Text = "Enter License Key";
 			this.enterLicenseButton.UseVisualStyleBackColor = true;
+			this.enterLicenseButton.Click += new System.EventHandler( this.enterLicenseButton_Click );
 			// 
 			// AboutWindow
 			// 
@@ -230,6 +231,6 @@ namespace Cfix.Addin.Windows.About
 		private System.Windows.Forms.LinkLabel linkLabel;
 		private TransparentLabel licenseLabel;
 		private TransparentLabel licenseValueLabel;
-		private ElevatedButton enterLicenseButton;
+		private System.Windows.Forms.Button enterLicenseButton;
 	}
 }

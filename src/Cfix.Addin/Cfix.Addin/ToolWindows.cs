@@ -30,30 +30,35 @@ namespace Cfix.Addin
 		{
 			this.addin = addin;
 
-			Native.CFIXCTL_LICENSE_INFO license = ws.License;
-			switch ( license.Type )
+			try
 			{
-				case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
-					this.extraCaption = "";
-					break;
+				Native.CFIXCTL_LICENSE_INFO license = ws.License;
+				switch ( license.Type )
+				{
+					case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
+						this.extraCaption = "";
+						break;
 
-				case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
-					if ( license.Valid )
-					{
-						this.extraCaption = "(" + String.Format(
-							Strings.TrialLicenseValid, license.DaysLeft ) + ")";
-					}
-					else
-					{
-						this.extraCaption = "(" + 
-							Strings.TrialLicenseInalid + ")";
-					}
-					break;
+					case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
+						if ( license.Valid )
+						{
+							this.extraCaption = "(" + String.Format(
+								Strings.TrialLicenseValid, license.DaysLeft ) + ")";
+						}
+						else
+						{
+							this.extraCaption = "(" +
+								Strings.TrialLicenseInalid + ")";
+						}
+						break;
 
-				default:
-					Debug.Fail( "Invalid license type" );
-					break;
+					default:
+						Debug.Fail( "Invalid license type" );
+						break;
+				}
 			}
+			catch
+			{ }
 		}
 
 		~ToolWindows()

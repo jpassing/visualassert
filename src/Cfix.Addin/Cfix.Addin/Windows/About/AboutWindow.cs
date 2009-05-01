@@ -15,6 +15,8 @@ namespace Cfix.Addin.Windows.About
 {
 	public partial class AboutWindow : Form
 	{
+		private string licadminArg = "";
+
 		private void PopulateFileVersionsList( Architecture arch )
 		{
 			string dir = Directories.GetBinDirectory( arch );
@@ -63,6 +65,7 @@ namespace Cfix.Addin.Windows.About
 			{
 				case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
 					this.licenseValueLabel.Text = license.Key;
+					this.licadminArg = "changekey";
 					break;
 
 				case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
@@ -70,11 +73,13 @@ namespace Cfix.Addin.Windows.About
 					{
 						this.licenseValueLabel.Text = String.Format(
 							Strings.TrialLicenseValid, license.DaysLeft );
+						this.licadminArg = "license";
 					}
 					else
 					{
 						this.licenseValueLabel.Text =
 							Strings.TrialLicenseInalid;
+						this.licadminArg = "expired";
 					}
 					break;
 
@@ -131,6 +136,23 @@ namespace Cfix.Addin.Windows.About
 				{
 					CfixPlus.HandleError( x );
 				}
+			}
+		}
+
+		private void enterLicenseButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				Process proc = new Process();
+				proc.StartInfo.FileName =
+					Directories.GetBinDirectory( Architecture.I386 ) +
+					"\\licadmin.exe";
+				proc.StartInfo.Arguments = this.licadminArg;
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 	}
