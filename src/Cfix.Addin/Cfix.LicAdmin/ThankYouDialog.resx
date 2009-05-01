@@ -692,7 +692,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;headerGrpBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="thanksLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -704,7 +704,7 @@
     <value>NoControl</value>
   </data>
   <data name="thanksLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>61, 108</value>
+    <value>54, 81</value>
   </data>
   <data name="thanksLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>284, 17</value>
@@ -725,7 +725,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;thanksLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="closeButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -752,6 +752,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;closeButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="restartLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="restartLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 118</value>
+  </data>
+  <data name="restartLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 13</value>
+  </data>
+  <data name="restartLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="restartLabel.Text" xml:space="preserve">
+    <value>Please restart Visual Studio to have the license change take effect.</value>
+  </data>
+  <data name="&gt;&gt;restartLabel.Name" xml:space="preserve">
+    <value>restartLabel</value>
+  </data>
+  <data name="&gt;&gt;restartLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;restartLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;restartLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

@@ -31,6 +31,8 @@ namespace Cfix.Addin
 
 		private readonly object runLock = new object();
 
+		private LicenseInfo cachedLicenseInfo;
+
 		private class DebugTerminator
 		{
 			private readonly CommandEvents cmdEvents;
@@ -310,9 +312,9 @@ namespace Cfix.Addin
 		 * Public.
 		 */
 
-		internal Native.CFIXCTL_LICENSE_INFO License
+		internal LicenseInfo QueryLicenseInfo()
 		{
-			get
+			if ( this.cachedLicenseInfo == null )
 			{
 				Native.CFIXCTL_LICENSE_INFO license = new Native.CFIXCTL_LICENSE_INFO();
 				license.SizeOfStruct = ( uint ) 
@@ -327,18 +329,13 @@ namespace Cfix.Addin
 					throw new CfixException(
 						this.searchAgent.ResolveMessage( hr ) );
 				}
-				else if ( license.Type == Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed &&
-						  ( license.Product != Configuration.ProductId ||
-						    license.SubProduct != Configuration.SubProductId ) )
-				{
-					throw new CfixAddinException(
-						Strings.WrongLicense );
-				}
 				else
 				{
-					return license;
+					this.cachedLicenseInfo = new LicenseInfo( license );
 				}
 			}
+
+			return this.cachedLicenseInfo;
 		}
 
 		internal ToolWindows ToolWindows

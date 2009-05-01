@@ -61,7 +61,8 @@ namespace Cfix.LicAdmin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are using a licensed copy of cfix studio. You may use this form to enter a different license key..
+        ///   Looks up a localized string similar to You are using a licensed copy of cfix studio. You may use this form 
+        ///to enter a different license key..
         /// </summary>
         internal static string InfoChangeKey {
             get {
@@ -70,7 +71,8 @@ namespace Cfix.LicAdmin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The evaluation period has expired. To continue using cfix studio, please enter a valid license key..
+        ///   Looks up a localized string similar to The evaluation period has expired. To continue using cfix studio, 
+        ///please enter a valid license key..
         /// </summary>
         internal static string InfoExpired {
             get {

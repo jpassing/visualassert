@@ -1,1 +1,1 @@
-DIRS=cfixlic testlic
+DIRS=cfixlic testlic licgen

@@ -155,6 +155,22 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="licgen"
+				>
+				<File
+					RelativePath=".\licgen\licgen.manifest"
+					>
+				</File>
+				<File
+					RelativePath=".\licgen\main.c"
+					>
+				</File>
+				<File
+					RelativePath=".\licgen\SOURCES"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Shared Header Files"

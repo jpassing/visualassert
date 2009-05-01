@@ -17,6 +17,17 @@ using Microsoft.VisualStudio.CommandBars;
 
 namespace Cfix.Addin.Dte
 {
+	public delegate void QueryStatusDelegate(
+		vsCommandStatusTextWanted neededText,
+		ref vsCommandStatus status,
+		ref object commandText );
+
+	public delegate void ExecDelegate(
+		vsCommandExecOption executeOption,
+		ref object varIn,
+		ref object varOut,
+		ref bool handled );
+
 	internal class DteCommand
 	{
 		private readonly String name;
@@ -29,13 +40,18 @@ namespace Cfix.Addin.Dte
 		private bool enabled = true;
 
 		public event ExecDelegate Execute;
+		public event QueryStatusDelegate QueryStatus;
 
-		private void QueryStatus(
+		private void Query(
 			vsCommandStatusTextWanted neededText,
 			ref vsCommandStatus status,
 			ref object commandText )
 		{
-			if ( enabled )
+			if ( QueryStatus != null )
+			{
+				QueryStatus( neededText, ref status, ref commandText );
+			}
+			else if ( enabled )
 			{
 				status = vsCommandStatus.vsCommandStatusSupported |
 						 vsCommandStatus.vsCommandStatusEnabled;
@@ -128,7 +144,7 @@ namespace Cfix.Addin.Dte
 				created = false;
 			}
 
-			connect.RegisterCommand( name, QueryStatus, Exec );
+			connect.RegisterCommand( name, Query, Exec );
 		}
 
 		public bool Enabled

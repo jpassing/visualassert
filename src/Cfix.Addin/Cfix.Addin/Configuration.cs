@@ -17,9 +17,6 @@ namespace Cfix.Addin
 {
 	public class Configuration : IDisposable
 	{
-		public const uint ProductId = 1;
-		public const uint SubProductId = 0;
-
 		private const string CookieName = "CfixCookie";
 		private readonly String[] supportedExtensions = new String[] { ".DLL", ".SYS" };
 

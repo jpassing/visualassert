@@ -8,6 +8,7 @@
 
 using System;
 using System.Diagnostics;
+using Cfix.Control;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
 using Cfix.Addin.Windows.Run;
@@ -32,29 +33,25 @@ namespace Cfix.Addin
 
 			try
 			{
-				Native.CFIXCTL_LICENSE_INFO license = ws.License;
-				switch ( license.Type )
+				LicenseInfo licInfo = ws.QueryLicenseInfo();
+
+				if ( licInfo.IsTrial )
 				{
-					case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
-						this.extraCaption = "";
-						break;
-
-					case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
-						if ( license.Valid )
-						{
-							this.extraCaption = "(" + String.Format(
-								Strings.TrialLicenseValid, license.DaysLeft ) + ")";
-						}
-						else
-						{
-							this.extraCaption = "(" +
-								Strings.TrialLicenseInalid + ")";
-						}
-						break;
-
-					default:
-						Debug.Fail( "Invalid license type" );
-						break;
+					if ( licInfo.Valid )
+					{
+						this.extraCaption = "(" + String.Format(
+							Strings.TrialLicenseValid, 
+							licInfo.TrialDaysLeft ) + ")";
+					}
+					else
+					{
+						this.extraCaption = "(" +
+							Strings.TrialLicenseInalid + ")";
+					}
+				}
+				else
+				{
+					this.extraCaption = "";
 				}
 			}
 			catch
@@ -211,5 +208,23 @@ namespace Cfix.Addin
 				this.run.UserControl.Dispose();
 			}
 		}
+
+		public void LaunchLicenseAdmin( string cmdArgs )
+		{
+			try
+			{
+				System.Diagnostics.Process proc = new System.Diagnostics.Process();
+				proc.StartInfo.FileName =
+					Directories.GetBinDirectory( Architecture.I386 ) +
+					"\\licadmin.exe";
+				proc.StartInfo.Arguments = cmdArgs;
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
+
 	}
 }

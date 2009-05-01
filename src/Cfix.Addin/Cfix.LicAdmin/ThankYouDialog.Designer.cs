@@ -34,6 +34,7 @@ namespace Cfix.LicAdmin
 			this.headerPicture = new System.Windows.Forms.PictureBox();
 			this.thanksLabel = new System.Windows.Forms.Label();
 			this.closeButton = new System.Windows.Forms.Button();
+			this.restartLabel = new System.Windows.Forms.Label();
 			this.headerGrpBox.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.headerPicture ) ).BeginInit();
 			this.SuspendLayout();
@@ -72,12 +73,18 @@ namespace Cfix.LicAdmin
 			this.closeButton.UseVisualStyleBackColor = true;
 			this.closeButton.Click += new System.EventHandler( this.closeButton_Click );
 			// 
+			// restartLabel
+			// 
+			resources.ApplyResources( this.restartLabel, "restartLabel" );
+			this.restartLabel.Name = "restartLabel";
+			// 
 			// ThankYouDialog
 			// 
 			this.AcceptButton = this.closeButton;
 			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.closeButton;
+			this.Controls.Add( this.restartLabel );
 			this.Controls.Add( this.closeButton );
 			this.Controls.Add( this.thanksLabel );
 			this.Controls.Add( this.headerGrpBox );
@@ -99,6 +106,7 @@ namespace Cfix.LicAdmin
 		private System.Windows.Forms.Label thanksLabel;
 		private TransparentLabel headerLabel;
 		private System.Windows.Forms.Button closeButton;
+		private System.Windows.Forms.Label restartLabel;
 	}
 }
 

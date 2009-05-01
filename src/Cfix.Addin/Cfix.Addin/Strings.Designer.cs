@@ -88,6 +88,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter cfix license key....
+        /// </summary>
+        internal static string EnterLicenseCmdCaption {
+            get {
+                return ResourceManager.GetString("EnterLicenseCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to cfix Test Explorer Window.
         /// </summary>
         internal static string ExplorerCmdCaption {

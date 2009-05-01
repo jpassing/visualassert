@@ -153,6 +153,8 @@
                 <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
                 <File Id="FileCfixAddin80DllI386" Name="cfaddin8.dll" LongName="cfix.addin.80.dll" Source="bin\fre\i386\cfix.addin.80.dll" DiskId="1"/>
                 <File Id="FileCfixAddin90DllI386" Name="cfaddin9.dll" LongName="cfix.addin.90.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
+
+                <File Id="FileLicAdminExeI386" Name="licadmin.exe" Source="bin\fre\i386\licadmin.exe" DiskId="1"/>
               </Component>
             </Directory>
 
@@ -213,12 +215,13 @@
 
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompInstallLocation"/>
+      <ComponentRef Id="CompStdole"/>
 
       <Feature Id="FeatureBinAmd64"
                Absent="allow"
-               Title="AMD64 (x64) binaries" 
-               Level="1" 
-               AllowAdvertise="no" 
+               Title="AMD64 (x64) binaries"
+               Level="1"
+               AllowAdvertise="no"
                Description="Binaries for AMD64 (x64). Required if you intend to write tests for this platform.">
         <Condition Level="2"><![CDATA[NOT VersionNT64]]></Condition>
 
@@ -248,7 +251,6 @@
         <ComponentRef Id="CompVs90"/>
       </Feature>
 
-      <ComponentRef Id="CompStdole"/>
       <ComponentRef Id="CompBinI386"/>
       <ComponentRef Id="CompLibI386"/>
       

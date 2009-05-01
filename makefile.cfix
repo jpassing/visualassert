@@ -123,6 +123,7 @@ clean: cleantemps
 # helper macro, invoked indirectly
 __cfixtests:
 	$(CFIX_CMD) $(CFIX_FLAGS) testctl.dll
+	$(CFIX_CMD) $(CFIX_FLAGS) testlic.dll
 
 testi386chk:
 	echo i386 checked

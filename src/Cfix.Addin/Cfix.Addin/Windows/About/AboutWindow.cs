@@ -16,6 +16,7 @@ namespace Cfix.Addin.Windows.About
 	public partial class AboutWindow : Form
 	{
 		private string licadminArg = "";
+		private readonly Workspace workspace;
 
 		private void PopulateFileVersionsList( Architecture arch )
 		{
@@ -59,20 +60,16 @@ namespace Cfix.Addin.Windows.About
 
 		private void PopulateLicenseInfo( Workspace workspace )
 		{
-			Native.CFIXCTL_LICENSE_INFO license = workspace.License;
-
-			switch ( license.Type )
+			try
 			{
-				case Native.CFIXCTL_LICENSE_TYPE.CfixctlLicensed:
-					this.licenseValueLabel.Text = license.Key;
-					this.licadminArg = "changekey";
-					break;
+				LicenseInfo licInfo = workspace.QueryLicenseInfo();
 
-				case Native.CFIXCTL_LICENSE_TYPE.CfixctlTrial:
-					if ( license.Valid )
+				if ( licInfo.IsTrial )
+				{
+					if ( licInfo.Valid )
 					{
 						this.licenseValueLabel.Text = String.Format(
-							Strings.TrialLicenseValid, license.DaysLeft );
+							Strings.TrialLicenseValid, licInfo.TrialDaysLeft );
 						this.licadminArg = "license";
 					}
 					else
@@ -81,11 +78,25 @@ namespace Cfix.Addin.Windows.About
 							Strings.TrialLicenseInalid;
 						this.licadminArg = "expired";
 					}
-					break;
-
-				default:
-					Debug.Fail( "Invalid license type" );
-					break;
+				}
+				else
+				{
+					if ( licInfo.Valid )
+					{
+						this.licenseValueLabel.Text = licInfo.Key;
+						this.licadminArg = "changekey";
+					}
+					else
+					{
+						this.licenseValueLabel.Text = "(Invalid)";
+						this.licadminArg = "license";
+					}
+				}
+			}
+			catch 
+			{
+				this.licenseValueLabel.Text = "(Invalid)";
+				this.licadminArg = "license";
 			}
 		}
 
@@ -110,6 +121,8 @@ namespace Cfix.Addin.Windows.About
 		public AboutWindow( Workspace ws )
 		{
 			InitializeComponent();
+
+			this.workspace = ws;
 
 			Version version = GetType().Assembly.GetName().Version;
 			this.versionLabel.Text += String.Format(
@@ -141,19 +154,8 @@ namespace Cfix.Addin.Windows.About
 
 		private void enterLicenseButton_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				Process proc = new Process();
-				proc.StartInfo.FileName =
-					Directories.GetBinDirectory( Architecture.I386 ) +
-					"\\licadmin.exe";
-				proc.StartInfo.Arguments = this.licadminArg;
-				proc.Start();
-			}
-			catch ( Exception x )
-			{
-				CfixPlus.HandleError( x );
-			}
+			Debug.Assert( this.workspace != null );
+			this.workspace.ToolWindows.LaunchLicenseAdmin( this.licadminArg );
 		}
 	}
 }

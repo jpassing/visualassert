@@ -85,8 +85,8 @@ Global
 		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Debug|x86.Build.0 = Debug|x86
 		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|x86.ActiveCfg = Release|Any CPU
-		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|x86.Build.0 = Release|Any CPU
+		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|x86.ActiveCfg = Release|x86
+		{C6CA5FA5-647C-488D-8AD4-AA16715EEEDA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

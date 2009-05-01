@@ -113,6 +113,10 @@ static HRESULT CfixctlsLoadLicenseKey(
 	{
 		return CFIXCTL_E_NO_LIC_INSTALLED;
 	}
+	else if ( Result == ERROR_MORE_DATA )
+	{
+		return CFIXCTL_E_LIC_TAMPERED;
+	}
 	else if ( Result != ERROR_SUCCESS )
 	{
 		return HRESULT_FROM_WIN32( Result );
