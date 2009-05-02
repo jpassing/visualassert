@@ -13,5 +13,6 @@ namespace Cfix.Control
 		Architecture Architecture { get; }
 		String ResolveMessage( int code );
 		HostEnvironment DefaultEnvironment { get; }
+		void SetTrialLicenseCookie( uint cookie );
 	}
 }

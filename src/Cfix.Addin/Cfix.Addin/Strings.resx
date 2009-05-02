@@ -172,10 +172,10 @@
     <value>The test run has not finished yet. Do you wish to terminate it?</value>
   </data>
   <data name="TrialLicenseInalid" xml:space="preserve">
-    <value>Evaluation copy, expired.</value>
+    <value>Evaluation copy, expired</value>
   </data>
   <data name="TrialLicenseValid" xml:space="preserve">
-    <value>Evaluation copy, {0} days left.</value>
+    <value>Evaluation copy, {0} days left</value>
   </data>
   <data name="UnrecognizedPlatform" xml:space="preserve">
     <value>Unrecognized platform: {0}</value>

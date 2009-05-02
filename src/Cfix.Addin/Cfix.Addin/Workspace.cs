@@ -113,6 +113,7 @@ namespace Cfix.Addin
 				arch,
 				false,
 				this.config.HostCreationOptions );
+			agent.SetTrialLicenseCookie( this.config.Cookie );
 
 			//
 			// Inherit own environment variables.

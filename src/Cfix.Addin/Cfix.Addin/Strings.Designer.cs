@@ -223,7 +223,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluation copy, expired..
+        ///   Looks up a localized string similar to Evaluation copy, expired.
         /// </summary>
         internal static string TrialLicenseInalid {
             get {
@@ -232,7 +232,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluation copy, {0} days left..
+        ///   Looks up a localized string similar to Evaluation copy, {0} days left.
         /// </summary>
         internal static string TrialLicenseValid {
             get {

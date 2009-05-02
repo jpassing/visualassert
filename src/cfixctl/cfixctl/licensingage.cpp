@@ -155,7 +155,7 @@ HRESULT CfixctlpGetTrialInstallationAge(
 	__out ULONG *DaysInstalled
 	)
 {
-	if ( ExternalDate == 0 || ! DaysInstalled )
+	if ( ! DaysInstalled )
 	{
 		return E_INVALIDARG;
 	}

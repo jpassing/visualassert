@@ -188,6 +188,16 @@ HRESULT CfixctlpIsTrialPeriodActive(
 	__out ULONG *DaysLeft
 	);
 
+/*++
+	Routine Description:
+		Query license information, see CfixctlQueryLicenseInfo.
+--*/
+HRESULT CfixctlpQueryLicenseInfo(
+	__in BOOL MachineWide,
+	__in ULONG ExternalDateOfInstallation,
+	__out PCFIXCTL_LICENSE_INFO Info
+	);
+
 /*----------------------------------------------------------------------
  *
  * Internal interfaces.

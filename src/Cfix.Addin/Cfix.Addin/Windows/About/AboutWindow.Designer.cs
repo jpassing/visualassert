@@ -97,7 +97,7 @@ namespace Cfix.Addin.Windows.About
 			// versionCol
 			// 
 			this.versionCol.Text = "Version";
-			this.versionCol.Width = 160;
+			this.versionCol.Width = 150;
 			// 
 			// linkLabel
 			// 

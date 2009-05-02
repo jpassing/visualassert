@@ -137,3 +137,11 @@ SymbolicName	= CFIXCTL_E_NO_LIC_INSTALLED
 Language		= English
 No license key installed.
 .
+
+MessageId		= 0xB00e
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_LIC_TRIAL_EXPIRED
+Language		= English
+The evaluation period has expired.
+.

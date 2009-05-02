@@ -142,6 +142,11 @@ namespace Cfix.Control.Native
 			Marshal.ReleaseComObject( obj );
 		}
 
+		public void SetTrialLicenseCookie( uint cookie )
+		{
+			this.agent.SetTrialLicenseCookie( cookie );
+		}
+
 		/*--------------------------------------------------------------
 		 * IAgent.
 		 */

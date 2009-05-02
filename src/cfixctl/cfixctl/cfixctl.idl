@@ -347,9 +347,9 @@ library Cfixctl
 			Arguments:
 				Cookie	- Date of first use, in days since 1601-1-1.
 		--*/
-		/*HRESULT SetTrialLicenseCookie(
+		HRESULT SetTrialLicenseCookie(
 			[in] ULONG Cookie
-			);*/
+			);
 	}
 
 	/*----------------------------------------------------------------------

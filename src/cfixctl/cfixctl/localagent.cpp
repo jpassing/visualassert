@@ -50,6 +50,8 @@ private:
 	RegistrationEntry *Registration;
 	HANDLE NewRegistrationEvent;
 
+	volatile ULONG LicenseCookie;
+
 	STDMETHOD( WaitForHostConnectionAndProcess )(
 		__in DWORD Cookie,
 		__in ULONG Timeout,
@@ -117,6 +119,10 @@ public:
 	STDMETHOD( CreateMessageResolver )(
 		__out ICfixMessageResolver **Resolver
 		);
+
+	STDMETHOD( SetTrialLicenseCookie )(
+		__in ULONG Cookie
+		);
 };
 
 /*------------------------------------------------------------------
@@ -136,6 +142,38 @@ IClassFactory& CfixctlpGetLocalAgentFactory()
  * Helpers.
  *
  */
+
+static HRESULT CfixctlsCheckLicense(
+	__in ULONG Cookie
+	)
+{
+	CFIXCTL_LICENSE_INFO Info;
+	Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
+	HRESULT Hr = CfixctlpQueryLicenseInfo(
+		TRUE,
+		Cookie,
+		&Info );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+	
+	if ( Info.Valid )
+	{
+		return S_OK;
+	}
+	else
+	{
+		if ( Info.Type == CfixctlTrial )
+		{
+			return CFIXCTL_E_LIC_TRIAL_EXPIRED;
+		}
+		else
+		{
+			return CFIXCTL_E_LIC_INVALID;
+		}
+	}
+}
 
 static HRESULT CfixctlsFindHostImage(
 	__in CfixTestModuleArch Arch,
@@ -460,7 +498,10 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
  *
  */
 
-LocalAgent::LocalAgent() : Registration( NULL ), NewRegistrationEvent( NULL )
+LocalAgent::LocalAgent() 
+	: Registration( NULL )
+	, NewRegistrationEvent( NULL )
+	, LicenseCookie( 0 )
 {
 }
 
@@ -725,6 +766,19 @@ STDMETHODIMP LocalAgent::CreateHost(
 	}
 	else if ( Clsctx & CLSCTX_LOCAL_SERVER )
 	{
+		//
+		// Check license (this method is a choke point).
+		//
+		// N.B. It is important to only check the license here --
+		// otherwise, the host process would check the license
+		// again and, due to a missing cookie, may fail.
+		//
+		HRESULT Hr = CfixctlsCheckLicense( this->LicenseCookie );
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
+		
 		// 
 		// Spawn process.
 		//
@@ -923,4 +977,12 @@ STDMETHODIMP LocalAgent::CreateMessageResolver(
 		NULL,
 		IID_ICfixMessageResolver,
 		( PVOID* ) Resolver );
+}
+
+STDMETHODIMP LocalAgent::SetTrialLicenseCookie(
+	__in ULONG Cookie
+	)
+{
+	this->LicenseCookie = Cookie;
+	return S_OK;
 }

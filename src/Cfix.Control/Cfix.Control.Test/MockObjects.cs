@@ -154,6 +154,9 @@ namespace Cfix.Control.Test
 		{
 			return "mock";
 		}
+
+		public void SetTrialLicenseCookie( uint Cookie )
+		{ }
 	}
 
 	internal class MockTarget : Agent

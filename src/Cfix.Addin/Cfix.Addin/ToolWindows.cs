@@ -19,6 +19,7 @@ namespace Cfix.Addin
 	{
 		private readonly CfixPlus addin;
 		private readonly string extraCaption;
+		private readonly bool disableControls;
 
 		private DteToolWindow<ExplorerWindow> explorer;
 		private DteToolWindow<RunWindow> run;
@@ -47,6 +48,9 @@ namespace Cfix.Addin
 					{
 						this.extraCaption = "(" +
 							Strings.TrialLicenseInalid + ")";
+
+						this.disableControls = true;
+						LaunchLicenseAdmin( "expired" );
 					}
 				}
 				else
@@ -136,6 +140,11 @@ namespace Cfix.Addin
 					this.explorer.DefaultWidth = 350;
 				}
 
+				if ( this.disableControls )
+				{
+					this.explorer.UserControl.Enabled = false;
+				}
+
 				return this.explorer;
 			}
 		}
@@ -157,6 +166,11 @@ namespace Cfix.Addin
 
 					this.run.DefaultHeight = 300;
 					this.run.DefaultWidth = 700;
+				}
+
+				if ( this.disableControls )
+				{
+					this.run.UserControl.Enabled = false;
 				}
 
 				return this.run;

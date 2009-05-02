@@ -249,7 +249,7 @@ HRESULT CfixctlInstallLicense(
 	return CfixctlsStoreLicenseKey( MachineWide, &Key );
 }
 
-HRESULT CfixctlQueryLicenseInfo(
+HRESULT CfixctlpQueryLicenseInfo(
 	__in BOOL MachineWide,
 	__in ULONG ExternalDateOfInstallation,
 	__out PCFIXCTL_LICENSE_INFO Info
@@ -323,6 +323,18 @@ HRESULT CfixctlQueryLicenseInfo(
 	}
 	
 	return Hr;
+}
+
+HRESULT CfixctlQueryLicenseInfo(
+	__in BOOL MachineWide,
+	__in ULONG ExternalDateOfInstallation,
+	__out PCFIXCTL_LICENSE_INFO Info
+	)
+{
+	return CfixctlpQueryLicenseInfo(
+		MachineWide,
+		ExternalDateOfInstallation,
+		Info );
 }
 
 HRESULT CfixctlValidateLicense(
