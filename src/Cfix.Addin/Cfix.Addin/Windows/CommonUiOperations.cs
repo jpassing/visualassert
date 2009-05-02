@@ -44,10 +44,20 @@ namespace Cfix.Addin.Windows
 		{
 			try
 			{
-				IRunnableTestItem runItem = item as IRunnableTestItem;
-				if ( item != null )
+				if ( item == null )
 				{
-					ws.RunItem( runItem, debug );
+					//
+					// Rerun last.
+					//
+					ws.RunItem( null, debug );
+				}
+				else
+				{
+					IRunnableTestItem runItem = item as IRunnableTestItem;
+					if ( item != null )
+					{
+						ws.RunItem( runItem, debug );
+					}
 				}
 			}
 			catch ( ConcurrentRunException )

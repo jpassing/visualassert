@@ -31,6 +31,8 @@ namespace Cfix.Addin
 
 		private readonly object runLock = new object();
 
+		private IRunnableTestItem lastItemRun;
+
 		private LicenseInfo cachedLicenseInfo;
 
 		private class DebugTerminator
@@ -373,115 +375,134 @@ namespace Cfix.Addin
 			get { return this.session; }
 		}
 
-		public void RunItem( IRunnableTestItem item, bool debug )
+		public bool RerunLastItemPossible
 		{
-			//
-			// Make sure the run window is reset while the build
-			// is active.
-			//
-			this.toolWindows.Run.UserControl.Run = null;
-
-			if ( !BuildNodeIfRequired( item ) )
-			{
-				//
-				// Bail out. Show error window.
-				//
-				this.addin.DTE.ToolWindows.ErrorList.Parent.Activate();
-				return;
-			}
-
-			bool allowArchMixing;
-			if ( debug )
-			{
-				//
-				// N.B. When debugging, it is crucial to use a single host
-				// process only. Debug runs are thus limited to a single
-				// architecture only.
-				//
-				allowArchMixing = false;
-			}
-			else
-			{
-				allowArchMixing = true;
-			}
-
-			SimpleRunCompiler compiler = new SimpleRunCompiler(
-				this.runAgents,
-				this.DispositionPolicy,
-				this.config.SchedulingOptions,
-				this.config.ThreadingOptions,
-				this.config.ExecutionOptions,
-				allowArchMixing );
-			compiler.Add( item );
-
-			IRun run = compiler.Compile();
-			run.Log += new EventHandler<LogEventArgs>( run_Log );
-			
-			if ( debug )
-			{
-				//
-				// N.B. As we late-attach the debugger, hitting 'Stop'
-				// in the IDE will merely detach, but not kill the process.
-				//
-				// Therefore, the Stop command is trapped and the Terminator 
-				// object is used to kill the host when the Stop command is
-				// issued.
-				//
-				DebugTerminator terminator = new DebugTerminator( this.cmdEvents, run );
-
-				run.HostSpawned += delegate( object sender, HostEventArgs e )
-				{
-					try
-					{
-						Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
-						Process2 process = FindProcess( debugger, e.HostProcessId );
-						if ( process == null )
-						{
-							//
-							// Weird, must be gone already. Nop.
-							//
-							return;
-						}
-
-						terminator.Activate();
-						process.Attach();
-
-						//
-						// N.B. By default, VS hides our tool windows when
-						// going into debug mode.
-						//
-						this.toolWindows.Run.Activate();
-					}
-					catch ( Exception x )
-					{
-						CfixPlus.HandleError( x );
-						run.Terminate();
-					}
-				};
-
-				run.Finished += delegate( object sender, FinishedEventArgs e )
-				{
-					terminator.Deactivate();
-				};
-			}
-
-			try
-			{
-				this.toolWindows.Run.UserControl.Run = run;
-				this.toolWindows.Run.Activate();
-				this.toolWindows.Run.UserControl.StartRun();
-			}
-			catch ( ConcurrentRunException )
-			{
-				//
-				// Another run is still active. Dispose run as it will
-				// not ever be started.
-				//
-				run.Dispose();
-				throw;
-			}
+			get { return this.lastItemRun != null; }
 		}
 
+		public void RunItem( IRunnableTestItem item, bool debug )
+		{
+			lock ( this.runLock )
+			{
+				if ( item != null )
+				{
+					this.lastItemRun = item;
+				}
+				else if ( this.lastItemRun != null )
+				{
+					item = this.lastItemRun;
+				}
+				else
+				{
+					return;
+				}
 
+				//
+				// Make sure the run window is reset while the build
+				// is active.
+				//
+				this.toolWindows.Run.UserControl.Run = null;
+
+				if ( !BuildNodeIfRequired( item ) )
+				{
+					//
+					// Bail out. Show error window.
+					//
+					this.addin.DTE.ToolWindows.ErrorList.Parent.Activate();
+					return;
+				}
+
+				bool allowArchMixing;
+				if ( debug )
+				{
+					//
+					// N.B. When debugging, it is crucial to use a single host
+					// process only. Debug runs are thus limited to a single
+					// architecture only.
+					//
+					allowArchMixing = false;
+				}
+				else
+				{
+					allowArchMixing = true;
+				}
+
+				SimpleRunCompiler compiler = new SimpleRunCompiler(
+					this.runAgents,
+					this.DispositionPolicy,
+					this.config.SchedulingOptions,
+					this.config.ThreadingOptions,
+					this.config.ExecutionOptions,
+					allowArchMixing );
+				compiler.Add( item );
+
+				IRun run = compiler.Compile();
+				run.Log += new EventHandler<LogEventArgs>( run_Log );
+
+				if ( debug )
+				{
+					//
+					// N.B. As we late-attach the debugger, hitting 'Stop'
+					// in the IDE will merely detach, but not kill the process.
+					//
+					// Therefore, the Stop command is trapped and the Terminator 
+					// object is used to kill the host when the Stop command is
+					// issued.
+					//
+					DebugTerminator terminator = new DebugTerminator( this.cmdEvents, run );
+
+					run.HostSpawned += delegate( object sender, HostEventArgs e )
+					{
+						try
+						{
+							Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
+							Process2 process = FindProcess( debugger, e.HostProcessId );
+							if ( process == null )
+							{
+								//
+								// Weird, must be gone already. Nop.
+								//
+								return;
+							}
+
+							terminator.Activate();
+							process.Attach();
+
+							//
+							// N.B. By default, VS hides our tool windows when
+							// going into debug mode.
+							//
+							this.toolWindows.Run.Activate();
+						}
+						catch ( Exception x )
+						{
+							CfixPlus.HandleError( x );
+							run.Terminate();
+						}
+					};
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						terminator.Deactivate();
+					};
+				}
+
+				try
+				{
+					this.toolWindows.Run.UserControl.Run = run;
+					this.toolWindows.Run.Activate();
+					this.toolWindows.Run.UserControl.StartRun();
+				}
+				catch ( ConcurrentRunException )
+				{
+					//
+					// Another run is still active. Dispose run as it will
+					// not ever be started.
+					//
+					run.Dispose();
+					throw;
+				}
+			}
+		}
 	}
 }

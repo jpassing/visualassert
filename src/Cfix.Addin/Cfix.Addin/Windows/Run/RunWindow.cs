@@ -128,6 +128,8 @@ namespace Cfix.Addin.Windows.Run
 			this.BeginInvoke( ( VoidDelegate ) delegate
 			{
 				this.terminateButton.Enabled = false;
+				this.redebugButton.Enabled = true;
+				this.restartButton.Enabled = true;
 
 				if ( this.run.Status == TaskStatus.Suceeded )
 				{
@@ -452,6 +454,8 @@ namespace Cfix.Addin.Windows.Run
 					this.progressBar.BackColor = InitialColor;
 
 					this.terminateButton.Enabled = true;
+					this.restartButton.Enabled = false;
+					this.redebugButton.Enabled = false;
 
 					this.run = value;
 					this.aborted = false;
@@ -476,6 +480,18 @@ namespace Cfix.Addin.Windows.Run
 				this.run.Start();
 			}
 		}
+
+		private void redebugButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItem( this.workspace, null, true );
+		}
+
+		private void restartButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItem( this.workspace, null, false );
+		}
+
+
 
 		
 	}

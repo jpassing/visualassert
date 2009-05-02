@@ -102,6 +102,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap FfwdMask {
+            get {
+                object obj = ResourceManager.GetObject("FfwdMask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
@@ -147,6 +154,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap Start {
             get {
                 object obj = ResourceManager.GetObject("Start", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap StartMask {
+            get {
+                object obj = ResourceManager.GetObject("StartMask", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

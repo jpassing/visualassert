@@ -151,6 +151,24 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart Last Run.
+        /// </summary>
+        internal static string ReDebugRunCmdCaption {
+            get {
+                return ResourceManager.GetString("ReDebugRunCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Last Run Without Debugging.
+        /// </summary>
+        internal static string ReStartRunCmdCaption {
+            get {
+                return ResourceManager.GetString("ReStartRunCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run still active.
         /// </summary>
         internal static string RunActive {

@@ -147,6 +147,12 @@
   <data name="ProgressInfoFinish" xml:space="preserve">
     <value>{0}: {1} failed, {2} inconclusive.</value>
   </data>
+  <data name="ReDebugRunCmdCaption" xml:space="preserve">
+    <value>Restart Last Run</value>
+  </data>
+  <data name="ReStartRunCmdCaption" xml:space="preserve">
+    <value>Restart Last Run Without Debugging</value>
+  </data>
   <data name="RunActive" xml:space="preserve">
     <value>Run still active</value>
   </data>
