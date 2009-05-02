@@ -16,6 +16,7 @@ using System.IO;
 using System.Windows.Forms;
 using EnvDTE;
 using EnvDTE80;
+using Cfix.Addin.Dte;
 using Cfix.Addin.ShellBrowse;
 using Cfix.Addin.Test;
 using Cfix.Control;
@@ -24,7 +25,7 @@ using Cfix.Control.Native;
 
 namespace Cfix.Addin.Windows.Explorer
 {
-	public partial class ExplorerWindow : UserControl
+	public partial class ExplorerWindow : UserControl, IDteToolWindowControl
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
 
@@ -88,8 +89,6 @@ namespace Cfix.Addin.Windows.Explorer
 				( schedOpts == SchedulingOptions.ShortcutFixtureOnFailure );
 			this.shurtcutRunOnFailureButton.Checked =
 				( schedOpts == SchedulingOptions.ShurtcutRunOnFailure );
-
-			ExploreSolution();
 		}
 
 		/*----------------------------------------------------------------------
@@ -602,6 +601,22 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				this.workspace.Configuration.SchedulingOptions =
 					SchedulingOptions.None;
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * IDteToolWindowControl.
+		 */
+
+		public void OnActivate()
+		{
+			try
+			{
+				ExploreSolution();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
 			}
 		}
 	}

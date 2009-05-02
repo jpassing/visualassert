@@ -14,6 +14,11 @@ using EnvDTE80;
 
 namespace Cfix.Addin.Dte
 {
+	public interface IDteToolWindowControl
+	{
+		void OnActivate();
+	}
+
 	internal class DteToolWindow< ControlT > : IDisposable where ControlT : UserControl
 	{
 		private Window window;
@@ -193,6 +198,12 @@ namespace Cfix.Addin.Dte
 		public void Activate()
 		{
 			this.window.Activate();
+
+			IDteToolWindowControl ctl = this.userControl as IDteToolWindowControl;
+			if ( ctl != null )
+			{
+				ctl.OnActivate();
+			}
 		}
 
 		public void Close()
