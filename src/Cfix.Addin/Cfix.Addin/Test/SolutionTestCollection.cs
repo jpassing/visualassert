@@ -27,6 +27,8 @@ namespace Cfix.Addin.Test
 		private readonly SolutionEvents solutionEvents;
 		private readonly AgentSet agentSet;
 
+		private static SolutionTestCollection loadedSolution;
+
 		private bool IsVcProject( Project prj )
 		{
 			return prj.Kind == ProjectKinds.VcProject;
@@ -157,11 +159,15 @@ namespace Cfix.Addin.Test
 
 		public override void Refresh()
 		{
+			loadedSolution = null;
+
 			//
 			// Assume DTE notifications are reliable, so just refresh
 			// children.
 			//
 			base.Refresh();
+
+			loadedSolution = this;
 		}
 
 		/*----------------------------------------------------------------------
@@ -186,6 +192,11 @@ namespace Cfix.Addin.Test
 					}
 				}
 			}
+		}
+
+		public static SolutionTestCollection TryGet()
+		{
+			return loadedSolution;
 		}
 
 		/*----------------------------------------------------------------------

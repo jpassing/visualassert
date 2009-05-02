@@ -79,6 +79,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to R&amp;un Tests.
+        /// </summary>
+        internal static string DebugCurrentHierItemCCaption {
+            get {
+                return ResourceManager.GetString("DebugCurrentHierItemCCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection does not include any test item.
         /// </summary>
         internal static string EmptyRun {
@@ -210,6 +219,15 @@ namespace Cfix.Addin {
         internal static string SelectFileOrFolder {
             get {
                 return ResourceManager.GetString("SelectFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Tests Wit&amp;hout Debugging.
+        /// </summary>
+        internal static string StartCurrentHierItemCmdCaption {
+            get {
+                return ResourceManager.GetString("StartCurrentHierItemCmdCaption", resourceCulture);
             }
         }
         

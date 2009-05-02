@@ -187,5 +187,43 @@ namespace Cfix.Addin.Windows
 				return false;
 			}
 		}
+
+		public static void RunSelectedUiHierarchyItem(
+			DTE2 dte,
+			Workspace ws,
+			bool debug
+			)
+		{
+			try
+			{
+				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
+				UIHierarchyItem selected = ( UIHierarchyItem )
+					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+
+				ITestItem testItem = null;
+
+				if ( selected.Object is Solution )
+				{
+					//
+					// N.B. There can be only one solution at a time.
+					//
+					testItem = SolutionTestCollection.TryGet();
+				}
+				else if ( selected.Object is Project )
+				{
+					testItem = VCProjectTestCollection.TryGetByName(
+						selected.Name );
+				}
+
+				if ( testItem != null )
+				{
+					RunItem( ws, testItem, debug );
+				}
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 static void __stdcall Slow()                 
 {
-	for ( int i = 0; i < 400; i++ )
+	for ( int i = 0; i < 40; i++ )
 	{
 		Sleep( 10 );
 		CFIX_ASSERT_MESSAGE( !"Fail", "sample %x", 0xF00 );

@@ -145,6 +145,20 @@ namespace Cfix.Addin.Dte
 			return new DteMainMenu( connect, popup );
 		}
 
+		public static DteCommandBar GetProjectContextMenu( DteConnect connect )
+		{
+			CommandBar commandBar =
+				( ( CommandBars ) connect.DTE.CommandBars )[ "Project" ];
+			return new DteCommandBar( connect, commandBar );
+		}
+
+		public static DteCommandBar GetSolutionContextMenu( DteConnect connect )
+		{
+			CommandBar commandBar =
+				( ( CommandBars ) connect.DTE.CommandBars )[ "Solution" ];
+			return new DteCommandBar( connect, commandBar );
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */

@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -31,6 +32,10 @@ namespace Cfix.Addin.Test
 		private readonly AgentSet agentSet;
 
 		private readonly object loadLock = new object();
+
+		private static readonly object loadedProjectsLock = new object();
+		private static readonly IDictionary<string, VCProjectTestCollection>
+			loadedProjects = new Dictionary<string, VCProjectTestCollection>();
 
 		//
 		// Current path to module -- this changes whenever the active
@@ -273,6 +278,21 @@ namespace Cfix.Addin.Test
 
 
 			LoadPrimaryOutputModule( currentConfig );
+
+			//
+			// N.B. Do not register in loadedProjects yet as child
+			// items have not been loaded yet.
+			//
+		}
+
+		protected override void Dispose( bool disposing )
+		{
+			lock ( loadedProjectsLock )
+			{
+				loadedProjects.Remove( this.Name );
+			}
+
+			base.Dispose( disposing );
 		}
 
 		public string UniqueName
@@ -285,12 +305,36 @@ namespace Cfix.Addin.Test
 			get { return this.project; }
 		}
 
+		public static VCProjectTestCollection TryGetByName( string name )
+		{
+			lock ( loadedProjectsLock )
+			{
+				VCProjectTestCollection prj;
+				if ( loadedProjects.TryGetValue( name, out prj ) )
+				{
+					return prj;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
 		/*----------------------------------------------------------------------
 		 * Overrides.
 		 */
 
 		public override void Refresh()
 		{
+			lock ( loadedProjectsLock )
+			{
+				//
+				// Avoid the object from being used while refreshing.
+				//
+				loadedProjects.Remove( this.Name );
+			}
+
 			//
 			// (Re-) obtain path to primary output as it may have
 			// changed.
@@ -333,6 +377,11 @@ namespace Cfix.Addin.Test
 				LoadPrimaryOutputModule( vcConfig ); 
 				
 				//base.Refresh();
+			}
+
+			lock ( loadedProjectsLock )
+			{
+				loadedProjects.Add( this.Name, this );
 			}
 		}
 

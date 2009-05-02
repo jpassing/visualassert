@@ -97,12 +97,12 @@ namespace Cfix.Addin
 
 			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
 			{
-				Explorer.Visible = true;
+				Explorer.Activate();
 			}
 
 			if ( this.addin.Workspace.Configuration.RunWindowVisible )
 			{
-				Run.Visible = true;
+				Run.Activate();
 			}
 		}
 

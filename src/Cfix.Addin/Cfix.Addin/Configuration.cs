@@ -195,7 +195,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				return ( ( int ) this.key.GetValue( "RunWindowVisible", 1 ) ) == 1;
+				return ( ( int ) this.key.GetValue( "RunWindowVisible", 0 ) ) == 1;
 			}
 			set
 			{

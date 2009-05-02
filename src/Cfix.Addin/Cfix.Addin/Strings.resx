@@ -123,6 +123,9 @@
   <data name="ArchitectureMismatch" xml:space="preserve">
     <value>The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture.</value>
   </data>
+  <data name="DebugCurrentHierItemCCaption" xml:space="preserve">
+    <value>R&amp;un Tests</value>
+  </data>
   <data name="EmptyRun" xml:space="preserve">
     <value>Selection does not include any test item</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="SelectFileOrFolder" xml:space="preserve">
     <value>Please select a test library or a folder to explore.</value>
+  </data>
+  <data name="StartCurrentHierItemCmdCaption" xml:space="preserve">
+    <value>Run Tests Wit&amp;hout Debugging</value>
   </data>
   <data name="SucceededWithInconclusiveParts" xml:space="preserve">
     <value>Succeeded, partly inconclusive</value>

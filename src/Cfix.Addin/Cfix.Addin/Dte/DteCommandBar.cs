@@ -26,7 +26,7 @@ namespace Cfix.Addin.Dte
 
 		private ICollection<DteCommandBarControl> controls = new LinkedList<DteCommandBarControl>();
 
-		private DteCommandBar(
+		internal DteCommandBar(
 			DteConnect connect,
 			CommandBar control )
 		{
