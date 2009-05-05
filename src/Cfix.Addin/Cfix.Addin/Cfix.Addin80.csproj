@@ -205,6 +205,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Start2.bmp" />
+    <None Include="Icons\Log.bmp" />
+    <None Include="Icons\ScrollLock.bmp" />
+    <None Include="Icons\ScrollLock.png" />
     <None Include="Icons\StartMask.bmp" />
     <None Include="Icons\FfwdMask.bmp" />
     <None Include="Icons\RefreshOnBuild.bmp" />

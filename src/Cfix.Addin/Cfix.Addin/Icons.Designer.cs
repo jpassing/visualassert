@@ -116,6 +116,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap Log {
+            get {
+                object obj = ResourceManager.GetObject("Log", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Refresh {
             get {
                 object obj = ResourceManager.GetObject("Refresh", resourceCulture);
@@ -144,6 +151,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap ScrollLock {
+            get {
+                object obj = ResourceManager.GetObject("ScrollLock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Solution {
             get {
                 object obj = ResourceManager.GetObject("Solution", resourceCulture);
@@ -154,6 +168,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap Start {
             get {
                 object obj = ResourceManager.GetObject("Start", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Start2 {
+            get {
+                object obj = ResourceManager.GetObject("Start2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

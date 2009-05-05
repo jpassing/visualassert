@@ -223,6 +223,12 @@ namespace Cfix.Control.Ui.Result
 			set { this.model.Run = value; }
 		}
 
+		public bool AutoScroll
+		{
+			get { return this.model.AutoScroll; }
+			set { this.model.AutoScroll = value; }
+		}
+
 		public ContextMenuStrip ResultNodeContextMenu
 		{
 			get { return this.resultNodeContextMenu; }

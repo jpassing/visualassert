@@ -78,7 +78,7 @@ namespace Cfix.Addin.Windows.Explorer
 			// 
 			this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			resources.ApplyResources( this.debugButton, "debugButton" );
-			this.debugButton.Image = global::Cfix.Addin.Icons.Start;
+			this.debugButton.Image = global::Cfix.Addin.Icons.Start2;
 			this.debugButton.Name = "debugButton";
 			this.debugButton.Click += new System.EventHandler( this.debugButton_Click );
 			// 

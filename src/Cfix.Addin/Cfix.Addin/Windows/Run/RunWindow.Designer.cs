@@ -31,19 +31,21 @@ namespace Cfix.Addin.Windows.Run
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( RunWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
-			this.terminateButton = new System.Windows.Forms.ToolStripButton();
-			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.redebugButton = new System.Windows.Forms.ToolStripButton();
-			this.restartButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
-			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
-			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.terminateButton = new System.Windows.Forms.ToolStripButton();
+			this.redebugButton = new System.Windows.Forms.ToolStripButton();
+			this.restartButton = new System.Windows.Forms.ToolStripButton();
+			this.showLogButton = new System.Windows.Forms.ToolStripButton();
+			this.scrollLockButton = new System.Windows.Forms.ToolStripButton();
+			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -53,62 +55,27 @@ namespace Cfix.Addin.Windows.Run
 			// 
 			this.toolbar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.terminateButton,
+            this.redebugButton,
+            this.restartButton,
+            this.toolStripSeparator2,
             this.showLogButton,
             this.toolStripSeparator1,
-            this.redebugButton,
-            this.restartButton} );
+            this.scrollLockButton} );
 			this.toolbar.Location = new System.Drawing.Point( 0, 0 );
 			this.toolbar.Name = "toolbar";
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
 			this.toolbar.TabIndex = 0;
 			this.toolbar.Text = "toolStrip1";
 			// 
-			// terminateButton
-			// 
-			this.terminateButton.Enabled = false;
-			this.terminateButton.Image = global::Cfix.Addin.Icons.StopHS;
-			this.terminateButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.terminateButton.Name = "terminateButton";
-			this.terminateButton.Size = new System.Drawing.Size( 97, 22 );
-			this.terminateButton.Text = "Terminate Run";
-			this.terminateButton.Click += new System.EventHandler( this.terminateButton_Click );
-			// 
-			// showLogButton
-			// 
-			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.showLogButton.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "showLogButton.Image" ) ) );
-			this.showLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.showLogButton.Name = "showLogButton";
-			this.showLogButton.Size = new System.Drawing.Size( 57, 22 );
-			this.showLogButton.Text = "Show Log";
-			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
-			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size( 6, 25 );
 			// 
-			// redebugButton
+			// toolStripSeparator2
 			// 
-			this.redebugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.redebugButton.Enabled = false;
-			this.redebugButton.Image = global::Cfix.Addin.Icons.Start;
-			this.redebugButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.redebugButton.Name = "redebugButton";
-			this.redebugButton.Size = new System.Drawing.Size( 23, 22 );
-			this.redebugButton.Text = "Restart Last Run";
-			this.redebugButton.Click += new System.EventHandler( this.redebugButton_Click );
-			// 
-			// restartButton
-			// 
-			this.restartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.restartButton.Enabled = false;
-			this.restartButton.Image = global::Cfix.Addin.Icons.Ffwd;
-			this.restartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.restartButton.Name = "restartButton";
-			this.restartButton.Size = new System.Drawing.Size( 23, 22 );
-			this.restartButton.Text = "Restart Last Run Without Debugging";
-			this.restartButton.Click += new System.EventHandler( this.restartButton_Click );
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size( 6, 25 );
 			// 
 			// progressBar
 			// 
@@ -121,16 +88,6 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar.TabIndex = 2;
 			// 
-			// progressLabel
-			// 
-			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.progressLabel.Location = new System.Drawing.Point( 5, 31 );
-			this.progressLabel.Name = "progressLabel";
-			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
-			this.progressLabel.TabIndex = 3;
-			this.progressLabel.TabStop = false;
-			// 
 			// resultCtxMenu
 			// 
 			this.resultCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
@@ -138,24 +95,6 @@ namespace Cfix.Addin.Windows.Run
             this.ctxMenuRunButton} );
 			this.resultCtxMenu.Name = "resultCtxMenu";
 			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 48 );
-			// 
-			// ctxMenuDebugButton
-			// 
-			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
-			this.ctxMenuDebugButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
-			this.ctxMenuDebugButton.Size = new System.Drawing.Size( 242, 22 );
-			this.ctxMenuDebugButton.Text = "Debug Test Again";
-			this.ctxMenuDebugButton.Click += new System.EventHandler( this.ctxMenuDebugButton_Click );
-			// 
-			// ctxMenuRunButton
-			// 
-			this.ctxMenuRunButton.Image = global::Cfix.Addin.Icons.Ffwd;
-			this.ctxMenuRunButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ctxMenuRunButton.Name = "ctxMenuRunButton";
-			this.ctxMenuRunButton.Size = new System.Drawing.Size( 242, 22 );
-			this.ctxMenuRunButton.Text = "Run Test Again Without Debugging";
-			this.ctxMenuRunButton.Click += new System.EventHandler( this.ctxMenuRunButton_Click );
 			// 
 			// results
 			// 
@@ -183,6 +122,88 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
 			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
 			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
+			// 
+			// progressLabel
+			// 
+			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.progressLabel.Location = new System.Drawing.Point( 5, 31 );
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
+			this.progressLabel.TabIndex = 3;
+			this.progressLabel.TabStop = false;
+			// 
+			// terminateButton
+			// 
+			this.terminateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.terminateButton.Enabled = false;
+			this.terminateButton.Image = global::Cfix.Addin.Icons.StopHS;
+			this.terminateButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.terminateButton.Name = "terminateButton";
+			this.terminateButton.Size = new System.Drawing.Size( 23, 22 );
+			this.terminateButton.Text = "Terminate Run";
+			this.terminateButton.Click += new System.EventHandler( this.terminateButton_Click );
+			// 
+			// redebugButton
+			// 
+			this.redebugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.redebugButton.Enabled = false;
+			this.redebugButton.Image = global::Cfix.Addin.Icons.Start2;
+			this.redebugButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.redebugButton.Name = "redebugButton";
+			this.redebugButton.Size = new System.Drawing.Size( 23, 22 );
+			this.redebugButton.Text = "Restart Last Run";
+			this.redebugButton.Click += new System.EventHandler( this.redebugButton_Click );
+			// 
+			// restartButton
+			// 
+			this.restartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.restartButton.Enabled = false;
+			this.restartButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			this.restartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.restartButton.Name = "restartButton";
+			this.restartButton.Size = new System.Drawing.Size( 23, 22 );
+			this.restartButton.Text = "Restart Last Run Without Debugging";
+			this.restartButton.Click += new System.EventHandler( this.restartButton_Click );
+			// 
+			// showLogButton
+			// 
+			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.showLogButton.Image = global::Cfix.Addin.Icons.Log;
+			this.showLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.showLogButton.Name = "showLogButton";
+			this.showLogButton.Size = new System.Drawing.Size( 23, 22 );
+			this.showLogButton.Text = "Show Log";
+			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
+			// 
+			// scrollLockButton
+			// 
+			this.scrollLockButton.CheckOnClick = true;
+			this.scrollLockButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.scrollLockButton.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "scrollLockButton.Image" ) ) );
+			this.scrollLockButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.scrollLockButton.Name = "scrollLockButton";
+			this.scrollLockButton.Size = new System.Drawing.Size( 23, 22 );
+			this.scrollLockButton.Text = "Scroll Lock";
+			this.scrollLockButton.Click += new System.EventHandler( this.autoScrollButton_Click );
+			// 
+			// ctxMenuDebugButton
+			// 
+			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
+			this.ctxMenuDebugButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
+			this.ctxMenuDebugButton.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuDebugButton.Text = "Debug Test Again";
+			this.ctxMenuDebugButton.Click += new System.EventHandler( this.ctxMenuDebugButton_Click );
+			// 
+			// ctxMenuRunButton
+			// 
+			this.ctxMenuRunButton.Image = global::Cfix.Addin.Icons.Ffwd;
+			this.ctxMenuRunButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ctxMenuRunButton.Name = "ctxMenuRunButton";
+			this.ctxMenuRunButton.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuRunButton.Text = "Run Test Again Without Debugging";
+			this.ctxMenuRunButton.Click += new System.EventHandler( this.ctxMenuRunButton_Click );
 			// 
 			// RunWindow
 			// 
@@ -219,5 +240,7 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton redebugButton;
 		private System.Windows.Forms.ToolStripButton restartButton;
+		private System.Windows.Forms.ToolStripButton scrollLockButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }

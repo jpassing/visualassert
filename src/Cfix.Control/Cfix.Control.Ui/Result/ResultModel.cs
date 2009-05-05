@@ -14,6 +14,8 @@ namespace Cfix.Control.Ui.Result
 		public event EventHandler<TreeModelEventArgs> NodesRemoved;
 		public event EventHandler<TreePathEventArgs> StructureChanged;
 
+		private delegate void VoidDelegate();
+
 		private readonly ImageList iconsList;
 		private readonly TreeViewAdv tree;
 		
@@ -32,6 +34,7 @@ namespace Cfix.Control.Ui.Result
 		private readonly object runLock = new object();
 
 		private bool rootExpanded;
+		private bool autoScroll;
 
 		/*----------------------------------------------------------------------
 		 * Events.
@@ -145,6 +148,21 @@ namespace Cfix.Control.Ui.Result
 					//
 					this.nodeTable.Remove( item );
 				}
+
+				if ( this.autoScroll )
+				{
+					//
+					// Try scrolling to this node.
+					//
+					TreeNodeAdv node = this.tree.FindNode( nodePath );
+					if ( node != null )
+					{
+						this.tree.BeginInvoke( ( VoidDelegate ) delegate
+						{
+							this.tree.ScrollTo( node );
+						} );
+					}
+				}
 			}
 			else
 			{
@@ -168,6 +186,12 @@ namespace Cfix.Control.Ui.Result
 		{
 			this.iconsList = iconsList;
 			this.tree = tree;
+		}
+
+		public bool AutoScroll
+		{
+			get { return this.autoScroll; }
+			set { this.autoScroll = value; }
 		}
 
 		public IRun Run

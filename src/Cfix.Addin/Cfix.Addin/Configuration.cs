@@ -176,6 +176,21 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool ResultsScrollLock
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "ResultsScrollLock", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"ResultsScrollLock",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public bool ExplorerWindowVisible
 		{
 			get

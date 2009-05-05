@@ -84,4 +84,4 @@ SOURCES=\
 	..\cfixctl.rc \
 	..\cfixctlmsg.mc
 	
-DLLBASE=0x60f00000
+DLLBASE=0x60f30000
