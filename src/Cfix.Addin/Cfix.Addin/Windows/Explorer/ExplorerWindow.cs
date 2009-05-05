@@ -619,5 +619,10 @@ namespace Cfix.Addin.Windows.Explorer
 				CfixPlus.HandleError( x );
 			}
 		}
+
+		private void lameButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.OpenLameWebpage();
+		}
 	}
 }

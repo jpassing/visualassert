@@ -225,5 +225,19 @@ namespace Cfix.Addin.Windows
 				CfixPlus.HandleError( x );
 			}
 		}
+
+		public static void OpenLameWebpage()
+		{
+			try
+			{
+				System.Diagnostics.Process proc = new System.Diagnostics.Process();
+				proc.StartInfo.FileName = "http://www.cfix-studio.com/go/lame";
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
 	}
 }

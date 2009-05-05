@@ -95,6 +95,27 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap Feedback {
+            get {
+                object obj = ResourceManager.GetObject("Feedback", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Feedback1 {
+            get {
+                object obj = ResourceManager.GetObject("Feedback1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Feedback2 {
+            get {
+                object obj = ResourceManager.GetObject("Feedback2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Ffwd {
             get {
                 object obj = ResourceManager.GetObject("Ffwd", resourceCulture);

@@ -498,5 +498,10 @@ namespace Cfix.Addin.Windows.Run
 			this.results.AutoScroll = ! this.scrollLockButton.Checked;
 			this.workspace.Configuration.ResultsScrollLock = this.scrollLockButton.Checked;
 		}
+
+		private void lameButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.OpenLameWebpage();
+		}
 	}
 }
