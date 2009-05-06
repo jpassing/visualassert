@@ -18,7 +18,7 @@ namespace Cfix.Control.Ui.Explorer
 		{
 			if ( this.treeView.InvokeRequired )
 			{
-				this.treeView.Invoke( ( VoidDelegate ) delegate()
+				this.treeView.BeginInvoke( ( VoidDelegate ) delegate()
 				{
 					this.Nodes.Add( node );
 					if ( node is AbstractExplorerCollectionNode )
@@ -41,7 +41,7 @@ namespace Cfix.Control.Ui.Explorer
 		{
 			if ( this.treeView.InvokeRequired )
 			{
-				this.treeView.Invoke( ( VoidDelegate ) delegate()
+				this.treeView.BeginInvoke( ( VoidDelegate ) delegate()
 				{
 					this.Nodes.RemoveByKey( e.Item.Name );
 				} );
