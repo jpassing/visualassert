@@ -197,12 +197,25 @@ namespace Cfix.Addin.Dte
 
 		public void Activate()
 		{
+			bool wasVisible = this.window.Visible;
 			this.window.Activate();
 
-			IDteToolWindowControl ctl = this.userControl as IDteToolWindowControl;
-			if ( ctl != null )
+			if ( !wasVisible && this.window.Visible )
 			{
-				ctl.OnActivate();
+				//
+				// A true activation.
+				//
+				IDteToolWindowControl ctl = this.userControl as IDteToolWindowControl;
+				if ( ctl != null )
+				{
+					ctl.OnActivate();
+				}
+			}
+			else
+			{
+				//
+				// Re-activate. Do not notify.
+				//
 			}
 		}
 

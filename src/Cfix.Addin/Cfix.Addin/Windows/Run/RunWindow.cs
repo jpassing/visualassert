@@ -402,6 +402,8 @@ namespace Cfix.Addin.Windows.Run
 			this.solutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
 
 			this.scrollLockButton.Checked = ws.Configuration.ResultsScrollLock;
+
+			this.results.AutoScrollToActiveNode = ! ws.Configuration.ResultsScrollLock;
 		}
 
 		public IRun Run
@@ -495,7 +497,7 @@ namespace Cfix.Addin.Windows.Run
 
 		private void autoScrollButton_Click( object sender, EventArgs e )
 		{
-			this.results.AutoScroll = ! this.scrollLockButton.Checked;
+			this.results.AutoScrollToActiveNode = !this.scrollLockButton.Checked;
 			this.workspace.Configuration.ResultsScrollLock = this.scrollLockButton.Checked;
 		}
 

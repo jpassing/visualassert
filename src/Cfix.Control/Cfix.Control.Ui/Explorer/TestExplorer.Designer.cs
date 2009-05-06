@@ -66,6 +66,7 @@ namespace Cfix.Control.Ui.Explorer
 			this.Controls.Add( this.treeView );
 			this.Name = "TestExplorer";
 			this.Size = new System.Drawing.Size( 265, 303 );
+			this.Load += new System.EventHandler( this.TestExplorer_Load );
 			this.ResumeLayout( false );
 
 		}

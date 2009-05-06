@@ -52,6 +52,12 @@ namespace Cfix.Control.Ui.Explorer
 
 		private ContextMenuStrip nodeContextMenu;
 
+		//
+		// Flag indicating that the control has been loaded and can
+		// accept updates via Invoke/BeginInvoke.
+		//
+		private bool canAcceptInvokes;
+
 		/*----------------------------------------------------------------------
 		 * Private.
 		 */
@@ -80,7 +86,9 @@ namespace Cfix.Control.Ui.Explorer
 			}
 			finally
 			{
-				if ( this.Disposing || this.treeView.Disposing )
+				if ( this.Disposing || 
+					 this.treeView.Disposing ||
+					 !this.canAcceptInvokes )
 				{
 					//
 					// Do not touch UI.
@@ -173,6 +181,11 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.KeyDown += new KeyEventHandler( treeView_KeyDown );
 			this.treeView.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler( treeView_NodeMouseDoubleClick );
 			this.Disposed += this_Disposed;
+		}
+
+		private void TestExplorer_Load( object sender, EventArgs e )
+		{
+			this.canAcceptInvokes = true;
 		}
 
 		public ImageList ImageList
