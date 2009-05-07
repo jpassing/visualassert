@@ -124,13 +124,7 @@ namespace Cfix.Addin.Windows.About
 
 			this.workspace = ws;
 
-			Version version = GetType().Assembly.GetName().Version;
-			this.versionLabel.Text += String.Format(
-				"{0}.{1}.{2} Build {3}",
-				version.Major,
-				version.Minor,
-				version.MajorRevision,
-				version.MinorRevision );
+			this.versionLabel.Text += CfixPlus.Version;
 
 			try
 			{

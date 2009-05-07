@@ -503,7 +503,7 @@ namespace Cfix.Addin.Windows.Run
 
 		private void lameButton_Click( object sender, EventArgs e )
 		{
-			CommonUiOperations.OpenLameWebpage();
+			CommonUiOperations.OpenLameWebpage( this.dte, "Run" );
 		}
 	}
 }

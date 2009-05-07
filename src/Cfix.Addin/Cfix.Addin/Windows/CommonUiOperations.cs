@@ -226,12 +226,23 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
-		public static void OpenLameWebpage()
+		public static void OpenLameWebpage( DTE2 dte, string windowName )
 		{
 			try
 			{
+				string url = string.Format(
+					"https://cfix.fogbugz.com/default.asp?pg=pgPublicEdit&ixArea=16" +
+					"&sEvent=%0a%0aOS%20Version:%20{0}%0aVS%20Version:%20{1}%0a"+
+					"VS%20Locale:%20%20{4}%0aWindow:" +
+					"%20%20%20%20%20{2}&sVersion={3}",
+					Environment.OSVersion,
+					dte.Version,
+					windowName,
+					CfixPlus.Version,
+					dte.LocaleID );
+
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
-				proc.StartInfo.FileName = "http://www.cfix-studio.com/go/lame";
+				proc.StartInfo.FileName = url;
 				proc.Start();
 			}
 			catch ( Exception x )
