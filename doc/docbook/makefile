@@ -1,0 +1,30 @@
+HH_HOME=c:\Program Files (x86)\HTML Help Workshop\
+
+!IF [cscript /nologo buildnum.vbs > __buildnum.inc]
+!ENDIF
+!INCLUDE __buildnum.inc
+
+__cfix.xml:
+	xsltproc identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
+
+all: chmdoc webdoc
+
+chmdoc: __cfix.xml
+	cd chm
+
+	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
+	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
+	move cfix.chm cfixstudio.chm
+
+	cd ..
+	
+	
+webdoc: __cfix.xml
+	if not exist web\doc md web\doc
+	cd web\doc
+	
+	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
+
+	cd ..
+	
+

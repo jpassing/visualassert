@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<book >
+  <title>cfix studio</title>
+	<bookinfo>
+		<releaseinfo>Release 1.0</releaseinfo>
+		<author>Johannes Passing</author>
+	</bookinfo>
+
+	<toc/>
+
+	<chapter id="Preface">
+		<title>Preface</title>
+		<section id="Legal">
+			<title>Legal notice</title>
+			<para>
+			Copyright of this document 2007-2008 Johannes Passing. All rights reserved.
+			</para>
+			<para>
+			Microsoft, Active Directory, ActiveMovie, ActiveX, BackOffice, ClearType, Developer Studio, Direct3D, Direct Animation, 
+			DirectDraw, DirectInput, DirectMusic, DirectPlay, DirectShow, DirectSound, DirectX, IntelliMouse, JScript, Microsoft Press, 
+			MSDN, MSN, MS-DOS, Natural, NetMeeting, NetShow, Sidewalk, Visual Basic, Visual C++, Visual C#, Visual FoxPro, Visual J++, 
+			Visual Studio, WebTV, Win32, Win32s, Windows, Windows NT, and Windows Server are either registered trademarks or trademarks 
+			of Microsoft Corporation in the United States and/or other countries.
+			</para>
+			<para>
+			Java is a trademark of Sun Microsystems.
+			</para>
+			<para>
+			Usage of this documentation is subject to the <link linkend="EULA">End User License Agreement</link>.
+			</para>
+		</section>
+		<section id="Terms">
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Terms']/*)" href="__cfix.xml" />
+		</section>
+	</chapter>
+	
+	<chapter id="Overview">
+		<title>Overview</title>
+		
+		<section id="Background">
+			
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='Background']/*)" href="__cfix.xml" />
+		</section>
+		
+		
+	</chapter>
+	
+	<chapter id="EULA">
+		<title>End User License Agreement</title>
+		...
+	</chapter>
+</book>

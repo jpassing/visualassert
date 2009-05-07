@@ -1,0 +1,19 @@
+Will there be localized versions of cfix studio?
+There are no concrete plans regarding localized versions, but at least a German version is likely to be released in the near future. "Switching from english to a localized version will be free, of course.
+
+What operating systems and Visual Studio versions are supported?
+
+
+
+What about cfix, will it remain open source? 
+Yes, cfix will always remain open source.
+
+
+
+
+Does cfix studio support kernel mode unit testing?
+Currently, only user mode development is supported. However, support for kernel mode unit testing is planned.
+
+
+
+Does cfix studio run with VisualStudio 2002 or 2003?
