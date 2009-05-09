@@ -110,23 +110,6 @@ namespace Cfix.Control.Ui.Result
 								nodePath,
 								null,
 								null ) );
-
-						//TreeNodeAdv treeNode = this.tree.FindNode( nodePath );
-						//if ( treeNode != null && treeNode.Children.Count > 0 )
-						//{
-						//    object[] children = new object[ treeNode.Children.Count ];
-						//    int index = 0;
-						//    foreach ( TreeNodeAdv child in treeNode.Children )
-						//    {
-						//        children[ index++ ] = child;
-						//    }
-
-						//    this.NodesRemoved(
-						//        this,
-						//        new TreeModelEventArgs(
-						//            nodePath,
-						//            children ) );
-						//}
 					}
 
 					if ( this.NodesInserted != null )
