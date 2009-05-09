@@ -1084,7 +1084,11 @@ namespace Aga.Controls.Tree
 			TreeNodeAdv parent = FindNode(e.Path);
 			if (parent != null)
 			{
-				if (e.Indices != null)
+				if ( e.Indices == null && e.Children == null )
+				{
+					parent.Nodes.Clear();
+				}
+				else if (e.Indices != null)
 				{
 					List<int> list = new List<int>(e.Indices);
 					list.Sort();

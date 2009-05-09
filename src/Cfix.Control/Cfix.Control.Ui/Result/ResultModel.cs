@@ -69,7 +69,7 @@ namespace Cfix.Control.Ui.Result
 			this.tree.FindNode( path ).Collapse();
 		}
 
-		private void run_StatusChanged( object sender, EventArgs e )
+		private void run_StatusChangedOrFailureOccured( object sender, EventArgs e )
 		{
 			IResultItem item = sender as IResultItem;
 			Debug.Assert( item != null );
@@ -97,6 +97,38 @@ namespace Cfix.Control.Ui.Result
 					// New children for this node.
 					//
 
+					if ( this.NodesRemoved != null )
+					{
+						//
+						// To avoid adding duplicates, we have to 
+						// clear the list of existing failures first.
+						//
+
+						this.NodesRemoved(
+							this,
+							new TreeModelEventArgs(
+								nodePath,
+								null,
+								null ) );
+
+						//TreeNodeAdv treeNode = this.tree.FindNode( nodePath );
+						//if ( treeNode != null && treeNode.Children.Count > 0 )
+						//{
+						//    object[] children = new object[ treeNode.Children.Count ];
+						//    int index = 0;
+						//    foreach ( TreeNodeAdv child in treeNode.Children )
+						//    {
+						//        children[ index++ ] = child;
+						//    }
+
+						//    this.NodesRemoved(
+						//        this,
+						//        new TreeModelEventArgs(
+						//            nodePath,
+						//            children ) );
+						//}
+					}
+
 					if ( this.NodesInserted != null )
 					{
 						object[] children = new object[ affectedNode.Failures.Count ];
@@ -120,11 +152,6 @@ namespace Cfix.Control.Ui.Result
 					}
 				}
 
-				//if ( item.Status == ExecutionStatus.Running )
-				//{
-				//    Expand( nodePath, false );
-				//}
-				//else 
 				if ( item.Status > ExecutionStatus.Running )
 				{
 					IResultItemCollection itemColl =
@@ -132,14 +159,6 @@ namespace Cfix.Control.Ui.Result
 					if ( item.Status == ExecutionStatus.Succeeded &&
 						 itemColl != null )
 					{
-						//if ( itemColl.ItemCount > 0 &&
-						//    !( itemColl.GetItem( 0 ) is IResultItemCollection ) )
-						//{
-						//    //
-						//    // Node has leaves as children.
-						//    //
-						//    Collapse( nodePath );
-						//}
 						Collapse( nodePath );
 					}
 
@@ -203,7 +222,8 @@ namespace Cfix.Control.Ui.Result
 				{
 					if ( this.run != null )
 					{
-						this.run.StatusChanged -= new EventHandler( run_StatusChanged );
+						this.run.StatusChanged -= new EventHandler( run_StatusChangedOrFailureOccured );
+						this.run.FailureOccured -= new EventHandler( run_StatusChangedOrFailureOccured );
 					}
 
 					//
@@ -224,7 +244,8 @@ namespace Cfix.Control.Ui.Result
 						this.nodeTable = new Dictionary<IResultItem, ResultItemNode>();
 						this.nodeTable[ this.run.RootResult ] = this.root;
 
-						this.run.StatusChanged += new EventHandler( run_StatusChanged );
+						this.run.StatusChanged += new EventHandler( run_StatusChangedOrFailureOccured );
+						this.run.FailureOccured += new EventHandler( run_StatusChangedOrFailureOccured );
 					}
 
 					if ( this.StructureChanged != null )

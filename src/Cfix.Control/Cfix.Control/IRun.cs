@@ -82,6 +82,7 @@ namespace Cfix.Control
 		event EventHandler<ThreadEventArgs> ThreadStarted;
 		event EventHandler<ThreadEventArgs> ThreadFinished;
 		event EventHandler StatusChanged;
+		event EventHandler FailureOccured;
 		event EventHandler<NotificationEventArgs> Notification;
 		event EventHandler<HostEventArgs> BeforeTerminate;
 

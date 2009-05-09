@@ -22,5 +22,6 @@ namespace Cfix.Control
 		void OnThreadStarted( IResultItem item, uint threadId );
 		void OnThreadFinished( IResultItem item, uint threadId );
 		void OnStatusChanged( IResultItem item );
+		void OnFailureOccured( IResultItem item );
 	}
 }

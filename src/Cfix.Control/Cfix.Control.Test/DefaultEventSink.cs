@@ -43,5 +43,8 @@ namespace Cfix.Control.Test
 		{
 		}
 
+		public void OnFailureOccured( IResultItem item )
+		{
+		}
 	}
 }

@@ -1,4 +1,4 @@
-#include <cfix.h>
+#include <cfixcc.h>
 
 static void __stdcall Dummy()
 {
@@ -10,7 +10,9 @@ static void __stdcall Dummy()
 
 
 static void __stdcall Dummy2()
-{}
+{
+	CFIXCC_ASSERT_EQUALS( 1, 2, "hello" );
+}
 
 static void __stdcall LeakCS()
 {

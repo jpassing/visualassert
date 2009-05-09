@@ -52,6 +52,8 @@ namespace Cfix.Control
 				}
 
 				this.failures.Add( failure );
+
+				this.events.OnFailureOccured( this );
 			}
 		}
 

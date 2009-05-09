@@ -37,7 +37,7 @@ namespace Aga.Controls.Tree
 		public TreeModelEventArgs(TreePath parent, int[] indices, object[] children)
 			: base(parent)
 		{
-			if (children == null)
+			if (children == null && indices != null)
 				throw new ArgumentNullException();
 
 			if (indices != null && indices.Length != children.Length)

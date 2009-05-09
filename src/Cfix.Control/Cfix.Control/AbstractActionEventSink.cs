@@ -12,6 +12,7 @@ namespace Cfix.Control.RunControl
 		public event EventHandler<ThreadEventArgs> ThreadStarted;
 		public event EventHandler<ThreadEventArgs> ThreadFinished;
 		public event EventHandler StatusChanged;
+		public event EventHandler FailureOccured;
 
 		private readonly IDispositionPolicy policy;
 
@@ -125,6 +126,14 @@ namespace Cfix.Control.RunControl
 			if ( StatusChanged != null )
 			{
 				StatusChanged( item, EventArgs.Empty );
+			}
+		}
+
+		public void OnFailureOccured( IResultItem item )
+		{
+			if ( FailureOccured != null )
+			{
+				FailureOccured( item, EventArgs.Empty );
 			}
 		}
 	}

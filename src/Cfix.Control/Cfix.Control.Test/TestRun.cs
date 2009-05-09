@@ -313,6 +313,13 @@ namespace Cfix.Control.Test
 
 				int fails = 0;
 				int successes = 0;
+
+				int failuresOccured = 0;
+				run.FailureOccured += delegate( object sender, EventArgs e )
+				{
+					failuresOccured++;
+				};
+
 				run.Finished += delegate( object sender, FinishedEventArgs e )
 				{
 					switch ( run.Status )
@@ -334,6 +341,7 @@ namespace Cfix.Control.Test
 				done.WaitOne();
 				Assert.AreEqual( TaskStatus.Suceeded, run.Status );
 
+				Assert.AreEqual( 2, failuresOccured );
 				Assert.AreEqual( 1, successes );
 				Assert.AreEqual( 0, fails );
 
