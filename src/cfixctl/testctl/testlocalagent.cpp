@@ -86,6 +86,9 @@ public:
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		ICfixHost *LocalHost;
 		CFIXCC_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
@@ -160,6 +163,8 @@ public:
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
 
 		HANDLE Thread = CfixCreateThread(
 			NULL, 0, RegisterThreadProc, Agent, 0, NULL );
@@ -215,6 +220,9 @@ public:
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
 
 		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
@@ -264,6 +272,9 @@ public:
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
 
 		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
@@ -300,6 +311,9 @@ public:
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		ICfixMessageResolver *Resolver;
 		CFIXCC_ASSERT_OK( Agent->CreateMessageResolver( &Resolver ) );
 
@@ -333,6 +347,9 @@ public:
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		BSTR HostPath = NULL;
 		CFIXCC_ASSERT_OK( Agent->GetHostPath(
 			CFIXCTL_OWN_ARCHITECTURE,
@@ -362,6 +379,9 @@ public:
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
+
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
 
 		BSTR HostPath = NULL;
 		CFIXCC_ASSERT_OK( Agent->GetHostPath(

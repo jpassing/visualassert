@@ -11,27 +11,34 @@
 #include <cfixctllic.h>
 #include "testctlp.h"
 
+static ULONG DaysFromFileTime( 
+	__in FILETIME Ft 
+	)
+{
+	ULARGE_INTEGER Int;
+	Int.HighPart = Ft.dwHighDateTime;
+	Int.LowPart = Ft.dwLowDateTime;
+
+	return ( ULONG ) ( Int.QuadPart 
+		/ 10	// us
+		/ 1000	// ms
+		/ 1000	// s
+		/ 60	// m
+		/ 60	// h
+		/ 24 );	// d
+}
+
+ULONG CurrentLicensingDate()
+{
+	FILETIME Date;
+	CFIXCC_ASSERT_OK( CoFileTimeNow( &Date ) );
+	return DaysFromFileTime( Date );
+}
+
 class TestLicensing : public cfixcc::TestFixture
 {
 private:
 	
-	ULONG DaysFromFileTime( 
-		__in FILETIME Ft 
-		)
-	{
-		ULARGE_INTEGER Int;
-		Int.HighPart = Ft.dwHighDateTime;
-		Int.LowPart = Ft.dwLowDateTime;
-
-		return ( ULONG ) ( Int.QuadPart 
-			/ 10	// us
-			/ 1000	// ms
-			/ 1000	// s
-			/ 60	// m
-			/ 60	// h
-			/ 24 );	// d
-	}
-
 	void ResetBinFolderAge( LONGLONG AddDays )
 	{
 		FILETIME Date;

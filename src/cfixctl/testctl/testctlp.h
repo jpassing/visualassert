@@ -141,3 +141,5 @@ void TestComServer(
 	__in PCOM_EXPORTS Exports,
 	__in REFCLSID Clsid
 	);
+
+ULONG CurrentLicensingDate();

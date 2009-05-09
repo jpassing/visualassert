@@ -45,6 +45,9 @@ public:
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
+		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 		CFIXCC_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,

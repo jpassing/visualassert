@@ -353,6 +353,9 @@ void Before()
 		NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 	CFIX_ASSUME( Agent );
 
+	CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
 	CFIXCC_ASSERT_OK( Agent->CreateHost( 
 		TESTCTLP_OWN_ARCHITECTURE,
 		CLSCTX_INPROC_SERVER,
