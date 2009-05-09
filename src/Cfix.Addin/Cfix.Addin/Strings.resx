@@ -144,6 +144,9 @@
   <data name="MsgBoxCaption" xml:space="preserve">
     <value>cfix</value>
   </data>
+  <data name="NotATestProjectToolTip" xml:space="preserve">
+    <value>Regulat Project -- does not define any tests.</value>
+  </data>
   <data name="ProgressInfo" xml:space="preserve">
     <value>{3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive.</value>
   </data>

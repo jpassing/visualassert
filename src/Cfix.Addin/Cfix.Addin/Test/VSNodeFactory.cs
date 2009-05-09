@@ -64,6 +64,33 @@ namespace Cfix.Addin.Test
 				// Children always available, so load them.
 				//
 				LoadChildren();
+
+				prj.Refreshed += new EventHandler( prj_Refreshed );
+			}
+
+			private void prj_Refreshed( object sender, EventArgs e )
+			{
+				VCProjectTestCollection prj = 
+					( VCProjectTestCollection ) sender;
+
+				this.TreeView.BeginInvoke( ( VoidDelegate ) delegate {
+					if ( prj.ItemCount > 0 )
+					{
+						//
+						// Has fixtures -> cfix DLL.
+						//
+						this.ForeColor = SystemColors.ControlText;
+						this.ToolTipText = null;
+					}
+					else
+					{
+						//
+						// No fixtures -> regular project.
+						//
+						this.ForeColor = Color.Gray;
+						this.ToolTipText = Strings.NotATestProjectToolTip;
+					}
+				} );
 			}
 		}
 		

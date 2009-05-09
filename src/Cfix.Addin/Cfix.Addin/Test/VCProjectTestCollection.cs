@@ -37,6 +37,8 @@ namespace Cfix.Addin.Test
 		private static readonly IDictionary<string, VCProjectTestCollection>
 			loadedProjects = new Dictionary<string, VCProjectTestCollection>();
 
+		public event EventHandler Refreshed;
+
 		//
 		// Current path to module -- this changes whenever the active
 		// solution configuration changes.
@@ -382,6 +384,11 @@ namespace Cfix.Addin.Test
 			lock ( loadedProjectsLock )
 			{
 				loadedProjects.Add( this.Name, this );
+			}
+
+			if ( this.Refreshed != null )
+			{
+				this.Refreshed( this, EventArgs.Empty );
 			}
 		}
 

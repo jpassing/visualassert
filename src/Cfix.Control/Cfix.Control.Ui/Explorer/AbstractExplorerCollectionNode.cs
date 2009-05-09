@@ -12,7 +12,7 @@ namespace Cfix.Control.Ui.Explorer
 
 		protected internal readonly NodeFactory nodeFactory;
 		
-		private delegate void VoidDelegate();
+		protected delegate void VoidDelegate();
 
 		private void AddNode( AbstractExplorerNode node )
 		{

@@ -142,6 +142,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regulat Project -- does not define any tests..
+        /// </summary>
+        internal static string NotATestProjectToolTip {
+            get {
+                return ResourceManager.GetString("NotATestProjectToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive..
         /// </summary>
         internal static string ProgressInfo {
