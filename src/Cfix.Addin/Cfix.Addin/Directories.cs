@@ -69,5 +69,14 @@ namespace Cfix.Addin
 					throw new ArgumentException();
 			}
 		}
+
+		public static string LogDirectory
+		{
+			get
+			{
+				return Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ) +
+					"\\cfixstudio\\log";
+			}
+		}
 	}
 }

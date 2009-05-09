@@ -79,8 +79,6 @@ namespace Cfix.Control.Ui.Explorer
 
 		private class GenericTestItemCollectionExplorerNode : AbstractExplorerCollectionNode
 		{
-			private delegate void VoidDelegate();
-
 			public GenericTestItemCollectionExplorerNode(
 				TreeView treeView,
 				NodeFactory factory,
