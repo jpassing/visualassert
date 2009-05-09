@@ -32,6 +32,14 @@ namespace Cfix.Addin
 			}
 		}
 
+		public static string DocDirectory
+		{
+			get
+			{
+				return InstallationDirectory + "\\doc";
+			}
+		}
+
 		public static string GetLibDirectory( Architecture arch )
 		{
 			switch ( arch )

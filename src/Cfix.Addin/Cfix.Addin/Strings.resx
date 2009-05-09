@@ -126,6 +126,9 @@
   <data name="DebugCurrentHierItemCCaption" xml:space="preserve">
     <value>R&amp;un Tests</value>
   </data>
+  <data name="DocCmdCaption" xml:space="preserve">
+    <value>cfix Documentation</value>
+  </data>
   <data name="EmptyRun" xml:space="preserve">
     <value>Selection does not include any test item</value>
   </data>

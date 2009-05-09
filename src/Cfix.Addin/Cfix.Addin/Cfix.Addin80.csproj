@@ -205,6 +205,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\DocMask.bmp" />
+    <None Include="Resources\DocIcon.ico" />
+    <None Include="Icons\Doc.bmp" />
     <None Include="Icons\Feedback.bmp" />
     <None Include="Icons\Start2.bmp" />
     <None Include="Icons\Log.bmp" />

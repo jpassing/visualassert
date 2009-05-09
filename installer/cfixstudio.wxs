@@ -72,7 +72,7 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="DirProgMenu" Name="cfix">
+        <Directory Id="DirProgMenu" Name="cfixstud" LongName="cfix studio">
         </Directory>
       </Directory>
 
@@ -136,6 +136,21 @@
             <File Id="FileStdoleDll" Name="stdole.dll" KeyPath="yes" Source="redist\stdole.dll" DiskId="1" Assembly=".net"/>
           </Component>
 
+          <Directory Id="DirDoc" Name="doc">
+            <Component Id="CompDoc" DiskId="1" Guid="34c84943-04cb-4836-974f-81f327c0ee6c">
+              <File Id="FileCfixChm" Name="cfixstud.chm" LongName="cfixstudio.chm" Source="doc\docbook\chm\cfixstudio.chm" Vital="yes">
+                <Shortcut
+									Id="ShortcutCfixChm"
+									Description="cfix studio Documentation"
+									Directory="DirProgMenu"
+									Icon="CfixIco"
+									Name="Doc"
+									LongName="cfix studio Documentation"/>
+              </File>
+              <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
+            </Component>
+          </Directory>
+
           <Directory Id="DirBin" Name="bin">
             <Directory Id="DirBinI386" Name="i386">
               <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
@@ -193,21 +208,6 @@
                 <RemoveFolder Id="RemoveDirLibAmd64" On="uninstall"/>
               </Component>
             </Directory>
-          </Directory>
-
-          <Directory Id="DirDoc" Name="doc">
-            <Component Id="CompDoc" DiskId="1" Guid="8cadd6d3-5a46-420f-bedb-c7ba2832735b">
-              <File Id="FileCfixChm" Name="cfix.chm" Source="$(var.CFIX_TREE)\doc\docbook\cfix.chm" Vital="yes">
-                <Shortcut
-									Id="ShortcutCfixChm"
-									Description="cfix studio Documentation"
-									Directory="DirProgMenu"
-									Icon="CfixIco"
-									Name="Doc"
-									LongName="cfix Documentation"/>
-              </File>
-              <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
-            </Component>
           </Directory>
         </Directory>
       </Directory>
@@ -270,7 +270,7 @@
     <Property Id='OPENTUTORIALAFTERFINISH'>1</Property>
 
     <Property Id='HTMLHELP'>hh.exe</Property>
-    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfix.chm::ch04s01.html" />
+    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfixstudio.chm::ch04s01.html" />
 
     <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
     <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin Cfix.Addin.CfixPlus /Command File.Exit" />

@@ -40,6 +40,7 @@ namespace Cfix.Addin.Windows.Run
 			this.scrollLockButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.lameButton = new System.Windows.Forms.ToolStripButton();
+			this.docButton = new System.Windows.Forms.ToolStripButton();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,8 @@ namespace Cfix.Addin.Windows.Run
             this.toolStripSeparator1,
             this.scrollLockButton,
             this.toolStripSeparator3,
-            this.lameButton} );
+            this.lameButton,
+            this.docButton} );
 			this.toolbar.Location = new System.Drawing.Point( 0, 0 );
 			this.toolbar.Name = "toolbar";
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
@@ -150,6 +152,16 @@ namespace Cfix.Addin.Windows.Run
 			this.lameButton.ToolTipText = "Have comments about this window or some other feature? Let us now!";
 			this.lameButton.Click += new System.EventHandler( this.lameButton_Click );
 			// 
+			// docButton
+			// 
+			this.docButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.docButton.Image = global::Cfix.Addin.Icons.Doc;
+			this.docButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.docButton.Name = "docButton";
+			this.docButton.Size = new System.Drawing.Size( 23, 22 );
+			this.docButton.Text = "Open Documentation";
+			this.docButton.Click += new System.EventHandler( this.docButton_Click );
+			// 
 			// progressBar
 			// 
 			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
@@ -192,6 +204,7 @@ namespace Cfix.Addin.Windows.Run
 			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.results.AutoScrollToActiveNode = false;
 			this.results.FailureNodeContextMenu = null;
 			this.results.Location = new System.Drawing.Point( 3, 64 );
 			this.results.Name = "results";
@@ -263,5 +276,6 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripButton lameButton;
+		private System.Windows.Forms.ToolStripButton docButton;
 	}
 }

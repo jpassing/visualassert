@@ -505,5 +505,10 @@ namespace Cfix.Addin.Windows.Run
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Run" );
 		}
+
+		private void docButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.OpenDocumentation();
+		}
 	}
 }

@@ -88,6 +88,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cfix Documentation.
+        /// </summary>
+        internal static string DocCmdCaption {
+            get {
+                return ResourceManager.GetString("DocCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection does not include any test item.
         /// </summary>
         internal static string EmptyRun {

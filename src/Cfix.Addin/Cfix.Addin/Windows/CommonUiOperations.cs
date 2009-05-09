@@ -250,5 +250,19 @@ namespace Cfix.Addin.Windows
 				CfixPlus.HandleError( x );
 			}
 		}
+
+		public static void OpenDocumentation()
+		{
+			try
+			{
+				System.Diagnostics.Process proc = new System.Diagnostics.Process();
+				proc.StartInfo.FileName = Directories.DocDirectory + "\\cfixstudio.chm";
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixPlus.HandleError( x );
+			}
+		}
 	}
 }
