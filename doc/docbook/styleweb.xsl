@@ -8,6 +8,25 @@
   <xsl:param name="use.id.as.filename" select="1"></xsl:param>
   <xsl:param name="highlight.source" select="0"></xsl:param>
   <xsl:param name="toc.section.depth" select="4"></xsl:param>
+  <xsl:param name="generate.toc">
+	appendix  toc,title
+	article/appendix  nop
+	article   toc,title
+	book      toc,title
+	chapter   toc,title
+	part      toc,title
+	preface   toc,title
+	qandadiv  toc
+	qandaset  toc
+	reference toc,title
+	sect1     toc
+	sect2     toc
+	sect3     toc
+	sect4     toc
+	sect5     toc
+	section   toc
+	set       toc,title
+  </xsl:param>
   
   <xsl:template name="user.header.navigation">
   </xsl:template>

@@ -14,7 +14,7 @@
 		<section id="Legal">
 			<title>Legal notice</title>
 			<para>
-			Copyright of this document 2007-2008 Johannes Passing. All rights reserved.
+			Copyright of this document 2007-2009 Johannes Passing. All rights reserved.
 			</para>
 			<para>
 			Microsoft, Active Directory, ActiveMovie, ActiveX, BackOffice, ClearType, Developer Studio, Direct3D, Direct Animation, 
@@ -39,13 +39,63 @@
 		<title>Overview</title>
 		
 		<section id="Background">
+			<title>Background</title>
+			
 			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='BackgroundIntroduction'])" href="__cfix.xml" />
 			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Portability'])" href="__cfix.xml" />
 		</section>
-		
-		
 	</chapter>
 	
+	<chapter id="UI">
+		<title>The User Interface</title>
+		
+		<section id="KeyboardShortcuts">
+			<title>Keyboard Shortcuts</title>
+			
+			<simplesect>
+				<title>Global</title>
+				
+				<para>
+					<itemizedlist>
+						<listitem><emphasis>Ctrl+1,Ctrl+e</emphasis>: Open Test Explorer Window</listitem>
+						<listitem><emphasis>Ctrl+1,Ctrl+r</emphasis>: Open Run Window</listitem>
+						<listitem><emphasis>Ctrl+1,Ctrl+s</emphasis>: Restart last run (with debugger)</listitem>
+						<listitem><emphasis>Ctrl+1,Ctrl+d</emphasis>: Restart last run without debugging</listitem>
+					</itemizedlist>
+				</para>
+				<note>
+					You can assign custom keyboard shortcuts to the commands listed above in the Options 
+					dialog of Visual Studio (Environment &gt; Keyboard) -- all cfix commands are prefixed
+					 with <emphasis>CfixStudio</emphasis>.
+				</note>
+			</simplesect>
+			
+			<simplesect>
+				<title>Test Explorer Window</title>
+				
+				<para>
+					<itemizedlist>
+						<listitem><emphasis>Enter</emphasis>: Go to source code currently selected test</listitem>
+						<listitem><emphasis>Ctrl+Enter</emphasis>: Run currently selected test (with debugger)</listitem>
+						<listitem><emphasis>Ctrl+Shift+Enter</emphasis>: Run currently selected test without debugging</listitem>
+					</itemizedlist>
+				</para>
+			</simplesect>
+			
+			<simplesect>
+				<title>Run Window</title>
+				
+				<para>
+					<itemizedlist>
+						<!--<listitem><emphasis>Enter</emphasis>: Go to source code currently selected test</listitem>-->
+						<listitem><emphasis>Ctrl+Enter</emphasis>: Run currently selected test (with debugger)</listitem>
+						<listitem><emphasis>Ctrl+Shift+Enter</emphasis>: Run currently selected test without debugging</listitem>
+					</itemizedlist>
+				</para>
+			</simplesect>
+		</section>
+	</chapter>
+
 	<chapter id="API">
 		<title>API</title>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="__cfix.xml" />

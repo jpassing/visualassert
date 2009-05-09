@@ -7,18 +7,36 @@
   <xsl:param name="htmlhelp.hhc.folders.instead.books" select="0"/>
   <xsl:param name="chunk.section.depth" select="4"></xsl:param>
   <xsl:param name="chunk.first.sections" select="1"></xsl:param>
+  <xsl:param name="generate.toc">
+	appendix  toc,title
+	article/appendix  nop
+	article   toc,title
+	book      toc,title
+	chapter   toc,title
+	part      toc,title
+	preface   toc,title
+	qandadiv  toc
+	qandaset  toc
+	reference toc,title
+	sect1     toc
+	sect2     toc
+	sect3     toc
+	sect4     toc
+	sect5     toc
+	section   toc
+	set       toc,title
+  </xsl:param>
   
   <xsl:template name="user.header.navigation">
     <div id='cfixheader'>
-		cfix
+		cfix studio
     </div>
   </xsl:template>
   <xsl:template name="user.footer.navigation">
+	<hr />
 	<div id='cfixfooter'>
 		Build <xsl:value-of select="$buildnumber" /><br />
-		(C) 2008 Johannes Passing<br />
-		<br />
-		Feedback? Send to passing at users.sourceforge.net.
+		(C) 2009 Johannes Passing<br />
     </div>
   </xsl:template>
 </xsl:stylesheet>

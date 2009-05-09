@@ -24,7 +24,7 @@ webdoc: __cfix.xml
 	if not exist web\doc md web\doc
 	
 	cd web\doc
-	copy ..\styleweb.css .
+	copy ..\..\styleweb.css ..
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
 
