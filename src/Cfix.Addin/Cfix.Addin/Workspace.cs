@@ -21,7 +21,7 @@ namespace Cfix.Addin
 	{
 		private readonly string VSStd97CmdID = "{5EFC7975-14BC-11CF-9B2B-00AA00573819}";
 
-		private readonly CfixPlus addin;
+		private readonly CfixStudio addin;
 		private readonly Configuration config;
 		private readonly ToolWindows toolWindows;
 		private readonly IAgent searchAgent;
@@ -55,7 +55,7 @@ namespace Cfix.Addin
 				}
 				catch ( Exception x )
 				{
-					CfixPlus.HandleError( x );
+					CfixStudio.HandleError( x );
 				}
 			}
 
@@ -246,7 +246,7 @@ namespace Cfix.Addin
 		 * ctor/dtor.
 		 */
 
-		internal Workspace( CfixPlus addin )
+		internal Workspace( CfixStudio addin )
 		{
 			this.addin = addin;
 
@@ -476,7 +476,7 @@ namespace Cfix.Addin
 						}
 						catch ( Exception x )
 						{
-							CfixPlus.HandleError( x );
+							CfixStudio.HandleError( x );
 							run.Terminate();
 						}
 					};

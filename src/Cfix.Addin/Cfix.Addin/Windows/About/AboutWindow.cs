@@ -110,7 +110,7 @@ namespace Cfix.Addin.Windows.About
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace Cfix.Addin.Windows.About
 
 			this.workspace = ws;
 
-			this.versionLabel.Text += CfixPlus.Version;
+			this.versionLabel.Text += CfixStudio.Version;
 
 			try
 			{
@@ -141,7 +141,7 @@ namespace Cfix.Addin.Windows.About
 				}
 				catch ( Exception x )
 				{
-					CfixPlus.HandleError( x );
+					CfixStudio.HandleError( x );
 				}
 			}
 		}

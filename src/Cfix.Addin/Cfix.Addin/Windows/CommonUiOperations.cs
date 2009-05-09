@@ -68,15 +68,15 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( ArchitectureMismatchException )
 			{
-				CfixPlus.ShowInfo( Strings.ArchitectureMismatch );
+				CfixStudio.ShowInfo( Strings.ArchitectureMismatch );
 			}
 			catch ( EmptyRunException )
 			{
-				CfixPlus.ShowInfo( Strings.EmptyRun );
+				CfixStudio.ShowInfo( Strings.EmptyRun );
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -222,7 +222,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace Cfix.Addin.Windows
 					Environment.OSVersion,
 					dte.Version,
 					windowName,
-					CfixPlus.Version,
+					CfixStudio.Version,
 					dte.LocaleID );
 
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
@@ -247,7 +247,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 	}

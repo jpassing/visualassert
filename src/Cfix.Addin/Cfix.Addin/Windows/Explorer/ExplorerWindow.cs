@@ -178,7 +178,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -224,7 +224,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -245,7 +245,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -257,7 +257,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -276,7 +276,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -310,7 +310,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -324,7 +324,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Cfix.Control.Ui.Explorer.ExceptionEventArgs e 
 			)
 		{
-			CfixPlus.HandleError( e.Exception );
+			CfixStudio.HandleError( e.Exception );
 		}
 
 		/*----------------------------------------------------------------------
@@ -431,7 +431,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -473,7 +473,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -489,7 +489,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -616,7 +616,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 

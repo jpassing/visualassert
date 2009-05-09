@@ -17,7 +17,7 @@ namespace Cfix.Addin
 {
 	internal class ToolWindows : IDisposable
 	{
-		private readonly CfixPlus addin;
+		private readonly CfixStudio addin;
 		private readonly string extraCaption;
 		private readonly bool disableControls;
 
@@ -26,7 +26,7 @@ namespace Cfix.Addin
 		private OutputWindowPane logOutputWindow;
 
 		internal ToolWindows( 
-			CfixPlus addin,
+			CfixStudio addin,
 			Workspace ws
 			)
 		{
@@ -236,7 +236,7 @@ namespace Cfix.Addin
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 

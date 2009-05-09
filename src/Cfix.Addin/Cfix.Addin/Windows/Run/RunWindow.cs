@@ -159,7 +159,7 @@ namespace Cfix.Addin.Windows.Run
 				Exception excp = e.Exception;
 				if ( excp != null )
 				{
-					CfixPlus.HandleError( excp );
+					CfixStudio.HandleError( excp );
 				}
 			} );
 		}
@@ -201,7 +201,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -214,7 +214,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -258,7 +258,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -276,7 +276,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixPlus.HandleError( x );
+				CfixStudio.HandleError( x );
 			}
 		}
 
@@ -425,7 +425,7 @@ namespace Cfix.Addin.Windows.Run
 							//
 							// Ask whether to terminate.
 							//
-							if ( CfixPlus.ShowQuestion( Strings.TerminateActiveRun ) )
+							if ( CfixStudio.ShowQuestion( Strings.TerminateActiveRun ) )
 							{
 								this.aborted = true;
 								this.run.Terminate();

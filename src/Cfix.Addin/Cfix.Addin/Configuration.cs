@@ -30,7 +30,7 @@ namespace Cfix.Addin
 
 		private Configuration(
 			RegistryKey key, 
-			CfixPlus addin 
+			CfixStudio addin 
 			)
 		{
 			this.key = key;
@@ -77,7 +77,7 @@ namespace Cfix.Addin
 			GC.SuppressFinalize( this );
 		}
 
-		public static Configuration Load( CfixPlus addin )
+		public static Configuration Load( CfixStudio addin )
 		{
 			return new Configuration(
 				Registry.CurrentUser.CreateSubKey( BaseKeyPath ), 

@@ -100,7 +100,7 @@
     <Compile Include="Dte\DteCommandBarButton.cs" />
     <Compile Include="Dte\DteCommandBarControl.cs" />
     <Compile Include="Dte\DteCommand.cs" />
-    <Compile Include="CfixPlus.cs">
+    <Compile Include="CfixStudio.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dte\DteConnect.cs" />

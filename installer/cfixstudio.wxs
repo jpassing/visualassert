@@ -273,10 +273,10 @@
     <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfixstudio.chm::ch04s01.html" />
 
     <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
-    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin Cfix.Addin.CfixPlus /Command File.Exit" />
+    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
 
     <Property Id='VS90DEVENV'>[VS90INSTALLDIR]devenv.exe</Property>
-    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin Cfix.Addin.CfixPlus /Command File.Exit" />
+    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
 
     <Icon Id="CfixIco" SourceFile="icon.ico" />
   </Product>

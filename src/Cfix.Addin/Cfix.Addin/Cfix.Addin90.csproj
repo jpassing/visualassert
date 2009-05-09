@@ -74,6 +74,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CfixAddinException.cs" />
+    <Compile Include="CfixStudio.cs" />
     <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
@@ -109,9 +110,6 @@
     <Compile Include="Dte\DteCommandBarButton.cs" />
     <Compile Include="Dte\DteCommandBarControl.cs" />
     <Compile Include="Dte\DteCommand.cs" />
-    <Compile Include="CfixPlus.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Dte\DteConnect.cs" />
     <Compile Include="Dte\DteIconConverter.cs">
     </Compile>
