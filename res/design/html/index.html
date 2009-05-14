@@ -179,22 +179,15 @@
 	            margin: 0 auto;
             }
 			
-			#tab_table
-            {
-                border-width: 0px;
-                border-collapse: collapse;
-                width: 100%;
-				height: 30px;
-                text-align: left;
-            }
-			
 			.tab_active
 			{
 				background-image: url('tab_active.png');
 		        background-repeat: repeat-x;
 				padding-top: 10px;
 				padding-left: 10px;
-				width: 300px;
+				padding-right: 5px;
+				height: 30px;
+                float: left;
 			}
 			
 			.tab_passive
@@ -203,29 +196,41 @@
 		        background-repeat: repeat-x;
 				padding-top: 10px;
 				padding-left: 5px;
-				width: 270px;
+				padding-right: 5px;
+				height: 30px;
+                float: left;
 			}
 			
 			.tab_active2passive
 			{
-				width: 30px;
+				height: 30px;
+                float: left;
 			}
+			
+			.tab_passiveend
+			{
+				height: 30px;
+                float: left;
+			}
+			
+			.tab_clear
+            {
+	            float: none;
+	            clear: both;
+            }
 		</style>
 	</head>
 	<body>
 	    <div id='tab'>
-		    <table id='tab_table' cellpadding='0'>
-		        <tr>
-		            <td class='tab_active'>cfix studio &ndash; C/C++ unit testing for Visual Studio</td>
-		            <td class='tab_active2passive'><img src='tab_active_end.png' alt=''/></td>
-		            <td class='tab_passive'>cfix &ndash;  C/C++ unit testing for Win32 and NT</td>
-		            <td class='tab_passiveend'><img src='tab_passive_end.png' alt=''/></td>
-					<td class='tab_pad'>&nbsp;</td>
-		        </tr>
-		    </table>
+			<div class='tab_active'>cfix studio &ndash; C/C++ unit testing for Visual Studio</div>
+			<div class='tab_active2passive'><img src='tab_active_end.png' alt=''/></div>
+			<div class='tab_passive'>cfix &ndash;  C/C++ unit testing for Win32 and NT</div>
+			<div class='tab_passiveend'><img src='tab_passive_end.png' alt=''/></div>
+			<div class='tab_pad'>&nbsp;</div>
+			<div class='tab_clear'></div>
 	    </div>
 	    <div id='header'>
-		    <img src='logo.gif' alt='cfix studio' style="margin-left: 10px; margin-top: 20px;"/>
+		    <img src='logo.gif' alt='cfix studio' style="margin-left: 10px; margin-top: 10px;"/>
 	    </div>
 	    <div id='menu'>
 	        <div id='menu_box'>
