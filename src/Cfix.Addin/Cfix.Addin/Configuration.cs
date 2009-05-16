@@ -131,6 +131,21 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool ShowQuickStartPage
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "ShowQuickStartPage", 1 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"ShowQuickStartPage",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public bool UseComNeutralThread
 		{
 			get

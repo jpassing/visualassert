@@ -78,5 +78,13 @@ namespace Cfix.Addin
 					"\\cfixstudio\\log";
 			}
 		}
+
+		public static string QuickStartPage
+		{
+			get
+			{
+				return DocDirectory + "\\QuickStart\\index.html";
+			}
+		}
 	}
 }
