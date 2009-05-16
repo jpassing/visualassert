@@ -151,10 +151,13 @@ namespace Cfix.Control.Ui.Result
 					this.nodeTable.Remove( item );
 				}
 
-				if ( this.autoScroll )
+				if ( this.autoScroll && this.run.TaskCount == 1 )
 				{
 					//
 					// Try scrolling to this node.
+					//
+					// N.B. When more than 1 task is active, scrolling
+					// must be avoided.
 					//
 					TreeNodeAdv node = this.tree.FindNode( nodePath );
 					if ( node != null )
