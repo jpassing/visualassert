@@ -31,7 +31,7 @@ static ULONG DaysFromFileTime(
 ULONG CurrentLicensingDate()
 {
 	FILETIME Date;
-	CFIXCC_ASSERT_OK( CoFileTimeNow( &Date ) );
+	CFIX_ASSERT_OK( CoFileTimeNow( &Date ) );
 	return DaysFromFileTime( Date );
 }
 
@@ -42,7 +42,7 @@ private:
 	void ResetBinFolderAge( LONGLONG AddDays )
 	{
 		FILETIME Date;
-		CFIXCC_ASSERT_OK( CoFileTimeNow( &Date ) );
+		CFIX_ASSERT_OK( CoFileTimeNow( &Date ) );
 
 		ULARGE_INTEGER Int;
 		Int.HighPart = Date.dwHighDateTime;
@@ -121,8 +121,8 @@ private:
 public:
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( CfixctlInstallLicense( FALSE, NULL ) );
-		CFIXCC_ASSERT_OK( CfixctlInstallLicense( FALSE, NULL ) );
+		CFIX_ASSERT_OK( CfixctlInstallLicense( FALSE, NULL ) );
+		CFIX_ASSERT_OK( CfixctlInstallLicense( FALSE, NULL ) );
 		DeleteRegistryDate();
 	}
 
@@ -138,26 +138,26 @@ public:
 	void InstallValidLicense()
 	{
 		CFIXLIC_LICENSE_KEY Key;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR,
 			1,
 			&Key ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &Key ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &Key ) );
 
 		WCHAR KeyString[ CFIXLIC_ENCODED_KEY_LENGTH + 1 ];
-		CFIXCC_ASSERT_OK( CfixlicEncode(
+		CFIX_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
 		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, CfixctlValidateLicense( NULL ) );
-		CFIXCC_ASSERT_OK( CfixctlValidateLicense( KeyString ) );
-		CFIXCC_ASSERT_OK( CfixctlInstallLicense( FALSE, KeyString ) );
+		CFIX_ASSERT_OK( CfixctlValidateLicense( KeyString ) );
+		CFIX_ASSERT_OK( CfixctlInstallLicense( FALSE, KeyString ) );
 
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlLicensed, Info.Type );
@@ -170,22 +170,22 @@ public:
 		//
 		// Overwrite previous key.
 		//
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR,
 			2,
 			&Key ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &Key ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &Key ) );
 
-		CFIXCC_ASSERT_OK( CfixlicEncode(
+		CFIX_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
-		CFIXCC_ASSERT_OK( CfixctlInstallLicense( FALSE, KeyString ) );
+		CFIX_ASSERT_OK( CfixctlInstallLicense( FALSE, KeyString ) );
 
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlLicensed, Info.Type );
@@ -199,17 +199,17 @@ public:
 	void InstallInconsistentLicense()
 	{	
 		CFIXLIC_LICENSE_KEY Key;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR,
 			1,
 			&Key ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &Key ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &Key ) );
 
 		WCHAR KeyString[ CFIXLIC_ENCODED_KEY_LENGTH + 1 ];
-		CFIXCC_ASSERT_OK( CfixlicEncode(
+		CFIX_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
 		KeyString[ 0 ] = 'X';
@@ -224,7 +224,7 @@ public:
 		//
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -233,17 +233,17 @@ public:
 	void InstallFutureLicense()
 	{	
 		CFIXLIC_LICENSE_KEY Key;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MAX_ALLOWED_VERSION_MAJOR + 1,	// Wrong.
 			CFIXCTL_LIC_MAX_ALLOWED_VERSION_MINOR,
 			1,
 			&Key ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &Key ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &Key ) );
 
 		WCHAR KeyString[ CFIXLIC_ENCODED_KEY_LENGTH + 1 ];
-		CFIXCC_ASSERT_OK( CfixlicEncode(
+		CFIX_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
 		CFIXCC_ASSERT_EQUALS( 
@@ -254,7 +254,7 @@ public:
 		//
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -263,17 +263,17 @@ public:
 	void InstallOutdatedLicense()
 	{	
 		CFIXLIC_LICENSE_KEY Key;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR - 1,	// Wrong.
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR,
 			1,
 			&Key ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &Key ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &Key ) );
 
 		WCHAR KeyString[ CFIXLIC_ENCODED_KEY_LENGTH + 1 ];
-		CFIXCC_ASSERT_OK( CfixlicEncode(
+		CFIX_ASSERT_OK( CfixlicEncode(
 			&Key, _countof( KeyString ), KeyString ) );
 
 		CFIXCC_ASSERT_EQUALS( 
@@ -284,7 +284,7 @@ public:
 		//
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -293,7 +293,7 @@ public:
 	void QueryInconsistentLicense()
 	{
 		CFIXLIC_LICENSE_KEY LicKey;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR,
@@ -301,13 +301,13 @@ public:
 			1,
 			&LicKey ) );
 		LicKey.u.Fields.Checksum -= 1;
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
 
 		InstallLicense( &LicKey );
 
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 		CFIXCC_ASSERT_EQUALS( FALSE, Info.Valid );
 	}
@@ -315,20 +315,20 @@ public:
 	void QueryOutdatedLicense()
 	{
 		CFIXLIC_LICENSE_KEY LicKey;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MAJOR - 1,
 			CFIXCTL_LIC_MIN_ALLOWED_VERSION_MINOR,
 			1,
 			&LicKey ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
 
 		InstallLicense( &LicKey );
 		
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 		CFIXCC_ASSERT_EQUALS( FALSE, Info.Valid );
 	}
@@ -336,20 +336,20 @@ public:
 	void QueryFutureLicense()
 	{
 		CFIXLIC_LICENSE_KEY LicKey;
-		CFIXCC_ASSERT_OK( CfixlicCreateKey(
+		CFIX_ASSERT_OK( CfixlicCreateKey(
 			1,
 			2,
 			CFIXCTL_LIC_MAX_ALLOWED_VERSION_MAJOR + 1,
 			CFIXCTL_LIC_MAX_ALLOWED_VERSION_MINOR,
 			1,
 			&LicKey ) );
-		CFIXCC_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
+		CFIX_ASSERT_OK( CfixlicScrambleKey( &LicKey ) );
 
 		InstallLicense( &LicKey );
 		
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, 1, &Info ) );
 		CFIXCC_ASSERT_EQUALS( FALSE, Info.Valid );
 	}
@@ -388,12 +388,12 @@ public:
 	void QueryAge()
 	{
 		FILETIME Now;
-		CFIXCC_ASSERT_OK( CoFileTimeNow( &Now ) );
+		CFIX_ASSERT_OK( CoFileTimeNow( &Now ) );
 		ULONG NowDays = DaysFromFileTime ( Now );
 
 		CFIXCTL_LICENSE_INFO Info;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -405,7 +405,7 @@ public:
 		//
 		ULONG Installed = Info.DaysInstalled;
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays, &Info ) );
 		CFIXCC_ASSERT_EQUALS( Installed, Info.DaysInstalled );
 
@@ -413,7 +413,7 @@ public:
 		// Let external date be significant.
 		//
 		Info.SizeOfStruct = sizeof( CFIXCTL_LICENSE_INFO );
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - Installed - 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( Installed + 1, Info.DaysInstalled );
@@ -422,7 +422,7 @@ public:
 	void QueryDaysLeft()
 	{
 		FILETIME Now;
-		CFIXCC_ASSERT_OK( CoFileTimeNow( &Now ) );
+		CFIX_ASSERT_OK( CoFileTimeNow( &Now ) );
 		ULONG NowDays = DaysFromFileTime ( Now );
 
 		ResetBinFolderAge( 1 );	// tomorrow.
@@ -434,7 +434,7 @@ public:
 
 		ResetBinFolderAge( -1 );	// yesterday.
 
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -445,7 +445,7 @@ public:
 		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD - 1, Info.DaysLeft );
 
 
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - 2, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -455,7 +455,7 @@ public:
 		CFIXCC_ASSERT_EQUALS( 2UL, Info.DaysInstalled );	// external date prevails.
 		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD - 2, Info.DaysLeft );
 
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - CFIXCTL_LIC_TRIAL_PERIOD, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );
@@ -465,7 +465,7 @@ public:
 		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD, Info.DaysInstalled );
 		CFIXCC_ASSERT_EQUALS( 0UL, Info.DaysLeft );
 
-		CFIXCC_ASSERT_OK( CfixctlQueryLicenseInfo(
+		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - CFIXCTL_LIC_TRIAL_PERIOD - 1, &Info ) );
 
 		CFIXCC_ASSERT_EQUALS( CfixctlTrial, Info.Type );

@@ -34,21 +34,21 @@ public:
 	{
 		IClassFactory *AgentFactory;
 
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &AgentFactory ) );
 		CFIXCC_ASSERT( AgentFactory );
 		__assume( AgentFactory );
 
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
-		CFIXCC_ASSERT_OK( Agent->CreateHost( 
+		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
 			0,
@@ -58,11 +58,11 @@ public:
 			&Host ) );
 
 		CfixTestModuleArch Arch;
-		CFIXCC_ASSERT_OK( Host->GetArchitecture( &Arch ) );
+		CFIX_ASSERT_OK( Host->GetArchitecture( &Arch ) );
 		CFIXCC_ASSERT_EQUALS( TESTCTLP_OWN_ARCHITECTURE, Arch );
 
 		ULONG Pid;
-		CFIXCC_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
+		CFIX_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
 		CFIXCC_ASSERT_EQUALS( GetCurrentProcessId(), Pid );
 
 		Agent->Release();
@@ -119,7 +119,7 @@ public:
 			_countof( OwnPath ) ) );
 
 		ICfixTestModule *Module;
-		CFIXCC_ASSERT_OK( 
+		CFIX_ASSERT_OK( 
 			Host->LoadModule(
 				OwnPath,
 				&Module ) );

@@ -344,19 +344,19 @@ void Before()
 {
 	IClassFactory *AgentFactory;
 
-	CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+	CFIX_ASSERT_OK( Exports.GetClassObject( 
 		CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &AgentFactory ) );
 	CFIX_ASSUME( AgentFactory );
 
 	ICfixAgent *Agent;
-	CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+	CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 		NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 	CFIX_ASSUME( Agent );
 
-	CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+	CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
-	CFIXCC_ASSERT_OK( Agent->CreateHost( 
+	CFIX_ASSERT_OK( Agent->CreateHost( 
 		TESTCTLP_OWN_ARCHITECTURE,
 		CLSCTX_INPROC_SERVER,
 		0,
@@ -386,7 +386,7 @@ void CreateAndReleaseActions()
 		_countof( OwnPath ) ) );
 
 	ICfixTestModule *Module;
-	CFIXCC_ASSERT_OK( 
+	CFIX_ASSERT_OK( 
 		Host->LoadModule(
 			OwnPath,
 			&Module ) );
@@ -395,7 +395,7 @@ void CreateAndReleaseActions()
 	// Action for entire module.
 	//
 	ICfixAction *ModuleAction;
-	CFIXCC_ASSERT_OK( Module->CreateExecutionAction(
+	CFIX_ASSERT_OK( Module->CreateExecutionAction(
 		0, 0, &ModuleAction ) );
 	ModuleAction->Release();
 
@@ -403,15 +403,15 @@ void CreateAndReleaseActions()
 	// Action for specific fixture.
 	//
 	ICfixTestContainer *Container;
-	CFIXCC_ASSERT_OK( Module->QueryInterface( 
+	CFIX_ASSERT_OK( Module->QueryInterface( 
 		IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 	ICfixTestItem *Fixture;
-	CFIXCC_ASSERT_OK( Container->GetItem( 0, &Fixture ) );
+	CFIX_ASSERT_OK( Container->GetItem( 0, &Fixture ) );
 	Container->Release();
 
 	ICfixAction *FixtureAction;
-	CFIXCC_ASSERT_OK( Fixture->CreateExecutionAction(
+	CFIX_ASSERT_OK( Fixture->CreateExecutionAction(
 		0, 0, &FixtureAction ) );
 	Fixture->Release();
 	FixtureAction->Release();
@@ -430,7 +430,7 @@ void RunFixturesFromTestlib10()
 	PathAppend( Path,  L"testlib10.dll" );
 
 	ICfixTestModule *Module;
-	CFIXCC_ASSERT_OK( Host->LoadModule( Path, &Module ) );
+	CFIX_ASSERT_OK( Host->LoadModule( Path, &Module ) );
 
 	for ( ULONG Flags = 0; Flags <= EVENT_SINK_FAIL_PROCESS_SINK; Flags++ )
 	{
@@ -438,7 +438,7 @@ void RunFixturesFromTestlib10()
 		// Action for entire module.
 		//
 		ICfixAction *ModuleAction;
-		CFIXCC_ASSERT_OK( Module->CreateExecutionAction(
+		CFIX_ASSERT_OK( Module->CreateExecutionAction(
 			0, 0, &ModuleAction ) );
 
 		//
@@ -460,12 +460,12 @@ void RunFixturesFromTestlib10()
 			}
 			else
 			{
-				CFIXCC_ASSERT_OK( Hr );
+				CFIX_ASSERT_OK( Hr );
 			}
 
 			ULONG TestCases;
 			CFIXCC_ASSERT_EQUALS( E_POINTER, ModuleAction->GetTestCaseCount( NULL ) );
-			CFIXCC_ASSERT_OK( ModuleAction->GetTestCaseCount( &TestCases ) );
+			CFIX_ASSERT_OK( ModuleAction->GetTestCaseCount( &TestCases ) );
 			CFIXCC_ASSERT_EQUALS( 2UL, TestCases );
 
 			if ( Flags == 0 )
@@ -496,37 +496,37 @@ void RunSingleTestCaseFromTestlib11()
 	PathAppend( Path,  L"testlib11.dll" );
 
 	ICfixTestModule *Module;
-	CFIXCC_ASSERT_OK( Host->LoadModule( Path, &Module ) );
+	CFIX_ASSERT_OK( Host->LoadModule( Path, &Module ) );
 
 	ICfixTestItem *Fixture;
-	CFIXCC_ASSERT_OK( Module->GetItem( 0, &Fixture ) );
+	CFIX_ASSERT_OK( Module->GetItem( 0, &Fixture ) );
 	Module->Release();
 
 	BSTR Name;
-	CFIXCC_ASSERT_OK( Fixture->GetName( &Name ) );
+	CFIX_ASSERT_OK( Fixture->GetName( &Name ) );
 	CFIXCC_ASSERT_EQUALS( L"TestExecActionDummy", ( PCWSTR ) Name );
 	SysFreeString( Name );
 
 	ICfixTestContainer *FixtureContainer;
-	CFIXCC_ASSERT_OK( Fixture->QueryInterface(
+	CFIX_ASSERT_OK( Fixture->QueryInterface(
 		IID_ICfixTestContainer, ( PVOID* ) &FixtureContainer ) );
 	Fixture->Release();
 
 	ICfixTestItem *TestCase;
-	CFIXCC_ASSERT_OK( FixtureContainer->GetItem( 1, &TestCase ) );
+	CFIX_ASSERT_OK( FixtureContainer->GetItem( 1, &TestCase ) );
 	FixtureContainer->Release();
 
-	CFIXCC_ASSERT_OK( TestCase->GetName( &Name ) );
+	CFIX_ASSERT_OK( TestCase->GetName( &Name ) );
 	CFIXCC_ASSERT_EQUALS( L"Two", ( PCWSTR ) Name );
 	SysFreeString( Name );
 
 	ICfixAction *Action;
-	CFIXCC_ASSERT_OK( TestCase->CreateExecutionAction(
+	CFIX_ASSERT_OK( TestCase->CreateExecutionAction(
 		0, 0, &Action ) );
 	TestCase->Release();
 
 	EventSink Sink( 0 );
-	CFIXCC_ASSERT_OK( Action->Run( &Sink, 0 ) );
+	CFIX_ASSERT_OK( Action->Run( &Sink, 0 ) );
 
 	CFIXCC_ASSERT_EQUALS( 
 		8UL + 256UL + 512UL + 1024UL + 2048UL + 4096UL + 8192UL, 

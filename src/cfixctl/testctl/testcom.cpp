@@ -18,7 +18,7 @@ static void TestUnknownQiIsReflexive(
 	)
 {
 	IUnknown *UnkCopy = NULL;
-	CFIXCC_ASSERT_OK( Unk->QueryInterface( Iid, ( PVOID* ) &UnkCopy ) );
+	CFIX_ASSERT_OK( Unk->QueryInterface( Iid, ( PVOID* ) &UnkCopy ) );
 	CFIXCC_ASSERT_EQUALS( Unk, UnkCopy );
 	UnkCopy->Release();
 }
@@ -33,15 +33,15 @@ static void TestUnknownQiIsSymmetric(
 	IUnknown *Unk2 = NULL;
 	IUnknown *Unk1Copy = NULL;
 	
-	CFIXCC_ASSERT_OK( Unk->QueryInterface( Iid1, ( PVOID* ) &Unk1 ) );
+	CFIX_ASSERT_OK( Unk->QueryInterface( Iid1, ( PVOID* ) &Unk1 ) );
 	CFIXCC_ASSERT( Unk1 );
 	__assume( Unk1 != NULL );
 	
-	CFIXCC_ASSERT_OK( Unk1->QueryInterface( Iid2, ( PVOID* ) &Unk2 ) );
+	CFIX_ASSERT_OK( Unk1->QueryInterface( Iid2, ( PVOID* ) &Unk2 ) );
 	CFIXCC_ASSERT( Unk2 );
 	__assume( Unk2 != NULL );
 	
-	CFIXCC_ASSERT_OK( Unk2->QueryInterface( Iid1, ( PVOID* ) &Unk1Copy ) );
+	CFIX_ASSERT_OK( Unk2->QueryInterface( Iid1, ( PVOID* ) &Unk1Copy ) );
 	CFIXCC_ASSERT( Unk1Copy );
 	__assume( Unk1Copy != NULL );
 
@@ -75,11 +75,11 @@ void TestComClassFactory(
 		Factory->CreateInstance( Factory, Iid, ( PVOID* ) &Unk1 ) );
 	CFIXCC_ASSERT( ! Unk1 );
 
-	CFIXCC_ASSERT_EQUALS( E_NOINTERFACE, 
+	CFIX_ASSERT_FAILED(
 		Factory->CreateInstance( NULL, IID_INonExisting, ( PVOID* ) &Unk1 ) );
 	CFIXCC_ASSERT( ! Unk1 );
 
-	CFIXCC_ASSERT_OK( Factory->CreateInstance( NULL, Iid, ( PVOID* ) &Unk1 ) );
+	CFIX_ASSERT_SUCCEEDED( Factory->CreateInstance( NULL, Iid, ( PVOID* ) &Unk1 ) );
 	CFIXCC_ASSERT( Unk1 );
 	__assume( Unk1 != NULL );
 	CFIXCC_ASSERT_EQUALS( 0UL, Unk1->Release() );
@@ -87,8 +87,8 @@ void TestComClassFactory(
 	//
 	// LockServer.
 	//
-	CFIXCC_ASSERT_OK( Factory->LockServer( TRUE ) );
-	CFIXCC_ASSERT_OK( Factory->LockServer( FALSE ) );
+	CFIX_ASSERT_OK( Factory->LockServer( TRUE ) );
+	CFIX_ASSERT_OK( Factory->LockServer( FALSE ) );
 }
 
 
@@ -129,7 +129,7 @@ void TestComServer(
 	//
 	// Valid.
 	//
-	CFIXCC_ASSERT_OK( Exports->GetClassObject( 
+	CFIX_ASSERT_OK( Exports->GetClassObject( 
 			Clsid, IID_IClassFactory, ( PVOID* ) &Factory ) );
 	CFIXCC_ASSERT_EQUALS( S_FALSE, Exports->CanUnloadNow() );
 	__assume( Factory != NULL );
@@ -141,7 +141,7 @@ void TestComServer(
 	//
 	// Test locking.
 	//
-	CFIXCC_ASSERT_OK( Exports->GetClassObject( 
+	CFIX_ASSERT_OK( Exports->GetClassObject( 
 			Clsid, IID_IClassFactory, ( PVOID* ) &Factory ) );
 	CFIXCC_ASSERT_EQUALS( S_FALSE, Exports->CanUnloadNow() );
 	Factory->LockServer( TRUE );
@@ -149,7 +149,7 @@ void TestComServer(
 	Factory = NULL;
 	CFIXCC_ASSERT_EQUALS( S_FALSE, Exports->CanUnloadNow() );
 
-	CFIXCC_ASSERT_OK( Exports->GetClassObject( 
+	CFIX_ASSERT_OK( Exports->GetClassObject( 
 			Clsid, IID_IClassFactory, ( PVOID* ) &Factory ) );
 	CFIXCC_ASSERT_EQUALS( S_FALSE, Exports->CanUnloadNow() );
 	Factory->LockServer( FALSE );

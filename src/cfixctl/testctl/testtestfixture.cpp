@@ -38,11 +38,11 @@ public:
 
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_TestFixture, IID_IClassFactory, ( PVOID* ) &this->FixtureFactory ) );
 		CFIXCC_ASSERT( this->FixtureFactory );
 
-		CFIXCC_ASSERT_OK( CoRegisterClassObject(
+		CFIX_ASSERT_OK( CoRegisterClassObject(
 			CLSID_TestFixture,
 			this->FixtureFactory,
 			CLSCTX_INPROC_SERVER,
@@ -50,11 +50,11 @@ public:
 			&this->TestFixtureRegistrationCookie ) );
 
 
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_TestCase, IID_IClassFactory, ( PVOID* ) &this->CaseFactory ) );
 		CFIXCC_ASSERT( this->FixtureFactory );
 		
-		CFIXCC_ASSERT_OK( CoRegisterClassObject(
+		CFIX_ASSERT_OK( CoRegisterClassObject(
 			CLSID_TestCase,
 			this->CaseFactory,
 			CLSCTX_INPROC_SERVER,
@@ -64,8 +64,8 @@ public:
 
 	virtual void After()
 	{
-		CFIXCC_ASSERT_OK( CoRevokeClassObject( this->TestCaseRegistrationCookie ) );
-		CFIXCC_ASSERT_OK( CoRevokeClassObject( this->TestFixtureRegistrationCookie ) );
+		CFIX_ASSERT_OK( CoRevokeClassObject( this->TestCaseRegistrationCookie ) );
+		CFIX_ASSERT_OK( CoRevokeClassObject( this->TestFixtureRegistrationCookie ) );
 
 		if ( this->FixtureFactory )
 		{
@@ -86,7 +86,7 @@ public:
 	void TestUnknown()
 	{
 		IUnknown *Item;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_IUnknown, ( PVOID* ) &Item ) );
 
 		TestComUnknown( Item, IID_IUnknown, IID_ICfixTestItem );
@@ -97,14 +97,14 @@ public:
 	void TestMarshal( __in PCFIX_FIXTURE Fixture )
 	{
 		ICfixTestFixtureInternal *InitItem;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &InitItem ) );
 
 		//
 		// Initialize.
 		//
 		StubActionFactory Factory;
-		CFIXCC_ASSERT_OK( InitItem->Initialize( Fixture, 0, &Factory ) );
+		CFIX_ASSERT_OK( InitItem->Initialize( Fixture, 0, &Factory ) );
 		CFIXCC_ASSERT_EQUALS( 
 			E_UNEXPECTED, InitItem->Initialize( Fixture, 0, &Factory ) );
 
@@ -112,7 +112,7 @@ public:
 		// Marshal.
 		//
 		IStream *Stm;
-		CFIXCC_ASSERT_OK( CoMarshalInterThreadInterfaceInStream( 
+		CFIX_ASSERT_OK( CoMarshalInterThreadInterfaceInStream( 
 			IID_ICfixTestFixtureInternal, 
 			InitItem, &Stm ) );
 
@@ -122,13 +122,13 @@ public:
 		// Unmarshal.
 		//
 		ICfixTestItem *Item2;
-		CFIXCC_ASSERT_OK( CoGetInterfaceAndReleaseStream(
+		CFIX_ASSERT_OK( CoGetInterfaceAndReleaseStream(
 			Stm,
 			IID_ICfixTestItem,
 			( PVOID* ) &Item2 ) );
 
 		BSTR Name2;
-		CFIXCC_ASSERT_OK( Item2->GetName( &Name2 ) );
+		CFIX_ASSERT_OK( Item2->GetName( &Name2 ) );
 		CFIXCC_ASSERT_EQUALS( Fixture->Name, Name2 );
 		SysFreeString( Name2 );
 
@@ -179,22 +179,22 @@ public:
 			{ L"test", NULL, NULL } };
 
 		ICfixTestFixtureInternal *Fixture;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &Fixture ) );
 
 		StubActionFactory Factory;
-		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
+		CFIX_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
 
 		ICfixTestContainer *Container;
-		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
+		CFIX_ASSERT_OK( Fixture->QueryInterface( 
 			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		ULONG Count;
-		CFIXCC_ASSERT_OK( Container->GetItemCount( &Count ) );
+		CFIX_ASSERT_OK( Container->GetItemCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 1UL, Count );
 
 		ICfixTestItem *Item;
-		CFIXCC_ASSERT_OK( Container->GetItem( 0, &Item ) );
+		CFIX_ASSERT_OK( Container->GetItem( 0, &Item ) );
 		Item->Release();
 
 		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Container->GetItem( 1, &Item ) );
@@ -217,11 +217,11 @@ public:
 			{ L"test", NULL, NULL } };
 
 		ICfixTestFixtureInternal *Fixture;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &Fixture ) );
 
 		StubActionFactory Factory;
-		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
+		CFIX_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
 
 		Fixture->Release();
 	}
@@ -239,33 +239,33 @@ public:
 			0 };
 
 		ICfixTestFixtureInternal *Fixture;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &Fixture ) );
 
 		StubActionFactory Factory;
-		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
+		CFIX_ASSERT_OK( Fixture->Initialize( &FixtureDefinition, 0, &Factory ) );
 		
 		ICfixTestContainer *Container;
-		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
+		CFIX_ASSERT_OK( Fixture->QueryInterface( 
 			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
+		CFIX_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Fixture->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.
 
-		CFIXCC_ASSERT_OK( Enum->Skip( 0 ) );
+		CFIX_ASSERT_OK( Enum->Skip( 0 ) );
 		CFIXCC_ASSERT_EQUALS( S_FALSE, Enum->Skip( 1 ) );
 
 		IUnknown *Unk;
 		ULONG Fetched;
 		CFIXCC_ASSERT_EQUALS( S_FALSE, Enum->Next( 1, &Unk, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Fetched );
-		CFIXCC_ASSERT_OK( Enum->Reset() );
+		CFIX_ASSERT_OK( Enum->Reset() );
 
 		IEnumUnknown *EnumClone;
-		CFIXCC_ASSERT_OK( Enum->Clone( &EnumClone ) );
+		CFIX_ASSERT_OK( Enum->Clone( &EnumClone ) );
 		Enum->Release();
 
 		EnumClone->Release();
@@ -291,18 +291,18 @@ public:
 			} };
 
 		ICfixTestFixtureInternal *Fixture;
-		CFIXCC_ASSERT_OK( this->FixtureFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->FixtureFactory->CreateInstance( 
 			NULL, IID_ICfixTestFixtureInternal, ( PVOID* ) &Fixture ) );
 
 		StubActionFactory Factory;
-		CFIXCC_ASSERT_OK( Fixture->Initialize( &FixtureDefinition.Fixture, 0, &Factory ) );
+		CFIX_ASSERT_OK( Fixture->Initialize( &FixtureDefinition.Fixture, 0, &Factory ) );
 		
 		ICfixTestContainer *Container;
-		CFIXCC_ASSERT_OK( Fixture->QueryInterface( 
+		CFIX_ASSERT_OK( Fixture->QueryInterface( 
 			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
+		CFIX_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Fixture->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.
@@ -312,7 +312,7 @@ public:
 		//
 		IUnknown* Unks[ 4 ];
 		ULONG Fetched;
-		CFIXCC_ASSERT_OK( Enum->Next( 2, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Next( 2, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 2UL, Fetched );
 
 		Unks[ 0 ]->Release();
@@ -329,8 +329,8 @@ public:
 		//
 		// Fetch all.
 		//
-		CFIXCC_ASSERT_OK( Enum->Reset() );
-		CFIXCC_ASSERT_OK( Enum->Next( 3, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Reset() );
+		CFIX_ASSERT_OK( Enum->Next( 3, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 3UL, Fetched );
 
 		Unks[ 0 ]->Release();
@@ -340,7 +340,7 @@ public:
 		CFIXCC_ASSERT_EQUALS( S_FALSE, Enum->Next( 1, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Fetched );
 		
-		CFIXCC_ASSERT_OK( Enum->Next( 0, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Next( 0, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Fetched );
 		
 		Enum->Release();

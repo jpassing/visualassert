@@ -80,11 +80,11 @@ public:
 
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_TestModule, IID_IClassFactory, ( PVOID* ) &this->ModuleFactory ) );
 		CFIXCC_ASSERT( this->ModuleFactory );
 
-		CFIXCC_ASSERT_OK( CoRegisterClassObject(
+		CFIX_ASSERT_OK( CoRegisterClassObject(
 			CLSID_TestModule,
 			this->ModuleFactory,
 			CLSCTX_INPROC_SERVER,
@@ -94,7 +94,7 @@ public:
 
 	virtual void After()
 	{
-		CFIXCC_ASSERT_OK( CoRevokeClassObject( this->TestModuleRegistrationCookie ) );
+		CFIX_ASSERT_OK( CoRevokeClassObject( this->TestModuleRegistrationCookie ) );
 
 		if ( this->ModuleFactory )
 		{
@@ -110,7 +110,7 @@ public:
 	void TestUnknown()
 	{
 		IUnknown *Item;
-		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->ModuleFactory->CreateInstance( 
 			NULL, IID_IUnknown, ( PVOID* ) &Item ) );
 
 		TestComUnknown( Item, IID_ICfixTestModule, IID_ICfixTestItem );
@@ -121,29 +121,29 @@ public:
 	void TestBasics()
 	{
 		ICfixTestModuleInternal *Module;
-		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->ModuleFactory->CreateInstance( 
 			NULL, IID_ICfixTestModuleInternal, ( PVOID* ) &Module ) );
 
-		CFIXCC_ASSERT_OK( Module->Initialize( 
+		CFIX_ASSERT_OK( Module->Initialize( 
 			L"path", 
 			CfixTestModuleTypeUser, 
 			CfixTestModuleArchAmd64,
 			&SampleModule ) );
 
 		BSTR Path;
-		CFIXCC_ASSERT_OK( Module->GetPath( &Path ) );
+		CFIX_ASSERT_OK( Module->GetPath( &Path ) );
 		CFIXCC_ASSERT_EQUALS( L"path", ( PCWSTR ) Path );
 		SysFreeString( Path );
 
 		BSTR Name;
-		CFIXCC_ASSERT_OK( Module->GetName( &Name ) );
+		CFIX_ASSERT_OK( Module->GetName( &Name ) );
 		CFIXCC_ASSERT_EQUALS( SampleModule.Name, Name );
 		SysFreeString( Name );
 
 		CfixTestModuleType Type;
 		CfixTestModuleArch Arch;
 		
-		CFIXCC_ASSERT_OK( Module->GetType( &Type, &Arch ) );
+		CFIX_ASSERT_OK( Module->GetType( &Type, &Arch ) );
 		CFIXCC_ASSERT_EQUALS( CfixTestModuleTypeUser, Type );
 		CFIXCC_ASSERT_EQUALS( CfixTestModuleArchAmd64, Arch );
 
@@ -153,28 +153,28 @@ public:
 	void TestGetItem()
 	{
 		ICfixTestModuleInternal *Module;
-		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->ModuleFactory->CreateInstance( 
 			NULL, IID_ICfixTestModuleInternal, ( PVOID* ) &Module ) );
 
-		CFIXCC_ASSERT_OK( Module->Initialize( 
+		CFIX_ASSERT_OK( Module->Initialize( 
 			L"path", 
 			CfixTestModuleTypeUser, 
 			CfixTestModuleArchAmd64,
 			&SampleModule ) );
 
 		ICfixTestContainer *Container;
-		CFIXCC_ASSERT_OK( Module->QueryInterface( 
+		CFIX_ASSERT_OK( Module->QueryInterface( 
 			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		ULONG Count;
-		CFIXCC_ASSERT_OK( Container->GetItemCount( &Count ) );
+		CFIX_ASSERT_OK( Container->GetItemCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 3UL, Count );
 
 		ICfixTestItem *Item;
-		CFIXCC_ASSERT_OK( Container->GetItem( 0, &Item ) );
+		CFIX_ASSERT_OK( Container->GetItem( 0, &Item ) );
 		Item->Release();
 
-		CFIXCC_ASSERT_OK( Container->GetItem( 2, &Item ) );
+		CFIX_ASSERT_OK( Container->GetItem( 2, &Item ) );
 		Item->Release();
 
 		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Container->GetItem( 3, &Item ) );
@@ -187,21 +187,21 @@ public:
 	void TestEnumObjects()
 	{
 		ICfixTestModuleInternal *Module;
-		CFIXCC_ASSERT_OK( this->ModuleFactory->CreateInstance( 
+		CFIX_ASSERT_OK( this->ModuleFactory->CreateInstance( 
 			NULL, IID_ICfixTestModuleInternal, ( PVOID* ) &Module ) );
 
-		CFIXCC_ASSERT_OK( Module->Initialize( 
+		CFIX_ASSERT_OK( Module->Initialize( 
 			L"path", 
 			CfixTestModuleTypeUser, 
 			CfixTestModuleArchAmd64,
 			&SampleModule ) );
 
 		ICfixTestContainer *Container;
-		CFIXCC_ASSERT_OK( Module->QueryInterface( 
+		CFIX_ASSERT_OK( Module->QueryInterface( 
 			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
 
 		IEnumUnknown *Enum;
-		CFIXCC_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
+		CFIX_ASSERT_OK( Container->EnumItems( 0, &Enum ) );
 
 		Module->Release();
 		CFIXCC_ASSERT_EQUALS( 1UL, Container->Release() );	// N.B. Parent-link.
@@ -211,7 +211,7 @@ public:
 		//
 		IUnknown* Unks[ 4 ];
 		ULONG Fetched;
-		CFIXCC_ASSERT_OK( Enum->Next( 2, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Next( 2, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 2UL, Fetched );
 
 		Unks[ 0 ]->Release();
@@ -228,8 +228,8 @@ public:
 		//
 		// Fetch all.
 		//
-		CFIXCC_ASSERT_OK( Enum->Reset() );
-		CFIXCC_ASSERT_OK( Enum->Next( 3, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Reset() );
+		CFIX_ASSERT_OK( Enum->Next( 3, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 3UL, Fetched );
 
 		Unks[ 0 ]->Release();
@@ -239,7 +239,7 @@ public:
 		CFIXCC_ASSERT_EQUALS( S_FALSE, Enum->Next( 1, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Fetched );
 		
-		CFIXCC_ASSERT_OK( Enum->Next( 0, Unks, &Fetched ) );
+		CFIX_ASSERT_OK( Enum->Next( 0, Unks, &Fetched ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Fetched );
 		
 		Enum->Release();

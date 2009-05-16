@@ -173,21 +173,21 @@ public:
 	{
 		IClassFactory *AgentFactory;
 
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &AgentFactory ) );
 		CFIXCC_ASSERT( AgentFactory );
 		__assume( AgentFactory );
 
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
-		CFIXCC_ASSERT_OK( Agent->CreateHost( 
+		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
 			0,
@@ -286,7 +286,7 @@ public:
 				( ULONG ) -1,
 				32,
 				&Cb ) );
-			CFIXCC_ASSERT_OK( this->Host->SearchModules(
+			CFIX_ASSERT_OK( this->Host->SearchModules(
 				Path,
 				FlagSets[ Index ],
 				( ULONG ) -1,
@@ -318,7 +318,7 @@ public:
 				TESTDATA_FOLDER L"\\amd64\\testklib0.sys" ) );
 			
 			BSTR Path = SysAllocString( PathBuffer );
-			CFIXCC_ASSERT_OK( this->Host->SearchModules(
+			CFIX_ASSERT_OK( this->Host->SearchModules(
 				Path,
 				FlagSets[ Index ],
 				( ULONG ) -1,
@@ -346,7 +346,7 @@ public:
 			TESTDATA_FOLDER L"\\i386" ) );
 		
 		BSTR Path = SysAllocString( PathBuffer );
-		CFIXCC_ASSERT_OK( this->Host->SearchModules(
+		CFIX_ASSERT_OK( this->Host->SearchModules(
 			Path,
 			0,
 			( ULONG ) -1,
@@ -373,7 +373,7 @@ public:
 			TESTDATA_FOLDER ) );
 		
 		BSTR Path = SysAllocString( PathBuffer );
-		CFIXCC_ASSERT_OK( this->Host->SearchModules(
+		CFIX_ASSERT_OK( this->Host->SearchModules(
 			Path,
 			CFIXCTL_SEARCH_FLAG_RECURSIVE,
 			( ULONG ) -1,

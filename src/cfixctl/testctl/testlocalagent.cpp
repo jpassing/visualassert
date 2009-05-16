@@ -64,7 +64,7 @@ public:
 
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &this->AgentFactory ) );
 		CFIXCC_ASSERT( this->AgentFactory );
 	}
@@ -81,16 +81,16 @@ public:
 	void RegisterAndObtainWithoutWaiting()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		ICfixHost *LocalHost;
-		CFIXCC_ASSERT_OK( Agent->CreateHost( 
+		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
 			0,
@@ -116,7 +116,7 @@ public:
 		//
 		// Register & Query.
 		//
-		CFIXCC_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
+		CFIX_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
 		LocalHost->Release();
 
 		CFIXCC_ASSERT_EQUALS( CFIXCTL_E_HOST_NOT_FOUND,
@@ -124,7 +124,7 @@ public:
 				0xF00, 0, &ObtainedHost ) );
 		CFIXCC_ASSERT( ObtainedHost == NULL );
 
-		CFIXCC_ASSERT_OK( 
+		CFIX_ASSERT_OK( 
 			Agent->WaitForHostConnection(
 				0xB00, 0, &ObtainedHost ) );
 		CFIX_ASSUME( ObtainedHost );
@@ -140,7 +140,7 @@ public:
 		Sleep( 200 );
 
 		ICfixHost *LocalHost;
-		CFIXCC_ASSERT_OK( Agent->CreateHost( 
+		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_INPROC_SERVER,
 			0,
@@ -149,7 +149,7 @@ public:
 			NULL,
 			&LocalHost ) );
 
-		CFIXCC_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
+		CFIX_ASSERT_OK( Agent->RegisterHost( 0xB00, LocalHost ) );
 		LocalHost->Release();
 
 		return 0;
@@ -158,12 +158,12 @@ public:
 	void RegisterAndObtainWithWaiting()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		HANDLE Thread = CfixCreateThread(
@@ -174,7 +174,7 @@ public:
 		// Query.
 		//
 		ICfixHost *ObtainedHost;
-		CFIXCC_ASSERT_OK( 
+		CFIX_ASSERT_OK( 
 			Agent->WaitForHostConnection(
 				0xB00, 500, &ObtainedHost ) );
 		CFIX_ASSUME( ObtainedHost );
@@ -197,13 +197,13 @@ public:
 	void GetHostPath()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
 		BSTR HostPath = NULL;
-		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+		CFIX_ASSERT_OK( Agent->GetHostPath(
 			CFIXCTL_OWN_ARCHITECTURE,
 			&HostPath ) );
 		CFIXCC_ASSERT( HostPath );
@@ -216,11 +216,11 @@ public:
 	void SpawnSameArch()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
@@ -241,7 +241,7 @@ public:
 					&Host ) );
 			SysFreeString( WorkingDir );
 
-			CFIXCC_ASSERT_OK( Agent->CreateHost(
+			CFIX_ASSERT_OK( Agent->CreateHost(
 				CFIXCTL_OWN_ARCHITECTURE,
 				CLSCTX_LOCAL_SERVER,
 				FlagSets[ Flags ],
@@ -251,11 +251,11 @@ public:
 				&Host ) );
 
 			CfixTestModuleArch Arch;
-			CFIXCC_ASSERT_OK( Host->GetArchitecture( &Arch ) );
+			CFIX_ASSERT_OK( Host->GetArchitecture( &Arch ) );
 			CFIXCC_ASSERT_EQUALS( TESTCTLP_OWN_ARCHITECTURE, Arch );
 
 			ULONG Pid;
-			CFIXCC_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
+			CFIX_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
 			CFIXCC_ASSERT_NOT_EQUALS( GetCurrentProcessId(), Pid );
 
 			CFIX_ASSUME( Host );
@@ -268,11 +268,11 @@ public:
 	void SpawnAllArchs()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
@@ -287,7 +287,7 @@ public:
 			for ( ULONG Arch = 0; Arch < _countof( Archs ); Arch++ )
 			{
 				ICfixHost *Host;
-				CFIXCC_ASSERT_OK( Agent->CreateHost(
+				CFIX_ASSERT_OK( Agent->CreateHost(
 					Archs[ Arch ],
 					CLSCTX_LOCAL_SERVER,
 					FlagSets[ Flags ],
@@ -307,15 +307,15 @@ public:
 	void ResolveMessage()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIX_ASSUME( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		ICfixMessageResolver *Resolver;
-		CFIXCC_ASSERT_OK( Agent->CreateMessageResolver( &Resolver ) );
+		CFIX_ASSERT_OK( Agent->CreateMessageResolver( &Resolver ) );
 
 		CFIXCC_ASSERT_EQUALS( E_INVALIDARG, Resolver->ResolveMessage( 
 			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
@@ -328,7 +328,7 @@ public:
 			1, 
 			&Message ) );
 		
-		CFIXCC_ASSERT_OK( Resolver->ResolveMessage( 
+		CFIX_ASSERT_OK( Resolver->ResolveMessage( 
 			( ULONG ) CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE, 
 			0, 
 			&Message ) );
@@ -342,16 +342,16 @@ public:
 	void SpawnWithoutMoniker()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		BSTR HostPath = NULL;
-		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+		CFIX_ASSERT_OK( Agent->GetHostPath(
 			CFIXCTL_OWN_ARCHITECTURE,
 			&HostPath ) );
 		CFIXCC_ASSERT( HostPath );
@@ -375,16 +375,16 @@ public:
 	void SpawnWithWrongMoniker()
 	{
 		ICfixAgent *Agent;
-		CFIXCC_ASSERT_OK( AgentFactory->CreateInstance( 
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
 		__assume( Agent );
 
-		CFIXCC_ASSERT_OK( Agent->SetTrialLicenseCookie(
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
 		BSTR HostPath = NULL;
-		CFIXCC_ASSERT_OK( Agent->GetHostPath(
+		CFIX_ASSERT_OK( Agent->GetHostPath(
 			CFIXCTL_OWN_ARCHITECTURE,
 			&HostPath ) );
 		CFIXCC_ASSERT( HostPath );
@@ -399,17 +399,17 @@ public:
 		//
 
 		IMoniker *AgentMk = NULL;
-		CFIXCC_ASSERT_OK( CreateObjrefMoniker( AgentFactory, &AgentMk ) );
+		CFIX_ASSERT_OK( CreateObjrefMoniker( AgentFactory, &AgentMk ) );
 		
 		IBindCtx *BindCtx = NULL;
-		CFIXCC_ASSERT_OK( CreateBindCtx( 0, &BindCtx ) );
+		CFIX_ASSERT_OK( CreateBindCtx( 0, &BindCtx ) );
 		
 		LPOLESTR DisplayName = NULL;
-		CFIXCC_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
+		CFIX_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
 
 		SIZE_T CmdLineLen = wcslen( DisplayName ) * sizeof( WCHAR ) + 32;
 		PWSTR CmdLine = new WCHAR[ CmdLineLen ];
-		CFIXCC_ASSERT_OK( StringCchPrintf( 
+		CFIX_ASSERT_OK( StringCchPrintf( 
 			CmdLine,
 			CmdLineLen,
 			L"cfixhost %s",

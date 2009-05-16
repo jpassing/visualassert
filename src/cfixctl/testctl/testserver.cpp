@@ -35,8 +35,8 @@ public:
 		//
 		// N.B. Requires admin rights.
 		//
-		CFIXCC_ASSERT_OK( Exports.RegisterServer() );
-		CFIXCC_ASSERT_OK( Exports.UnregisterServer() );
+		CFIX_ASSERT_OK( Exports.RegisterServer() );
+		CFIX_ASSERT_OK( Exports.UnregisterServer() );
 	}
 };
 

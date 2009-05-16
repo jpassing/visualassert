@@ -35,7 +35,7 @@ public:
 
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_TestCase, IID_IClassFactory, ( PVOID* ) &this->Factory ) );
 		CFIXCC_ASSERT( this->Factory );
 	}
@@ -56,7 +56,7 @@ public:
 	void TestUnknown()
 	{
 		IUnknown *Item;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_IUnknown, ( PVOID* ) &Item ) );
 
 		TestComUnknown( Item, IID_IUnknown, IID_ICfixTestItem );
@@ -67,14 +67,14 @@ public:
 	void TestMarshal( __in PCWSTR Name )
 	{
 		ICfixTestCaseInternal *InitItem;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_ICfixTestCaseInternal, ( PVOID* ) &InitItem ) );
 
 		//
 		// Initialize.
 		//
 		StubActionFactory MockFactory;
-		CFIXCC_ASSERT_OK( InitItem->Initialize( Name, 0, 0, &MockFactory ) );
+		CFIX_ASSERT_OK( InitItem->Initialize( Name, 0, 0, &MockFactory ) );
 		CFIXCC_ASSERT_EQUALS( 
 			E_UNEXPECTED, InitItem->Initialize( Name, 0, 0, &MockFactory ) );
 
@@ -82,18 +82,18 @@ public:
 		// Marshal.
 		//
 		IMarshal *Mrsh;
-		CFIXCC_ASSERT_OK( InitItem->QueryInterface( 
+		CFIX_ASSERT_OK( InitItem->QueryInterface( 
 			IID_IMarshal, ( PVOID* ) &Mrsh ) );
 
 		InitItem->Release();
 
 		IStream *Stm;
-		CFIXCC_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
+		CFIX_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
 
 		//
 		// Note: Requires TLB to be registered.
 		//
-		CFIXCC_ASSERT_OK( Mrsh->MarshalInterface(
+		CFIX_ASSERT_OK( Mrsh->MarshalInterface(
 			Stm,
 			IID_ICfixTestCaseInternal,
 			InitItem,
@@ -108,17 +108,17 @@ public:
 		//
 		LARGE_INTEGER Zero;
 		Zero.QuadPart = 0;
-		CFIXCC_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
+		CFIX_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
 
 		//
 		// Unmarshal.
 		//
 		IMarshal *ItemUnmrsh;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_IMarshal, ( PVOID* ) &ItemUnmrsh ) );
 
 		ICfixTestItem *Item2;
-		CFIXCC_ASSERT_OK( ItemUnmrsh->UnmarshalInterface(
+		CFIX_ASSERT_OK( ItemUnmrsh->UnmarshalInterface(
 			Stm,
 			IID_ICfixTestItem,
 			( PVOID* ) &Item2 ) );
@@ -127,7 +127,7 @@ public:
 		Stm->Release();
 		
 		BSTR Name2;
-		CFIXCC_ASSERT_OK( Item2->GetName( &Name2 ) );
+		CFIX_ASSERT_OK( Item2->GetName( &Name2 ) );
 		CFIXCC_ASSERT_EQUALS( Name, Name2 );
 		SysFreeString( Name2 );
 

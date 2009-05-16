@@ -65,7 +65,7 @@ public:
 
 	virtual void Before()
 	{
-		CFIXCC_ASSERT_OK( Exports.GetClassObject( 
+		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_StackTrace, IID_IClassFactory, ( PVOID* ) &this->Factory ) );
 		CFIXCC_ASSERT( this->Factory );
 	}
@@ -81,33 +81,33 @@ public:
 	void MarshalEmptyTrace()
 	{
 		ICfixStackTraceInternal *Trace;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_ICfixStackTraceInternal, ( PVOID* ) &Trace ) );
 
 		CFIX_STACKTRACE StackTrace = { 0 };
 
-		CFIXCC_ASSERT_OK( Trace->Initialize( 
+		CFIX_ASSERT_OK( Trace->Initialize( 
 			&StackTrace,
 			PseudoGetInformationStackframe ) );
 
 		ULONG Count;
-		CFIXCC_ASSERT_OK( Trace->GetFrameCount( &Count ) );
+		CFIX_ASSERT_OK( Trace->GetFrameCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Count );
 
 		//
 		// Marshal.
 		//
 		IMarshal *Mrsh;
-		CFIXCC_ASSERT_OK( Trace->QueryInterface( 
+		CFIX_ASSERT_OK( Trace->QueryInterface( 
 			IID_IMarshal, ( PVOID* ) &Mrsh ) );
 
 		IStream *Stm;
-		CFIXCC_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
+		CFIX_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
 
 		//
 		// Note: Requires TLB to be registered.
 		//
-		CFIXCC_ASSERT_OK( Mrsh->MarshalInterface(
+		CFIX_ASSERT_OK( Mrsh->MarshalInterface(
 			Stm,
 			IID_ICfixStackTrace,
 			Trace,
@@ -123,17 +123,17 @@ public:
 		//
 		LARGE_INTEGER Zero;
 		Zero.QuadPart = 0;
-		CFIXCC_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
+		CFIX_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
 
 		//
 		// Unmarshal.
 		//
 		IMarshal *Unmrsh;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_IMarshal, ( PVOID* ) &Unmrsh ) );
 
 		ICfixStackTrace *Trace2;
-		CFIXCC_ASSERT_OK( Unmrsh->UnmarshalInterface(
+		CFIX_ASSERT_OK( Unmrsh->UnmarshalInterface(
 			Stm,
 			IID_ICfixStackTrace,
 			( PVOID* ) &Trace2 ) );
@@ -141,7 +141,7 @@ public:
 		Unmrsh->Release();
 		Stm->Release();
 
-		CFIXCC_ASSERT_OK( Trace2->GetFrameCount( &Count ) );
+		CFIX_ASSERT_OK( Trace2->GetFrameCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 0UL, Count );
 		CFIXCC_ASSERT_EQUALS( 0UL, Trace2->Release() );
 	}
@@ -149,7 +149,7 @@ public:
 	void MarshalNonEmptyTrace()
 	{
 		ICfixStackTraceInternal *Trace;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_ICfixStackTraceInternal, ( PVOID* ) &Trace ) );
 
 		PCFIX_STACKTRACE StackTrace = ( PCFIX_STACKTRACE ) malloc(
@@ -162,28 +162,28 @@ public:
 		StackTrace->Frames[ 1 ] = 100;
 		StackTrace->Frames[ 2 ] = 1000;
 
-		CFIXCC_ASSERT_OK( Trace->Initialize( 
+		CFIX_ASSERT_OK( Trace->Initialize( 
 			StackTrace,
 			PseudoGetInformationStackframe ) );
 
 		ULONG Count;
-		CFIXCC_ASSERT_OK( Trace->GetFrameCount( &Count ) );
+		CFIX_ASSERT_OK( Trace->GetFrameCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 3UL, Count );
 
 		//
 		// Marshal.
 		//
 		IMarshal *Mrsh;
-		CFIXCC_ASSERT_OK( Trace->QueryInterface( 
+		CFIX_ASSERT_OK( Trace->QueryInterface( 
 			IID_IMarshal, ( PVOID* ) &Mrsh ) );
 
 		IStream *Stm;
-		CFIXCC_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
+		CFIX_ASSERT_OK( CreateStreamOnHGlobal( NULL, TRUE, &Stm ) );
 
 		//
 		// Note: Requires TLB to be registered.
 		//
-		CFIXCC_ASSERT_OK( Mrsh->MarshalInterface(
+		CFIX_ASSERT_OK( Mrsh->MarshalInterface(
 			Stm,
 			IID_ICfixStackTrace,
 			Trace,
@@ -199,17 +199,17 @@ public:
 		//
 		LARGE_INTEGER Zero;
 		Zero.QuadPart = 0;
-		CFIXCC_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
+		CFIX_ASSERT_OK( Stm->Seek( Zero, STREAM_SEEK_SET, NULL ) );
 
 		//
 		// Unmarshal.
 		//
 		IMarshal *Unmrsh;
-		CFIXCC_ASSERT_OK( this->Factory->CreateInstance( 
+		CFIX_ASSERT_OK( this->Factory->CreateInstance( 
 			NULL, IID_IMarshal, ( PVOID* ) &Unmrsh ) );
 
 		ICfixStackTrace *Trace2;
-		CFIXCC_ASSERT_OK( Unmrsh->UnmarshalInterface(
+		CFIX_ASSERT_OK( Unmrsh->UnmarshalInterface(
 			Stm,
 			IID_ICfixStackTrace,
 			( PVOID* ) &Trace2 ) );
@@ -217,35 +217,35 @@ public:
 		Unmrsh->Release();
 		Stm->Release();
 
-		CFIXCC_ASSERT_OK( Trace2->GetFrameCount( &Count ) );
+		CFIX_ASSERT_OK( Trace2->GetFrameCount( &Count ) );
 		CFIXCC_ASSERT_EQUALS( 3UL, Count );
 
 		for ( ULONG Index = 0; Index < Count; Index++ )
 		{
 			ICfixStackTraceFrame *Frame;
-			CFIXCC_ASSERT_OK( Trace2->GetFrame( Index, &Frame ) );
+			CFIX_ASSERT_OK( Trace2->GetFrame( Index, &Frame ) );
 
 			BSTR Module;
-			CFIXCC_ASSERT_OK( Frame->GetModuleName( &Module ) );
+			CFIX_ASSERT_OK( Frame->GetModuleName( &Module ) );
 			CFIXCC_ASSERT_EQUALS( L"mod", ( PCWSTR ) Module );
 			SysFreeString( Module );
 
 			BSTR Func;
-			CFIXCC_ASSERT_OK( Frame->GetFunctionName( &Func ) );
+			CFIX_ASSERT_OK( Frame->GetFunctionName( &Func ) );
 			CFIXCC_ASSERT_EQUALS( L"func", ( PCWSTR ) Func );
 			SysFreeString( Func );
 
 			BSTR File;
-			CFIXCC_ASSERT_OK( Frame->GetSourceFile( &File ) );
+			CFIX_ASSERT_OK( Frame->GetSourceFile( &File ) );
 			CFIXCC_ASSERT_EQUALS( L"f.c", ( PCWSTR ) File );
 			SysFreeString( File );
 
 			ULONG Line;
-			CFIXCC_ASSERT_OK( Frame->GetSourceLine( &Line ) );
+			CFIX_ASSERT_OK( Frame->GetSourceLine( &Line ) );
 			CFIXCC_ASSERT_EQUALS( ( ULONG ) StackTrace->Frames[ Index ], Line );
 			
 			ULONG Disp;
-			CFIXCC_ASSERT_OK( Frame->GetDisplacement( &Disp ) );
+			CFIX_ASSERT_OK( Frame->GetDisplacement( &Disp ) );
 			CFIXCC_ASSERT_EQUALS( ( ULONG ) StackTrace->Frames[ Index ] * 2, Disp );
 			
 			Frame->Release();
