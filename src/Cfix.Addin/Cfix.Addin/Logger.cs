@@ -13,7 +13,11 @@ namespace Cfix.Addin
 		public Logger( string file )
 		{
 			new FileInfo( file ).Directory.Create();
-			FileStream fs = new FileStream( file, FileMode.Append );
+			FileStream fs = new FileStream( 
+				file, 
+				FileMode.Append, 
+				FileAccess.Write, 
+				FileShare.ReadWrite );
 			this.listener = new TextWriterTraceListener( fs );
 			this.listener.Write(
 				string.Format( "Trace started: {0}\r\n", DateTime.Now ) );
@@ -31,7 +35,7 @@ namespace Cfix.Addin
 			{
 				this.listener.TraceEvent(
 					this.eventCache,
-					source,
+					String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
 					TraceEventType.Information,
 					0,
 					format,
@@ -46,7 +50,7 @@ namespace Cfix.Addin
 			{
 				this.listener.TraceEvent(
 					this.eventCache,
-					source,
+					String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
 					TraceEventType.Warning,
 					0,
 					format,
@@ -61,7 +65,7 @@ namespace Cfix.Addin
 			{
 				this.listener.TraceEvent(
 					this.eventCache,
-					source,
+					String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
 					TraceEventType.Error,
 					0,
 					format,
