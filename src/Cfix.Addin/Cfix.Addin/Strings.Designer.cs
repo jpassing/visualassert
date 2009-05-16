@@ -79,6 +79,24 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beta, expired.
+        /// </summary>
+        internal static string BetaLicenseInvalid {
+            get {
+                return ResourceManager.GetString("BetaLicenseInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beta.
+        /// </summary>
+        internal static string BetaLicenseValid {
+            get {
+                return ResourceManager.GetString("BetaLicenseValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to R&amp;un Tests.
         /// </summary>
         internal static string DebugCurrentHierItemCCaption {

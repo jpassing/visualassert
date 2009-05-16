@@ -38,6 +38,19 @@ namespace Cfix.Addin
 
 				if ( licInfo.IsTrial )
 				{
+#if BETA
+					if ( licInfo.Valid )
+					{
+						this.extraCaption = "(" + Strings.BetaLicenseValid + ")";
+					}
+					else
+					{
+						this.extraCaption = "(" + Strings.BetaLicenseInvalid + ")";
+
+						this.disableControls = true;
+						LaunchLicenseAdmin( "expired" );
+					}
+#else
 					if ( licInfo.Valid )
 					{
 						this.extraCaption = "(" + String.Format(
@@ -52,6 +65,7 @@ namespace Cfix.Addin
 						this.disableControls = true;
 						LaunchLicenseAdmin( "expired" );
 					}
+#endif
 				}
 				else
 				{

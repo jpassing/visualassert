@@ -123,6 +123,12 @@
   <data name="ArchitectureMismatch" xml:space="preserve">
     <value>The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture.</value>
   </data>
+  <data name="BetaLicenseInvalid" xml:space="preserve">
+    <value>Beta, expired</value>
+  </data>
+  <data name="BetaLicenseValid" xml:space="preserve">
+    <value>Beta</value>
+  </data>
   <data name="DebugCurrentHierItemCCaption" xml:space="preserve">
     <value>R&amp;un Tests</value>
   </data>
