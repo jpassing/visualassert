@@ -36,6 +36,8 @@ namespace Cfix.Control.Native
 
 		private readonly HostCreationOptions flags;
 
+		private readonly LocalProcessWatcher processWatcher = new LocalProcessWatcher();
+
 		//
 		// Default environment; merged with specific environment.
 		//
@@ -103,6 +105,8 @@ namespace Cfix.Control.Native
 				ReleaseObject( this.resolver );
 				this.resolver = null;
 			}
+
+			this.processWatcher.Dispose();
 		}
 
 		public void Dispose()
@@ -184,6 +188,11 @@ namespace Cfix.Control.Native
 
 			Debug.Assert( host != null );
 
+			//
+			// Watch this process (local agent only!)
+			//
+			this.processWatcher.Watch( ( int ) host.GetHostProcessId() );
+
 			return new Host( this, host );
 		}
 
@@ -211,6 +220,16 @@ namespace Cfix.Control.Native
 		public HostEnvironment DefaultEnvironment
 		{
 			get { return this.defaultHostEnv; }
+		}
+
+		public uint ActiveHostCount 
+		{ 
+			get { return this.processWatcher.ProcessCount; }
+		}
+
+		public void TerminateActiveHosts()
+		{
+			this.processWatcher.TerminateAll();
 		}
 
 		/*--------------------------------------------------------------

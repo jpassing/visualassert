@@ -93,7 +93,7 @@ namespace Cfix.Control.Test
 
 		public uint GetHostProcessId()
 		{
-			return 42;
+			return 0;
 		}
 
 		public void Terminate()

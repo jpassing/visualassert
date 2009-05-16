@@ -119,6 +119,8 @@ namespace Cfix.Control.Test
 				run.HostSpawned += delegate( object sender, HostEventArgs e )
 				{
 					spawns++;
+
+					Assert.AreEqual( 2, this.ooProcTarget.ActiveHostCount );
 				};
 
 				int starts = 0;
@@ -194,6 +196,7 @@ namespace Cfix.Control.Test
 
 				run.Stop();
 				run.Terminate();
+
 			}
 		}
 

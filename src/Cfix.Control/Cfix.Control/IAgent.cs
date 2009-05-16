@@ -14,5 +14,8 @@ namespace Cfix.Control
 		String ResolveMessage( int code );
 		HostEnvironment DefaultEnvironment { get; }
 		void SetTrialLicenseCookie( uint cookie );
+
+		uint ActiveHostCount { get; }
+		void TerminateActiveHosts();
 	}
 }
