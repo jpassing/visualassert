@@ -5,19 +5,19 @@ HH_HOME=c:\Program Files (x86)\HTML Help Workshop\
 !INCLUDE __buildnum.inc
 
 __cfix.xml: $(CFIX_TREE)\doc\docbook\book.xml
-	xsltproc identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
+	xsltproc docbook\identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
 
 all: chmdoc webdoc
 
 chmdoc: __cfix.xml
-	cd chm
-	copy ..\stylechm.css .
+	cd docbook\chm
+	copy $(CFIX_TREE)\doc\docbook\stylechm.css .
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
 	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
-	move cfix.chm cfixstudio.chm
+	move cfix.chm ..\cfixstudio.chm
 
-	cd ..
+	cd ..\..
 	
 	
 webdoc: __cfix.xml

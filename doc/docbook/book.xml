@@ -31,7 +31,7 @@
 			</para>
 		</section>
 		<section id="Terms">
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Terms']/*)" href="__cfix.xml" />
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Terms']/*)" href="..\__cfix.xml" />
 		</section>
 	</chapter>
 	
@@ -41,8 +41,8 @@
 		<section id="Background">
 			<title>Background</title>
 			
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='BackgroundIntroduction'])" href="__cfix.xml" />
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Portability'])" href="__cfix.xml" />
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='BackgroundIntroduction'])" href="..\__cfix.xml" />
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Portability'])" href="..\__cfix.xml" />
 		</section>
 	</chapter>
 	
@@ -98,7 +98,7 @@
 
 	<chapter id="API">
 		<title>API</title>
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="__cfix.xml" />
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />
 	</chapter>
 	
 	<chapter id="EULA">
