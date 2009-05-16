@@ -7,8 +7,15 @@ HH_HOME=c:\Program Files (x86)\HTML Help Workshop\
 __cfix.xml: $(CFIX_TREE)\doc\docbook\book.xml
 	xsltproc docbook\identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
 
-all: chmdoc webdoc
+all: chmdoc webdoc quickstart
 
+quickstartdoc:
+	cd quickstart
+	-3 robocopy $(CFIX_TREE)\doc\assets assets /MIR /XD .svn /XX /NJH /NJS
+	copy ..\assets\img\logo-cfixstudio.gif assets\img\logo-cfixstudio.gif
+	
+	cd ..
+	
 chmdoc: __cfix.xml
 	cd docbook\chm
 	copy $(CFIX_TREE)\doc\docbook\stylechm.css .
