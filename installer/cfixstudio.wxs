@@ -76,6 +76,17 @@
         </Directory>
       </Directory>
 
+      <Component Id="CompCfixHome" Guid="b205f6ae-19ba-4751-826a-c4db6c024e5b">
+        <CreateFolder/>
+        <Environment
+          Id="EnvCfixHome"
+          Action="set"
+          Name="CFIX_HOME"
+          Part="all"
+          Permanent="no"
+          Value="[INSTALLLOCATION]"/>
+      </Component>
+
       <Directory Id="CommonAppDataFolder">
         <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
           <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
@@ -148,7 +159,37 @@
 									LongName="cfix studio Documentation"/>
               </File>
               <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
+
             </Component>
+
+            <Directory Id="DirDocQuickStart" Name="QuickSt" LongName="quickstart">
+              <Component Id="CompDocQuickStart" DiskId="1" Guid="118333d3-4f0e-407c-8338-810be4196592">
+                <File Id="FileQuickStartIndexHtml" Name="index.htm" LongName="index.html" Source="doc\quickstart\index.html" Vital="yes"/>
+
+                <File Id="FileQuickStartHelpMenuPng" Name="HelpMenu.png" Source="doc\quickstart\HelpMenu.png" Vital="yes"/>
+                <File Id="FileQuickStartToolMenuPng" Name="ToolMenu.png" Source="doc\quickstart\ToolMenu.png" Vital="yes"/>
+                <File Id="FileQuickStartSlnExplPng" Name="SlnExpl.png" Source="doc\quickstart\SlnExpl.png" Vital="yes"/>
+              </Component>
+
+              <Directory Id="DirDocQuickStartAssets" Name="assets">
+                <Component Id="CompDocQuickStartAssets" DiskId="1" Guid="54cdcd90-dfc9-4553-a0cc-5323141549ed">
+                  <File Id="FileQuickStartAssetsMasterCss" Name="master.css" Source="doc\quickstart\assets\master.css" Vital="yes"/>
+                </Component>
+
+                <Directory Id="DirDocQuickStartAssetsImg" Name="img">
+                  <Component Id="CompDocQuickStartAssetsImg" DiskId="1" Guid="06cc93b0-7579-470a-a34e-f85b5b7ebbc1">
+                    <File Id="FileQuickStartAssetsImgBgJpg" Name="bg.jpg" Source="doc\quickstart\assets\img\bg.jpg" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsLogo" Name="logo.gif" LongName="logo-cfixstudio.gif" Source="doc\quickstart\assets\img\logo-cfixstudio.gif" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab1" Name="tab1.png" LongName="tab_active.png" Source="doc\quickstart\assets\img\tab_active.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab2" Name="tab2.png" LongName="tab_active2passive.png" Source="doc\quickstart\assets\img\tab_active2passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab3" Name="tab3.png" LongName="tab_activeend.png" Source="doc\quickstart\assets\img\tab_activeend.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab4" Name="tab4.png" LongName="tab_passive.png" Source="doc\quickstart\assets\img\tab_passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab5" Name="tab5.png" LongName="tab_passive2active.png" Source="doc\quickstart\assets\img\tab_passive2active.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab6" Name="tab6.png" LongName="tab_passiveend.png" Source="doc\quickstart\assets\img\tab_passiveend.png" Vital="yes"/>
+                  </Component>
+                </Directory>
+              </Directory>
+            </Directory>
           </Directory>
 
           <Component Id="CompExamples" DiskId="1" Guid="e861ed4f-84c3-4c2e-93db-8dcc43c3d68d">
@@ -218,6 +259,7 @@
     </Directory>
 
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
+      <ComponentRef Id="CompCfixHome"/>
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
 
@@ -259,8 +301,12 @@
 
       <ComponentRef Id="CompBinI386"/>
       <ComponentRef Id="CompLibI386"/>
-      
+
       <ComponentRef Id="CompDoc"/>
+      <ComponentRef Id="CompDocQuickStart"/>
+      <ComponentRef Id="CompDocQuickStartAssets"/>
+      <ComponentRef Id="CompDocQuickStartAssetsImg"/>
+      
       <ComponentRef Id="CompIncludes"/>
     </Feature>
 
