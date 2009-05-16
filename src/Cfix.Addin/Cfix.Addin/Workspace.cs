@@ -397,6 +397,20 @@ namespace Cfix.Addin
 					return;
 				}
 
+				IRun currentRun = this.toolWindows.Run.UserControl.Run;
+				if ( ( currentRun == null || currentRun.Status != TaskStatus.Running ) &&
+				     this.runAgents.ActiveHostCount > 0 )
+				{
+					//
+					// No run active, yet there are host active processes.
+					//
+					if ( CfixStudio.ShowQuestion(
+						Strings.TerminateActiveHosts ) )
+					{
+						this.runAgents.TerminateActiveHosts();
+					}
+				}
+
 				//
 				// Make sure the run window is reset while the build
 				// is active.

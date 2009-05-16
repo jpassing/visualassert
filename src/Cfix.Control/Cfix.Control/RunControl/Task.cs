@@ -16,6 +16,8 @@ namespace Cfix.Control.RunControl
 		private const uint CFIX_E_TEARDOWN_ROUTINE_FAILED = ( uint ) 0x8004800c;
 		private const uint CFIX_E_TEST_ROUTINE_FAILED = ( uint ) 0x8004800e;
 		private const uint RPC_S_CALL_FAILED = ( uint ) 0x800706BE;
+		
+		private const uint RPC_E_UNKNOWN_FAILURE = ( uint ) 0x80131500;
 
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;
@@ -137,8 +139,8 @@ namespace Cfix.Control.RunControl
 			{
 				ForceComplete();
 
-				if ( this.status == TaskStatus.Terminated && 
-					( uint ) x.ErrorCode == RPC_S_CALL_FAILED )
+				if ( ( uint ) x.ErrorCode == RPC_S_CALL_FAILED ||
+					 ( uint ) x.ErrorCode == RPC_E_UNKNOWN_FAILURE )
 				{
 					//
 					// Remote procedure call failed -- this is expected

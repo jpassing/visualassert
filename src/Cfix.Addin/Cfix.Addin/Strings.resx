@@ -195,6 +195,9 @@
   <data name="SucceededWithSkippedParts" xml:space="preserve">
     <value>Succeeded, partly skipped</value>
   </data>
+  <data name="TerminateActiveHosts" xml:space="preserve">
+    <value>At least one host process is still running. Would you like to terminate this process?</value>
+  </data>
   <data name="TerminateActiveRun" xml:space="preserve">
     <value>The test run has not finished yet. Do you wish to terminate it?</value>
   </data>

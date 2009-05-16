@@ -74,5 +74,33 @@ namespace Cfix.Control
 			return arch;
 		}
 
+		public uint ActiveHostCount 
+		{
+			get
+			{
+				uint count = 0;
+
+				for ( int i = 0; i < this.agent.Length; i++ )
+				{
+					if ( this.agent[ i ] != null )
+					{
+						count += this.agent[ i ].ActiveHostCount;
+					}
+				}
+
+				return count;
+			}
+		}
+
+		public void TerminateActiveHosts()
+		{
+			for ( int i = 0; i < this.agent.Length; i++ )
+			{
+				if ( this.agent[ i ] != null )
+				{
+					this.agent[ i ].TerminateActiveHosts();
+				}
+			}
+		}
 	}
 }

@@ -295,6 +295,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At least one host process is still running. Would you like to terminate this process?.
+        /// </summary>
+        internal static string TerminateActiveHosts {
+            get {
+                return ResourceManager.GetString("TerminateActiveHosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The test run has not finished yet. Do you wish to terminate it?.
         /// </summary>
         internal static string TerminateActiveRun {
