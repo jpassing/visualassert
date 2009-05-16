@@ -52,6 +52,7 @@ clean:
 examples.zip:
 	if not exist _examples md _examples
 	cd _examples
+	copy $(CFIX_TREE)\COPYING .
 	xcopy /Y /I  $(CFIX_TREE)\samples\UserC UserC
 	xcopy /Y /I  $(CFIX_TREE)\samples\UserCc UserCc
 
