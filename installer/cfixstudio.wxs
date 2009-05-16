@@ -151,6 +151,10 @@
             </Component>
           </Directory>
 
+          <Component Id="CompExamples" DiskId="1" Guid="e861ed4f-84c3-4c2e-93db-8dcc43c3d68d">
+            <File Id="FileExamplesZip" Name="examples.zip" Source="examples.zip" DiskId="1"/>
+          </Component>
+
           <Directory Id="DirBin" Name="bin">
             <Directory Id="DirBinI386" Name="i386">
               <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
@@ -216,6 +220,8 @@
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
+
+      <ComponentRef Id="CompExamples"/>
 
       <Feature Id="FeatureBinAmd64"
                Absent="allow"
