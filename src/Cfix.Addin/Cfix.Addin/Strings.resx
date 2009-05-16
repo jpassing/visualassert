@@ -129,6 +129,9 @@
   <data name="BetaLicenseValid" xml:space="preserve">
     <value>Beta</value>
   </data>
+  <data name="BetaLicenseValidWithExp" xml:space="preserve">
+    <value>Beta, {0} days left</value>
+  </data>
   <data name="DebugCurrentHierItemCCaption" xml:space="preserve">
     <value>R&amp;un Tests</value>
   </data>

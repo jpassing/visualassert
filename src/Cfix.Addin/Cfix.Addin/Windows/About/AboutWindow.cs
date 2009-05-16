@@ -64,6 +64,22 @@ namespace Cfix.Addin.Windows.About
 			{
 				LicenseInfo licInfo = workspace.QueryLicenseInfo();
 
+#if BETA
+				if ( licInfo.IsTrial )
+				{
+					if ( licInfo.Valid )
+					{
+						this.licenseValueLabel.Text = String.Format(
+							Strings.BetaLicenseValidWithExp, licInfo.TrialDaysLeft );
+						this.licadminArg = "license";
+					}
+					else
+					{
+						this.licenseValueLabel.Text = Strings.BetaLicenseInvalid;
+						this.licadminArg = "expired";
+					}
+				}
+#else
 				if ( licInfo.IsTrial )
 				{
 					if ( licInfo.Valid )
@@ -79,6 +95,7 @@ namespace Cfix.Addin.Windows.About
 						this.licadminArg = "expired";
 					}
 				}
+#endif
 				else
 				{
 					if ( licInfo.Valid )
