@@ -323,6 +323,11 @@ namespace Cfix.Addin.Test
 			}
 		}
 
+		public bool PrimaryOutputAvailable
+		{
+			get { return File.Exists( this.currentPath ); }
+		}
+
 		/*----------------------------------------------------------------------
 		 * Overrides.
 		 */

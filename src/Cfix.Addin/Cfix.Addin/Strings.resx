@@ -165,6 +165,9 @@
   <data name="ProgressInfoFinish" xml:space="preserve">
     <value>{0}: {1} failed, {2} inconclusive.</value>
   </data>
+  <data name="ProjectNotBuiltYet" xml:space="preserve">
+    <value>Build output not available -- rebuild the project</value>
+  </data>
   <data name="ReDebugRunCmdCaption" xml:space="preserve">
     <value>Restart Last Run</value>
   </data>

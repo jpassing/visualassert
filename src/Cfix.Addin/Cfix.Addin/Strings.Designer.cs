@@ -205,6 +205,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build output not available -- rebuild the project.
+        /// </summary>
+        internal static string ProjectNotBuiltYet {
+            get {
+                return ResourceManager.GetString("ProjectNotBuiltYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart Last Run.
         /// </summary>
         internal static string ReDebugRunCmdCaption {

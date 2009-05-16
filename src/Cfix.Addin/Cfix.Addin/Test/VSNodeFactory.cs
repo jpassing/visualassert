@@ -82,6 +82,14 @@ namespace Cfix.Addin.Test
 						this.ForeColor = SystemColors.ControlText;
 						this.ToolTipText = null;
 					}
+					else if ( !prj.PrimaryOutputAvailable )
+					{
+						//
+						// Not built yet.
+						//
+						this.ForeColor = Color.Gray;
+						this.ToolTipText = Strings.ProjectNotBuiltYet;
+					}
 					else
 					{
 						//
