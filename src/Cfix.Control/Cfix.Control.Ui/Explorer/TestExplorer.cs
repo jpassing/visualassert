@@ -52,12 +52,6 @@ namespace Cfix.Control.Ui.Explorer
 
 		private ContextMenuStrip nodeContextMenu;
 
-		//
-		// Flag indicating that the control has been loaded and can
-		// accept updates via Invoke/BeginInvoke.
-		//
-		private bool canAcceptInvokes;
-
 		/*----------------------------------------------------------------------
 		 * Private.
 		 */
@@ -87,8 +81,7 @@ namespace Cfix.Control.Ui.Explorer
 			finally
 			{
 				if ( this.Disposing || 
-					 this.treeView.Disposing ||
-					 !this.canAcceptInvokes )
+					 this.treeView.Disposing )
 				{
 					//
 					// Do not touch UI.
@@ -181,11 +174,12 @@ namespace Cfix.Control.Ui.Explorer
 			this.treeView.KeyDown += new KeyEventHandler( treeView_KeyDown );
 			this.treeView.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler( treeView_NodeMouseDoubleClick );
 			this.Disposed += this_Disposed;
-		}
 
-		private void TestExplorer_Load( object sender, EventArgs e )
-		{
-			this.canAcceptInvokes = true;
+			//
+			// Force creation of control s.t. async operations can
+			// be fired off.
+			//
+			CreateControl();
 		}
 
 		public ImageList ImageList
@@ -325,6 +319,26 @@ namespace Cfix.Control.Ui.Explorer
 		/*----------------------------------------------------------------------
 		 * Session refreshing.
 		 */
+
+		public bool RefreshAllowed
+		{
+			get
+			{
+				if ( this.Disposing ||
+					 this.treeView.Disposing )
+				{
+					//
+					// Refreshing involves touching the UI, which shure
+					// is leading to failures. Ignore.
+					//
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
 
 		public void AbortRefreshSession()
 		{
