@@ -284,6 +284,30 @@ namespace Cfix.Addin
 			}
 		}
 
+		public Disposition DefaultDebugFailedAssertionDisposition
+		{
+			get
+			{
+				Disposition val = ( Disposition ) this.key.GetValue(
+					"DefaultDebugFailedAssertionDisposition", Disposition.Break );
+				if ( Enum.IsDefined( typeof( Disposition ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return Disposition.Break;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"DefaultDebugFailedAssertionDisposition",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public Disposition DefaultUnhandledExceptionDisposition
 		{
 			get
@@ -303,6 +327,30 @@ namespace Cfix.Addin
 			{
 				this.key.SetValue(
 					"DefaultUnhandledExceptionDisposition",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public Disposition DefaultDebugUnhandledExceptionDisposition
+		{
+			get
+			{
+				Disposition val = ( Disposition ) this.key.GetValue(
+					"DefaultDebugUnhandledExceptionDisposition", Disposition.Break );
+				if ( Enum.IsDefined( typeof( Disposition ), val ) )
+				{
+					return val;
+				}
+				else
+				{
+					return Disposition.Break;
+				}
+			}
+			set
+			{
+				this.key.SetValue(
+					"DefaultDebugUnhandledExceptionDisposition",
 					value,
 					RegistryValueKind.DWord );
 			}

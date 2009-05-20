@@ -183,9 +183,15 @@ namespace Cfix.Addin
 		 * Private - Misc.
 		 */
 
-		private IDispositionPolicy DispositionPolicy
+		private IDispositionPolicy GetDispositionPolicy( bool debug )
 		{
-			get
+			if ( debug )
+			{
+				return new StandardDispositionPolicy(
+				this.config.DefaultDebugUnhandledExceptionDisposition,
+				this.config.DefaultDebugFailedAssertionDisposition );
+			}
+			else
 			{
 				return new StandardDispositionPolicy(
 					this.config.DefaultUnhandledExceptionDisposition,
@@ -443,7 +449,7 @@ namespace Cfix.Addin
 
 				SimpleRunCompiler compiler = new SimpleRunCompiler(
 					this.runAgents,
-					this.DispositionPolicy,
+					GetDispositionPolicy( debug ),
 					this.config.SchedulingOptions,
 					this.config.ThreadingOptions,
 					this.config.ExecutionOptions,
