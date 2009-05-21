@@ -65,7 +65,7 @@
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
     </Condition>
 
-    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for cfix studio.'>
+    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for cfix studio. Please note that cfix studio cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
       <![CDATA[ VS80INSTALLED OR VS90INSTALLED ]]>
     </Condition>
 
