@@ -1,8 +1,8 @@
 #include <cfix.h>
 
-static void __stdcall Slow()                 
+static void __stdcall Slow2()                 
 {
-	for ( int i = 0; i < 40; i++ )
+	for ( int i = 0; i < 4; i++ )
 	{
 		Sleep( 10 );
 		CFIX_ASSERT_MESSAGE( !"Fail", "sample %x", 0xF00 );
@@ -10,7 +10,7 @@ static void __stdcall Slow()
 	}
 }
 
-static void __stdcall Slow2()
+static void __stdcall Slow()
 {
 	for ( int i = 0; i < 10; i++ )
 	{

@@ -329,6 +329,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\lotsofthreads.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\slow.cpp"
 				>
 			</File>

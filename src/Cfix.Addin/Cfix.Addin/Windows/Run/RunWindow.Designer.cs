@@ -41,7 +41,7 @@ namespace Cfix.Addin.Windows.Run
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.lameButton = new System.Windows.Forms.ToolStripButton();
 			this.docButton = new System.Windows.Forms.ToolStripButton();
-			this.progressBar = new System.Windows.Forms.ProgressBar();
+			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -170,7 +170,6 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Location = new System.Drawing.Point( 3, 28 );
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
-			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar.TabIndex = 2;
 			// 
 			// resultCtxMenu
@@ -260,7 +259,7 @@ namespace Cfix.Addin.Windows.Run
 
 		private System.Windows.Forms.ToolStrip toolbar;
 		private Cfix.Control.Ui.Result.ResultExplorer results;
-		private System.Windows.Forms.ProgressBar progressBar;
+		private Cfix.Addin.Windows.PlainProgressBar progressBar;
 		private System.Windows.Forms.ToolStripButton terminateButton;
 		private TransparentLabel progressLabel;
 		private System.Windows.Forms.ContextMenuStrip resultCtxMenu;

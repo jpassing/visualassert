@@ -130,6 +130,12 @@
     </Compile>
     <Compile Include="Test\SolutionTestCollection.cs" />
     <Compile Include="Test\VSNodeFactory.cs" />
+    <Compile Include="Windows\PlainProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\PlainProgressBar.Designer.cs">
+      <DependentUpon>PlainProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Run\RunWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -83,21 +83,17 @@ namespace Cfix.Addin.Windows.Run
 					if ( total == completed )
 					{
 						this.progressBar.Value = 100;
-						this.progressBar.BackColor = this.progressBar.ForeColor;
 					}
 					else
 					{
 						this.progressBar.Value = 
 							( int ) ( completed * 100 / total );
-
-						this.progressBar.BackColor =
-							completed > 0 ? DefaultColor : InitialColor;
 					}
 
 					if ( item.Status == ExecutionStatus.Failed &&
-						this.progressBar.ForeColor == SuccessColor )
+						this.progressBar.ProgressBarColor == SuccessColor )
 					{
-						this.progressBar.ForeColor = FailedColor;
+						this.progressBar.ProgressBarColor = FailedColor;
 					}
 
 					this.progressLabel.Text =
@@ -149,7 +145,7 @@ namespace Cfix.Addin.Windows.Run
 					// Run failed.
 					//
 					this.progressLabel.Text = this.run.Status.ToString();
-					this.progressBar.ForeColor = FailedColor;
+					this.progressBar.ProgressBarColor = FailedColor;
 				}
 
 				this.progressBar.Value = 100;
@@ -454,8 +450,7 @@ namespace Cfix.Addin.Windows.Run
 					}
 
 					this.progressBar.Value = 0;
-					this.progressBar.ForeColor = SuccessColor;
-					this.progressBar.BackColor = InitialColor;
+					this.progressBar.ProgressBarColor = SuccessColor;
 
 					this.terminateButton.Enabled = true;
 					this.restartButton.Enabled = false;
