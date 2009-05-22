@@ -22,7 +22,7 @@ cfixstudio.msi: clean cfixstudio.wixobj ui.wixobj dialogs.wixlib
 	if not exist wixca.wixlib copy /Y $(WIXBINPATH)\wixca.wixlib .
 	$(WIXBINPATH)\light -b .. -nologo -w0 -loc dialogs\WixUI_en-us.wxl -loc cfixstudio_en-us.wxl wixca.wixlib dialogs.wixlib cfixstudio.wixobj ui.wixobj -out cfixstudio_$(VERSION).msi
 
-cfixstudio.wixobj: cfixstudio.wxs examples.zip
+cfixstudio.wixobj: cfixstudio.wxs
 	copy /Y $(CFIX_TREE)\installer\cfix_*.wxs .
 	$(WIXBINPATH)\candle -dCFIX_TREE=$(CFIX_TREE) -dProductCode=$(PRODUCTCODE) -dPackageCode=$(PACKAGECODE) -dProductVersion=$(VERSION) -nologo cfixstudio.wxs
 
@@ -48,21 +48,3 @@ clean:
 # Examples.
 #
 #----------------------------------------------------------------------
-
-examples.zip:
-	if not exist _examples md _examples
-	cd _examples
-	copy $(CFIX_TREE)\COPYING .
-	xcopy /Y /I  $(CFIX_TREE)\samples\UserC UserC
-	xcopy /Y /I  $(CFIX_TREE)\samples\UserCc UserCc
-
-	-1 for /f "delims=" %%i in ('dir /s/b *.aps') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.log') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.err') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.wrn') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.suo') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.ncb') do @del  %%i
-	-1 for /f "delims=" %%i in ('dir /s/b *.user') do @del  %%i
-	
-	7z a  -tzip ..\examples.zip *
-	cd ..
