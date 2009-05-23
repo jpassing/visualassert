@@ -28,13 +28,13 @@ chmdoc: __cfix.xml
 	
 	
 webdoc: __cfix.xml
-	if not exist web\doc md web\doc
-	
-	cd web\doc
+	if not exist docbook\web\doc md docbook\web\doc
+	cd docbook\web\doc
 	copy ..\..\styleweb.css ..
+	-3 robocopy $(CFIX_TREE)\doc\assets ..\assets /MIR /XD .svn /XX /NJH /NJS
+	-3 robocopy ..\..\..\assets ..\assets /MIR /XD .svn /XX /NJH /NJS
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
-
 	
 	if not exist images md images
 	copy /Y ..\..\chm\images images

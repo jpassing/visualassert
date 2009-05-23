@@ -97,7 +97,6 @@
 	</chapter>
 
 	<chapter id="API">
-		<title>API</title>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />
 	</chapter>
 	
