@@ -432,6 +432,22 @@ namespace Cfix.Addin
 					return;
 				}
 
+				//
+				// It is possible that the build has changed the item.
+				// While this will cause an appropriate exception in 
+				// case the item itself is gone, we have to ensure that
+				// the children are up to date - therefore, refresh.
+				//
+				ITestItemCollection itemColl = item as ITestItemCollection;
+				if ( itemColl != null )
+				{
+					itemColl.Refresh();
+
+					//
+					// Now the children are up to date.
+					//
+				}
+
 				bool allowArchMixing;
 				if ( debug )
 				{
