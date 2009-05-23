@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -52,7 +53,15 @@ namespace Cfix.Control.Native
 
 		public void AfterFixtureFinish( int ranToCompletionInt )
 		{
-			OnFinished( ranToCompletionInt != 0 );
+			try
+			{
+				OnFinished( ranToCompletionInt != 0 );
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public ICfixTestÌtemEventSink GetTestItemEventSink( 
@@ -60,34 +69,42 @@ namespace Cfix.Control.Native
 			uint threadId 
 			)
 		{
-			IResultItem item;
-			if ( testCaseOrdinal < this.ItemCount )
+			try
 			{
-				item = this.GetItem( testCaseOrdinal );
-			}
-			else if ( this.ItemCount == 1 &&
-				this.ItemCollection.ItemCount > 1 )
-			{
-				//
-				// Mismatch between result item count and item count -- 
-				// must be due to this being a single-testcase run.
-				//
-				item = this.GetItem( 0 );
-			}
-			else
-			{
-				throw new CfixException( "Inconsistent result" );
-			}
+				IResultItem item;
+				if ( testCaseOrdinal < this.ItemCount )
+				{
+					item = this.GetItem( testCaseOrdinal );
+				}
+				else if ( this.ItemCount == 1 &&
+					this.ItemCollection.ItemCount > 1 )
+				{
+					//
+					// Mismatch between result item count and item count -- 
+					// must be due to this being a single-testcase run.
+					//
+					item = this.GetItem( 0 );
+				}
+				else
+				{
+					throw new CfixException( "Inconsistent result" );
+				}
 
-			Debug.Assert( item is TestItemResult );
+				Debug.Assert( item is TestItemResult );
 
-			if ( item == null )
-			{
-				throw new CfixException( "Unknown item" );
+				if ( item == null )
+				{
+					throw new CfixException( "Unknown item" );
+				}
+				else
+				{
+					return ( ICfixTestÌtemEventSink ) item;
+				}
 			}
-			else
+			catch ( Exception x )
 			{
-				return ( ICfixTestÌtemEventSink ) item;
+				Logger.LogError( "Sink", x );
+				throw;
 			}
 		}
 
@@ -97,14 +114,30 @@ namespace Cfix.Control.Native
 
 		public void BeforeChildThreadStart( uint threadId )
 		{
-			Debug.Assert( this.events != null );
-			this.events.OnThreadStarted( this, threadId );
+			try
+			{
+				Debug.Assert( this.events != null );
+				this.events.OnThreadStarted( this, threadId );
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public void AfterChildThreadFinish( uint threadId )
 		{
-			Debug.Assert( this.events != null );
-			this.events.OnThreadFinished( this, threadId );
+			try
+			{
+				Debug.Assert( this.events != null );
+				this.events.OnThreadFinished( this, threadId );
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION FailedAssertion(
@@ -119,22 +152,30 @@ namespace Cfix.Control.Native
 			ICfixStackTrace stackTrace
 			)
 		{
-			FailedAssertionFailure ass = new FailedAssertionFailure(
-				expression,
-				message,
-				file,
-				line,
-				routine,
-				StackTrace.Wrap( stackTrace ),
-				lastError );
+			try
+			{
+				FailedAssertionFailure ass = new FailedAssertionFailure(
+					expression,
+					message,
+					file,
+					line,
+					routine,
+					StackTrace.Wrap( stackTrace ),
+					lastError );
 
-			AddFailure( ass );
+				AddFailure( ass );
 
-			Debug.Assert( this.events != null );
-			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-				this.events.DispositionPolicy.FailedAssertion( ass );
+				Debug.Assert( this.events != null );
+				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+					this.events.DispositionPolicy.FailedAssertion( ass );
 
-			return disp;
+				return disp;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION FailedRelateAssertion(
@@ -150,24 +191,32 @@ namespace Cfix.Control.Native
 			uint reserved,
 			ICfixStackTrace stackTrace )
 		{
-			FailedRelateExpressionFailure fr = new FailedRelateExpressionFailure(
-				( RelateOperator ) op,
-				expectedValue,
-				actualValue,
-				message,
-				file,
-				line,
-				routine,
-				StackTrace.Wrap( stackTrace ),
-				lastError );
+			try
+			{
+				FailedRelateExpressionFailure fr = new FailedRelateExpressionFailure(
+					( RelateOperator ) op,
+					expectedValue,
+					actualValue,
+					message,
+					file,
+					line,
+					routine,
+					StackTrace.Wrap( stackTrace ),
+					lastError );
 
-			AddFailure( fr );
+				AddFailure( fr );
 
-			Debug.Assert( this.events != null );
-			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-				this.events.DispositionPolicy.FailedAssertion( fr );
+				Debug.Assert( this.events != null );
+				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+					this.events.DispositionPolicy.FailedAssertion( fr );
 
-			return disp;
+				return disp;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION UnhandledException(
@@ -175,17 +224,25 @@ namespace Cfix.Control.Native
 			uint reserved,
 			ICfixStackTrace stackTrace )
 		{
-			UnhandledExceptionFailure u = new UnhandledExceptionFailure(
-				exceptionCode,
-				StackTrace.Wrap( stackTrace ) );
+			try
+			{
+				UnhandledExceptionFailure u = new UnhandledExceptionFailure(
+					exceptionCode,
+					StackTrace.Wrap( stackTrace ) );
 
-			AddFailure( u );
+				AddFailure( u );
 
-			Debug.Assert( this.events != null );
-			CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-				this.events.DispositionPolicy.UnhandledException( u );
+				Debug.Assert( this.events != null );
+				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
+					this.events.DispositionPolicy.UnhandledException( u );
 
-			return disp;
+				return disp;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public void Inconclusive(
@@ -194,31 +251,62 @@ namespace Cfix.Control.Native
 			ICfixStackTrace stackTrace
 			)
 		{
-			AddFailure( new Inconclusiveness(
-				reason,
-				StackTrace.Wrap( stackTrace ) ) );
-			IsInconclusive = true;
-
+			try
+			{
+				AddFailure( new Inconclusiveness(
+					reason,
+					StackTrace.Wrap( stackTrace ) ) );
+				IsInconclusive = true;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public void Log( string message, uint Reserved, ICfixStackTrace StackTrace )
 		{
-			Debug.Assert( this.events != null );
-			this.events.OnLog( this, message );
+			try
+			{
+				Debug.Assert( this.events != null );
+				this.events.OnLog( this, message );
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultFailedAssertionDisposition()
 		{
-			Debug.Assert( this.events != null );
-			return ( CFIXCTL_REPORT_DISPOSITION )
-				this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
+			try
+			{
+				Debug.Assert( this.events != null );
+				return ( CFIXCTL_REPORT_DISPOSITION )
+					this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 
 		public CFIXCTL_REPORT_DISPOSITION QueryDefaultUnhandledExceptionDisposition()
 		{
-			Debug.Assert( this.events != null );
-			return ( CFIXCTL_REPORT_DISPOSITION )
-				this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
+			try
+			{
+				Debug.Assert( this.events != null );
+				return ( CFIXCTL_REPORT_DISPOSITION )
+					this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
+			}
+			catch ( Exception x )
+			{
+				Logger.LogError( "Sink", x );
+				throw;
+			}
 		}
 	}
 }

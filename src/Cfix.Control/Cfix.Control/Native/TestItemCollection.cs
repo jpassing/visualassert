@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -202,6 +203,7 @@ namespace Cfix.Control.Native
 				}
 				catch ( COMException x )
 				{
+					Logger.LogError( "Agent", "Failed to update item", x );
 					throw this.Module.Agent.WrapException( x );
 				}
 			}
@@ -320,6 +322,7 @@ namespace Cfix.Control.Native
 				}
 				catch ( COMException x )
 				{
+					Logger.LogError( "Agent", "Failed to refresh item", x );
 					throw this.Module.Agent.WrapException( x );
 				}
 				finally

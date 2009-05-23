@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Cfix.Control.Diag;
 
 namespace Cfix.Control.RunControl
 {
@@ -137,6 +138,8 @@ namespace Cfix.Control.RunControl
 			}
 			catch ( COMException x )
 			{
+				Logger.LogError( "Task", "AsnycRun aborted", x );
+
 				ForceComplete();
 
 				if ( ( uint ) x.ErrorCode == RPC_S_CALL_FAILED ||

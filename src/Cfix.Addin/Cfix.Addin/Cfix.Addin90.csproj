@@ -79,7 +79,6 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
     <Compile Include="LicenseInfo.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
     <Compile Include="Directories.cs" />

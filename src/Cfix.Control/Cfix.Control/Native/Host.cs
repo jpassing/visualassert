@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -113,6 +114,7 @@ namespace Cfix.Control.Native
 			}
 			catch ( COMException x )
 			{
+				Logger.LogError( "Agent", "Failed to load module", x );
 				throw this.agent.WrapException( x );
 			}
 			finally

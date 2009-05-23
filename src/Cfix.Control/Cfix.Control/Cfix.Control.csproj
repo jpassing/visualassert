@@ -65,6 +65,7 @@
     <Compile Include="IRunCompiler.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="HostEnvironment.cs" />
+    <Compile Include="Diag\Logger.cs" />
     <Compile Include="Native\LocalProcessWatcher.cs" />
     <Compile Include="RunControl\Run.cs" />
     <Compile Include="Architecture.cs" />

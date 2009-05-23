@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -231,6 +232,7 @@ namespace Cfix.Control.Native
 						}
 						else
 						{
+							Logger.LogError( "ModuleCollection", "Failed to populate", x );
 							throw ( ( Agent ) searchTarget ).WrapException( x );
 						}
 					}

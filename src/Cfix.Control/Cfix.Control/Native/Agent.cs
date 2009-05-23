@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -83,6 +84,7 @@ namespace Cfix.Control.Native
 			}
 			catch ( COMException x )
 			{
+				Logger.LogError( "Agent", "Failed to create resolver", x );
 				throw WrapException( x );
 			}
 		}
@@ -211,8 +213,9 @@ namespace Cfix.Control.Native
 			{
 				return this.resolver.ResolveMessage( ( uint ) code, 0 );
 			}
-			catch ( COMException )
+			catch ( COMException x )
 			{
+				Logger.LogError( "Agent", "Failed to resolve", x );
 				return String.Format( "[0x{0:X}]", code );
 			}
 		}
