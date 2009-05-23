@@ -139,6 +139,11 @@ namespace Cfix.Addin.Windows.About
 		{
 			InitializeComponent();
 
+#if BETA
+			this.licenseLabel.Text = "Info:";
+			this.enterLicenseButton.Visible = false;
+#endif
+
 			this.workspace = ws;
 
 			this.versionLabel.Text += CfixStudio.Version;
