@@ -253,33 +253,25 @@
 
 
           <Directory Id="DirSamples" Name="examples">
+            <Component Id="CompSamples" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
+              <CreateFolder>
+                <!-- Grant write permissions s.t. the examples work properly -->
+                <Permission GenericAll="yes" User="Everyone"/>
+              </CreateFolder>
+            </Component>
+            
             <Directory Id="DirSamplesKernel" Name="KernelMo" LongName="KernelMode">
               <Component Id="CompSamplesKernel" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
-                <CreateFolder>
-                  <!-- Grant write permissions s.t. the examples work properly -->
-                  <Permission GenericAll="yes" User="Everyone"/>
-                </CreateFolder>
-
                 <?include cfix_samples_kern.wxs?>
               </Component>
             </Directory>
             <Directory Id="DirSamplesUser" Name="UserMode">
               <Component Id="CompSamplesUser" DiskId="1" Guid="a6daa172-c98f-4d43-9002-d10b75c2ee33">
-                <CreateFolder>
-                  <!-- Grant write permissions s.t. the examples work properly -->
-                  <Permission GenericAll="yes" User="Everyone"/>
-                </CreateFolder>
-
                 <?include cfix_samples_userc.wxs?>
               </Component>
             </Directory>
             <Directory Id="DirSamplesUserCc" Name="UserCpp" LongName="UserMode C++">
               <Component Id="CompSamplesUserCc" DiskId="1" Guid="4c2d7641-10e1-4a6e-878f-0c97c2492ec3">
-                <CreateFolder>
-                  <!-- Grant write permissions s.t. the examples work properly -->
-                  <Permission GenericAll="yes" User="Everyone"/>
-                </CreateFolder>
-
                 <?include cfix_samples_usercc.wxs?>
               </Component>
             </Directory>
@@ -294,6 +286,7 @@
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
 
+      <ComponentRef Id="CompSamples"/>
       <ComponentRef Id="CompSamplesKernel"/>
       <ComponentRef Id="CompSamplesUser"/>
       <ComponentRef Id="CompSamplesUserCc"/>
