@@ -41,4 +41,9 @@ webdoc: __cfix.xml
 
 	cd ..
 	
-
+joomla-templatedoc:
+	cd joomla-template
+	-3 robocopy $(CFIX_TREE)\doc\assets assets /MIR /XD .svn /XX /NJH /NJS
+	-3 robocopy ..\assets assets /MIR /XD .svn /XX /NJH /NJS
+	
+	cd ..

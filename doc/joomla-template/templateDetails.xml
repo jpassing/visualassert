@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
+<install version="1.5" type="template">
+	<name>cfixstudio</name>
+	<creationDate>11/20/06</creationDate>
+	<author>JP</author>
+	<authorEmail>com</authorEmail>
+	<authorUrl></authorUrl>
+	<copyright></copyright>
+	<license>none</license>
+	<version>1.0</version>
+	<description>TPL_CFIXSTUDIO</description>
+	<files>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+	</files>
+	<positions>
+		<position>breadcrumb</position>
+		<position>left</position>
+		<position>right</position>
+		<position>top</position>
+		<position>user1</position>
+		<position>user2</position>
+		<position>user3</position>
+		<position>user4</position>
+		<position>footer</position>
+		<position>debug</position>
+		<position>syndicate</position>
+	</positions>
+</install>
