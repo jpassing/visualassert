@@ -119,16 +119,7 @@ namespace Cfix.Addin.Windows.About
 
 		private void linkLabel_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
 		{
-			try
-			{
-				Process proc = new Process();
-				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
-				proc.Start();
-			}
-			catch ( Exception x )
-			{
-				CfixStudio.HandleError( x );
-			}
+			CommonUiOperations.OpenHomepage();
 		}
 
 		public AboutWindow() : this( null )

@@ -12,10 +12,6 @@ MSC_WARNING_LEVEL=/W4 /Wp64
 
 INCLUDES=$(SDKBASE)\Include;..\..\..\..\include;$(SDK_INC_PATH)\..\mfc42;$(CFIX_TREE)\include
 
-#
-# N.B. All versions numbers may not exceed 0xF.
-#
-
 C_DEFINES=\
 	/D_UNICODE \
 	/DUNICODE

@@ -251,6 +251,20 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
+		public static void OpenHomepage()
+		{
+			try
+			{
+				System.Diagnostics.Process proc = new System.Diagnostics.Process();
+				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
+				proc.Start();
+			}
+			catch ( Exception x )
+			{
+				CfixStudio.HandleError( x );
+			}
+		}
+
 		public static void OpenDocumentation()
 		{
 			try

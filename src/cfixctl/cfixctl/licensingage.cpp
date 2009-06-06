@@ -218,7 +218,7 @@ HRESULT CfixctlpIsTrialPeriodActive(
 
 #ifdef CFIXCTL_LIC_HARD_EXPIRY_DATE
 	ULONG NowDaysSince = CfixctlsDaysFromFileTime( Now );
-	if ( NowDaysSince > CFIXCTL_HARD_EXPIRY_DATE )
+	if ( NowDaysSince > CFIXCTL_LIC_HARD_EXPIRY_DATE )
 	{
 
 		//
@@ -240,7 +240,7 @@ HRESULT CfixctlpIsTrialPeriodActive(
 		{
 #ifdef CFIXCTL_LIC_HARD_EXPIRY_DATE
 			*DaysLeft	= min( 
-				CFIXCTL_HARD_EXPIRY_DATE - NowDaysSince, 
+				CFIXCTL_LIC_HARD_EXPIRY_DATE - NowDaysSince, 
 				CFIXCTL_LIC_TRIAL_PERIOD - DaysInstalled );
 #else
 			*DaysLeft	= CFIXCTL_LIC_TRIAL_PERIOD - DaysInstalled;

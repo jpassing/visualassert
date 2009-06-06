@@ -8,11 +8,13 @@
 
 using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
 using Cfix.Addin.Windows.Run;
 using EnvDTE;
+
 namespace Cfix.Addin
 {
 	internal class ToolWindows : IDisposable
@@ -239,6 +241,20 @@ namespace Cfix.Addin
 
 		public void LaunchLicenseAdmin( string cmdArgs )
 		{
+#if BETA
+			if ( DialogResult.Yes == 
+				MessageBox.Show(
+					"Your cfix studio Beta installation has expired. Please visit the "+
+					"cfix studio website to obtain the current version "+
+					"of cfix studio.\r\n\r\n" +
+					"Would you like to open the cfix studio website now?",
+					"cfix studio",
+					MessageBoxButtons.YesNo ) )
+			{
+				Cfix.Addin.Windows.CommonUiOperations.OpenHomepage();
+			}
+
+#else
 			try
 			{
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
@@ -252,7 +268,7 @@ namespace Cfix.Addin
 			{
 				CfixStudio.HandleError( x );
 			}
+#endif
 		}
-
 	}
 }
