@@ -41,6 +41,23 @@
 		&lt;![endif]</xsl:comment>
   </xsl:template>
   
+  <xsl:template name="head.content">
+	  <xsl:param name="node" select="."/>
+	  <xsl:param name="title">
+		<xsl:apply-templates select="$node" mode="object.title.markup.textonly"/>
+	  </xsl:param>
+
+	  <title>
+		<xsl:copy-of select="$title"/> &#151; cfix studio &#151; C/C++ Unit Testing Framework and AddIn for Visual Studio
+	  </title>
+
+	  <xsl:if test="$html.stylesheet != ''">
+		<xsl:call-template name="output.html.stylesheets">
+		  <xsl:with-param name="stylesheets" select="normalize-space($html.stylesheet)"/>
+		</xsl:call-template>
+	  </xsl:if>
+  </xsl:template>
+  
   <xsl:template name="chunk-element-content">
   <xsl:param name="prev"/>
   <xsl:param name="next"/>
@@ -59,7 +76,7 @@
 
 	<body>
 		<div id='tab'>
-			<div class='tab_active'><a href='http://www.cfix-studio.org/'>cfix studio &#x2013; C/C++ unit testing for Visual Studio</a></div>
+			<div class='tab_active'><a href='http://www.cfix-studio.com/'>cfix studio &#x2013; C/C++ unit testing for Visual Studio</a></div>
 			<div class='tab_active2passive'><img src='../assets/img/tab_active2passive.png' alt=''/></div>
 			<div class='tab_passive'><a href='http://www.cfix-testing.org/'>cfix &#x2013;  C/C++ unit testing for Win32 and NT</a></div>
 			<div class='tab_passiveend'><img src='../assets/img/tab_passiveend.png' alt=''/></div>
@@ -126,7 +143,7 @@
     	</div>
 	  
 		<div id='footer'>
-			cfix studio &#x2013; C/C++ unit testing for Visual Studio<br />
+			cfix studio &#x2013; C/C++ Unit Testing Framework and AddIn for Visual Studio<br />
 			Build <xsl:value-of select="$buildnumber" /><br />
 			(C) 2009 Johannes Passing, all righs reserved.
 			<br />

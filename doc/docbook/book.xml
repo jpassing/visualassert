@@ -99,9 +99,10 @@
 	<chapter id="API">
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />
 	</chapter>
-	
+	<!--
 	<chapter id="EULA">
 		<title>End User License Agreement</title>
 		...
 	</chapter>
+	-->
 </book>
