@@ -59,7 +59,16 @@ namespace Cfix.Addin.Test
 			AgentSet agentSet,
 			Configuration config
 			)
-			: base( null, new FileInfo( solution.FullName ).Name )
+			: base( 
+				null, 
+
+				//
+				// N.B. When a new solution is being created, solution.FullName
+				// is, for whatever reason, the empty string.
+				//
+				String.IsNullOrEmpty( solution.FullName ) 
+					? Strings.CurrentSolution 
+					: new FileInfo( solution.FullName ).Name )
 		{
 			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;

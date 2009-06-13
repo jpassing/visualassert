@@ -4,10 +4,10 @@ HH_HOME=c:\Program Files (x86)\HTML Help Workshop\
 !ENDIF
 !INCLUDE __buildnum.inc
 
+all: chmdoc webdoc quickstartdoc
+
 __cfix.xml: $(CFIX_TREE)\doc\docbook\book.xml
 	xsltproc docbook\identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
-
-all: chmdoc webdoc quickstart
 
 quickstartdoc:
 	cd quickstart
@@ -19,6 +19,8 @@ quickstartdoc:
 chmdoc: __cfix.xml
 	cd docbook\chm
 	copy $(CFIX_TREE)\doc\docbook\stylechm.css .
+	
+	-3 robocopy ..\images images /MIR /XD .svn /XX /NJH /NJS
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
 	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
@@ -33,13 +35,12 @@ webdoc: __cfix.xml
 	copy ..\..\styleweb.css ..
 	-3 robocopy $(CFIX_TREE)\doc\assets ..\assets /MIR /XD .svn /XX /NJH /NJS
 	-3 robocopy ..\..\..\assets ..\assets /MIR /XD .svn /XX /NJH /NJS
+	-3 robocopy ..\..\images images /MIR /XD .svn /XX /NJH /NJS
+	-3 robocopy ..\..\chm\images images /MIR /XD .svn /XX /NJH /NJS
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
 	
-	if not exist images md images
-	copy /Y ..\..\chm\images images
-
-	cd ..
+	cd ../../..
 	
 joomla-templatedoc:
 	cd joomla-template

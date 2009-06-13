@@ -106,6 +106,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Current Solution).
+        /// </summary>
+        internal static string CurrentSolution {
+            get {
+                return ResourceManager.GetString("CurrentSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to R&amp;un Tests.
         /// </summary>
         internal static string DebugCurrentHierItemCCaption {

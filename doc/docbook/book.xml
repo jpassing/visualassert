@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
+	<!ENTITY TutorialUserCc SYSTEM "book_tutorial_usercc.xml">
+]>
+
 <book >
   <title>cfix studio</title>
 	<bookinfo>
@@ -95,6 +98,8 @@
 			</simplesect>
 		</section>
 	</chapter>
+	
+	&TutorialUserCc;
 
 	<chapter id="API">
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />

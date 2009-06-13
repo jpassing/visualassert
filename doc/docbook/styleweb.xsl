@@ -89,8 +89,11 @@
 	    <div id='menu'>
 	        <div id='menu_box'>
 		        <ul id='mainmenu'>
-		            <li><a href='index.html'>Documentation</a></li>
-		        </ul>
+					<li><a href="/unit-testing-framework/">Home</a></li>
+					<li><a href="/unit-testing-framework/key-features.html">Key Features</a></li>
+					<li><a href="/unit-testing-framework/faq.html">FAQ</a></li><li id="current" class="active item53"><a href="/unit-testing-framework/download.html">Download</a></li>
+					<li><a href="/visual-studio-addin/doc">Documentation</a></li>
+				</ul>
 		    </div>
 	    </div>
 	    <div id='main'>
@@ -102,6 +105,7 @@
 				    <div class='submenu_content'>
 				        <ul>
 					        <li><a href='index.html'>Table of Contents</a></li>
+					        <li><a href='TutorialUserVsCc.html'>Tutorial</a></li>
 					        <li><a href='KeyboardShortcuts.html'>Keyboard Shortcuts</a></li>
 					        <li><a href='API.html'>API Reference</a></li>
 					        <li><a href='WinUnitAPI.html'>WinUnit Compatibility</a></li>
@@ -145,7 +149,11 @@
 		<div id='footer'>
 			cfix studio &#x2013; C/C++ Unit Testing Framework and AddIn for Visual Studio<br />
 			Build <xsl:value-of select="$buildnumber" /><br />
-			(C) 2009 Johannes Passing, all righs reserved.
+			
+			<a href='/unit-testing-framework/contact.html'>Contact</a> |
+            <a href='/unit-testing-framework/terms.html'>Terms of Use</a><br /><br />
+			
+			(C) 2009 <a href='http://int3.de/'>Johannes Passing</a>. All rights reserved.
 			<br />
 		</div>
 		<script type="text/javascript">
