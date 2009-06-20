@@ -637,7 +637,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void ShortcutAfterFirstFailure()
+		public void ShortCircuitAfterFirstFailure()
 		{
 			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
@@ -660,7 +660,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void ShortcutAfterFirstFailureWithInconcTeardown()
+		public void ShortCircuitAfterFirstFailureWithInconcTeardown()
 		{
 			IRun run = RunTest(
 				ExecutionStatus.Succeeded,
@@ -706,7 +706,7 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void ShortcutHalfway()
+		public void ShortCircuitHalfway()
 		{
 			IRun run = RunTest(
 				ExecutionStatus.Succeeded,

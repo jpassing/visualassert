@@ -188,17 +188,17 @@
   <data name="autoRefreshButton.Text" xml:space="preserve">
     <value>Refresh after build</value>
   </data>
-  <data name="shurtcutFixtureOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+  <data name="shurtCircuitFixtureOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 22</value>
   </data>
-  <data name="shurtcutFixtureOnFailureButton.Text" xml:space="preserve">
-    <value>Shortcut fixture on failure</value>
+  <data name="shurtCircuitFixtureOnFailureButton.Text" xml:space="preserve">
+    <value>Short-circuit fixture on failure</value>
   </data>
-  <data name="shurtcutRunOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+  <data name="shurtCircuitRunOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 22</value>
   </data>
-  <data name="shurtcutRunOnFailureButton.Text" xml:space="preserve">
-    <value>Shortcut run on failure</value>
+  <data name="shurtCircuitRunOnFailureButton.Text" xml:space="preserve">
+    <value>Short-circuit run on failure</value>
   </data>
   <data name="optionsButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -404,7 +404,7 @@
     <value>explorer</value>
   </data>
   <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.3409, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.3458, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -451,24 +451,6 @@
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>365, 359</value>
   </data>
-  <data name="&gt;&gt;separator2.Name" xml:space="preserve">
-    <value>separator2</value>
-  </data>
-  <data name="&gt;&gt;separator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;separator3.Name" xml:space="preserve">
-    <value>separator3</value>
-  </data>
-  <data name="&gt;&gt;separator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;separator4.Name" xml:space="preserve">
-    <value>separator4</value>
-  </data>
-  <data name="&gt;&gt;separator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;debugButton.Name" xml:space="preserve">
     <value>debugButton</value>
   </data>
@@ -480,6 +462,12 @@
   </data>
   <data name="&gt;&gt;runButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator2.Name" xml:space="preserve">
+    <value>separator2</value>
+  </data>
+  <data name="&gt;&gt;separator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;refreshButton.Name" xml:space="preserve">
     <value>refreshButton</value>
@@ -493,6 +481,12 @@
   <data name="&gt;&gt;abortRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;separator3.Name" xml:space="preserve">
+    <value>separator3</value>
+  </data>
+  <data name="&gt;&gt;separator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;autoRefreshButton.Name" xml:space="preserve">
     <value>autoRefreshButton</value>
   </data>
@@ -505,17 +499,23 @@
   <data name="&gt;&gt;optionsButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;shurtcutFixtureOnFailureButton.Name" xml:space="preserve">
-    <value>shurtcutFixtureOnFailureButton</value>
+  <data name="&gt;&gt;shurtCircuitFixtureOnFailureButton.Name" xml:space="preserve">
+    <value>shurtCircuitFixtureOnFailureButton</value>
   </data>
-  <data name="&gt;&gt;shurtcutFixtureOnFailureButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;shurtCircuitFixtureOnFailureButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;shurtcutRunOnFailureButton.Name" xml:space="preserve">
-    <value>shurtcutRunOnFailureButton</value>
+  <data name="&gt;&gt;shurtCircuitRunOnFailureButton.Name" xml:space="preserve">
+    <value>shurtCircuitRunOnFailureButton</value>
   </data>
-  <data name="&gt;&gt;shurtcutRunOnFailureButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;shurtCircuitRunOnFailureButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator4.Name" xml:space="preserve">
+    <value>separator4</value>
+  </data>
+  <data name="&gt;&gt;separator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
     <value>selectModeButton</value>
@@ -535,6 +535,18 @@
   <data name="&gt;&gt;selectSlnModeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lameButton.Name" xml:space="preserve">
+    <value>lameButton</value>
+  </data>
+  <data name="&gt;&gt;lameButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;ctxMenuDebugButton.Name" xml:space="preserve">
     <value>ctxMenuDebugButton</value>
   </data>
@@ -552,18 +564,6 @@
   </data>
   <data name="&gt;&gt;ctxMenuRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lameButton.Name" xml:space="preserve">
-    <value>lameButton</value>
-  </data>
-  <data name="&gt;&gt;lameButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ExplorerWindow</value>

@@ -502,7 +502,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
@@ -563,7 +563,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -580,7 +580,7 @@ namespace Cfix.Control.Test
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						//
-						// Premature abort due to shortcutting.
+						// Premature abort due to short-circuiting.
 						//
 						Assert.AreEqual( TaskStatus.Stopped, run.Status );
 						done.Set();
@@ -636,7 +636,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -653,7 +653,7 @@ namespace Cfix.Control.Test
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						//
-						// Premature abort due to shortcutting.
+						// Premature abort due to short-circuiting.
 						//
 						Assert.AreEqual( TaskStatus.Stopped, run.Status );
 						done.Set();
@@ -691,7 +691,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -708,7 +708,7 @@ namespace Cfix.Control.Test
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						//
-						// Premature abort due to shortcutting.
+						// Premature abort due to short-circuiting.
 						//
 						Assert.AreEqual( TaskStatus.Stopped, run.Status );
 						done.Set();
@@ -756,7 +756,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -779,7 +779,7 @@ namespace Cfix.Control.Test
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						//
-						// Premature abort due to shortcutting.
+						// Premature abort due to short-circuiting.
 						//
 						Assert.AreEqual( TaskStatus.Terminated, run.Status );
 						done.Set();
@@ -813,7 +813,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
@@ -824,7 +824,7 @@ namespace Cfix.Control.Test
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						//
-						// Premature abort due to shortcutting.
+						// Premature abort due to short-circuiting.
 						//
 						Assert.AreEqual( TaskStatus.Terminated, run.Status );
 						done.Set();
@@ -871,7 +871,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtcutRunOnFailure,
+					SchedulingOptions.ShurtCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) col );

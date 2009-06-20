@@ -186,3 +186,5 @@ installer: docs
 	cd installer
 	$(MAKE) clean cfixstudio.msi
 	cd ..
+	
+release: build installer
