@@ -85,10 +85,10 @@ namespace Cfix.Addin.Windows.Explorer
 			this.autoRefreshButton.Checked = config.AutoRefreshAfterBuild;
 			
 			SchedulingOptions schedOpts = config.SchedulingOptions;
-			this.shurtCircuitFixtureOnFailureButton.Checked =
+			this.shortCircuitFixtureOnFailureButton.Checked =
 				( schedOpts == SchedulingOptions.ShortCircuitFixtureOnFailure );
-			this.shurtCircuitRunOnFailureButton.Checked =
-				( schedOpts == SchedulingOptions.ShurtCircuitRunOnFailure );
+			this.shortCircuitRunOnFailureButton.Checked =
+				( schedOpts == SchedulingOptions.ShortCircuitRunOnFailure );
 		}
 
 		/*----------------------------------------------------------------------
@@ -574,9 +574,9 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void shurtcutFixtureOnFailureButton_Click( object sender, EventArgs e )
 		{
-			if ( this.shurtCircuitFixtureOnFailureButton.Checked )
+			if ( this.shortCircuitFixtureOnFailureButton.Checked )
 			{
-				this.shurtCircuitRunOnFailureButton.Checked = false;
+				this.shortCircuitRunOnFailureButton.Checked = false;
 
 				this.workspace.Configuration.SchedulingOptions =
 					SchedulingOptions.ShortCircuitFixtureOnFailure;
@@ -590,12 +590,12 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void shurtcutRunOnFailureButton_Click( object sender, EventArgs e )
 		{
-			if ( this.shurtCircuitRunOnFailureButton.Checked )
+			if ( this.shortCircuitRunOnFailureButton.Checked )
 			{
-				this.shurtCircuitFixtureOnFailureButton.Checked = false;
+				this.shortCircuitFixtureOnFailureButton.Checked = false;
 
 				this.workspace.Configuration.SchedulingOptions =
-					SchedulingOptions.ShurtCircuitRunOnFailure;
+					SchedulingOptions.ShortCircuitRunOnFailure;
 			}
 			else
 			{

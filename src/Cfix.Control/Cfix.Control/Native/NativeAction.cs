@@ -21,8 +21,9 @@ namespace Cfix.Control.Native
 
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_FIXTURE_ON_FAILURE	= 1;
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_SETUP_FAILURE	= 2;
-		public const uint CFIX_FIXTURE_EXECUTION_ESCALATE_FIXTURE_FAILUES = 4;
-		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_FAILURE = 7;
+		public const uint CFIX_FIXTURE_EXECUTION_ESCALATE_FIXTURE_FAILUES			= 4;
+		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_FAILURE		= 7;
+		public const uint CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES				= 256;
 
 		private readonly TestItem item;
 		private readonly SchedulingOptions schedOptions;
@@ -213,7 +214,7 @@ namespace Cfix.Control.Native
 			try
 			{
 				return ctlItem.CreateExecutionAction(
-					( uint ) this.schedOptions, 
+					( uint ) this.schedOptions | CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES, 
 					0 );
 			}
 			catch ( COMException x )

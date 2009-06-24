@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -40,8 +40,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.separator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.autoRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.optionsButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.shurtCircuitFixtureOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.shurtCircuitRunOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.shortCircuitFixtureOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.shortCircuitRunOnFailureButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.separator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +55,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.captureStackTracesButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
@@ -133,24 +135,26 @@ namespace Cfix.Addin.Windows.Explorer
 			// 
 			this.optionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.optionsButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.shurtCircuitFixtureOnFailureButton,
-            this.shurtCircuitRunOnFailureButton} );
+            this.shortCircuitFixtureOnFailureButton,
+            this.shortCircuitRunOnFailureButton,
+            this.toolStripSeparator2,
+            this.captureStackTracesButton} );
 			resources.ApplyResources( this.optionsButton, "optionsButton" );
 			this.optionsButton.Name = "optionsButton";
 			// 
-			// shurtCircuitFixtureOnFailureButton
+			// shortCircuitFixtureOnFailureButton
 			// 
-			this.shurtCircuitFixtureOnFailureButton.CheckOnClick = true;
-			this.shurtCircuitFixtureOnFailureButton.Name = "shurtCircuitFixtureOnFailureButton";
-			resources.ApplyResources( this.shurtCircuitFixtureOnFailureButton, "shurtCircuitFixtureOnFailureButton" );
-			this.shurtCircuitFixtureOnFailureButton.Click += new System.EventHandler( this.shurtcutFixtureOnFailureButton_Click );
+			this.shortCircuitFixtureOnFailureButton.CheckOnClick = true;
+			this.shortCircuitFixtureOnFailureButton.Name = "shortCircuitFixtureOnFailureButton";
+			resources.ApplyResources( this.shortCircuitFixtureOnFailureButton, "shortCircuitFixtureOnFailureButton" );
+			this.shortCircuitFixtureOnFailureButton.Click += new System.EventHandler( this.shurtcutFixtureOnFailureButton_Click );
 			// 
-			// shurtCircuitRunOnFailureButton
+			// shortCircuitRunOnFailureButton
 			// 
-			this.shurtCircuitRunOnFailureButton.CheckOnClick = true;
-			this.shurtCircuitRunOnFailureButton.Name = "shurtCircuitRunOnFailureButton";
-			resources.ApplyResources( this.shurtCircuitRunOnFailureButton, "shurtCircuitRunOnFailureButton" );
-			this.shurtCircuitRunOnFailureButton.Click += new System.EventHandler( this.shurtcutRunOnFailureButton_Click );
+			this.shortCircuitRunOnFailureButton.CheckOnClick = true;
+			this.shortCircuitRunOnFailureButton.Name = "shortCircuitRunOnFailureButton";
+			resources.ApplyResources( this.shortCircuitRunOnFailureButton, "shortCircuitRunOnFailureButton" );
+			this.shortCircuitRunOnFailureButton.Click += new System.EventHandler( this.shurtcutRunOnFailureButton_Click );
 			// 
 			// separator4
 			// 
@@ -234,7 +238,7 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.NodeFactory = nodeFactory2;
 			// 
 			// throbberPic
 			// 
@@ -243,6 +247,16 @@ namespace Cfix.Addin.Windows.Explorer
 			this.throbberPic.InitialImage = null;
 			this.throbberPic.Name = "throbberPic";
 			this.throbberPic.TabStop = false;
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			resources.ApplyResources( this.toolStripSeparator2, "toolStripSeparator2" );
+			// 
+			// captureStackTracesButton
+			// 
+			resources.ApplyResources( this.captureStackTracesButton, "captureStackTracesButton" );
+			this.captureStackTracesButton.Name = "captureStackTracesButton";
 			// 
 			// ExplorerWindow
 			// 
@@ -282,11 +296,13 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripButton runButton;
 		private System.Windows.Forms.ToolStripSeparator separator2;
 		private System.Windows.Forms.ToolStripDropDownButton optionsButton;
-		private System.Windows.Forms.ToolStripMenuItem shurtCircuitFixtureOnFailureButton;
-		private System.Windows.Forms.ToolStripMenuItem shurtCircuitRunOnFailureButton;
+		private System.Windows.Forms.ToolStripMenuItem shortCircuitFixtureOnFailureButton;
+		private System.Windows.Forms.ToolStripMenuItem shortCircuitRunOnFailureButton;
 		private System.Windows.Forms.ToolStripSeparator separator3;
 		private System.Windows.Forms.ToolStripSeparator separator4;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton lameButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem captureStackTracesButton;
 	}
 }

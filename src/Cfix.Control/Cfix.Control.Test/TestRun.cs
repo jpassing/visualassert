@@ -502,7 +502,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
@@ -563,7 +563,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -636,7 +636,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -691,7 +691,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -756,7 +756,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
@@ -813,7 +813,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
@@ -871,7 +871,7 @@ namespace Cfix.Control.Test
 					this.ooProcTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.ShurtCircuitRunOnFailure,
+					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
 					ExecutionOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) col );
