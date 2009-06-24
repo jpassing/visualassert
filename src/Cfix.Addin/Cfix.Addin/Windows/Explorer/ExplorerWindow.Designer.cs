@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -55,8 +55,6 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.captureStackTracesButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
@@ -136,9 +134,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.optionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.optionsButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.shortCircuitFixtureOnFailureButton,
-            this.shortCircuitRunOnFailureButton,
-            this.toolStripSeparator2,
-            this.captureStackTracesButton} );
+            this.shortCircuitRunOnFailureButton} );
 			resources.ApplyResources( this.optionsButton, "optionsButton" );
 			this.optionsButton.Name = "optionsButton";
 			// 
@@ -238,7 +234,7 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory2;
+			this.explorer.NodeFactory = nodeFactory1;
 			// 
 			// throbberPic
 			// 
@@ -247,16 +243,6 @@ namespace Cfix.Addin.Windows.Explorer
 			this.throbberPic.InitialImage = null;
 			this.throbberPic.Name = "throbberPic";
 			this.throbberPic.TabStop = false;
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			resources.ApplyResources( this.toolStripSeparator2, "toolStripSeparator2" );
-			// 
-			// captureStackTracesButton
-			// 
-			resources.ApplyResources( this.captureStackTracesButton, "captureStackTracesButton" );
-			this.captureStackTracesButton.Name = "captureStackTracesButton";
 			// 
 			// ExplorerWindow
 			// 
@@ -302,7 +288,5 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripSeparator separator4;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton lameButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem captureStackTracesButton;
 	}
 }
