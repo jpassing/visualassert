@@ -188,17 +188,26 @@
   <data name="autoRefreshButton.Text" xml:space="preserve">
     <value>Refresh after build</value>
   </data>
-  <data name="shortCircuitFixtureOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="shortCircuitFixtureOnFailureMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>215, 22</value>
   </data>
-  <data name="shortCircuitFixtureOnFailureButton.Text" xml:space="preserve">
+  <data name="shortCircuitFixtureOnFailureMenuItem.Text" xml:space="preserve">
     <value>Short-circuit fixture on failure</value>
   </data>
-  <data name="shortCircuitRunOnFailureButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="shortCircuitRunOnFailureMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>215, 22</value>
   </data>
-  <data name="shortCircuitRunOnFailureButton.Text" xml:space="preserve">
+  <data name="shortCircuitRunOnFailureMenuItem.Text" xml:space="preserve">
     <value>Short-circuit run on failure</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>212, 6</value>
+  </data>
+  <data name="captureStackTracesMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 22</value>
+  </data>
+  <data name="captureStackTracesMenuItem.Text" xml:space="preserve">
+    <value>Capture stack traces</value>
   </data>
   <data name="optionsButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -226,40 +235,6 @@
   </data>
   <data name="separator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
-  </data>
-  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
-        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
-        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
-        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
-        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
-        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
-        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
-        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
-        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
-        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
-        zRn9p97gAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
-  </data>
-  <data name="selectDirModeButton.Text" xml:space="preserve">
-    <value>Explore Directory</value>
-  </data>
-  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
-  </data>
-  <data name="selectSlnModeButton.Text" xml:space="preserve">
-    <value>Current Solution</value>
   </data>
   <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -324,6 +299,40 @@
   <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAiRJREFUOE/Fk01I
+        E2AYx3fo0MkiKwqhwPLgZRAUUR1CiigMwSgLkj6EWhYVhjE2dW1qOt3c0lrptLa5NeemZdoHVowKTSJm
+        qavE5phBUSnLDB2p7dc+QBM77BD0wP/y8vw/nud9X4Hgv9eQd4Ami3YefJ43xBQuTB7oNRIYdUTw029l
+        atiA3VRBTCKOeg0T/oY55F+fq5ly59BwowxzTQmGK4XoL8m4ppZyWSmem8xmVDHx1TjjHCYzIAW36K+Y
+        J3CzTsmPT/pI7DC5vUkVwQN7OW1WJbfNJdgNRVj1Cky6C1yvzKdGI0WnkkTTmPUljA1VRcjeDjktDRqC
+        XgX4iucgcjaYB/258PYUPY0ZWGq1CAy6Ir57yuCDmju2CroeqqNNf47w+jC49jLdmUrgUQrv64XkitJ5
+        /qQVQV2lnG/vFPg6C2ixqgkOyqHvRFSgJytEPMB0VxoB5w7G7m9hpGkdiuyk0DjS6DKrNQWM9Epotqjo
+        fhZK0p8TEjgG3ZkEX6Qz+XQX4+1b8bes54stGdfFxRxMTYy6h0tXLqXPKeOWpRw8MngVivtyH5Mduxl/
+        nMJo20aG7UI+GtfiVscjF63hdPah2ausKhXjMJXhbj2JSyuYQZd6AU7lQu4WLqIxfxkGcQJXz60mM+R+
+        r7l2VkBbfB6t/DilkiPkndnP2aw0jmZsZ8/OTWzbLGSDMInkxARWrVzK8iVxrIiPi+2Jx/QP/kXTb7G6
+        zRn9p97gAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="selectDirModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectDirModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectDirModeButton.Text" xml:space="preserve">
+    <value>Explore Directory</value>
+  </data>
+  <data name="selectSlnModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="selectSlnModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="selectSlnModeButton.Text" xml:space="preserve">
+    <value>Current Solution</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="statusText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -352,6 +361,15 @@
   <metadata name="ctxMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>86, 0</value>
   </metadata>
+  <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 70</value>
+  </data>
+  <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
+    <value>ctxMenu</value>
+  </data>
+  <data name="&gt;&gt;ctxMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ctxMenuDebugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -378,15 +396,6 @@
   </data>
   <data name="ctxMenuRefreshButton.Text" xml:space="preserve">
     <value>Refresh</value>
-  </data>
-  <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 70</value>
-  </data>
-  <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
-    <value>ctxMenu</value>
-  </data>
-  <data name="&gt;&gt;ctxMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -499,16 +508,16 @@
   <data name="&gt;&gt;optionsButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;shortCircuitFixtureOnFailureButton.Name" xml:space="preserve">
-    <value>shortCircuitFixtureOnFailureButton</value>
+  <data name="&gt;&gt;shortCircuitFixtureOnFailureMenuItem.Name" xml:space="preserve">
+    <value>shortCircuitFixtureOnFailureMenuItem</value>
   </data>
-  <data name="&gt;&gt;shortCircuitFixtureOnFailureButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;shortCircuitFixtureOnFailureMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;shortCircuitRunOnFailureButton.Name" xml:space="preserve">
-    <value>shortCircuitRunOnFailureButton</value>
+  <data name="&gt;&gt;shortCircuitRunOnFailureMenuItem.Name" xml:space="preserve">
+    <value>shortCircuitRunOnFailureMenuItem</value>
   </data>
-  <data name="&gt;&gt;shortCircuitRunOnFailureButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;shortCircuitRunOnFailureMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;separator4.Name" xml:space="preserve">
@@ -563,6 +572,18 @@
     <value>ctxMenuRefreshButton</value>
   </data>
   <data name="&gt;&gt;ctxMenuRefreshButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;captureStackTracesMenuItem.Name" xml:space="preserve">
+    <value>captureStackTracesMenuItem</value>
+  </data>
+  <data name="&gt;&gt;captureStackTracesMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

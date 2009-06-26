@@ -85,10 +85,40 @@ namespace Cfix.Addin.Windows.Explorer
 			this.autoRefreshButton.Checked = config.AutoRefreshAfterBuild;
 			
 			ExecutionOptions executionOpts = config.ExecutionOptions;
-			this.shortCircuitFixtureOnFailureButton.Checked =
-				( executionOpts == ExecutionOptions.ShortCircuitFixtureOnFailure );
-			this.shortCircuitRunOnFailureButton.Checked =
-				( executionOpts == ExecutionOptions.ShortCircuitRunOnFailure );
+
+			//
+			// N.B. Complex checks due to inclusive bitmaps.
+			//
+			this.shortCircuitFixtureOnFailureMenuItem.Checked =
+				( executionOpts & ( ExecutionOptions.ShortCircuitFixtureOnFailure | ExecutionOptions.ShortCircuitRunOnFailure ) )
+					== ExecutionOptions.ShortCircuitFixtureOnFailure;
+			this.shortCircuitRunOnFailureMenuItem.Checked =
+				( executionOpts & ( ExecutionOptions.ShortCircuitFixtureOnFailure | ExecutionOptions.ShortCircuitRunOnFailure ) )
+					== ExecutionOptions.ShortCircuitRunOnFailure;
+			
+			this.captureStackTracesMenuItem.Checked =
+				( executionOpts & ExecutionOptions.CatureStackTraces ) != 0;
+		}
+
+		private void UpdateExecutionOptions()
+		{
+			ExecutionOptions options = ExecutionOptions.None;
+			if ( this.shortCircuitFixtureOnFailureMenuItem.Checked )
+			{
+				options |= ExecutionOptions.ShortCircuitFixtureOnFailure;
+			}
+
+			if ( this.shortCircuitRunOnFailureMenuItem.Checked )
+			{
+				options |= ExecutionOptions.ShortCircuitRunOnFailure;
+			}
+
+			if ( this.captureStackTracesMenuItem.Checked )
+			{
+				options |= ExecutionOptions.CatureStackTraces;
+			}
+
+			this.workspace.Configuration.ExecutionOptions = options;
 		}
 
 		/*----------------------------------------------------------------------
@@ -574,34 +604,28 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void shurtcutFixtureOnFailureButton_Click( object sender, EventArgs e )
 		{
-			if ( this.shortCircuitFixtureOnFailureButton.Checked )
+			if ( this.shortCircuitFixtureOnFailureMenuItem.Checked )
 			{
-				this.shortCircuitRunOnFailureButton.Checked = false;
+				this.shortCircuitRunOnFailureMenuItem.Checked = false;
+			}
 
-				this.workspace.Configuration.ExecutionOptions =
-					ExecutionOptions.ShortCircuitFixtureOnFailure;
-			}
-			else
-			{
-				this.workspace.Configuration.ExecutionOptions =
-					ExecutionOptions.None;
-			}
+			UpdateExecutionOptions();
 		}
 
 		private void shurtcutRunOnFailureButton_Click( object sender, EventArgs e )
 		{
-			if ( this.shortCircuitRunOnFailureButton.Checked )
+			if ( this.shortCircuitRunOnFailureMenuItem.Checked )
 			{
-				this.shortCircuitFixtureOnFailureButton.Checked = false;
+				this.shortCircuitFixtureOnFailureMenuItem.Checked = false;
+			}
 
-				this.workspace.Configuration.ExecutionOptions =
-					ExecutionOptions.ShortCircuitRunOnFailure;
-			}
-			else
-			{
-				this.workspace.Configuration.ExecutionOptions =
-					ExecutionOptions.None;
-			}
+			UpdateExecutionOptions();
+		}
+
+
+		private void captureStackTracesMenuItem_Click( object sender, EventArgs e )
+		{
+			UpdateExecutionOptions();
 		}
 
 		/*----------------------------------------------------------------------
@@ -624,5 +648,6 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
+
 	}
 }

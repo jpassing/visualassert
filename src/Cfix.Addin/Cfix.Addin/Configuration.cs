@@ -240,16 +240,8 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				HostCreationOptions val = ( HostCreationOptions ) this.key.GetValue(
+				return ( HostCreationOptions ) this.key.GetValue(
 					"HostCreationOptions", HostCreationOptions.None );
-				if ( Enum.IsDefined( typeof( HostCreationOptions ), val ) )
-				{
-					return val;
-				}
-				else
-				{
-					return HostCreationOptions.None;
-				}
 			}
 			set
 			{
@@ -360,16 +352,8 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				ExecutionOptions val = ( ExecutionOptions ) this.key.GetValue(
+				return ( ExecutionOptions ) this.key.GetValue(
 					"ExecutionOptions", ExecutionOptions.None );
-				if ( Enum.IsDefined( typeof( ExecutionOptions ), val ) )
-				{
-					return val;
-				}
-				else
-				{
-					return ExecutionOptions.None;
-				}
 			}
 			set
 			{
@@ -384,16 +368,8 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				ThreadingOptions val = ( ThreadingOptions ) this.key.GetValue(
+				return ( ThreadingOptions ) this.key.GetValue(
 					"ThreadingOptions", ThreadingOptions.ComNeutralThreading );
-				if ( Enum.IsDefined( typeof( ThreadingOptions ), val ) )
-				{
-					return val;
-				}
-				else
-				{
-					return ThreadingOptions.ComNeutralThreading;
-				}
 			}
 			set
 			{
@@ -408,16 +384,8 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				EnvironmentOptions val = ( EnvironmentOptions ) this.key.GetValue(
+				return ( EnvironmentOptions ) this.key.GetValue(
 					"EnvironmentOptions", EnvironmentOptions.AutoAdjustCurrentDirectory );
-				if ( Enum.IsDefined( typeof( EnvironmentOptions ), val ) )
-				{
-					return val;
-				}
-				else
-				{
-					return EnvironmentOptions.AutoAdjustCurrentDirectory;
-				}
 			}
 			set
 			{

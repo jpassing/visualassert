@@ -214,7 +214,7 @@ namespace Cfix.Control.Native
 			try
 			{
 				return ctlItem.CreateExecutionAction(
-					( uint ) this.executionOptions | CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES, 
+					( uint ) this.executionOptions, 
 					0 );
 			}
 			catch ( COMException x )
