@@ -84,11 +84,11 @@ namespace Cfix.Addin.Windows.Explorer
 			Configuration config = this.workspace.Configuration;
 			this.autoRefreshButton.Checked = config.AutoRefreshAfterBuild;
 			
-			SchedulingOptions schedOpts = config.SchedulingOptions;
+			ExecutionOptions executionOpts = config.ExecutionOptions;
 			this.shortCircuitFixtureOnFailureButton.Checked =
-				( schedOpts == SchedulingOptions.ShortCircuitFixtureOnFailure );
+				( executionOpts == ExecutionOptions.ShortCircuitFixtureOnFailure );
 			this.shortCircuitRunOnFailureButton.Checked =
-				( schedOpts == SchedulingOptions.ShortCircuitRunOnFailure );
+				( executionOpts == ExecutionOptions.ShortCircuitRunOnFailure );
 		}
 
 		/*----------------------------------------------------------------------
@@ -578,13 +578,13 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				this.shortCircuitRunOnFailureButton.Checked = false;
 
-				this.workspace.Configuration.SchedulingOptions =
-					SchedulingOptions.ShortCircuitFixtureOnFailure;
+				this.workspace.Configuration.ExecutionOptions =
+					ExecutionOptions.ShortCircuitFixtureOnFailure;
 			}
 			else
 			{
-				this.workspace.Configuration.SchedulingOptions =
-					SchedulingOptions.None;
+				this.workspace.Configuration.ExecutionOptions =
+					ExecutionOptions.None;
 			}
 		}
 
@@ -594,13 +594,13 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				this.shortCircuitFixtureOnFailureButton.Checked = false;
 
-				this.workspace.Configuration.SchedulingOptions =
-					SchedulingOptions.ShortCircuitRunOnFailure;
+				this.workspace.Configuration.ExecutionOptions =
+					ExecutionOptions.ShortCircuitRunOnFailure;
 			}
 			else
 			{
-				this.workspace.Configuration.SchedulingOptions =
-					SchedulingOptions.None;
+				this.workspace.Configuration.ExecutionOptions =
+					ExecutionOptions.None;
 			}
 		}
 

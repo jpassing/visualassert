@@ -174,7 +174,7 @@ namespace Cfix.Control.Native
 					this,
 					events,
 					result,
-					compiler.SchedulingOptions,
+					compiler.ExecutionOptions,
 					compiler.ThreadingOptions,
 					compiler.EnvironmentOptions ) );
 

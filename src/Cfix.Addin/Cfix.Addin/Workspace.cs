@@ -466,7 +466,7 @@ namespace Cfix.Addin
 				SimpleRunCompiler compiler = new SimpleRunCompiler(
 					this.runAgents,
 					GetDispositionPolicy( debug ),
-					this.config.SchedulingOptions,
+					this.config.ExecutionOptions,
 					this.config.ThreadingOptions,
 					this.config.EnvironmentOptions,
 					allowArchMixing );

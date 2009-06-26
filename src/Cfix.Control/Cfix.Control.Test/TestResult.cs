@@ -32,7 +32,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy, 
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
@@ -82,7 +82,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy,
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
@@ -160,7 +160,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy,
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
@@ -241,7 +241,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy,
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
@@ -374,7 +374,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy,
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );
@@ -463,7 +463,7 @@ namespace Cfix.Control.Test
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				target,
 				this.policy,
-				SchedulingOptions.None,
+				ExecutionOptions.None,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( mod );

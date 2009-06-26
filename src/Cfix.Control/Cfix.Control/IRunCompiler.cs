@@ -24,7 +24,7 @@ namespace Cfix.Control
 
 	public interface IRunCompiler
 	{
-		SchedulingOptions SchedulingOptions { get; }
+		ExecutionOptions ExecutionOptions { get; }
 		ThreadingOptions ThreadingOptions { get; }
 		EnvironmentOptions EnvironmentOptions { get; }
 

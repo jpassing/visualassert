@@ -356,25 +356,25 @@ namespace Cfix.Addin
 			}
 		}
 
-		public SchedulingOptions SchedulingOptions
+		public ExecutionOptions ExecutionOptions
 		{
 			get
 			{
-				SchedulingOptions val = ( SchedulingOptions ) this.key.GetValue(
-					"SchedulingOptions", SchedulingOptions.None );
-				if ( Enum.IsDefined( typeof( SchedulingOptions ), val ) )
+				ExecutionOptions val = ( ExecutionOptions ) this.key.GetValue(
+					"ExecutionOptions", ExecutionOptions.None );
+				if ( Enum.IsDefined( typeof( ExecutionOptions ), val ) )
 				{
 					return val;
 				}
 				else
 				{
-					return SchedulingOptions.None;
+					return ExecutionOptions.None;
 				}
 			}
 			set
 			{
 				this.key.SetValue(
-					"SchedulingOptions",
+					"ExecutionOptions",
 					value,
 					RegistryValueKind.DWord );
 			}

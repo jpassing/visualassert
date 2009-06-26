@@ -8,7 +8,7 @@ namespace Cfix.Control.RunControl
 	public class SimpleRunCompiler : IRunCompiler
 	{
 		private readonly AgentSet agentSet;
-		private readonly SchedulingOptions schedulingOptions;
+		private readonly ExecutionOptions executionOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly EnvironmentOptions envOptions;
 		private readonly Run run;
@@ -49,7 +49,7 @@ namespace Cfix.Control.RunControl
 		public SimpleRunCompiler(
 			AgentSet agentSet,
 			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
+			ExecutionOptions executionOptions,
 			ThreadingOptions threadingOptions,
 			EnvironmentOptions envOptions,
 			bool allowMultipleArchitectures
@@ -61,7 +61,7 @@ namespace Cfix.Control.RunControl
 			}
 
 			this.agentSet = agentSet;
-			this.schedulingOptions = schedulingOptions;
+			this.executionOptions = executionOptions;
 			this.threadingOptions = threadingOptions;
 			this.envOptions = envOptions;
 
@@ -72,16 +72,16 @@ namespace Cfix.Control.RunControl
 		internal SimpleRunCompiler(
 			IAgent agent,
 			IDispositionPolicy policy,
-			SchedulingOptions schedulingOptions,
+			ExecutionOptions executionOptions,
 			ThreadingOptions threadingOptions,
-			EnvironmentOptions executionOptions
+			EnvironmentOptions envOptions
 			)
 			: this(
 				CreateSingleArchitectureAgentSet( agent ),
 				policy,
-				schedulingOptions,
-				threadingOptions,
 				executionOptions,
+				threadingOptions,
+				envOptions,
 				true )
 		{ }
 
@@ -89,9 +89,9 @@ namespace Cfix.Control.RunControl
 		 * IRunCompiler.
 		 */
 
-		public SchedulingOptions SchedulingOptions
+		public ExecutionOptions ExecutionOptions
 		{
-			get { return this.schedulingOptions; }
+			get { return this.executionOptions; }
 		}
 
 		public ThreadingOptions ThreadingOptions

@@ -69,7 +69,7 @@ namespace Cfix.Control.Test
 					this.target,
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
-					SchedulingOptions.None,
+					ExecutionOptions.None,
 					ThreadingOptions.ComNeutralThreading,
 					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				mod.Add(
@@ -118,7 +118,7 @@ namespace Cfix.Control.Test
 					this.target,
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
-					SchedulingOptions.None,
+					ExecutionOptions.None,
 					ThreadingOptions.ComNeutralThreading,
 					EnvironmentOptions.None );
 				mod.Add(
@@ -176,7 +176,7 @@ namespace Cfix.Control.Test
 						this.target,
 						new StandardDispositionPolicy(
 							Disposition.Break, Disposition.Break ),
-						SchedulingOptions.None,
+						ExecutionOptions.None,
 						ThreadingOptions.ComNeutralThreading,
 						EnvironmentOptions.None );
 					comp.Add( mod );

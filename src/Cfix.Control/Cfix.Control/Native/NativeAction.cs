@@ -26,7 +26,7 @@ namespace Cfix.Control.Native
 		public const uint CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES				= 256;
 
 		private readonly TestItem item;
-		private readonly SchedulingOptions schedOptions;
+		private readonly ExecutionOptions executionOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly EnvironmentOptions envOptions;
 
@@ -171,7 +171,7 @@ namespace Cfix.Control.Native
 			TestItem item,
 			IActionEvents events,
 			IResultItem result,
-			SchedulingOptions schedOptions,
+			ExecutionOptions executionOptions,
 			ThreadingOptions threadingOptions,
 			EnvironmentOptions envOptions
 			)
@@ -181,7 +181,7 @@ namespace Cfix.Control.Native
 
 			this.item = item;
 			this.events = events;
-			this.schedOptions = schedOptions;
+			this.executionOptions = executionOptions;
 			this.threadingOptions = threadingOptions;
 			this.envOptions = envOptions;
 
@@ -214,7 +214,7 @@ namespace Cfix.Control.Native
 			try
 			{
 				return ctlItem.CreateExecutionAction(
-					( uint ) this.schedOptions | CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES, 
+					( uint ) this.executionOptions | CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES, 
 					0 );
 			}
 			catch ( COMException x )
