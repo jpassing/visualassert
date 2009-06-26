@@ -16,7 +16,7 @@ namespace Cfix.Control
 	}
 
 	[Flags]
-	public enum ExecutionOptions
+	public enum EnvironmentOptions
 	{
 		None = 0,
 		AutoAdjustCurrentDirectory = 1
@@ -26,7 +26,7 @@ namespace Cfix.Control
 	{
 		SchedulingOptions SchedulingOptions { get; }
 		ThreadingOptions ThreadingOptions { get; }
-		ExecutionOptions ExecutionOptions { get; }
+		EnvironmentOptions EnvironmentOptions { get; }
 
 		IRun Compile();
 

@@ -28,7 +28,7 @@ namespace Cfix.Control.Native
 		private readonly TestItem item;
 		private readonly SchedulingOptions schedOptions;
 		private readonly ThreadingOptions threadingOptions;
-		private readonly ExecutionOptions executionOptions;
+		private readonly EnvironmentOptions envOptions;
 
 		private readonly IResultItem result;
 		private readonly IActionEvents events;
@@ -173,7 +173,7 @@ namespace Cfix.Control.Native
 			IResultItem result,
 			SchedulingOptions schedOptions,
 			ThreadingOptions threadingOptions,
-			ExecutionOptions executionOptions
+			EnvironmentOptions envOptions
 			)
 		{
 			Debug.Assert( item != null );
@@ -183,7 +183,7 @@ namespace Cfix.Control.Native
 			this.events = events;
 			this.schedOptions = schedOptions;
 			this.threadingOptions = threadingOptions;
-			this.executionOptions = executionOptions;
+			this.envOptions = envOptions;
 
 			this.result = result;
 		}
@@ -292,7 +292,7 @@ namespace Cfix.Control.Native
 							this.item.Module.Agent,
 							this.result,
 							this.events,
-							( this.executionOptions & ExecutionOptions.AutoAdjustCurrentDirectory ) != 0 ),
+							( this.envOptions & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 ),
 						( uint ) this.threadingOptions );
 				}
 			}

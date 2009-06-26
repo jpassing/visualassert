@@ -404,25 +404,25 @@ namespace Cfix.Addin
 			}
 		}
 
-		public ExecutionOptions ExecutionOptions
+		public EnvironmentOptions EnvironmentOptions
 		{
 			get
 			{
-				ExecutionOptions val = ( ExecutionOptions ) this.key.GetValue(
-					"ExecutionOptions", ExecutionOptions.AutoAdjustCurrentDirectory );
-				if ( Enum.IsDefined( typeof( ExecutionOptions ), val ) )
+				EnvironmentOptions val = ( EnvironmentOptions ) this.key.GetValue(
+					"EnvironmentOptions", EnvironmentOptions.AutoAdjustCurrentDirectory );
+				if ( Enum.IsDefined( typeof( EnvironmentOptions ), val ) )
 				{
 					return val;
 				}
 				else
 				{
-					return ExecutionOptions.AutoAdjustCurrentDirectory;
+					return EnvironmentOptions.AutoAdjustCurrentDirectory;
 				}
 			}
 			set
 			{
 				this.key.SetValue(
-					"ExecutionOptions",
+					"EnvironmentOptions",
 					value,
 					RegistryValueKind.DWord );
 			}

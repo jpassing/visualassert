@@ -77,7 +77,7 @@ namespace Cfix.Control.Test
 						Disposition.Continue, Disposition.Break ),
 				SchedulingOptions.None,
 				ThreadingOptions.ComNeutralThreading,
-				ExecutionOptions.AutoAdjustCurrentDirectory );
+				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( ( IRunnableTestItem ) item );
 			return comp.Compile();
 		}
@@ -93,7 +93,7 @@ namespace Cfix.Control.Test
 						Disposition.Continue, Disposition.Break ),
 				SchedulingOptions.None,
 				ThreadingOptions.ComNeutralThreading,
-				ExecutionOptions.AutoAdjustCurrentDirectory ).Compile() )
+				EnvironmentOptions.AutoAdjustCurrentDirectory ).Compile() )
 			{
 				AutoResetEvent done = new AutoResetEvent( false );
 				run.Start();
@@ -450,7 +450,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.None,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) coll );
 				using ( IRun run = comp.Compile() )
 				{
@@ -504,7 +504,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
 				using ( IRun run = comp.Compile() )
 				{
@@ -565,7 +565,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
 				using ( IRun run = comp.Compile() )
 				{
@@ -638,7 +638,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
 				using ( IRun run = comp.Compile() )
 				{
@@ -693,7 +693,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
 				using ( IRun run = comp.Compile() )
 				{
@@ -758,7 +758,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) fixture );
 				using ( IRun run = comp.Compile() )
 				{
@@ -815,7 +815,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( mod );
 				using ( IRun run = comp.Compile() )
 				{
@@ -873,7 +873,7 @@ namespace Cfix.Control.Test
 							Disposition.Continue, Disposition.Break ),
 					SchedulingOptions.ShortCircuitRunOnFailure,
 					ThreadingOptions.None,
-					ExecutionOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
 				comp.Add( ( IRunnableTestItem ) col );
 				using ( IRun run = comp.Compile() )
 				{

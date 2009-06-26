@@ -468,7 +468,7 @@ namespace Cfix.Addin
 					GetDispositionPolicy( debug ),
 					this.config.SchedulingOptions,
 					this.config.ThreadingOptions,
-					this.config.ExecutionOptions,
+					this.config.EnvironmentOptions,
 					allowArchMixing );
 				compiler.Add( item );
 

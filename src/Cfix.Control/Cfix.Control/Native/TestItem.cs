@@ -176,7 +176,7 @@ namespace Cfix.Control.Native
 					result,
 					compiler.SchedulingOptions,
 					compiler.ThreadingOptions,
-					compiler.ExecutionOptions ) );
+					compiler.EnvironmentOptions ) );
 
 			FileInfo modInfo = new FileInfo( this.Module.Path );
 			compiler.Environment.AddSearchPath( modInfo.Directory.FullName );

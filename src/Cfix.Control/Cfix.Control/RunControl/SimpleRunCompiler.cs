@@ -10,7 +10,7 @@ namespace Cfix.Control.RunControl
 		private readonly AgentSet agentSet;
 		private readonly SchedulingOptions schedulingOptions;
 		private readonly ThreadingOptions threadingOptions;
-		private readonly ExecutionOptions executionOptions;
+		private readonly EnvironmentOptions envOptions;
 		private readonly Run run;
 		private readonly bool allowMultipleArchitectures;
 
@@ -51,7 +51,7 @@ namespace Cfix.Control.RunControl
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
 			ThreadingOptions threadingOptions,
-			ExecutionOptions executionOptions,
+			EnvironmentOptions envOptions,
 			bool allowMultipleArchitectures
 			)
 		{
@@ -63,7 +63,7 @@ namespace Cfix.Control.RunControl
 			this.agentSet = agentSet;
 			this.schedulingOptions = schedulingOptions;
 			this.threadingOptions = threadingOptions;
-			this.executionOptions = executionOptions;
+			this.envOptions = envOptions;
 
 			this.allowMultipleArchitectures = allowMultipleArchitectures;
 			this.run = new Run( policy );
@@ -74,7 +74,7 @@ namespace Cfix.Control.RunControl
 			IDispositionPolicy policy,
 			SchedulingOptions schedulingOptions,
 			ThreadingOptions threadingOptions,
-			ExecutionOptions executionOptions
+			EnvironmentOptions executionOptions
 			)
 			: this(
 				CreateSingleArchitectureAgentSet( agent ),
@@ -99,9 +99,9 @@ namespace Cfix.Control.RunControl
 			get { return this.threadingOptions; }
 		}
 
-		public ExecutionOptions ExecutionOptions
+		public EnvironmentOptions EnvironmentOptions
 		{
-			get { return this.executionOptions; }
+			get { return this.envOptions; }
 		}
 
 		public void Add( IAction action )
