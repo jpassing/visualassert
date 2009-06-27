@@ -123,14 +123,11 @@ static VOID CfixctlsExecCtxDereference(
 
 static CFIX_REPORT_DISPOSITION CfixctlsExecCtxQueryDefaultDisposition(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
 	__in CFIX_EVENT_TYPE EventType
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
 	
-	UNREFERENCED_PARAMETER( MainThreadId );
-
 	ICfixReportEventSink *Sink = CfixctlsGetEffectiveReportSink( Context );
 	ASSERT( Sink != NULL );
 	if ( Sink == NULL )
@@ -185,13 +182,13 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxQueryDefaultDisposition(
 
 static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TESTCASE_EXECUTION_EVENT Event
 	)
 {
 	PCFIXCTLP_EXEC_CONTEXT Context = ( PCFIXCTLP_EXEC_CONTEXT ) This;
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	
 	if ( Context->IssueAbort )
 	{
@@ -318,7 +315,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 
 static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_FIXTURE Fixture
 	)
 {
@@ -327,7 +324,7 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink == NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 
 	if ( Context->IssueAbort )
 	{
@@ -359,7 +356,7 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 
 static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TEST_CASE TestCase
 	)
 {
@@ -368,8 +365,6 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink != NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
-	
 	if ( Context->IssueAbort )
 	{
 		return CFIXCTL_E_USER_ABORT;
@@ -385,7 +380,7 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 	//
 	if ( SUCCEEDED( Context->FixtureSink->GetTestItemEventSink(
 		CfixctlsGetTestCaseOrdinal( TestCase ),
-		MainThreadId,
+		ThreadId->MainThreadId,
 		&Context->TestCaseSink ) ) )
 	{
 		HRESULT Hr = Context->TestCaseSink->BeforeTestCaseStart();
@@ -405,7 +400,7 @@ static HRESULT CfixctlsExecCtxBeforeTestCaseStart(
 
 static VOID CfixctlsExecCtxAfterFixtureFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_FIXTURE Fixture,
 	__in BOOL RanToCompletion
 	)
@@ -415,7 +410,7 @@ static VOID CfixctlsExecCtxAfterFixtureFinish(
 	ASSERT( Context->TestCaseSink == NULL );
 	ASSERT( Context->FixtureSink != NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( Fixture );
 
 	if ( ! Context->FixtureSink )
@@ -440,7 +435,7 @@ static VOID CfixctlsExecCtxAfterFixtureFinish(
 
 static VOID CfixctlsExecCtxAfterTestCaseFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TEST_CASE TestCase,
 	__in BOOL RanToCompletion
 	)
@@ -450,7 +445,7 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 	ASSERT( Context->TestCaseSink != NULL );
 	ASSERT( Context->FixtureSink != NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( TestCase );
 
 	if ( ! Context->TestCaseSink )
@@ -474,7 +469,7 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 
 static VOID CfixctlsExecCtxBeforeChildThreadStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in_opt PVOID ParentContext
 	)
 {
@@ -482,7 +477,7 @@ static VOID CfixctlsExecCtxBeforeChildThreadStart(
 	
 	ASSERT( Context->FixtureSink != NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( ParentContext );
 
 	ICfixReportEventSink *Sink = CfixctlsGetEffectiveReportSink( Context );
@@ -502,7 +497,7 @@ static VOID CfixctlsExecCtxBeforeChildThreadStart(
 
 static VOID CfixctlsExecCtxAfterChildThreadFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in_opt PVOID ParentContext
 	)
 {
@@ -510,7 +505,7 @@ static VOID CfixctlsExecCtxAfterChildThreadFinish(
 	
 	ASSERT( Context->FixtureSink != NULL );
 
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( ParentContext );
 
 	ICfixReportEventSink *Sink = CfixctlsGetEffectiveReportSink( Context );
@@ -530,12 +525,12 @@ static VOID CfixctlsExecCtxAfterChildThreadFinish(
 
 static HRESULT CfixctlsExecCtxCreateChildThread(
 	__in struct _CFIX_EXECUTION_CONTEXT *This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__out PVOID *ContextForChild
 	)
 {
 	UNREFERENCED_PARAMETER( This );
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( ContextForChild );
 
 	return S_OK;
@@ -543,12 +538,12 @@ static HRESULT CfixctlsExecCtxCreateChildThread(
 
 static VOID CfixctlsExecCtxOnUnhandledException(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PEXCEPTION_POINTERS ExcpPointers
 	)
 {
 	UNREFERENCED_PARAMETER( This );
-	UNREFERENCED_PARAMETER( MainThreadId );
+	UNREFERENCED_PARAMETER( ThreadId );
 	UNREFERENCED_PARAMETER( ExcpPointers );
 }
 

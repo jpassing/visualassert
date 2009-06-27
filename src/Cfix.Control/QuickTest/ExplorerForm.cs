@@ -87,9 +87,9 @@ namespace QuickTest
 					ooTarget,
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
-					SchedulingOptions.None,
-					ThreadingOptions.None,
 					ExecutionOptions.None,
+					ThreadingOptions.None,
+					EnvironmentOptions.None,
 					true );
 				comp.Add( ( IRunnableTestItem ) mod );
 				IRun run = comp.Compile();

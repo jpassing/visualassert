@@ -29,7 +29,6 @@ typedef struct _CFIXCTLP_MESSAGE
 	{
 		struct
 		{
-			ULONG MainThreadId;
 			CFIX_EVENT_TYPE EventType;
 		} QueryDefaultDispositionRequest;
 
@@ -40,7 +39,7 @@ typedef struct _CFIXCTLP_MESSAGE
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PCFIX_TESTCASE_EXECUTION_EVENT Event;
 		} ReportEventRequest;
 
@@ -51,7 +50,7 @@ typedef struct _CFIXCTLP_MESSAGE
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PCFIX_FIXTURE Fixture;
 		} BeforeFixtureStartRequest;
 		
@@ -62,7 +61,7 @@ typedef struct _CFIXCTLP_MESSAGE
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PCFIX_TEST_CASE TestCase;
 		} BeforeTestCaseStartRequest;
 		
@@ -73,33 +72,33 @@ typedef struct _CFIXCTLP_MESSAGE
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PCFIX_FIXTURE Fixture;
 			BOOL RanToCompletion;			
 		} AfterFixtureFinishRequest;
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PCFIX_TEST_CASE TestCase;
 			BOOL RanToCompletion;			
 		} AfterTestCaseFinishRequest;
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PVOID ParentContext;
 		} BeforeChildThreadStartRequest;
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PVOID ParentContext;
 		} AfterChildThreadFinishRequest;
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 		} CreateChildThreadRequest;
 
 		struct
@@ -110,7 +109,7 @@ typedef struct _CFIXCTLP_MESSAGE
 
 		struct
 		{
-			ULONG MainThreadId;
+			CFIX_THREAD_ID ThreadId;
 			PEXCEPTION_POINTERS ExcpPointers;
 		} OnUnhandledExceptionRequest;
 	} Data;
@@ -156,7 +155,7 @@ static VOID CfixctlsDispatchMessage(
 		Message->Data.ReportEventResponse.Disposition =
 			Proxy->Wrapped->ReportEvent(
 				Proxy->Wrapped,
-				Message->Data.ReportEventRequest.MainThreadId,
+				&Message->Data.ReportEventRequest.ThreadId,
 				Message->Data.ReportEventRequest.Event );
 		break;
 
@@ -164,7 +163,6 @@ static VOID CfixctlsDispatchMessage(
 		Message->Data.QueryDefaultDispositionResponse.Disposition =
 			Proxy->Wrapped->QueryDefaultDisposition(
 				Proxy->Wrapped,
-				Message->Data.QueryDefaultDispositionRequest.MainThreadId,
 				Message->Data.QueryDefaultDispositionRequest.EventType );
 		break;
 
@@ -172,14 +170,14 @@ static VOID CfixctlsDispatchMessage(
 		Message->Data.BeforeFixtureStartResponse.Hresult =
 			Proxy->Wrapped->BeforeFixtureStart(
 				Proxy->Wrapped,
-				Message->Data.BeforeFixtureStartRequest.MainThreadId,
+				&Message->Data.BeforeFixtureStartRequest.ThreadId,
 				Message->Data.BeforeFixtureStartRequest.Fixture );
 		break;
 
 	case CfixctlpAfterFixtureFinish:
 		Proxy->Wrapped->AfterFixtureFinish(
 			Proxy->Wrapped,
-			Message->Data.AfterFixtureFinishRequest.MainThreadId,
+			&Message->Data.AfterFixtureFinishRequest.ThreadId,
 			Message->Data.AfterFixtureFinishRequest.Fixture,
 			Message->Data.AfterFixtureFinishRequest.RanToCompletion );
 		break;
@@ -188,14 +186,14 @@ static VOID CfixctlsDispatchMessage(
 		Message->Data.BeforeTestCaseStartResponse.Hresult =
 			Proxy->Wrapped->BeforeTestCaseStart(
 				Proxy->Wrapped,
-				Message->Data.BeforeTestCaseStartRequest.MainThreadId,
+				&Message->Data.BeforeTestCaseStartRequest.ThreadId,
 				Message->Data.BeforeTestCaseStartRequest.TestCase );
 		break;
 
 	case CfixctlpAfterTestCaseFinish:
 		Proxy->Wrapped->AfterTestCaseFinish(
 			Proxy->Wrapped,
-			Message->Data.AfterTestCaseFinishRequest.MainThreadId,
+			&Message->Data.AfterTestCaseFinishRequest.ThreadId,
 			Message->Data.AfterTestCaseFinishRequest.TestCase,
 			Message->Data.AfterTestCaseFinishRequest.RanToCompletion );
 		break;
@@ -204,28 +202,28 @@ static VOID CfixctlsDispatchMessage(
 		Message->Data.CreateChildThreadResponse.Hresult =
 			Proxy->Wrapped->CreateChildThread(
 				Proxy->Wrapped,
-				Message->Data.CreateChildThreadRequest.MainThreadId,
+				&Message->Data.CreateChildThreadRequest.ThreadId,
 				&Message->Data.CreateChildThreadResponse.ContextForChild );
 		break;
 
 	case CfixctlpBeforeChildThreadStart:
 		Proxy->Wrapped->BeforeChildThreadStart(
 			Proxy->Wrapped,
-			Message->Data.BeforeChildThreadStartRequest.MainThreadId,
+			&Message->Data.BeforeChildThreadStartRequest.ThreadId,
 			Message->Data.BeforeChildThreadStartRequest.ParentContext );
 		break;
 
 	case CfixctlpAfterChildThreadFinish:
 		Proxy->Wrapped->AfterChildThreadFinish(
 			Proxy->Wrapped,
-			Message->Data.AfterChildThreadFinishRequest.MainThreadId,
+			&Message->Data.AfterChildThreadFinishRequest.ThreadId,
 			Message->Data.AfterChildThreadFinishRequest.ParentContext );
 		break;
 
 	case CfixctlpOnUnhandledException:
 		Proxy->Wrapped->OnUnhandledException(
 			Proxy->Wrapped,
-			Message->Data.OnUnhandledExceptionRequest.MainThreadId,
+			&Message->Data.OnUnhandledExceptionRequest.ThreadId,
 			Message->Data.OnUnhandledExceptionRequest.ExcpPointers );
 		break;
 
@@ -345,7 +343,6 @@ static VOID CfixctlsThreadSwitchProxyDereference(
 
 static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyQueryDefaultDisposition(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
 	__in CFIX_EVENT_TYPE EventType
 	)
 {
@@ -353,7 +350,6 @@ static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyQueryDefaultDisposition(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpQueryDefaultDisposition;
-	Message.Data.QueryDefaultDispositionRequest.MainThreadId	= MainThreadId;
 	Message.Data.QueryDefaultDispositionRequest.EventType		= EventType;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -363,7 +359,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyQueryDefaultDisposition(
 
 static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyReportEvent(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TESTCASE_EXECUTION_EVENT Event
 	)
 {
@@ -371,7 +367,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyReportEvent(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpReportEvent;
-	Message.Data.ReportEventRequest.MainThreadId				= MainThreadId;
+	Message.Data.ReportEventRequest.ThreadId					= *ThreadId;
 	Message.Data.ReportEventRequest.Event						= Event;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -381,7 +377,7 @@ static CFIX_REPORT_DISPOSITION CfixctlsThreadSwitchProxyReportEvent(
 
 static HRESULT CfixctlsThreadSwitchProxyBeforeFixtureStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_FIXTURE Fixture
 	)
 {
@@ -389,7 +385,7 @@ static HRESULT CfixctlsThreadSwitchProxyBeforeFixtureStart(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpBeforeFixtureStart;
-	Message.Data.BeforeFixtureStartRequest.MainThreadId			= MainThreadId;
+	Message.Data.BeforeFixtureStartRequest.ThreadId				= *ThreadId;
 	Message.Data.BeforeFixtureStartRequest.Fixture				= Fixture;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -399,7 +395,7 @@ static HRESULT CfixctlsThreadSwitchProxyBeforeFixtureStart(
 
 static HRESULT CfixctlsThreadSwitchProxyBeforeTestCaseStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TEST_CASE TestCase
 	)
 {
@@ -407,7 +403,7 @@ static HRESULT CfixctlsThreadSwitchProxyBeforeTestCaseStart(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpBeforeTestCaseStart;
-	Message.Data.BeforeTestCaseStartRequest.MainThreadId		= MainThreadId;
+	Message.Data.BeforeTestCaseStartRequest.ThreadId			= *ThreadId;
 	Message.Data.BeforeTestCaseStartRequest.TestCase			= TestCase;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -417,7 +413,7 @@ static HRESULT CfixctlsThreadSwitchProxyBeforeTestCaseStart(
 
 static VOID CfixctlsThreadSwitchProxyAfterFixtureFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_FIXTURE Fixture,
 	__in BOOL RanToCompletion
 	)
@@ -426,7 +422,7 @@ static VOID CfixctlsThreadSwitchProxyAfterFixtureFinish(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpAfterFixtureFinish;
-	Message.Data.AfterFixtureFinishRequest.MainThreadId			= MainThreadId;
+	Message.Data.AfterFixtureFinishRequest.ThreadId				= *ThreadId;
 	Message.Data.AfterFixtureFinishRequest.Fixture				= Fixture;
 	Message.Data.AfterFixtureFinishRequest.RanToCompletion		= RanToCompletion;
 
@@ -435,7 +431,7 @@ static VOID CfixctlsThreadSwitchProxyAfterFixtureFinish(
 
 static VOID CfixctlsThreadSwitchProxyAfterTestCaseFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PCFIX_TEST_CASE TestCase,
 	__in BOOL RanToCompletion
 	)
@@ -444,7 +440,7 @@ static VOID CfixctlsThreadSwitchProxyAfterTestCaseFinish(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpAfterTestCaseFinish;
-	Message.Data.AfterTestCaseFinishRequest.MainThreadId		= MainThreadId;
+	Message.Data.AfterTestCaseFinishRequest.ThreadId			= *ThreadId;
 	Message.Data.AfterTestCaseFinishRequest.TestCase			= TestCase;
 	Message.Data.AfterTestCaseFinishRequest.RanToCompletion		= RanToCompletion;
 
@@ -453,7 +449,7 @@ static VOID CfixctlsThreadSwitchProxyAfterTestCaseFinish(
 
 static VOID CfixctlsThreadSwitchProxyBeforeChildThreadStart(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in_opt PVOID ParentContext
 	)
 {
@@ -461,7 +457,7 @@ static VOID CfixctlsThreadSwitchProxyBeforeChildThreadStart(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpBeforeChildThreadStart;
-	Message.Data.BeforeChildThreadStartRequest.MainThreadId		= MainThreadId;
+	Message.Data.BeforeChildThreadStartRequest.ThreadId			= *ThreadId;
 	Message.Data.BeforeChildThreadStartRequest.ParentContext	= ParentContext;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -469,7 +465,7 @@ static VOID CfixctlsThreadSwitchProxyBeforeChildThreadStart(
 
 static VOID CfixctlsThreadSwitchProxyAfterChildThreadFinish(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in_opt PVOID ParentContext
 	)
 {
@@ -477,7 +473,7 @@ static VOID CfixctlsThreadSwitchProxyAfterChildThreadFinish(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpAfterChildThreadFinish;
-	Message.Data.AfterChildThreadFinishRequest.MainThreadId		= MainThreadId;
+	Message.Data.AfterChildThreadFinishRequest.ThreadId			= *ThreadId;
 	Message.Data.AfterChildThreadFinishRequest.ParentContext	= ParentContext;
 
 	CfixctlsTransact( Proxy, &Message );
@@ -485,7 +481,7 @@ static VOID CfixctlsThreadSwitchProxyAfterChildThreadFinish(
 
 static HRESULT CfixctlsThreadSwitchProxyCreateChildThread(
 	__in struct _CFIX_EXECUTION_CONTEXT *This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__out PVOID *ContextForChild
 	)
 {
@@ -493,7 +489,7 @@ static HRESULT CfixctlsThreadSwitchProxyCreateChildThread(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpCreateChildThread;
-	Message.Data.CreateChildThreadRequest.MainThreadId			= MainThreadId;
+	Message.Data.CreateChildThreadRequest.ThreadId				= *ThreadId;
 
 	CfixctlsTransact( Proxy, &Message );
 
@@ -503,7 +499,7 @@ static HRESULT CfixctlsThreadSwitchProxyCreateChildThread(
 
 static VOID CfixctlsThreadSwitchProxyOnUnhandledException(
 	__in PCFIX_EXECUTION_CONTEXT This,
-	__in ULONG MainThreadId,
+	__in PCFIX_THREAD_ID ThreadId,
 	__in PEXCEPTION_POINTERS ExcpPointers
 	)
 {
@@ -511,7 +507,7 @@ static VOID CfixctlsThreadSwitchProxyOnUnhandledException(
 	CFIXCTLP_MESSAGE Message;
 	
 	Message.Type												= CfixctlpOnUnhandledException;
-	Message.Data.OnUnhandledExceptionRequest.MainThreadId		= MainThreadId;
+	Message.Data.OnUnhandledExceptionRequest.ThreadId			= *ThreadId;
 	Message.Data.OnUnhandledExceptionRequest.ExcpPointers		= ExcpPointers;
 
 	CfixctlsTransact( Proxy, &Message );
