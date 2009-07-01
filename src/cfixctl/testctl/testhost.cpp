@@ -55,6 +55,7 @@ public:
 			0,
 			NULL,
 			NULL,
+			NULL,
 			&Host ) );
 
 		CfixTestModuleArch Arch;

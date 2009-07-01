@@ -68,7 +68,7 @@ public:
 	STDMETHOD_( void, ClearRegistrations )();
 
 	STDMETHOD( CreateProcessHost )(
-		__in CfixTestModuleArch Arch,
+		__in PWSTR HostPath,
 		__in_opt PCWSTR Environment,
 		__in_opt PCWSTR CurrentDirectory,
 		__in ULONG Flags,
@@ -100,6 +100,7 @@ public:
 		__in DWORD Clsctx,
 		__in ULONG Flags,
 		__in ULONG Timeout,
+		__in const BSTR HostPath,
 		__in const BSTR Environment,
 		__in const BSTR CurrentDirectory,
 		__out ICfixHost** Host
@@ -185,6 +186,11 @@ static HRESULT CfixctlsFindHostImage(
 	// Starting point is the directory this module was loaded from.
 	//
 	WCHAR OwnModulePath[ MAX_PATH ];
+
+	if ( ! CfixcrlpIsValidArch( Arch ) )
+	{
+		return E_INVALIDARG;
+	}
 
 	if ( 0 == GetModuleFileName(
 		CfixctlpGetModule(),
@@ -297,8 +303,8 @@ Cleanup:
 }
 
 static HRESULT CfixctlsSpawnHost(
-	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
+	__in PWSTR HostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL Suspend,
@@ -310,19 +316,8 @@ static HRESULT CfixctlsSpawnHost(
 		return E_INVALIDARG;
 	}
 
-	//
-	// Find image to load.
-	//
-	WCHAR HostPath[ MAX_PATH ];
-	HRESULT Hr = CfixctlsFindHostImage(
-		Arch, _countof( HostPath ), HostPath );
-	if ( FAILED( Hr ) )
-	{
-		return Hr;
-	}
-
 	LPOLESTR AgentMkDisplayName = NULL;
-	Hr = CfixctlsGetObjrefMonikerString( Agent, &AgentMkDisplayName );
+	HRESULT Hr = CfixctlsGetObjrefMonikerString( Agent, &AgentMkDisplayName );
 	if ( FAILED( Hr ) )
 	{
 		return Hr;
@@ -389,8 +384,8 @@ Cleanup:
 }
 
 static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
-	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
+	__in PWSTR HostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
@@ -411,8 +406,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	BOOL SuspendInitialThread = PutInJob;
 
 	HRESULT Hr = CfixctlsSpawnHost( 
-		Arch, 
-		Agent, 
+		Agent,
+		HostPath,
 		Environment,
 		CurrentDirectory, 
 		SuspendInitialThread,
@@ -585,7 +580,7 @@ STDMETHODIMP LocalAgent::GetHostPath(
 }
 
 STDMETHODIMP LocalAgent::CreateProcessHost(
-	__in CfixTestModuleArch Arch,
+	__in PWSTR HostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in ULONG Flags,
@@ -600,11 +595,6 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	else
 	{
 		*Result = NULL;
-	}
-
-	if ( ! CfixcrlpIsValidArch( Arch ) )
-	{
-		return E_INVALIDARG;
 	}
 
 	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
@@ -625,8 +615,8 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	EnterCriticalSection( &this->SpawnLock );
 
 	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
-		Arch, 
-		this, 
+		this,
+		HostPath,
 		Environment,
 		CurrentDirectory, 
 		UseJob,
@@ -739,6 +729,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in DWORD Clsctx,
 	__in ULONG Flags,
 	__in ULONG Timeout,
+	__in const BSTR CustomHostPath,
 	__in const BSTR Environment,
 	__in const BSTR CurrentDirectory,
 	__out ICfixHost** Host
@@ -778,12 +769,44 @@ STDMETHODIMP LocalAgent::CreateHost(
 		{
 			return Hr;
 		}
+
+		WCHAR HostPathBuffer[ MAX_PATH ];
+		if ( CustomHostPath != NULL )
+		{
+			if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( CustomHostPath ) )
+			{
+				return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+			}
+
+			//
+			// Copy to make string non-const.
+			//
+			Hr = StringCchCopy(
+				HostPathBuffer,
+				_countof( HostPathBuffer ),
+				CustomHostPath );
+		}
+		else
+		{
+			//
+			// Use default host image.
+			//
+			Hr = CfixctlsFindHostImage(
+				Arch, 
+				_countof( HostPathBuffer ), 
+				HostPathBuffer );
+		}
+
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
 		
 		// 
 		// Spawn process.
 		//
 		return CreateProcessHost(
-			Arch,
+			HostPathBuffer,
 			Environment,
 			CurrentDirectory,
 			Flags,

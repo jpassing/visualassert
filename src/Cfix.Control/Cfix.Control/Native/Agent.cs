@@ -159,10 +159,18 @@ namespace Cfix.Control.Native
 
 		public virtual IHost CreateHost()
 		{
-			return CreateHost( null );
+			return CreateHost( null, null );
 		}
 
 		public virtual IHost CreateHost(
+			HostEnvironment env
+			)
+		{
+			return CreateHost( null, env );
+		}
+
+		public virtual IHost CreateHost(
+			string customHostPath,
 			HostEnvironment env
 			)
 		{
@@ -185,6 +193,7 @@ namespace Cfix.Control.Native
 				( uint ) this.clsctx,
 				( uint ) this.flags,
 				this.timeout,
+				customHostPath,
 				envString,
 				currentDir );
 

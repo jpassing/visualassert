@@ -124,6 +124,7 @@ namespace Cfix.Control.Test
 			uint Clsctx, 
 			uint Flags, 
 			uint Timeout, 
+			string hostPath,
 			string environment,
 			string CurrentDirectory )
 		{

@@ -363,6 +363,7 @@ void Before()
 		0,
 		NULL,
 		NULL,
+		NULL,
 		&Host ) );
 
 	Agent->Release();

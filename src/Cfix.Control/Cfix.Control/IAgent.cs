@@ -10,6 +10,10 @@ namespace Cfix.Control
 		IHost CreateHost(
 			HostEnvironment env
 			);
+		IHost CreateHost(
+			string customHostPath,
+			HostEnvironment env
+			);
 		Architecture Architecture { get; }
 		String ResolveMessage( int code );
 		HostEnvironment DefaultEnvironment { get; }

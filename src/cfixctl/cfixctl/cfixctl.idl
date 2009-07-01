@@ -282,8 +282,11 @@ library Cfixctl
 				Clsctx		- inproc/local server.
 				Flags		- 0 or CFIXCTL_AGENT_FLAG_*.
 				Timeout		- Timeout when waiting for process to spawn.
+				HostPath	- Optional. Path to host binary. if null, the
+							  default host is used. Ignored for in-process
+							  hosts.
 				Environ		- Optional. See CreateProcess for formatting.
-				CurrentDir	- Optional.
+				CurrentDir	- Optional. Current directory to start host in.
 
 				Environ and CurrentDir are ignored for in-process hosts.
 		--*/
@@ -292,6 +295,7 @@ library Cfixctl
 			[in] DWORD Clsctx,
 			[in] ULONG Flags,
 			[in] ULONG Timeout,
+			[in] const BSTR HostPath,
 			[in] const BSTR Environment,
 			[in] const BSTR CurrentDirectory,
 			[out, retval] ICfixHost** Host
