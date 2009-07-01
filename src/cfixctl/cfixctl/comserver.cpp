@@ -272,13 +272,7 @@ BOOL APIENTRY DllMain(
 	}
 }
 
-/*----------------------------------------------------------------------
- *
- * Exports.
- *
- */
-
-EXTERN_C HRESULT CfixctlRegisterServerUnlockCallback(
+HRESULT CfixctlpRegisterServerUnlockCallback(
 	__in CFIXCRL_SERVER_UNLOCK_PROC Callback
 	)
 {
@@ -296,6 +290,12 @@ EXTERN_C HRESULT CfixctlRegisterServerUnlockCallback(
 
 	return S_OK;
 }
+
+/*----------------------------------------------------------------------
+ *
+ * Exports.
+ *
+ */
 
 EXTERN_C HRESULT CfixctlGetClassObject(
 	__in REFCLSID Clsid,

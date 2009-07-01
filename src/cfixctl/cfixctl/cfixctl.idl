@@ -12,7 +12,7 @@ import "ocidl.idl";
 //
 //
 //
-//d010ca02-1b6d-11de-b555-0016d3b98f9b
+//
 //d010ca03-1b6d-11de-b555-0016d3b98f9b
 //d010ca04-1b6d-11de-b555-0016d3b98f9b
 //d010ca05-1b6d-11de-b555-0016d3b98f9b
@@ -252,7 +252,7 @@ library Cfixctl
 
 	[
 	  object,
-	  uuid( 57f93e4b-d44f-11dd-99e2-0016d3b98f9b ),
+	  uuid( d010ca02-1b6d-11de-b555-0016d3b98f9b ),
 	  version( 1.0 ),
 	  oleautomation
 	]

@@ -324,25 +324,61 @@ static HRESULT CfixctlsSpawnHost(
 	}
 
 	//
-	// Prepare command line.
+	// Prepare environment.
 	//
-	SIZE_T CommandLineCch = wcslen( AgentMkDisplayName ) + MAX_PATH + 1;
-	PWSTR CommandLine = new WCHAR[ CommandLineCch ];
-	if ( CommandLine == NULL )
+	// The environment consists of the custom environment (if any)
+	// and a special variable that contains the moniker string.
+	//
+
+	SIZE_T FullEnvironmentCch = 
+		//
+		// Custom-environment\0
+		//
+		( Environment == NULL ? 0 : wcslen( Environment ) ) + 1 +
+
+		//
+		// name=value\0\0
+		//
+		wcslen( CFIXCTLP_MONIKER_ENVVAR_NAME ) + 1 +
+		wcslen( AgentMkDisplayName ) + 1 + 1;
+
+	PWSTR FullEnvironment = new WCHAR[ FullEnvironmentCch ];
+	if ( FullEnvironment == NULL )
 	{
-		goto Cleanup;
+		return E_OUTOFMEMORY;
 	}
 
-	Hr = StringCchPrintf(
-		CommandLine,
-		CommandLineCch,
-		L"\"%s\" %s",
-		HostPath,
+	//
+	// N.B. We cannot use printf due to the embedded nulls - thus,
+	// do it manually...
+	//
+
+	PWSTR EnvironmentEnd = NULL;
+	size_t EnvironmentRemaining;
+	( VOID ) StringCchPrintfEx(
+		FullEnvironment,
+		FullEnvironmentCch,
+		&EnvironmentEnd,
+		&EnvironmentRemaining,
+		0,
+		L"%s=%s",
+		CFIXCTLP_MONIKER_ENVVAR_NAME,
 		AgentMkDisplayName );
-	if ( FAILED( Hr ) )
+
+	ASSERT( EnvironmentRemaining > 0 );
+	*EnvironmentEnd++ = UNICODE_NULL;
+	EnvironmentRemaining--;
+
+	if ( Environment != NULL )
 	{
-		goto Cleanup;
+		( VOID ) StringCchCat(
+			EnvironmentEnd,
+			EnvironmentRemaining,
+			Environment );
 	}
+
+	ASSERT( EnvironmentRemaining > 0 );
+	*EnvironmentEnd++ = UNICODE_NULL;
 
 	//
 	// Spawn.
@@ -353,12 +389,12 @@ static HRESULT CfixctlsSpawnHost(
 
 	if ( ! CreateProcess(
 		HostPath,
-		CommandLine,
+		NULL,
 		NULL,
 		NULL,
 		FALSE,
 		CREATE_UNICODE_ENVIRONMENT | ( Suspend ? CREATE_SUSPENDED : 0 ),
-		( PVOID ) Environment,
+		( PVOID ) FullEnvironment,
 		CurrentDirectory,
 		&StartupInfo,
 		ProcessInfo ) )
@@ -375,9 +411,9 @@ Cleanup:
 		CoTaskMemFree( AgentMkDisplayName );
 	}
 
-	if ( CommandLine != NULL )
+	if ( FullEnvironment != NULL )
 	{
-		delete [] CommandLine;
+		delete [] FullEnvironment;
 	}
 
 	return Hr;

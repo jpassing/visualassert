@@ -10,7 +10,8 @@
 
 static DWORD LaunchHostAndWait( 
 	PCWSTR HostPath,
-	PWSTR CommandLine )
+	PWSTR Environment 
+	)
 {
 	PROCESS_INFORMATION ProcessInfo;
 	STARTUPINFO StartupInfo;
@@ -19,12 +20,12 @@ static DWORD LaunchHostAndWait(
 
 	CFIX_ASSERT( CreateProcess(
 		HostPath,
-		CommandLine,
+		NULL,
 		NULL,
 		NULL,
 		FALSE,
-		0,
-		NULL,
+		CREATE_UNICODE_ENVIRONMENT,
+		Environment,
 		NULL,
 		&StartupInfo,
 		&ProcessInfo ) );
@@ -369,10 +370,10 @@ public:
 		// Missing moniker.
 		//
 		CFIXCC_ASSERT_EQUALS( 
-			E_INVALIDARG,
+			CFIXCTL_E_MISSING_AGENT_MK,
 			( HRESULT ) LaunchHostAndWait(
 				HostPath,
-				L"" ) );
+				L"FOO=BAR\0" ) );
 
 		SysFreeString( HostPath );
 	}
@@ -412,24 +413,26 @@ public:
 		LPOLESTR DisplayName = NULL;
 		CFIX_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
 
-		SIZE_T CmdLineLen = wcslen( DisplayName ) * sizeof( WCHAR ) + 32;
-		PWSTR CmdLine = new WCHAR[ CmdLineLen ];
+		SIZE_T EnvCch = wcslen( L"CFIX_AGENT_MK=" ) + 
+			wcslen( DisplayName ) + 2;
+		PWSTR Env = new WCHAR[ EnvCch ];
+		ZeroMemory( Env, EnvCch * sizeof( WCHAR ) );
 		CFIX_ASSERT_OK( StringCchPrintf( 
-			CmdLine,
-			CmdLineLen,
-			L"cfixhost %s",
+			Env,
+			EnvCch,
+			L"CFIX_AGENT_MK=%s",
 			DisplayName ) );
 
 		//
-		// Missing moniker.
+		// Wrong moniker.
 		//
 		CFIXCC_ASSERT_EQUALS( 
 			E_NOINTERFACE,
 			( HRESULT ) LaunchHostAndWait(
 				HostPath,
-				CmdLine ) );
+				Env ) );
 
-		delete [] CmdLine;
+		delete [] Env;
 		SysFreeString( HostPath );
 		CoTaskMemFree( DisplayName );
 		AgentMk->Release();

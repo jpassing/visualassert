@@ -154,6 +154,10 @@
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>
+				<File
+					RelativePath=".\cfixctl\servehost.cpp"
+					>
+				</File>
 				<Filter
 					Name="testobjects"
 					>

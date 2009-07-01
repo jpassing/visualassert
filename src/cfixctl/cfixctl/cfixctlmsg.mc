@@ -145,3 +145,11 @@ SymbolicName	= CFIXCTL_E_LIC_TRIAL_EXPIRED
 Language		= English
 The evaluation period has expired.
 .
+
+MessageId		= 0xB00f
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_MISSING_AGENT_MK
+Language		= English
+The agent moniker was not found in the process environment.
+.
