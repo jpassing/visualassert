@@ -75,7 +75,7 @@ namespace Cfix.Control.Test
 				this.ooProcTarget,
 				new StandardDispositionPolicy(
 						Disposition.Continue, Disposition.Break ),
-				ExecutionOptions.None,
+				ExecutionOptions.CatureStackTraces,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( ( IRunnableTestItem ) item );

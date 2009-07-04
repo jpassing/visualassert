@@ -366,18 +366,21 @@ static HRESULT CfixctlsSpawnHost(
 		AgentMkDisplayName );
 
 	ASSERT( EnvironmentRemaining > 0 );
-	*EnvironmentEnd++ = UNICODE_NULL;
+	ASSERT( *EnvironmentEnd == UNICODE_NULL );
+
+	EnvironmentEnd++;
 	EnvironmentRemaining--;
 
 	if ( Environment != NULL )
 	{
-		( VOID ) StringCchCat(
+		( VOID ) StringCchCopy(
 			EnvironmentEnd,
 			EnvironmentRemaining,
 			Environment );
+
+		EnvironmentEnd += wcslen( Environment ) + 1;
 	}
 
-	ASSERT( EnvironmentRemaining > 0 );
 	*EnvironmentEnd++ = UNICODE_NULL;
 
 	//
