@@ -370,6 +370,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testexe10"
+					>
+					<File
+						RelativePath=".\testlibs\testexe10\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe10\suite.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

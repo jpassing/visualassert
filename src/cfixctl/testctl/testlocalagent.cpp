@@ -438,6 +438,50 @@ public:
 		AgentMk->Release();
 		BindCtx->Release();
 	}
+
+	void SpawnCustomHost()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe10.exe" );
+
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		BSTR HostImage = SysAllocString( Path );
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			ICfixHost *Host;
+			CFIX_ASSERT_OK( Agent->CreateHost(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				FlagSets[ Flags ],
+				INFINITE,
+				HostImage,
+				NULL,
+				NULL,
+				&Host ) );
+
+			CFIX_ASSUME( Host );
+			Host->Release();
+		}
+
+		SysFreeString( HostImage );
+
+		Agent->Release();
+	}
 };
 
 COM_EXPORTS TestLocalAgent::Exports;
@@ -451,4 +495,5 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( ResolveMessage )
 	CFIXCC_METHOD( SpawnWithoutMoniker )
 	CFIXCC_METHOD( SpawnWithWrongMoniker )
+	CFIXCC_METHOD( SpawnCustomHost )
 CFIXCC_END_CLASS()

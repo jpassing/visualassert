@@ -177,9 +177,15 @@ EXTERN_C HRESULT CfixctlServeHost()
 	//
 	( VOID ) WaitForSingleObject( CfixctlsShutdownEvent, INFINITE );
 
-	Hr = S_OK;
+	//
+	// All is well, but in case this is a custom host, do not run 
+	// main.
+	//
+	Hr = CFIX_S_EXIT_PROCESS;
 
 Cleanup:
+	ASSERT( SUCCEEDED( Hr ) );
+
 	if ( ObjRefMoniker != NULL )
 	{
 		delete [] ObjRefMoniker;

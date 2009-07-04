@@ -68,7 +68,8 @@ public:
 	STDMETHOD_( void, ClearRegistrations )();
 
 	STDMETHOD( CreateProcessHost )(
-		__in PWSTR HostPath,
+		__in CfixTestModuleArch Arch,
+		__in_opt PCWSTR CustomHostPath,
 		__in_opt PCWSTR Environment,
 		__in_opt PCWSTR CurrentDirectory,
 		__in ULONG Flags,
@@ -288,6 +289,12 @@ static HRESULT CfixctlsGetObjrefMonikerString(
 	
 	Hr = AgentMk->GetDisplayName( BindCtx, NULL, DisplayName );
 
+	//
+	// Yield s.t. the moniker can settle - this is ugly, but improves
+	// reliability of cfix' own tests.
+	//
+	Sleep( 10 );
+
 Cleanup:
 	if ( AgentMk != NULL )
 	{
@@ -302,10 +309,14 @@ Cleanup:
 	return Hr;
 }
 
+#define CFIXCTLP_EMB_INIT_ENVVAR \
+		CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost"
+
 static HRESULT CfixctlsSpawnHost(
 	__in ICfixAgent *Agent,
-	__in PWSTR HostPath,
-	__in_opt PCWSTR Environment,
+	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
+	__in_opt PCWSTR CustomEnvironment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL Suspend,
 	__out PPROCESS_INFORMATION ProcessInfo
@@ -324,6 +335,44 @@ static HRESULT CfixctlsSpawnHost(
 	}
 
 	//
+	// See which host image we have to use.
+	//
+	WCHAR HostPathBuffer[ MAX_PATH ];
+	if ( CustomHostPath != NULL )
+	{
+		//
+		// Custom host image.
+		//
+		if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( CustomHostPath ) )
+		{
+			return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+		}
+
+		//
+		// Copy to make string non-const.
+		//
+		Hr = StringCchCopy(
+			HostPathBuffer,
+			_countof( HostPathBuffer ),
+			CustomHostPath );
+	}
+	else
+	{
+		//
+		// Use default host image.
+		//
+		Hr = CfixctlsFindHostImage(
+			Arch, 
+			_countof( HostPathBuffer ), 
+			HostPathBuffer );
+	}
+
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	//
 	// Prepare environment.
 	//
 	// The environment consists of the custom environment (if any)
@@ -334,7 +383,12 @@ static HRESULT CfixctlsSpawnHost(
 		//
 		// Custom-environment\0
 		//
-		( Environment == NULL ? 0 : wcslen( Environment ) ) + 1 +
+		( CustomEnvironment == NULL ? 0 : wcslen( CustomEnvironment ) ) + 1 +
+
+		//
+		// Embedding.
+		//
+		( CustomHostPath == NULL ? 0 : wcslen( CFIXCTLP_EMB_INIT_ENVVAR ) ) + 1 +
 
 		//
 		// name=value\0\0
@@ -349,7 +403,7 @@ static HRESULT CfixctlsSpawnHost(
 	}
 
 	//
-	// N.B. We cannot use printf due to the embedded nulls - thus,
+	// N.B. We cannot use *printf due to the embedded nulls - thus,
 	// do it manually...
 	//
 
@@ -371,14 +425,30 @@ static HRESULT CfixctlsSpawnHost(
 	EnvironmentEnd++;
 	EnvironmentRemaining--;
 
-	if ( Environment != NULL )
+	if ( CustomHostPath != NULL )
 	{
 		( VOID ) StringCchCopy(
 			EnvironmentEnd,
 			EnvironmentRemaining,
-			Environment );
+			CFIXCTLP_EMB_INIT_ENVVAR );
 
-		EnvironmentEnd += wcslen( Environment ) + 1;
+		EnvironmentEnd += wcslen( CFIXCTLP_EMB_INIT_ENVVAR );
+
+		ASSERT( EnvironmentRemaining > 0 );
+		ASSERT( *EnvironmentEnd == UNICODE_NULL );
+
+		EnvironmentEnd++;
+		EnvironmentRemaining--;
+	}
+
+	if ( CustomEnvironment != NULL )
+	{
+		( VOID ) StringCchCopy(
+			EnvironmentEnd,
+			EnvironmentRemaining,
+			CustomEnvironment );
+
+		EnvironmentEnd += wcslen( CustomEnvironment );
 	}
 
 	*EnvironmentEnd++ = UNICODE_NULL;
@@ -391,7 +461,7 @@ static HRESULT CfixctlsSpawnHost(
 	StartupInfo.cb = sizeof( STARTUPINFO );
 
 	if ( ! CreateProcess(
-		HostPath,
+		HostPathBuffer,
 		NULL,
 		NULL,
 		NULL,
@@ -424,7 +494,8 @@ Cleanup:
 
 static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in ICfixAgent *Agent,
-	__in PWSTR HostPath,
+	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
@@ -446,7 +517,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 
 	HRESULT Hr = CfixctlsSpawnHost( 
 		Agent,
-		HostPath,
+		Arch,
+		CustomHostPath,
 		Environment,
 		CurrentDirectory, 
 		SuspendInitialThread,
@@ -619,7 +691,8 @@ STDMETHODIMP LocalAgent::GetHostPath(
 }
 
 STDMETHODIMP LocalAgent::CreateProcessHost(
-	__in PWSTR HostPath,
+	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in ULONG Flags,
@@ -655,7 +728,8 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 
 	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
 		this,
-		HostPath,
+		Arch,
+		CustomHostPath,
 		Environment,
 		CurrentDirectory, 
 		UseJob,
@@ -808,44 +882,13 @@ STDMETHODIMP LocalAgent::CreateHost(
 		{
 			return Hr;
 		}
-
-		WCHAR HostPathBuffer[ MAX_PATH ];
-		if ( CustomHostPath != NULL )
-		{
-			if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( CustomHostPath ) )
-			{
-				return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
-			}
-
-			//
-			// Copy to make string non-const.
-			//
-			Hr = StringCchCopy(
-				HostPathBuffer,
-				_countof( HostPathBuffer ),
-				CustomHostPath );
-		}
-		else
-		{
-			//
-			// Use default host image.
-			//
-			Hr = CfixctlsFindHostImage(
-				Arch, 
-				_countof( HostPathBuffer ), 
-				HostPathBuffer );
-		}
-
-		if ( FAILED( Hr ) )
-		{
-			return Hr;
-		}
 		
 		// 
 		// Spawn process.
 		//
 		return CreateProcessHost(
-			HostPathBuffer,
+			Arch,
+			CustomHostPath,
 			Environment,
 			CurrentDirectory,
 			Flags,
