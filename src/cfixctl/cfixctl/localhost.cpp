@@ -43,7 +43,7 @@ public:
 	 */
 	
 	STDMETHOD( LoadModule )(
-		__in const BSTR Path,
+		__in_opt const BSTR Path,
 		__out ICfixTestModule **Module
 		);
 
@@ -126,7 +126,7 @@ STDMETHODIMP LocalHost::QueryInterface(
  */
 
 STDMETHODIMP LocalHost::LoadModule(
-	__in const BSTR Path,
+	__in_opt const BSTR Path,
 	__out ICfixTestModule **Result
 	)
 {
@@ -139,44 +139,77 @@ STDMETHODIMP LocalHost::LoadModule(
 		*Result = NULL;
 	}
 
-	SIZE_T PathLen;
-	if ( ! Path || ( PathLen = wcslen( Path ) ) < 5 )
-	{
-		return E_INVALIDARG;
-	}
-
-	ICfixTestModuleInternal *ModuleObject = NULL;
-	PCFIX_TEST_MODULE Module = NULL;
 	HRESULT Hr;
+	PCWSTR EffectiveModulePath;
+	WCHAR EffectiveModulePathBuffer[ MAX_PATH ] = { 0 };
+	PCFIX_TEST_MODULE Module = NULL;
+	ICfixTestModuleInternal *ModuleObject = NULL;
 	CfixTestModuleType ModuleType;
 
-	PCWSTR Extension = Path + PathLen - 4;
-	if ( 0 == _wcsicmp( L".sys", Extension ) )
+	if ( Path != NULL )
 	{
-		//
-		// It is a driver.
-		//
-		ModuleType = CfixTestModuleTypeKernel;
-		Hr = CfixklCreateTestModuleFromDriver(
-			Path,
-			&Module,
-			NULL,
-			NULL );
-	}
-	else if ( 0 == _wcsicmp( L".dll", Extension ) )
-	{
-		//
-		// Assume DLL (may have custom extension).
-		//
-		ModuleType = CfixTestModuleTypeUser;
-		Hr = CfixCreateTestModuleFromPeImage(
-			Path,
-			&Module );
+		SIZE_T PathLen;
+		if ( ( PathLen = wcslen( Path ) ) < 5 )
+		{
+			return E_INVALIDARG;
+		}
+
+		PCWSTR Extension = Path + PathLen - 4;
+		if ( 0 == _wcsicmp( L".sys", Extension ) )
+		{
+			//
+			// It is a driver.
+			//
+			ModuleType = CfixTestModuleTypeKernel;
+			Hr = CfixklCreateTestModuleFromDriver(
+				Path,
+				&Module,
+				NULL,
+				NULL );
+		}
+		else if ( 0 == _wcsicmp( L".dll", Extension ) )
+		{
+			//
+			// Assume DLL (may have custom extension).
+			//
+			ModuleType = CfixTestModuleTypeUser;
+			Hr = CfixCreateTestModuleFromPeImage(
+				Path,
+				&Module );
+		}
+		else
+		{
+			ModuleType = CfixTestModuleTypeUser;
+			Hr = CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
+		}
+
+		EffectiveModulePath = Path;
 	}
 	else
 	{
+		//
+		// No path specified - use host executable.
+		//
 		ModuleType = CfixTestModuleTypeUser;
-		Hr = CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
+		Hr = CfixCreateTestModule(
+			GetModuleHandle( NULL ),
+			&Module );
+
+		if ( SUCCEEDED( Hr ) )
+		{
+			//
+			// Derive path s.t. initialization can continue.
+			//
+			if ( 0 == GetModuleFileName(
+				GetModuleHandle( NULL ),
+				EffectiveModulePathBuffer,
+				_countof( EffectiveModulePathBuffer ) ) )
+			{
+				Hr = HRESULT_FROM_WIN32( GetLastError() );
+			}
+
+			EffectiveModulePath = EffectiveModulePathBuffer;
+		}
 	}
 
 	if ( Hr == HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ) )
@@ -202,7 +235,7 @@ STDMETHODIMP LocalHost::LoadModule(
 	}
 
 	Hr = ModuleObject->Initialize(
-		Path,
+		EffectiveModulePath,
 		ModuleType,
 		CFIXCTL_OWN_ARCHITECTURE,
 		Module );

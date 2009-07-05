@@ -439,7 +439,7 @@ public:
 		BindCtx->Release();
 	}
 
-	void SpawnCustomHost()
+	void SpawnCustomHostWithoutEmbedding()
 	{
 		WCHAR Path[ MAX_PATH ];
 		CFIXCC_ASSERT( GetModuleFileName(
@@ -449,6 +449,44 @@ public:
 		PathRemoveFileSpec( Path );
 		PathAppend( Path,  L"testexe10.exe" );
 
+		//
+		// The CRT initializer should not mess with the process.
+		//
+		CFIX_ASSERT_EQUALS_DWORD( 
+			0xBABE,
+			LaunchHostAndWait( Path, NULL ) );
+	}
+
+	void SpawnCustomHostWithNonExistingEmbeddingExport()
+	{
+		PWSTR ExportEnvVar[] = {
+			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!Idonotexist",
+			CFIX_EMB_INIT_ENVVAR_NAME L"=Idonotexist.dll!Idonotexist"
+		};
+
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe10.exe" );
+
+		//
+		// The CRT initializer should not mess with the process.
+		//
+		for ( ULONG Index = 0; Index < _countof( ExportEnvVar ); Index++ )
+		{
+			CFIX_ASSERT_EQUALS_DWORD( 
+				0xBABE,
+				LaunchHostAndWait( 
+					Path, 
+					ExportEnvVar[ Index ] ) );
+		}
+	}
+
+	void SpawnCustomHost()
+	{
 		ICfixAgent *Agent;
 		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
@@ -457,30 +495,130 @@ public:
 		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
 			CurrentLicensingDate() ) );
 
-		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+		//
+		// C only, C++ only, C/C++ mixed.
+		//
+		PCWSTR HostImages[] = {
+			L"testexe11.exe",
+			L"testexe12.exe",
+			L"testexe13.exe"
+		};
+
+		for ( ULONG ImageIndex = 0; ImageIndex < _countof( HostImages ); ImageIndex++ )
+		{
+			WCHAR Path[ MAX_PATH ];
+			CFIXCC_ASSERT( GetModuleFileName(
+				GetModuleHandle( L"testctl" ),
+				Path,
+				_countof( Path ) ) );
+			PathRemoveFileSpec( Path );
+			PathAppend( Path,  HostImages[ ImageIndex ] );
+
+			BSTR HostImage = SysAllocString( Path );
+
+			ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+			for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+			{
+				ICfixHost *Host;
+				CFIX_ASSERT_OK( Agent->CreateHost(
+					CFIXCTL_OWN_ARCHITECTURE,
+					CLSCTX_LOCAL_SERVER,
+					FlagSets[ Flags ],
+					INFINITE,
+					HostImage,
+					NULL,
+					NULL,
+					&Host ) );
+
+				CFIX_ASSUME( Host );
+				Host->Release();
+			}
+
+			SysFreeString( HostImage );
+		}
+
+		Agent->Release();
+	}
+	
+	void SpawnCustomHostWithoutMoniker()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe11.exe" );
 
 		BSTR HostImage = SysAllocString( Path );
 
-		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
-		{
-			ICfixHost *Host;
-			CFIX_ASSERT_OK( Agent->CreateHost(
-				CFIXCTL_OWN_ARCHITECTURE,
-				CLSCTX_LOCAL_SERVER,
-				FlagSets[ Flags ],
-				INFINITE,
+		//
+		// Missing moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			CFIXCTL_E_MISSING_AGENT_MK,
+			( HRESULT ) LaunchHostAndWait(
 				HostImage,
-				NULL,
-				NULL,
-				&Host ) );
-
-			CFIX_ASSUME( Host );
-			Host->Release();
-		}
+				CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\0" ) );
 
 		SysFreeString( HostImage );
+	}
 
-		Agent->Release();
+	void SpawnCustomHostWithWrongMoniker()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe11.exe" );
+
+		BSTR HostImage = SysAllocString( Path );
+
+		//
+		// Create moniker to agentfactory rather than to agent.
+		//
+
+		IMoniker *AgentMk = NULL;
+		CFIX_ASSERT_OK( CreateObjrefMoniker( AgentFactory, &AgentMk ) );
+		
+		IBindCtx *BindCtx = NULL;
+		CFIX_ASSERT_OK( CreateBindCtx( 0, &BindCtx ) );
+		
+		LPOLESTR DisplayName = NULL;
+		CFIX_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
+
+		PCWSTR FixedEnvPart = 
+			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\nCFIX_AGENT_MK=";
+
+		SIZE_T EnvCch = wcslen( FixedEnvPart ) + wcslen( DisplayName ) + 2;
+		PWSTR Env = new WCHAR[ EnvCch ];
+		ZeroMemory( Env, EnvCch * sizeof( WCHAR ) );
+		CFIX_ASSERT_OK( StringCchPrintf( 
+			Env,
+			EnvCch,
+			L"%s%s",
+			FixedEnvPart,
+			DisplayName ) );
+
+		*wcschr( Env, L'\n' ) = L'\0';
+
+		//
+		// Wrong moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			E_NOINTERFACE,
+			( HRESULT ) LaunchHostAndWait(
+				HostImage,
+				Env ) );
+
+		delete [] Env;
+		SysFreeString( HostImage );
+		CoTaskMemFree( DisplayName );
+		AgentMk->Release();
+		BindCtx->Release();
 	}
 };
 
@@ -495,5 +633,9 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( ResolveMessage )
 	CFIXCC_METHOD( SpawnWithoutMoniker )
 	CFIXCC_METHOD( SpawnWithWrongMoniker )
+	CFIXCC_METHOD( SpawnCustomHostWithoutEmbedding )
+	CFIXCC_METHOD( SpawnCustomHostWithNonExistingEmbeddingExport )
 	CFIXCC_METHOD( SpawnCustomHost )
+	CFIXCC_METHOD( SpawnCustomHostWithoutMoniker )
+	CFIXCC_METHOD( SpawnCustomHostWithWrongMoniker )
 CFIXCC_END_CLASS()

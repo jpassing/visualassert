@@ -184,7 +184,7 @@ EXTERN_C HRESULT CfixctlServeHost()
 	Hr = CFIX_S_EXIT_PROCESS;
 
 Cleanup:
-	ASSERT( SUCCEEDED( Hr ) );
+	// ASSERT( SUCCEEDED( Hr ) );
 
 	if ( ObjRefMoniker != NULL )
 	{

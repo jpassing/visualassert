@@ -110,7 +110,8 @@ library Cfixctl
 				current process.
 
 			Arguments:
-				Path		- Path to module.
+				Path		- Path to module, either a .sys or .dll.
+				              If NULL, the current executable is searched.
 				Module		- Result.
 		--*/
 		HRESULT LoadModule(

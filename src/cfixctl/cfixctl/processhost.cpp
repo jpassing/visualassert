@@ -50,7 +50,7 @@ public:
 	 */
 	
 	STDMETHOD( LoadModule )(
-		__in const BSTR Path,
+		__in_opt const BSTR Path,
 		__out ICfixTestModule **Module
 		);
 
@@ -159,7 +159,7 @@ STDMETHODIMP ProcessHost::QueryInterface(
  */
 
 STDMETHODIMP ProcessHost::LoadModule(
-	__in const BSTR Path,
+	__in_opt const BSTR Path,
 	__out ICfixTestModule **Result
 	)
 {

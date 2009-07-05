@@ -865,6 +865,11 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
+		if ( CustomHostPath != NULL || Environment != NULL )
+		{
+			return E_INVALIDARG;
+		}
+
 		return CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
 	}

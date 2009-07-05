@@ -16,6 +16,5 @@ CFIXCC_END_CLASS()
 
 int __cdecl wmain()
 {
-	_ASSERTE( !"Should never be called" );
-	return 0xDEAD;
+	return 0xBABE;
 }
