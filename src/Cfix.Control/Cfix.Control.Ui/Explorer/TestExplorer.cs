@@ -51,6 +51,7 @@ namespace Cfix.Control.Ui.Explorer
 		public event TreeNodeMouseClickEventHandler TreeDoubleClick;
 
 		private ContextMenuStrip nodeContextMenu;
+		private TreeNode selectedNodeBeforeCtxMenuPopup;
 
 		/*----------------------------------------------------------------------
 		 * Private.
@@ -200,7 +201,20 @@ namespace Cfix.Control.Ui.Explorer
 		public ContextMenuStrip NodeContextMenu
 		{
 			get { return this.nodeContextMenu; }
-			set { this.nodeContextMenu = value; }
+			set 
+			{
+				if ( this.nodeContextMenu != null )
+				{
+					this.nodeContextMenu.Closed -= new ToolStripDropDownClosedEventHandler( nodeContextMenu_Closed );
+				}
+
+				this.nodeContextMenu = value;
+
+				if ( this.nodeContextMenu != null )
+				{
+					this.nodeContextMenu.Closed += new ToolStripDropDownClosedEventHandler( nodeContextMenu_Closed );
+				}
+			}
 		}
 
 		private void PopupContextMenu( AbstractExplorerNode node, Point pt )
@@ -212,7 +226,23 @@ namespace Cfix.Control.Ui.Explorer
 					new ExplorerNodeEventArgs( node ) );
 			}
 
+			//
+			// Keep node selected while menu is shown.
+			//
+			// See also: nodeContextMenu_Closed.
+			//
+			this.selectedNodeBeforeCtxMenuPopup = this.treeView.SelectedNode;
+			this.treeView.SelectedNode = node;
 			this.nodeContextMenu.Show( this.treeView, pt );
+		}
+
+		private void nodeContextMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
+		{
+			if ( this.selectedNodeBeforeCtxMenuPopup != null )
+			{
+				this.treeView.SelectedNode = this.selectedNodeBeforeCtxMenuPopup;
+				this.selectedNodeBeforeCtxMenuPopup = null;
+			}
 		}
 
 		private void treeView_KeyDown( object sender, KeyEventArgs e )
