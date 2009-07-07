@@ -375,15 +375,36 @@ namespace Cfix.Addin.Test
 				//
 				// Refresh module.
 				//
-				
+				// Note that we optimize for not having to refresh
+				// the entire tree.
 				//
-				// N.B. Full reload required to support 
-				// Invalid <-> Valid transitions.
-				//
-				Clear();
-				LoadPrimaryOutputModule( vcConfig ); 
-				
-				//base.Refresh();
+
+				if ( ItemCount >= 1 && GetItem( 0 ) is InvalidModule )
+				{
+					//
+					// Invalid -> Valid.
+					//
+					Clear();
+					LoadPrimaryOutputModule( vcConfig );
+				}
+				else
+				{
+					try
+					{
+						base.Refresh();
+					}
+					catch ( Exception x )
+					{
+						//
+						// Valid -> Invalid.
+						//
+						Clear();
+						Add( new InvalidModule(
+							this,
+							new FileInfo( this.currentPath ).Name,
+							x ) );
+					}
+				}
 			}
 
 			lock ( loadedProjectsLock )
