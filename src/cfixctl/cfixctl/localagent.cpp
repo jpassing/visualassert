@@ -449,6 +449,12 @@ static HRESULT CfixctlsSpawnHost(
 			CustomEnvironment );
 
 		EnvironmentEnd += wcslen( CustomEnvironment );
+
+		ASSERT( EnvironmentRemaining > 0 );
+		ASSERT( *EnvironmentEnd == UNICODE_NULL );
+
+		EnvironmentEnd++;
+		EnvironmentRemaining--;
 	}
 
 	*EnvironmentEnd++ = UNICODE_NULL;
