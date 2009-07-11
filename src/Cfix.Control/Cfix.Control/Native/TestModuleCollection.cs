@@ -141,34 +141,16 @@ namespace Cfix.Control.Native
 
 					try
 					{
-						switch ( type )
-						{
-							case CfixTestModuleType.CfixTestModuleTypeUser:
-								using ( IHost host = agent.CreateHost( env ) )
-								{
-									this.collectionStack.Peek().Add(
-										host.LoadModule(
-											this.collectionStack.Peek(),
-											path,
-											this.collection.ignoreDuplicates ) );
-								}
-								break;
+						ITestItemCollection module = agent.LoadModule(
+							env,
+							this.collectionStack.Peek(),
+							type == CfixTestModuleType.CfixTestModuleTypeUserEmbedded
+								? path
+								: null,
+							path,
+							this.collection.ignoreDuplicates );
 
-							case CfixTestModuleType.CfixTestModuleTypeUserEmbedded:
-								using ( IHost host = agent.CreateHost( path, env ) )
-								{
-									this.collectionStack.Peek().Add(
-										host.LoadModule(
-											this.collectionStack.Peek(),
-											null,
-											this.collection.ignoreDuplicates ) );
-								}
-								break;
-
-							default:
-								Debug.Fail( "Unsupported module type" );
-								break;
-						}
+						this.collectionStack.Peek().Add( module );
 					}
 					catch ( Exception x )
 					{

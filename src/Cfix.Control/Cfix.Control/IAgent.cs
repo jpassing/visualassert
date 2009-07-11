@@ -14,6 +14,13 @@ namespace Cfix.Control
 			string customHostPath,
 			HostEnvironment env
 			);
+		ITestItemCollection LoadModule(
+			HostEnvironment env,
+			ITestItemCollection parentCollection,
+			string customHostPath,
+			string path,
+			bool ignoreDuplicates
+			);
 		Architecture Architecture { get; }
 		String ResolveMessage( int code );
 		HostEnvironment DefaultEnvironment { get; }

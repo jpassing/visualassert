@@ -35,5 +35,12 @@ namespace Cfix.Control.Native
 			//
 			return ( ( Host ) host ).GetNativeItem().LoadModule( null );
 		}
+
+		internal override IHost CreateHost( 
+			IAgent agent,
+			HostEnvironment env )
+		{
+			return agent.CreateHost( this.Path, env );
+		}
 	}
 }

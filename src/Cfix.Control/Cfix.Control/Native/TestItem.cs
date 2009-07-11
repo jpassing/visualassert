@@ -74,6 +74,21 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		internal virtual IHost CreateHost(
+			IAgent agent,
+			HostEnvironment env )
+		{
+			TestItemCollection parentColl = this.Parent as TestItemCollection;
+			if ( parentColl != null )
+			{
+				return parentColl.CreateHost( agent, env );
+			}
+			else
+			{
+				return agent.CreateHost( env );
+			}
+		}
+
 		/*--------------------------------------------------------------
 		 * Publics.
 		 */

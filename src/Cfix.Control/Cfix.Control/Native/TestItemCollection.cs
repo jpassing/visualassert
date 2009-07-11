@@ -312,7 +312,7 @@ namespace Cfix.Control.Native
 			HostEnvironment env = new HostEnvironment();
 			env.AddSearchPath( pathInfo.Directory.FullName );
 
-			using ( IHost host = this.Module.Agent.CreateHost( env ) )
+			using ( IHost host = CreateHost( this.Module.Agent, env ) )
 			{
 				ICfixTestItem ctlItem = null;
 				try

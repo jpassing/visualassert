@@ -215,6 +215,38 @@ namespace Cfix.Control.Native
 					: this.agent.GetHostPath( this.arch ) );
 		}
 
+		public ITestItemCollection LoadModule(
+			HostEnvironment env,
+			ITestItemCollection parentCollection,
+			string customHostPath,
+			string path,
+			bool ignoreDuplicates
+			)
+		{
+			if ( customHostPath != null )
+			{
+				Debug.Assert( customHostPath == path );
+
+				using ( IHost host = CreateHost( customHostPath, env ) )
+				{
+					return host.LoadModule(
+						parentCollection,
+						null,
+						ignoreDuplicates );
+				}
+			}
+			else
+			{
+				using ( IHost host = CreateHost( env ) )
+				{
+					return host.LoadModule(
+						parentCollection,
+						path,
+						ignoreDuplicates );
+				}
+			}
+		}
+
 		public Architecture Architecture
 		{
 			get
