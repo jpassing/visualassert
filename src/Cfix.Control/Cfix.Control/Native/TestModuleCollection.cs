@@ -144,9 +144,6 @@ namespace Cfix.Control.Native
 						ITestItemCollection module = agent.LoadModule(
 							env,
 							this.collectionStack.Peek(),
-							type == CfixTestModuleType.CfixTestModuleTypeUserEmbedded
-								? path
-								: null,
 							path,
 							this.collection.ignoreDuplicates );
 

@@ -17,7 +17,6 @@ namespace Cfix.Control
 		ITestItemCollection LoadModule(
 			HostEnvironment env,
 			ITestItemCollection parentCollection,
-			string customHostPath,
 			string path,
 			bool ignoreDuplicates
 			);

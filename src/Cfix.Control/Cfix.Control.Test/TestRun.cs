@@ -118,10 +118,8 @@ namespace Cfix.Control.Test
 					null,
 					null,
 					this.testdataDir2 + "\\embeddedw.exe",
-					this.testdataDir2 + "\\embeddedw.exe",
 					true ) );
 				comp.Add( ( IRunnableTestItem ) this.ooProcTarget.LoadModule(
-					null,
 					null,
 					null,
 					this.binDir + "\\testmanaged.dll",
@@ -147,7 +145,6 @@ namespace Cfix.Control.Test
 				comp.Add( ( IRunnableTestItem ) this.ooProcTarget.LoadModule(
 					null,
 					null,
-					this.testdataDir2 + "\\embeddedw.exe",
 					this.testdataDir2 + "\\embeddedw.exe",
 					true ) );
 				using ( IRun run = comp.Compile() )

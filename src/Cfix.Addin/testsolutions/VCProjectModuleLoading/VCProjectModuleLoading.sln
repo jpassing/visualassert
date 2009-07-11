@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Valid", "Valid\Valid.vcproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExportingDll", "ExportingDll\ExportingDll.vcproj", "{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsExe", "ConsExe\ConsExe.vcproj", "{F3A2FA0F-9262-4293-817C-CD1F844C7E68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -58,6 +60,12 @@ Global
 		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|Win32.Build.0 = Release|Win32
 		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|x64.ActiveCfg = Release|x64
 		{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}.Release|x64.Build.0 = Release|x64
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Debug|Win32.Build.0 = Debug|Win32
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Debug|x64.ActiveCfg = Debug|Win32
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Release|Win32.ActiveCfg = Release|Win32
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Release|Win32.Build.0 = Release|Win32
+		{F3A2FA0F-9262-4293-817C-CD1F844C7E68}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

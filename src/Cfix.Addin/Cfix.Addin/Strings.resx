@@ -160,7 +160,7 @@
     <value>cfix</value>
   </data>
   <data name="NotATestProjectToolTip" xml:space="preserve">
-    <value>Regulat Project -- does not define any tests.</value>
+    <value>Regular Project: The module does not define any tests.</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
     <value>{3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive.</value>
@@ -218,6 +218,9 @@
   </data>
   <data name="UnsupportedArchitecture" xml:space="preserve">
     <value>Unsupported processor architecture.</value>
+  </data>
+  <data name="UnsupportedModule" xml:space="preserve">
+    <value>The type of module is not supported.</value>
   </data>
   <data name="WrongLicense" xml:space="preserve">
     <value>The installed license is not applicable for this product.</value>

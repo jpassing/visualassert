@@ -218,16 +218,13 @@ namespace Cfix.Control.Native
 		public ITestItemCollection LoadModule(
 			HostEnvironment env,
 			ITestItemCollection parentCollection,
-			string customHostPath,
 			string path,
 			bool ignoreDuplicates
 			)
 		{
-			if ( customHostPath != null )
+			if ( path.ToLower().EndsWith( ".exe" ) )
 			{
-				Debug.Assert( customHostPath == path );
-
-				using ( IHost host = CreateHost( customHostPath, env ) )
+				using ( IHost host = CreateHost( path, env ) )
 				{
 					return host.LoadModule(
 						parentCollection,

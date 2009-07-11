@@ -187,7 +187,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Regulat Project -- does not define any tests..
+        ///   Looks up a localized string similar to Regular Project: The module does not define any tests..
         /// </summary>
         internal static string NotATestProjectToolTip {
             get {
@@ -363,6 +363,15 @@ namespace Cfix.Addin {
         internal static string UnsupportedArchitecture {
             get {
                 return ResourceManager.GetString("UnsupportedArchitecture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of module is not supported..
+        /// </summary>
+        internal static string UnsupportedModule {
+            get {
+                return ResourceManager.GetString("UnsupportedModule", resourceCulture);
             }
         }
         
