@@ -92,6 +92,7 @@ namespace Cfix.Control
 		IResultItemCollection RootResult { get; }
 
 		uint ItemsCompleted { get; }
+		uint ItemsSucceeded { get; }
 		uint ItemsFailed { get; }
 		uint ItemsInconclusive { get; }
 	}

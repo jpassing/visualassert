@@ -4,14 +4,14 @@ using System.Windows.Forms;
 
 namespace Cfix.Control.Ui.Explorer
 {
-	[Serializable]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2229:ImplementSerializationConstructors" ), Serializable]
 	public class AbstractExplorerCollectionNode : AbstractExplorerNode
 	{
 		private readonly TreeView treeView;
 		private readonly ITestItemCollection testItemCollection;
+		private readonly NodeFactory nodeFactory;
 
-		protected internal readonly NodeFactory nodeFactory;
-		
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix" )]
 		protected delegate void VoidDelegate();
 
 		private void AddNode( AbstractExplorerNode node )

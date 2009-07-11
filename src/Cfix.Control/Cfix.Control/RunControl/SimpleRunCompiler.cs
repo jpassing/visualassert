@@ -6,6 +6,7 @@ using System.Text;
 namespace Cfix.Control.RunControl
 {
 	// Non-threadsafe
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable" )]
 	public class SimpleRunCompiler : IRunCompiler
 	{
 		private readonly AgentSet agentSet;

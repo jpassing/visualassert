@@ -19,6 +19,7 @@ namespace Cfix.Control.RunControl
 		private int itemsCompleted;
 		private int itemsFailed;
 		private int itemsInconclusive;
+		private int itemsSucceeded;
 
 		protected AbstractActionEventSink(
 			IDispositionPolicy policy 
@@ -46,6 +47,10 @@ namespace Cfix.Control.RunControl
 			get { return ( uint ) this.itemsInconclusive; }
 		}
 
+		public uint ItemsSucceeded
+		{
+			get { return ( uint ) this.itemsSucceeded; }
+		}
 
 		/*--------------------------------------------------------------
 		 * IActionEvents.
@@ -118,6 +123,10 @@ namespace Cfix.Control.RunControl
 
 						case ExecutionStatus.Inconclusive:
 							Interlocked.Increment( ref this.itemsInconclusive );
+							break;
+
+						case ExecutionStatus.Succeeded:
+							Interlocked.Increment( ref this.itemsSucceeded );
 							break;
 					}
 				}

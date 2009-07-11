@@ -163,10 +163,10 @@
     <value>Regular Project: The module does not define any tests.</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
-    <value>{3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive.</value>
+    <value>{3}, {2} host process(es), {0}/{1} test cases completed, {6} succeeded, {4} failed, {5} inconclusive.</value>
   </data>
   <data name="ProgressInfoFinish" xml:space="preserve">
-    <value>{0}: {1} failed, {2} inconclusive.</value>
+    <value>{3} succeeded, {1} failed, {2} inconclusive.</value>
   </data>
   <data name="ProjectNotBuiltYet" xml:space="preserve">
     <value>Build output not available -- rebuild the project</value>

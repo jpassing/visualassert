@@ -16,7 +16,7 @@
     <StartWorkingDirectory>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\</StartWorkingDirectory>
     <StartArguments>D:\dev\wdev\cfixplus\trunk\src\Cfix.Addin\testsolutions\VCProjectModuleLoading\VCProjectModuleLoading.sln</StartArguments>
     <StartAction>Program</StartAction>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <StartProgram>C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\devenv.exe</StartProgram>

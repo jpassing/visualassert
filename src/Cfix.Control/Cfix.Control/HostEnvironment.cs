@@ -66,6 +66,7 @@ namespace Cfix.Control
 			Add( "PATH", module );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower" )]
 		public void Add( string name, string value )
 		{
 			//

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native

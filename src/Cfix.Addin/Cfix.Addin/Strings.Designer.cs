@@ -196,7 +196,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive..
+        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {6} succeeded, {4} failed, {5} inconclusive..
         /// </summary>
         internal static string ProgressInfo {
             get {
@@ -205,7 +205,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: {1} failed, {2} inconclusive..
+        ///   Looks up a localized string similar to {3} succeeded, {1} failed, {2} inconclusive..
         /// </summary>
         internal static string ProgressInfoFinish {
             get {

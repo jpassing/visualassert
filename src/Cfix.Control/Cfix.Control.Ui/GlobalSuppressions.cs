@@ -1,1 +1,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", Scope = "member", Target = "Cfix.Control.Ui.Explorer.NodeFactory+ModuleExplorerNode..ctor(System.Windows.Forms.TreeView,Cfix.Control.Ui.Explorer.NodeFactory,Cfix.Control.Native.TestModule)", MessageId = "System.String.Format(System.String,System.Object,System.Object)" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "Cfix.Control.Ui" )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA2210:AssembliesShouldHaveValidStrongNames" )]

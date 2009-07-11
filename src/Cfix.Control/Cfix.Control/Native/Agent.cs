@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -222,7 +221,7 @@ namespace Cfix.Control.Native
 			bool ignoreDuplicates
 			)
 		{
-			if ( path.ToLower().EndsWith( ".exe" ) )
+			if ( path.EndsWith( ".exe", StringComparison.OrdinalIgnoreCase ) )
 			{
 				using ( IHost host = CreateHost( path, env ) )
 				{
