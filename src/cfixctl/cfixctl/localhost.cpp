@@ -196,7 +196,7 @@ STDMETHODIMP LocalHost::LoadModule(
 		//
 		// No path specified - use host executable.
 		//
-		ModuleType = CfixTestModuleTypeUser;
+		ModuleType = CfixTestModuleTypeUserEmbedded;
 		Hr = CfixCreateTestModule(
 			GetModuleHandle( NULL ),
 			&Module );
@@ -298,20 +298,15 @@ STDMETHODIMP LocalHost::Terminate()
 	return E_NOTIMPL;
 }
 
-static BOOL CfixctlsIsDll(
-	__in PCWSTR Path
+static BOOL CfixctlsHasFileExtension(
+	__in PCWSTR Path,
+	__in PCWSTR Extension
 	)
 {
-	size_t Len = wcslen( Path );
-	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".dll" ) );
-}
+	ASSERT( wcslen( Extension ) == 4 );
 
-static BOOL CfixctlsIsSys(
-	__in PCWSTR Path
-	)
-{
 	size_t Len = wcslen( Path );
-	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".sys" ) );
+	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, Extension ) );
 }
 
 struct CFIXCTLP_SEARCH_CONTEXT
@@ -330,11 +325,15 @@ static HRESULT CfixctlsFileCallback(
 	// Filter file types.
 	//
 	CfixTestModuleType Type;
-	if ( CfixctlsIsDll( Path ) )
+	if ( CfixctlsHasFileExtension( Path, L".dll" ) )
 	{
 		Type = CfixTestModuleTypeUser;
 	}
-	else if ( CfixctlsIsSys( Path ) )
+	else if ( CfixctlsHasFileExtension( Path, L".exe" ) )
+	{
+		Type = CfixTestModuleTypeUserEmbedded;
+	}
+	else if ( CfixctlsHasFileExtension( Path, L".sys" ) )
 	{
 		Type = CfixTestModuleTypeKernel;
 	}
@@ -346,8 +345,7 @@ static HRESULT CfixctlsFileCallback(
 		return S_OK;
 	}
 
-	if ( Context->Type != ( ULONG ) -1 && 
-		 Context->Type != ( ULONG ) Type )
+	if ( ! ( Context->Type & ( ULONG ) Type ) )
 	{
 		return S_OK;
 	}
@@ -455,7 +453,6 @@ STDMETHODIMP LocalHost::SearchModules(
 	)
 {
 	if ( PathFilter == NULL ||
-		 Type != ( ULONG ) -1 && Type > CfixTestModuleTypeMax ||
 		 Arch == 0 ||
 		 Arch != ( ULONG ) -1 && Arch > 
 		     ( CfixTestModuleArchI386 | CfixTestModuleArchAmd64 ) ||

@@ -18,6 +18,7 @@ namespace Cfix.Control
 	public enum ModuleType
 	{
 		User = CfixTestModuleType.CfixTestModuleTypeUser,
+		UserEmbedded = CfixTestModuleType.CfixTestModuleTypeUserEmbedded,
 		Kernel = CfixTestModuleType.CfixTestModuleTypeKernel
 	}
 }

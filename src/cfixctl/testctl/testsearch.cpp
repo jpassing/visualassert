@@ -119,7 +119,7 @@ public:
 			this->Amd64Files++;
 		}
 
-		if ( Type == CfixTestModuleTypeUser )
+		if ( Type == CfixTestModuleTypeUser || Type == CfixTestModuleTypeUserEmbedded )
 		{
 			this->UserFiles++;
 		}

@@ -53,9 +53,10 @@ library Cfixctl
 		version( 1.0 )
 	]
 	enum CfixTestModuleType {
-		CfixTestModuleTypeUser		= 0,
-		CfixTestModuleTypeKernel	= 1,
-		CfixTestModuleTypeMax		= 1
+		CfixTestModuleTypeUser				= 1,
+		CfixTestModuleTypeUserEmbedded		= 2,
+		CfixTestModuleTypeKernel			= 4,
+		CfixTestModuleTypeMax				= 4
 	} CfixTestModuleType;
 
 	typedef 
@@ -147,7 +148,8 @@ library Cfixctl
 			Arguments:
 				PathFilter	- Path or filter expression, e.g. c:\*.dll.
 				Flags		- CFIXCTL_SEARCH_FLAG_*.
-				Type		- CfixTestModuleType or -1 to search all.
+				Type		- OR-combination of CfixTestModuleType 
+							  or -1 to search all.
 				Arch		- One or more CfixTestModuleArchs.
 				Callback	- Object to receive events.
 		--*/
