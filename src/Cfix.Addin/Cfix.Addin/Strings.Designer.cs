@@ -70,15 +70,6 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture..
-        /// </summary>
-        internal static string ArchitectureMismatch {
-            get {
-                return ResourceManager.GetString("ArchitectureMismatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Beta, expired.
         /// </summary>
         internal static string BetaLicenseInvalid {
@@ -174,6 +165,15 @@ namespace Cfix.Addin {
         internal static string FailedToObtainCurrentConfig {
             get {
                 return ResourceManager.GetString("FailedToObtainCurrentConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type..
+        /// </summary>
+        internal static string IncompatibleModule {
+            get {
+                return ResourceManager.GetString("IncompatibleModule", resourceCulture);
             }
         }
         

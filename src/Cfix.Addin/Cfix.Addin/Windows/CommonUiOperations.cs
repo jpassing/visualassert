@@ -66,9 +66,9 @@ namespace Cfix.Addin.Windows
 				// Ok, error dialog should have been provided.
 				//
 			}
-			catch ( ArchitectureMismatchException )
+			catch ( IncompatibleModulesException )
 			{
-				CfixStudio.ShowInfo( Strings.ArchitectureMismatch );
+				CfixStudio.ShowInfo( Strings.IncompatibleModule );
 			}
 			catch ( EmptyRunException )
 			{

@@ -101,6 +101,66 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
+		[ExpectedException(typeof(ArgumentException))]
+		public void TestRejectForest()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			{
+				RunControl.SimpleRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					ExecutionOptions.None,
+					ThreadingOptions.ComNeutralThreading,
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
+
+				comp.Add( ( IRunnableTestItem ) this.ooProcTarget.LoadModule(
+					null,
+					null,
+					this.testdataDir2 + "\\embeddedw.exe",
+					this.testdataDir2 + "\\embeddedw.exe",
+					true ) );
+				comp.Add( ( IRunnableTestItem ) this.ooProcTarget.LoadModule(
+					null,
+					null,
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) );
+
+				comp.Compile();
+			}
+		}
+
+		[Test]
+		public void TestEmbedded()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			{
+				RunControl.SimpleRunCompiler comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					ExecutionOptions.None,
+					ThreadingOptions.ComNeutralThreading,
+					EnvironmentOptions.AutoAdjustCurrentDirectory );
+
+				comp.Add( ( IRunnableTestItem ) this.ooProcTarget.LoadModule(
+					null,
+					null,
+					this.testdataDir2 + "\\embeddedw.exe",
+					this.testdataDir2 + "\\embeddedw.exe",
+					true ) );
+				using ( IRun run = comp.Compile() )
+				{
+					Assert.AreEqual( 1, run.TaskCount );
+
+					AutoResetEvent done = new AutoResetEvent( false );
+					run.Start();
+				}
+			}
+		}
+
+		[Test]
 		public void TestBasicEvents()
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )

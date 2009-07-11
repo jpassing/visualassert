@@ -42,20 +42,20 @@ namespace Cfix.Control
 	}
 
 	[Serializable]
-	public class ArchitectureMismatchException : CfixException
+	public class IncompatibleModulesException : CfixException
 	{
-		public ArchitectureMismatchException()
+		public IncompatibleModulesException()
 		{ }
 
-		protected ArchitectureMismatchException( SerializationInfo info, StreamingContext ctx )
+		protected IncompatibleModulesException( SerializationInfo info, StreamingContext ctx )
 			: base( info, ctx )
 		{ }
 
-		public ArchitectureMismatchException( String msg )
+		public IncompatibleModulesException( String msg )
 			: base( msg )
 		{ }
 
-		public ArchitectureMismatchException( String msg, Exception inner )
+		public IncompatibleModulesException( String msg, Exception inner )
 			: base( msg, inner )
 		{ }
 	}

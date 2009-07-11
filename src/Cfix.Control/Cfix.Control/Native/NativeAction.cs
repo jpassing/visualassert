@@ -240,6 +240,11 @@ namespace Cfix.Control.Native
 			get { return this.item; }
 		}
 
+		public ModuleType ModuleType
+		{
+			get { return this.item.Module.Type; }
+		}
+
 		public IResultItem Result
 		{
 			get { return this.result; }
@@ -321,6 +326,11 @@ namespace Cfix.Control.Native
 				Logger.LogError( "Agent", "Failed to stop action", x );
 				throw this.item.Module.Agent.WrapException( x );
 			}
+		}
+
+		public IHost CreateHost( IAgent agent, HostEnvironment env )
+		{
+			return this.item.CreateHost( agent, env );
 		}
 	}
 }
