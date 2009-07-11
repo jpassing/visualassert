@@ -35,14 +35,21 @@ namespace Cfix.Control.Native
 
 		public void Dispose()
 		{
+			IList<Process> processListCopy;
 			lock ( this.processListLock )
 			{
-				foreach ( Process proc in this.processList )
-				{
-					proc.Dispose();
-				}
-
+				//
+				// Make a copy and release lock early to avoid deadlock
+				// between disposing thread and a thread delivering
+				// a process exit-event.
+				//
+				processListCopy = new List<Process>( this.processList );
 				this.processList.Clear();
+			}
+
+			foreach ( Process proc in processListCopy )
+			{
+				proc.Dispose();
 			}
 		}
 

@@ -466,7 +466,9 @@ static HRESULT CfixctlsSpawnHost(
 		NULL,
 		NULL,
 		FALSE,
-		CREATE_UNICODE_ENVIRONMENT | ( Suspend ? CREATE_SUSPENDED : 0 ),
+		CREATE_NO_WINDOW 
+			| CREATE_UNICODE_ENVIRONMENT 
+			| ( Suspend ? CREATE_SUSPENDED : 0 ),
 		( PVOID ) FullEnvironment,
 		CurrentDirectory,
 		&StartupInfo,
