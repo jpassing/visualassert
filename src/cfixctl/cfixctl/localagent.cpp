@@ -289,12 +289,6 @@ static HRESULT CfixctlsGetObjrefMonikerString(
 	
 	Hr = AgentMk->GetDisplayName( BindCtx, NULL, DisplayName );
 
-	//
-	// Yield s.t. the moniker can settle - this is ugly, but improves
-	// reliability of cfix' own tests.
-	//
-	Sleep( 10 );
-
 Cleanup:
 	if ( AgentMk != NULL )
 	{

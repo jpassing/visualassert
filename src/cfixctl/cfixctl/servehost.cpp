@@ -31,11 +31,28 @@ static HRESULT CfixctlsGetAgent(
 	__out PVOID *Agent
 	)
 {
-	return CoGetObject(
-		ObjRefMoniker,
-		NULL,
-		Iid,
-		( PVOID* ) Agent );
+	for ( ULONG Trials = 0; Trials < 9; Trials ++ )
+	{
+		HRESULT Hr = CoGetObject(
+			ObjRefMoniker,
+			NULL,
+			Iid,
+			( PVOID* ) Agent );
+
+		if ( CO_E_OBJNOTREG == Hr )
+		{
+			//
+			// Wait and try again -- OLE is a bit flaky at times.
+			//
+			Sleep( 1 << Trials );
+		}
+		else
+		{
+			return Hr;
+		}
+	}
+
+	return CO_E_OBJNOTREG;
 }
 
 static HRESULT CfixctlsCreateLocalHost( 
