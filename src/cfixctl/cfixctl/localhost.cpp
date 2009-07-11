@@ -146,16 +146,23 @@ STDMETHODIMP LocalHost::LoadModule(
 	ICfixTestModuleInternal *ModuleObject = NULL;
 	CfixTestModuleType ModuleType;
 
-	if ( Path != NULL )
+	ULONG PathLen;
+	if ( Path != NULL && 
+		 ( PathLen = SysStringLen( Path ) ) > 0 )
 	{
-		SIZE_T PathLen;
-		if ( ( PathLen = wcslen( Path ) ) < 5 )
+		if ( PathLen < 4 )
 		{
 			return E_INVALIDARG;
 		}
 
+
 		PCWSTR Extension = Path + PathLen - 4;
-		if ( 0 == _wcsicmp( L".sys", Extension ) )
+
+		if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( Path ) )
+		{
+			return CFIXCTL_E_TESTMODULE_NOT_FOUND;
+		}
+		else if ( 0 == _wcsicmp( L".sys", Extension ) )
 		{
 			//
 			// It is a driver.
@@ -179,8 +186,7 @@ STDMETHODIMP LocalHost::LoadModule(
 		}
 		else
 		{
-			ModuleType = CfixTestModuleTypeUser;
-			Hr = CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
+			return CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
 		}
 
 		EffectiveModulePath = Path;
@@ -210,6 +216,10 @@ STDMETHODIMP LocalHost::LoadModule(
 
 			EffectiveModulePath = EffectiveModulePathBuffer;
 		}
+		else
+		{
+			EffectiveModulePath = NULL;
+		}
 	}
 
 	if ( Hr == HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ) )
@@ -233,6 +243,8 @@ STDMETHODIMP LocalHost::LoadModule(
 	{
 		goto Cleanup;
 	}
+
+	ASSERT( EffectiveModulePath != NULL );
 
 	Hr = ModuleObject->Initialize(
 		EffectiveModulePath,

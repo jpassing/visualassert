@@ -94,6 +94,7 @@ public:
 		BSTR SomeFile = SysAllocString( L"idonotexist.xxx" );
 
 		ICfixTestModule *Module;
+
 		CFIXCC_ASSERT_EQUALS( 
 			E_INVALIDARG,
 			Host->LoadModule(
@@ -105,7 +106,7 @@ public:
 				SomeDll,
 				&Module ) );
 		CFIXCC_ASSERT_EQUALS( 
-			CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE,
+			CFIXCTL_E_TESTMODULE_NOT_FOUND,
 			Host->LoadModule(
 				SomeFile,
 				&Module ) );
@@ -123,11 +124,15 @@ public:
 			OwnPath,
 			_countof( OwnPath ) ) );
 
+		BSTR BstrPath = SysAllocString( OwnPath );
+
 		ICfixTestModule *Module;
 		CFIX_ASSERT_OK( 
 			Host->LoadModule(
-				OwnPath,
+				BstrPath,
 				&Module ) );
+
+		SysFreeString( BstrPath );
 
 		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
 	}

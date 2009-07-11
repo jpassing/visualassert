@@ -204,7 +204,13 @@ namespace Cfix.Control.Native
 			//
 			this.processWatcher.Watch( ( int ) host.GetHostProcessId() );
 
-			return new Host( this, host );
+			return new Host( 
+				this, 
+				host,
+				customHostPath != null,
+				customHostPath != null 
+					? customHostPath
+					: this.agent.GetHostPath( this.arch ) );
 		}
 
 		public Architecture Architecture

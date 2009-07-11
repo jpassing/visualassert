@@ -13,7 +13,7 @@ namespace Cfix.Control.Ui.Result
 
 		private readonly ResultItemNode parent;
 
-		public SourceReference( string file, uint line, ResultItemNode parent )
+		protected SourceReference( string file, uint line, ResultItemNode parent )
 		{
 			this.file = file;
 			this.line = line;

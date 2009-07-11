@@ -17,17 +17,24 @@ namespace Cfix.Control.Native
 	{
 		private readonly Agent agent;
 		private readonly ICfixHost host;
+		private readonly string imagePath;
+		private readonly bool usesCustomImage;
 
 		internal Host(
 			Agent agent,
-			ICfixHost host
+			ICfixHost host,
+			bool usesCustomImage,
+			string imagePath
 			)
 		{
 			Debug.Assert( agent != null );
 			Debug.Assert( host != null );
+			Debug.Assert( imagePath != null );
 
 			this.agent = agent;
 			this.host = host;
+			this.imagePath = imagePath;
+			this.usesCustomImage = usesCustomImage;
 		}
 
 		~Host()
@@ -96,17 +103,36 @@ namespace Cfix.Control.Native
 			bool ignoreDuplicates
 			)
 		{
+			Debug.Assert( ( path == null ) == this.usesCustomImage );
+
 			ICfixTestModule ctlModule = null;
 			try
 			{
 				ctlModule = this.host.LoadModule( path );
 
-				TestModule mod = new TestModule(
-					parentCollection,
-					path,
-					this.agent,
-					ctlModule,
-					ignoreDuplicates );
+				TestModule mod;
+				if ( this.usesCustomImage && path == null )
+				{
+					//
+					// This is effectively the host module, so use its
+					// path.
+					//
+					mod = new HostTestModule(
+						parentCollection,
+						this.imagePath,
+						this.agent,
+						ctlModule,
+						ignoreDuplicates ); 
+				}
+				else
+				{
+					mod = new TestModule(
+						parentCollection,
+						path,
+						this.agent,
+						ctlModule,
+						ignoreDuplicates );
+				}
 
 				mod.Update( ctlModule );
 
@@ -129,6 +155,11 @@ namespace Cfix.Control.Native
 		public void Terminate()
 		{
 			this.host.Terminate();
+		}
+
+		public string Path
+		{
+			get { return this.imagePath; }
 		}
 	}
 }

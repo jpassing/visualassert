@@ -27,5 +27,6 @@ namespace Cfix.Control
 			);
 
 		void Terminate();
+		string Path { get; }
 	}
 }

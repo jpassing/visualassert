@@ -732,11 +732,11 @@ namespace Cfix.Control.Test
 			}
 		}
 		
-		[Test]
-		public void TestStopMultithreaded()
-		{
-			Assert.Fail( "NIY" );
-		}
+		//[Test]
+		//public void TestStopMultithreaded()
+		//{
+		//    Assert.Fail( "NIY" );
+		//}
 
 		[Test]
 		public void TestTerminate()

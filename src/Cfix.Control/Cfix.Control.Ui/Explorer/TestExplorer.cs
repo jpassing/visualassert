@@ -57,11 +57,6 @@ namespace Cfix.Control.Ui.Explorer
 		 * Private.
 		 */
 
-		private static void HandleException( Exception x )
-		{
-			MessageBox.Show( x.Message );
-		}
-
 		private delegate void RefreshDelegate( bool async, ITestItem item );
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]

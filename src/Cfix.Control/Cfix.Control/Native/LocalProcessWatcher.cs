@@ -35,12 +35,15 @@ namespace Cfix.Control.Native
 
 		public void Dispose()
 		{
-			foreach ( Process proc in this.processList )
+			lock ( this.processListLock )
 			{
-				proc.Dispose();
-			}
+				foreach ( Process proc in this.processList )
+				{
+					proc.Dispose();
+				}
 
-			this.processList.Clear();
+				this.processList.Clear();
+			}
 		}
 
 		public void Watch( Process proc )
@@ -57,6 +60,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		public uint TerminateAll()
 		{
 			uint terminated = 0;
