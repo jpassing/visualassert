@@ -127,6 +127,13 @@ namespace Cfix.Addin
 			agent.DefaultEnvironment.MergeEnvironmentVariables(
 				Environment.GetEnvironmentVariables() );
 
+			//
+			// Add own library path to PATH s.t. custom hosts can
+			// find cfixctl.dll.
+			//
+			agent.DefaultEnvironment.AddSearchPath(
+				Directories.GetBinDirectory( arch ) );
+
 			return agent;
 		}
 

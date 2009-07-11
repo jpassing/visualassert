@@ -288,7 +288,8 @@ library Cfixctl
 				HostPath	- Optional. Path to host binary. if null, the
 							  default host is used. Ignored for in-process
 							  hosts.
-				Environ		- Optional. See CreateProcess for formatting.
+				Environ		- Optional. Newline-separated list of 
+							  environemtn variables: FOO=BAR\nBAZ=QUUX\n.
 				CurrentDir	- Optional. Current directory to start host in.
 
 				Environ and CurrentDir are ignored for in-process hosts.

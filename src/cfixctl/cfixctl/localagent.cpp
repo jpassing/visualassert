@@ -375,20 +375,25 @@ static HRESULT CfixctlsSpawnHost(
 
 	SIZE_T FullEnvironmentCch = 
 		//
-		// Custom-environment\0
+		// Custom-environment
 		//
-		( CustomEnvironment == NULL ? 0 : wcslen( CustomEnvironment ) ) + 1 +
+		( CustomEnvironment == NULL ? 0 : wcslen( CustomEnvironment ) ) +
 
 		//
-		// Embedding.
+		// Embedding\n.
 		//
-		( CustomHostPath == NULL ? 0 : wcslen( CFIXCTLP_EMB_INIT_ENVVAR ) ) + 1 +
+		( CustomHostPath == NULL ? 0 : wcslen( CFIXCTLP_EMB_INIT_ENVVAR ) + 1 ) +
 
 		//
-		// name=value\0\0
+		// name=value\n
 		//
 		wcslen( CFIXCTLP_MONIKER_ENVVAR_NAME ) + 1 +
-		wcslen( AgentMkDisplayName ) + 1 + 1;
+		wcslen( AgentMkDisplayName ) + 1 +
+		
+		//
+		// Terminator.
+		//
+		1;
 
 	PWSTR FullEnvironment = new WCHAR[ FullEnvironmentCch ];
 	if ( FullEnvironment == NULL )
@@ -396,62 +401,37 @@ static HRESULT CfixctlsSpawnHost(
 		return E_OUTOFMEMORY;
 	}
 
-	//
-	// N.B. We cannot use *printf due to the embedded nulls - thus,
-	// do it manually...
-	//
+	ASSERT( 
+		CustomEnvironment == NULL || 
+		wcslen( CustomEnvironment ) == 0 ||
+		CustomEnvironment[ wcslen( CustomEnvironment ) - 1 ] == L'\n' );
 
-	PWSTR EnvironmentEnd = NULL;
-	size_t EnvironmentRemaining;
-	( VOID ) StringCchPrintfEx(
+	Hr = StringCchPrintf(
 		FullEnvironment,
 		FullEnvironmentCch,
-		&EnvironmentEnd,
-		&EnvironmentRemaining,
-		0,
-		L"%s=%s",
-		CFIXCTLP_MONIKER_ENVVAR_NAME,
-		AgentMkDisplayName );
-
-	ASSERT( EnvironmentRemaining > 0 );
-	ASSERT( *EnvironmentEnd == UNICODE_NULL );
-
-	EnvironmentEnd++;
-	EnvironmentRemaining--;
-
-	if ( CustomHostPath != NULL )
+		L"%s%s" CFIXCTLP_MONIKER_ENVVAR_NAME L"=%s\n",
+		CustomEnvironment ? CustomEnvironment : L"",
+		CustomHostPath ? CFIXCTLP_EMB_INIT_ENVVAR L"\n" : L"",
+		AgentMkDisplayName
+		);
+	if ( FAILED( Hr ) )
 	{
-		( VOID ) StringCchCopy(
-			EnvironmentEnd,
-			EnvironmentRemaining,
-			CFIXCTLP_EMB_INIT_ENVVAR );
-
-		EnvironmentEnd += wcslen( CFIXCTLP_EMB_INIT_ENVVAR );
-
-		ASSERT( EnvironmentRemaining > 0 );
-		ASSERT( *EnvironmentEnd == UNICODE_NULL );
-
-		EnvironmentEnd++;
-		EnvironmentRemaining--;
+		return Hr;
 	}
 
-	if ( CustomEnvironment != NULL )
+	//
+	// Replace all \n by \0 so that the buffer becomes a valid
+	// environment string.
+	//
+
+	PWSTR Newline;
+	while ( ( Newline = wcsrchr( FullEnvironment, L'\n' ) ) != NULL )
 	{
-		( VOID ) StringCchCopy(
-			EnvironmentEnd,
-			EnvironmentRemaining,
-			CustomEnvironment );
-
-		EnvironmentEnd += wcslen( CustomEnvironment );
-
-		ASSERT( EnvironmentRemaining > 0 );
-		ASSERT( *EnvironmentEnd == UNICODE_NULL );
-
-		EnvironmentEnd++;
-		EnvironmentRemaining--;
+		*Newline = UNICODE_NULL;
 	}
 
-	*EnvironmentEnd++ = UNICODE_NULL;
+	ASSERT( FullEnvironment[ FullEnvironmentCch - 2 ] == UNICODE_NULL );
+	ASSERT( FullEnvironment[ FullEnvironmentCch - 1 ] == UNICODE_NULL );
 
 	//
 	// Spawn.

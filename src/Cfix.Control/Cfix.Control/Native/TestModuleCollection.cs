@@ -133,7 +133,9 @@ namespace Cfix.Control.Native
 					//
 					// Augment search path.
 					//
+					IAgent agent = this.collection.runTargets.GetAgent( arch );
 					FileInfo pathInfo = new FileInfo( path );
+					
 					HostEnvironment env = new HostEnvironment();
 					env.AddSearchPath( pathInfo.Directory.FullName );
 
@@ -142,8 +144,7 @@ namespace Cfix.Control.Native
 						switch ( type )
 						{
 							case CfixTestModuleType.CfixTestModuleTypeUser:
-								using ( IHost host =
-										this.collection.runTargets.GetAgent( arch ).CreateHost( env ) )
+								using ( IHost host = agent.CreateHost( env ) )
 								{
 									this.collectionStack.Peek().Add(
 										host.LoadModule(
@@ -154,8 +155,7 @@ namespace Cfix.Control.Native
 								break;
 
 							case CfixTestModuleType.CfixTestModuleTypeUserEmbedded:
-								using ( IHost host =
-										this.collection.runTargets.GetAgent( arch ).CreateHost( path, env ) )
+								using ( IHost host = agent.CreateHost( path, env ) )
 								{
 									this.collectionStack.Peek().Add(
 										host.LoadModule(

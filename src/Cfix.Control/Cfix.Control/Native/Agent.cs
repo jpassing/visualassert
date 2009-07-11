@@ -174,7 +174,6 @@ namespace Cfix.Control.Native
 			HostEnvironment env
 			)
 		{
-			string envString = null;
 			string currentDir = null;
 
 			if ( env != null )
@@ -184,8 +183,11 @@ namespace Cfix.Control.Native
 				//
 				env = env.Merge( this.defaultHostEnv );
 
-				envString = env.NativeFormat;
 				currentDir = env.CurrentDirectory;
+			}
+			else
+			{
+				env = this.defaultHostEnv;
 			}
 
 			ICfixHost host = this.agent.CreateHost(
@@ -194,7 +196,7 @@ namespace Cfix.Control.Native
 				( uint ) this.flags,
 				this.timeout,
 				customHostPath,
-				envString,
+				env.NativeFormat,
 				currentDir );
 
 			Debug.Assert( host != null );

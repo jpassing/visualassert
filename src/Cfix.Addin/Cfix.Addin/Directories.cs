@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Cfix.Control;
@@ -15,12 +16,40 @@ namespace Cfix.Addin
 {
 	internal static class Directories
 	{
+		private static string BuildEnvironment
+		{
+			get
+			{
+				string imagePath = typeof( Directories ).Assembly.Location;
+
+				string dirName = new DirectoryInfo( imagePath ).Parent.Parent.Name;
+				if ( dirName == "chk" || dirName == "fre" )
+				{
+					return dirName;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
 		public static string InstallationDirectory
 		{
 			get
 			{
 				string imagePath = typeof( Directories ).Assembly.Location;
-				return new DirectoryInfo( imagePath ).Parent.Parent.Parent.FullName;
+
+				DirectoryInfo dir = new DirectoryInfo( imagePath ).Parent.Parent.Parent;
+				if ( dir.Name == "bin" )
+				{
+					//
+					// Dev environment.
+					//
+					dir = dir.Parent;
+				}
+
+				return dir.FullName;
 			}
 		}
 
@@ -42,31 +71,57 @@ namespace Cfix.Addin
 
 		public static string GetLibDirectory( Architecture arch )
 		{
-			switch ( arch )
+			string env = BuildEnvironment;
+			if ( env != null )
 			{
-				case Architecture.I386:
-					return InstallationDirectory + "\\lib\\i386";
+				return GetBinDirectory( arch );
+			}
+			else
+			{
+				switch ( arch )
+				{
+					case Architecture.I386:
+						return InstallationDirectory + "\\lib\\i386";
 
-				case Architecture.Amd64:
-					return InstallationDirectory + "\\lib\\amd64";
+					case Architecture.Amd64:
+						return InstallationDirectory + "\\lib\\amd64";
 
-				default:
-					throw new ArgumentException();
+					default:
+						throw new ArgumentException();
+				}
 			}
 		}
 
 		public static string GetBinDirectory( Architecture arch )
 		{
-			switch ( arch )
+			string env = BuildEnvironment;
+			if ( env == null )
 			{
-				case Architecture.I386:
-					return InstallationDirectory + "\\bin\\i386";
+				switch ( arch )
+				{
+					case Architecture.I386:
+						return InstallationDirectory + "\\bin\\i386";
 
-				case Architecture.Amd64:
-					return InstallationDirectory + "\\bin\\amd64";
+					case Architecture.Amd64:
+						return InstallationDirectory + "\\bin\\amd64";
 
-				default:
-					throw new ArgumentException();
+					default:
+						throw new ArgumentException();
+				}
+			}
+			else
+			{
+				switch ( arch )
+				{
+					case Architecture.I386:
+						return InstallationDirectory + "\\bin\\" + env +"\\i386";
+
+					case Architecture.Amd64:
+						return InstallationDirectory + "\\bin\\" + env + "\\amd64";
+
+					default:
+						throw new ArgumentException();
+				}
 			}
 		}
 
