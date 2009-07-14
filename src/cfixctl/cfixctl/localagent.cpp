@@ -56,6 +56,7 @@ private:
 		__in DWORD Cookie,
 		__in ULONG Timeout,
 		__in_opt HANDLE ProcessHandle,
+		__in BOOL IsCustomHost,
 		__out ICfixHost** Host
 		);
 
@@ -727,6 +728,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			Cookie,
 			Timeout,
 			ProcessOrJob,
+			CustomHostPath != NULL,
 			&RemoteHost );
 	}
 
@@ -875,9 +877,15 @@ STDMETHODIMP LocalAgent::CreateHost(
 		//
 		return CreateProcessHost(
 			Arch,
-			CustomHostPath,
-			Environment,
-			CurrentDirectory,
+			CustomHostPath != NULL && SysStringByteLen( CustomHostPath ) > 0
+				? CustomHostPath
+				: NULL,
+			Environment != NULL && SysStringByteLen( Environment ) > 0
+				? Environment
+				: NULL,
+			CurrentDirectory != NULL && SysStringByteLen( CurrentDirectory ) > 0
+				? CurrentDirectory
+				: NULL,
 			Flags,
 			Timeout,
 			Host );
@@ -935,6 +943,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 	__in DWORD Cookie,
 	__in ULONG Timeout,
 	__in_opt HANDLE ProcessHandle,
+	__in BOOL IsCustomHost,
 	__out ICfixHost** Host
 	)
 {
@@ -1031,7 +1040,20 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 					}
 					else
 					{
-						return ( HRESULT ) ExitCode;
+						HRESULT ExitHr = ( HRESULT ) ExitCode;
+						
+						if ( IsCustomHost )
+						{
+							return CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY;
+						}
+						else if ( FAILED( ExitHr ) )
+						{
+							return Hr;
+						}
+						else
+						{
+							return CFIXCTL_E_HOST_EXITED_PREMATURELY;
+						}
 					}
 				}
 				else
@@ -1057,6 +1079,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 		Cookie,
 		Timeout,
 		NULL,
+		FALSE, // Do not know - assume.
 		Host );
 }
 

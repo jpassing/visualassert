@@ -422,6 +422,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testexe14"
+					>
+					<File
+						RelativePath=".\testlibs\testexe14\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe14\suite.c"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

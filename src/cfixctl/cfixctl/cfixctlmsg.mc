@@ -153,3 +153,19 @@ SymbolicName	= CFIXCTL_E_MISSING_AGENT_MK
 Language		= English
 The agent moniker was not found in the process environment.
 .
+
+MessageId		= 0xB010
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY
+Language		= English
+The process exited without registering with the agent - this may be due to the module not containing any test fixtures.
+.
+
+MessageId		= 0xB011
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_HOST_EXITED_PREMATURELY
+Language		= English
+The host process exited prematurely without setting a proper exit code.
+.
