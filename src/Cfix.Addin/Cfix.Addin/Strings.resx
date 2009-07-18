@@ -171,6 +171,9 @@
   <data name="ProjectNotBuiltYet" xml:space="preserve">
     <value>Build output not available -- rebuild the project</value>
   </data>
+  <data name="QuickStartCmdCaption" xml:space="preserve">
+    <value>cfix Quick Start Page</value>
+  </data>
   <data name="ReDebugRunCmdCaption" xml:space="preserve">
     <value>Restart Last Run</value>
   </data>

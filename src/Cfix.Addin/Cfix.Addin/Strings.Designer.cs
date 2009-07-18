@@ -223,6 +223,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cfix Quick Start Page.
+        /// </summary>
+        internal static string QuickStartCmdCaption {
+            get {
+                return ResourceManager.GetString("QuickStartCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart Last Run.
         /// </summary>
         internal static string ReDebugRunCmdCaption {

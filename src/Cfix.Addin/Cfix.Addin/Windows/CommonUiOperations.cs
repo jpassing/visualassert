@@ -278,5 +278,17 @@ namespace Cfix.Addin.Windows
 				CfixStudio.HandleError( x );
 			}
 		}
+
+		public static void OpenQuickStartPage( DTE2 dte )
+		{
+			try
+			{
+				dte.ItemOperations.Navigate(
+					Directories.QuickStartPage,
+					vsNavigateOptions.vsNavigateOptionsDefault );
+			}
+			catch
+			{ }
+		}
 	}
 }
