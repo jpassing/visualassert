@@ -35,12 +35,22 @@ namespace Cfix.Control.Native
 
 		public void Dispose()
 		{
-			foreach ( Process proc in this.processList )
+			IList<Process> processListCopy;
+			lock ( this.processListLock )
+			{
+				//
+				// Make a copy and release lock early to avoid deadlock
+				// between disposing thread and a thread delivering
+				// a process exit-event.
+				//
+				processListCopy = new List<Process>( this.processList );
+				this.processList.Clear();
+			}
+
+			foreach ( Process proc in processListCopy )
 			{
 				proc.Dispose();
 			}
-
-			this.processList.Clear();
 		}
 
 		public void Watch( Process proc )
@@ -57,6 +67,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		public uint TerminateAll()
 		{
 			uint terminated = 0;

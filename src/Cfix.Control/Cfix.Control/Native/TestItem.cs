@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -71,6 +70,21 @@ namespace Cfix.Control.Native
 			finally
 			{
 				this.Module.Agent.ReleaseObject( parentContainer );
+			}
+		}
+
+		internal virtual IHost CreateHost(
+			IAgent agent,
+			HostEnvironment env )
+		{
+			TestItemCollection parentColl = this.Parent as TestItemCollection;
+			if ( parentColl != null )
+			{
+				return parentColl.CreateHost( agent, env );
+			}
+			else
+			{
+				return agent.CreateHost( env );
 			}
 		}
 
@@ -159,6 +173,7 @@ namespace Cfix.Control.Native
 			get { return this.parent; }
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope" )]
 		public void Add(
 			IRunCompiler compiler,
 			IActionEvents events,
@@ -169,6 +184,9 @@ namespace Cfix.Control.Native
 			Debug.Assert( events != null );
 			Debug.Assert( result != null );
 
+			FileInfo modInfo = new FileInfo( this.Module.Path );
+			compiler.Environment.AddSearchPath( modInfo.Directory.FullName );
+
 			compiler.Add(
 				new NativeAction(
 					this,
@@ -177,9 +195,6 @@ namespace Cfix.Control.Native
 					compiler.ExecutionOptions,
 					compiler.ThreadingOptions,
 					compiler.EnvironmentOptions ) );
-
-			FileInfo modInfo = new FileInfo( this.Module.Path );
-			compiler.Environment.AddSearchPath( modInfo.Directory.FullName );
 		}
 
 		/*--------------------------------------------------------------

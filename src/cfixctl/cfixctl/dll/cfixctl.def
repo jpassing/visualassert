@@ -12,9 +12,8 @@ EXPORTS
 	DllRegisterServer		PRIVATE
 	DllUnregisterServer		PRIVATE
 	
-	CfixctlRegisterServerUnlockCallback
 	CfixctlGetClassObject
 	CfixctlInstallLicense
 	CfixctlQueryLicenseInfo
 	CfixctlValidateLicense
-	
+	CfixctlServeHost	

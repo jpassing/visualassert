@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -312,7 +311,7 @@ namespace Cfix.Control.Native
 			HostEnvironment env = new HostEnvironment();
 			env.AddSearchPath( pathInfo.Directory.FullName );
 
-			using ( IHost host = this.Module.Agent.CreateHost( env ) )
+			using ( IHost host = CreateHost( this.Module.Agent, env ) )
 			{
 				ICfixTestItem ctlItem = null;
 				try

@@ -363,6 +363,7 @@ void Before()
 		0,
 		NULL,
 		NULL,
+		NULL,
 		&Host ) );
 
 	Agent->Release();
@@ -386,10 +387,13 @@ void CreateAndReleaseActions()
 		_countof( OwnPath ) ) );
 
 	ICfixTestModule *Module;
+
+	BSTR BstrOwnPath = SysAllocString( OwnPath );
 	CFIX_ASSERT_OK( 
 		Host->LoadModule(
-			OwnPath,
+			BstrOwnPath,
 			&Module ) );
+	SysFreeString( BstrOwnPath );
 
 	//
 	// Action for entire module.
@@ -430,7 +434,10 @@ void RunFixturesFromTestlib10()
 	PathAppend( Path,  L"testlib10.dll" );
 
 	ICfixTestModule *Module;
-	CFIX_ASSERT_OK( Host->LoadModule( Path, &Module ) );
+
+	BSTR BstrPath = SysAllocString( Path );
+	CFIX_ASSERT_OK( Host->LoadModule( BstrPath, &Module ) );
+	SysFreeString( BstrPath );
 
 	for ( ULONG Flags = 0; Flags <= EVENT_SINK_FAIL_PROCESS_SINK; Flags++ )
 	{
@@ -496,7 +503,10 @@ void RunSingleTestCaseFromTestlib11()
 	PathAppend( Path,  L"testlib11.dll" );
 
 	ICfixTestModule *Module;
-	CFIX_ASSERT_OK( Host->LoadModule( Path, &Module ) );
+
+	BSTR BstrPath = SysAllocString( Path );
+	CFIX_ASSERT_OK( Host->LoadModule( BstrPath, &Module ) );
+	SysFreeString( BstrPath );
 
 	ICfixTestItem *Fixture;
 	CFIX_ASSERT_OK( Module->GetItem( 0, &Fixture ) );

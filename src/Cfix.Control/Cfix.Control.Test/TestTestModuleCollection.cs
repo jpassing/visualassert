@@ -148,7 +148,7 @@ namespace Cfix.Control.Test
 			coll.Refresh();
 
 			Assert.AreEqual( "i386", coll.Name );
-			Assert.AreEqual( 3, coll.ItemCount );
+			Assert.AreEqual( 4, coll.ItemCount );
 
 			Assert.IsNotNull( coll.GetItem( 0 ) );
 			Assert.IsNotNull( coll.GetItem( 1 ) );
@@ -191,7 +191,7 @@ namespace Cfix.Control.Test
 				TestModuleCollection subColl = ( TestModuleCollection ) coll.GetItem( 0 );
 				Assert.AreSame( subColl.Parent, coll );
 
-				Assert.AreEqual( 3, subColl.ItemCount );
+				Assert.AreEqual( 4, subColl.ItemCount );
 
 				int invalids = 0;
 				foreach ( ITestItem subitem in subColl )

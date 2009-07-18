@@ -120,9 +120,6 @@
   <data name="AboutCmdCaption" xml:space="preserve">
     <value>About cfix studio...</value>
   </data>
-  <data name="ArchitectureMismatch" xml:space="preserve">
-    <value>The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture.</value>
-  </data>
   <data name="BetaLicenseInvalid" xml:space="preserve">
     <value>Beta, expired</value>
   </data>
@@ -156,17 +153,20 @@
   <data name="FailedToObtainCurrentConfig" xml:space="preserve">
     <value>Failed to obtain current configuration</value>
   </data>
+  <data name="IncompatibleModule" xml:space="preserve">
+    <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type.</value>
+  </data>
   <data name="MsgBoxCaption" xml:space="preserve">
     <value>cfix</value>
   </data>
   <data name="NotATestProjectToolTip" xml:space="preserve">
-    <value>Regulat Project -- does not define any tests.</value>
+    <value>Regular Project: The module does not define any tests.</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
-    <value>{3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive.</value>
+    <value>{3}, {2} host process(es), {0}/{1} test cases completed, {6} succeeded, {4} failed, {5} inconclusive.</value>
   </data>
   <data name="ProgressInfoFinish" xml:space="preserve">
-    <value>{0}: {1} failed, {2} inconclusive.</value>
+    <value>{3} succeeded, {1} failed, {2} inconclusive.</value>
   </data>
   <data name="ProjectNotBuiltYet" xml:space="preserve">
     <value>Build output not available -- rebuild the project</value>
@@ -218,6 +218,9 @@
   </data>
   <data name="UnsupportedArchitecture" xml:space="preserve">
     <value>Unsupported processor architecture.</value>
+  </data>
+  <data name="UnsupportedModule" xml:space="preserve">
+    <value>The type of module is not supported.</value>
   </data>
   <data name="WrongLicense" xml:space="preserve">
     <value>The installed license is not applicable for this product.</value>

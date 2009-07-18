@@ -11,6 +11,8 @@ namespace Cfix.Control
 		void Stop();
 		uint ItemCount { get; }
 		Architecture Architecture { get; }
+		ModuleType ModuleType { get; }
+		IHost CreateHost( IAgent agent, HostEnvironment env );
 	}
 
 	public interface IActionEvents

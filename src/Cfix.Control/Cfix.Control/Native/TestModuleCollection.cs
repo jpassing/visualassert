@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -120,7 +119,7 @@ namespace Cfix.Control.Native
 						this.collectionStack.Peek().dirInfo.Name ) );
 
 				//
-				// N.B. cfxctl has already checked that this module is indeed
+				// N.B. cfixctl has already checked that this module is indeed
 				// a test module, so no additional checking is required.
 				//
 
@@ -133,29 +132,29 @@ namespace Cfix.Control.Native
 					//
 					// Augment search path.
 					//
+					IAgent agent = this.collection.runTargets.GetAgent( arch );
 					FileInfo pathInfo = new FileInfo( path );
+					
 					HostEnvironment env = new HostEnvironment();
 					env.AddSearchPath( pathInfo.Directory.FullName );
 
-					using ( IHost host =
-							this.collection.runTargets.GetAgent( arch ).CreateHost( env ) )
+					try
 					{
-						try
-						{
-							this.collectionStack.Peek().Add(
-								host.LoadModule(
-									this.collectionStack.Peek(),
-									path,
-									this.collection.ignoreDuplicates ) );
-						}
-						catch ( Exception x )
-						{
-							this.collectionStack.Peek().Add(
-								new InvalidModule(
-									this.collectionStack.Peek(),
-									new DirectoryInfo( path ).Name,
-									x ) );
-						}
+						ITestItemCollection module = agent.LoadModule(
+							env,
+							this.collectionStack.Peek(),
+							path,
+							this.collection.ignoreDuplicates );
+
+						this.collectionStack.Peek().Add( module );
+					}
+					catch ( Exception x )
+					{
+						this.collectionStack.Peek().Add(
+							new InvalidModule(
+								this.collectionStack.Peek(),
+								new DirectoryInfo( path ).Name,
+								x ) );
 					}
 				}
 			}
@@ -209,14 +208,24 @@ namespace Cfix.Control.Native
 				//
 				using ( IHost host = searchTarget.CreateHost() )
 				{
+					uint types;
+					if ( userOnly )
+					{
+						types = 
+							( ( uint ) CfixTestModuleType.CfixTestModuleTypeUser ) |
+							( ( uint ) CfixTestModuleType.CfixTestModuleTypeUserEmbedded );
+					}
+					else
+					{
+						types = UInt32.MaxValue;
+					}
+
 					try
 					{
 						( ( Host ) host ).GetNativeItem().SearchModules(
-							this.dirInfo.FullName + "\\" + filter,
+							this.dirInfo.FullName + "\\" + this.filter,
 							CFIXCTL_SEARCH_FLAG_RECURSIVE,
-							userOnly
-								? ( uint ) CfixTestModuleType.CfixTestModuleTypeUser
-								: UInt32.MaxValue,
+							types,
 							( uint ) runTargets.GetArchitectures(),
 							this.currentLoader );
 					}

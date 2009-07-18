@@ -43,7 +43,7 @@ public:
 	 */
 	
 	STDMETHOD( LoadModule )(
-		__in const BSTR Path,
+		__in_opt const BSTR Path,
 		__out ICfixTestModule **Module
 		);
 
@@ -126,7 +126,7 @@ STDMETHODIMP LocalHost::QueryInterface(
  */
 
 STDMETHODIMP LocalHost::LoadModule(
-	__in const BSTR Path,
+	__in_opt const BSTR Path,
 	__out ICfixTestModule **Result
 	)
 {
@@ -139,44 +139,87 @@ STDMETHODIMP LocalHost::LoadModule(
 		*Result = NULL;
 	}
 
-	SIZE_T PathLen;
-	if ( ! Path || ( PathLen = wcslen( Path ) ) < 5 )
-	{
-		return E_INVALIDARG;
-	}
-
-	ICfixTestModuleInternal *ModuleObject = NULL;
-	PCFIX_TEST_MODULE Module = NULL;
 	HRESULT Hr;
+	PCWSTR EffectiveModulePath;
+	WCHAR EffectiveModulePathBuffer[ MAX_PATH ] = { 0 };
+	PCFIX_TEST_MODULE Module = NULL;
+	ICfixTestModuleInternal *ModuleObject = NULL;
 	CfixTestModuleType ModuleType;
 
-	PCWSTR Extension = Path + PathLen - 4;
-	if ( 0 == _wcsicmp( L".sys", Extension ) )
+	ULONG PathLen;
+	if ( Path != NULL && 
+		 ( PathLen = SysStringLen( Path ) ) > 0 )
 	{
-		//
-		// It is a driver.
-		//
-		ModuleType = CfixTestModuleTypeKernel;
-		Hr = CfixklCreateTestModuleFromDriver(
-			Path,
-			&Module,
-			NULL,
-			NULL );
-	}
-	else if ( 0 == _wcsicmp( L".dll", Extension ) )
-	{
-		//
-		// Assume DLL (may have custom extension).
-		//
-		ModuleType = CfixTestModuleTypeUser;
-		Hr = CfixCreateTestModuleFromPeImage(
-			Path,
-			&Module );
+		if ( PathLen < 4 )
+		{
+			return E_INVALIDARG;
+		}
+
+
+		PCWSTR Extension = Path + PathLen - 4;
+
+		if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( Path ) )
+		{
+			return CFIXCTL_E_TESTMODULE_NOT_FOUND;
+		}
+		else if ( 0 == _wcsicmp( L".sys", Extension ) )
+		{
+			//
+			// It is a driver.
+			//
+			ModuleType = CfixTestModuleTypeKernel;
+			Hr = CfixklCreateTestModuleFromDriver(
+				Path,
+				&Module,
+				NULL,
+				NULL );
+		}
+		else if ( 0 == _wcsicmp( L".dll", Extension ) )
+		{
+			//
+			// Assume DLL (may have custom extension).
+			//
+			ModuleType = CfixTestModuleTypeUser;
+			Hr = CfixCreateTestModuleFromPeImage(
+				Path,
+				&Module );
+		}
+		else
+		{
+			return CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
+		}
+
+		EffectiveModulePath = Path;
 	}
 	else
 	{
-		ModuleType = CfixTestModuleTypeUser;
-		Hr = CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE;
+		//
+		// No path specified - use host executable.
+		//
+		ModuleType = CfixTestModuleTypeUserEmbedded;
+		Hr = CfixCreateTestModule(
+			GetModuleHandle( NULL ),
+			&Module );
+
+		if ( SUCCEEDED( Hr ) )
+		{
+			//
+			// Derive path s.t. initialization can continue.
+			//
+			if ( 0 == GetModuleFileName(
+				GetModuleHandle( NULL ),
+				EffectiveModulePathBuffer,
+				_countof( EffectiveModulePathBuffer ) ) )
+			{
+				Hr = HRESULT_FROM_WIN32( GetLastError() );
+			}
+
+			EffectiveModulePath = EffectiveModulePathBuffer;
+		}
+		else
+		{
+			EffectiveModulePath = NULL;
+		}
 	}
 
 	if ( Hr == HRESULT_FROM_WIN32( ERROR_MOD_NOT_FOUND ) )
@@ -201,8 +244,10 @@ STDMETHODIMP LocalHost::LoadModule(
 		goto Cleanup;
 	}
 
+	ASSERT( EffectiveModulePath != NULL );
+
 	Hr = ModuleObject->Initialize(
-		Path,
+		EffectiveModulePath,
 		ModuleType,
 		CFIXCTL_OWN_ARCHITECTURE,
 		Module );
@@ -253,20 +298,15 @@ STDMETHODIMP LocalHost::Terminate()
 	return E_NOTIMPL;
 }
 
-static BOOL CfixctlsIsDll(
-	__in PCWSTR Path
+static BOOL CfixctlsHasFileExtension(
+	__in PCWSTR Path,
+	__in PCWSTR Extension
 	)
 {
-	size_t Len = wcslen( Path );
-	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".dll" ) );
-}
+	ASSERT( wcslen( Extension ) == 4 );
 
-static BOOL CfixctlsIsSys(
-	__in PCWSTR Path
-	)
-{
 	size_t Len = wcslen( Path );
-	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, L".sys" ) );
+	return ( Len > 4 && 0 == _wcsicmp( Path + Len - 4, Extension ) );
 }
 
 struct CFIXCTLP_SEARCH_CONTEXT
@@ -285,11 +325,15 @@ static HRESULT CfixctlsFileCallback(
 	// Filter file types.
 	//
 	CfixTestModuleType Type;
-	if ( CfixctlsIsDll( Path ) )
+	if ( CfixctlsHasFileExtension( Path, L".dll" ) )
 	{
 		Type = CfixTestModuleTypeUser;
 	}
-	else if ( CfixctlsIsSys( Path ) )
+	else if ( CfixctlsHasFileExtension( Path, L".exe" ) )
+	{
+		Type = CfixTestModuleTypeUserEmbedded;
+	}
+	else if ( CfixctlsHasFileExtension( Path, L".sys" ) )
 	{
 		Type = CfixTestModuleTypeKernel;
 	}
@@ -301,8 +345,7 @@ static HRESULT CfixctlsFileCallback(
 		return S_OK;
 	}
 
-	if ( Context->Type != ( ULONG ) -1 && 
-		 Context->Type != ( ULONG ) Type )
+	if ( ! ( Context->Type & ( ULONG ) Type ) )
 	{
 		return S_OK;
 	}
@@ -410,7 +453,6 @@ STDMETHODIMP LocalHost::SearchModules(
 	)
 {
 	if ( PathFilter == NULL ||
-		 Type != ( ULONG ) -1 && Type > CfixTestModuleTypeMax ||
 		 Arch == 0 ||
 		 Arch != ( ULONG ) -1 && Arch > 
 		     ( CfixTestModuleArchI386 | CfixTestModuleArchAmd64 ) ||

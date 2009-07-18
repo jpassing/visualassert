@@ -13,6 +13,7 @@ class TestHost : public cfixcc::TestFixture
 private:
 	static COM_EXPORTS Exports;
 	ICfixHost *Host;
+	ICfixAgent *Agent;
 	
 public:
 	TestHost() : Host( NULL )
@@ -39,7 +40,6 @@ public:
 		CFIXCC_ASSERT( AgentFactory );
 		__assume( AgentFactory );
 
-		ICfixAgent *Agent;
 		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
 			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
 		CFIXCC_ASSERT( Agent );
@@ -55,6 +55,7 @@ public:
 			0,
 			NULL,
 			NULL,
+			NULL,
 			&Host ) );
 
 		CfixTestModuleArch Arch;
@@ -65,12 +66,16 @@ public:
 		CFIX_ASSERT_OK( Host->GetHostProcessId( &Pid ) );
 		CFIXCC_ASSERT_EQUALS( GetCurrentProcessId(), Pid );
 
-		Agent->Release();
 		AgentFactory->Release();
 	}
 
 	virtual void After()
 	{
+		if ( Agent )
+		{
+			Agent->Release();
+		}
+
 		if ( Host )
 		{
 			Host->Release();
@@ -89,6 +94,7 @@ public:
 		BSTR SomeFile = SysAllocString( L"idonotexist.xxx" );
 
 		ICfixTestModule *Module;
+
 		CFIXCC_ASSERT_EQUALS( 
 			E_INVALIDARG,
 			Host->LoadModule(
@@ -100,7 +106,7 @@ public:
 				SomeDll,
 				&Module ) );
 		CFIXCC_ASSERT_EQUALS( 
-			CFIXCTL_E_UNRECOGNIZED_MODULE_TYPE,
+			CFIXCTL_E_TESTMODULE_NOT_FOUND,
 			Host->LoadModule(
 				SomeFile,
 				&Module ) );
@@ -110,7 +116,7 @@ public:
 		SysFreeString( SomeFile );
 	}
 
-	void LoadUser()
+	void LoadUserDll()
 	{
 		WCHAR OwnPath[ MAX_PATH ];
 		CFIXCC_ASSERT( GetModuleFileName(
@@ -118,13 +124,91 @@ public:
 			OwnPath,
 			_countof( OwnPath ) ) );
 
+		BSTR BstrPath = SysAllocString( OwnPath );
+
 		ICfixTestModule *Module;
 		CFIX_ASSERT_OK( 
 			Host->LoadModule(
-				OwnPath,
+				BstrPath,
 				&Module ) );
 
+		SysFreeString( BstrPath );
+
 		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+	}
+
+	void LoadInprocUserExe()
+	{
+		ICfixHost* CustomHost;
+		CFIX_ASSERT_OK( Agent->CreateHost( 
+			TESTCTLP_OWN_ARCHITECTURE,
+			CLSCTX_LOCAL_SERVER,
+			0,
+			INFINITE,
+			NULL,
+			NULL,
+			NULL,
+			&CustomHost ) );
+
+		ICfixTestModule *Module;
+		CFIX_ASSERT_OK( 
+			CustomHost->LoadModule(
+				NULL,
+				&Module ) );
+
+		ICfixTestContainer *Container;
+		CFIX_ASSERT_OK( Module->QueryInterface( 
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
+
+		ULONG FixtureCount;
+		CFIX_ASSERT_OK( Container->GetItemCount( &FixtureCount ) );
+		CFIXCC_ASSERT_EQUALS( 0UL, FixtureCount );
+
+		Container->Release();
+		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+
+		CustomHost->Release();
+	}
+
+	void LoadUserExe()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe11.exe" );
+
+		ICfixHost* CustomHost;
+		CFIX_ASSERT_OK( Agent->CreateHost( 
+			TESTCTLP_OWN_ARCHITECTURE,
+			CLSCTX_LOCAL_SERVER,
+			0,
+			INFINITE,
+			Path,
+			NULL,
+			NULL,
+			&CustomHost ) );
+
+		ICfixTestModule *Module;
+		CFIX_ASSERT_OK( 
+			CustomHost->LoadModule(
+				NULL,
+				&Module ) );
+
+		ICfixTestContainer *Container;
+		CFIX_ASSERT_OK( Module->QueryInterface( 
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
+
+		ULONG FixtureCount;
+		CFIX_ASSERT_OK( Container->GetItemCount( &FixtureCount ) );
+		CFIXCC_ASSERT_EQUALS( 2UL, FixtureCount );
+
+		Container->Release();
+		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+
+		CustomHost->Release();
 	}
 };
 
@@ -133,5 +217,7 @@ COM_EXPORTS TestHost::Exports;
 CFIXCC_BEGIN_CLASS( TestHost )
 	CFIXCC_METHOD( TestUnknown )
 	CFIXCC_METHOD( LoadNonExisting )
-	CFIXCC_METHOD( LoadUser )
+	CFIXCC_METHOD( LoadUserDll )
+	CFIXCC_METHOD( LoadInprocUserExe )
+	CFIXCC_METHOD( LoadUserExe )
 CFIXCC_END_CLASS()

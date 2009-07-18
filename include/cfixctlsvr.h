@@ -31,15 +31,6 @@ typedef VOID ( CFIXCTLCALLTYPE * CFIXCRL_SERVER_UNLOCK_PROC )();
 
 /*++
 	Routine Description:
-		Register a callback that will be invoked whenever the server 
-		lock count drops to 0.
---*/
-EXTERN_C CFIXCTLAPI HRESULT CFIXCTLCALLTYPE CfixctlRegisterServerUnlockCallback(
-	__in CFIXCRL_SERVER_UNLOCK_PROC Callback
-	);
-
-/*++
-	Routine Description:
 		Obtain class factory. Analog to DllGetClassObject.
 --*/
 EXTERN_C CFIXCTLAPI HRESULT CFIXCTLCALLTYPE CfixctlGetClassObject(
@@ -48,6 +39,11 @@ EXTERN_C CFIXCTLAPI HRESULT CFIXCTLCALLTYPE CfixctlGetClassObject(
 	__out PVOID *ClassObject 
 	);
 
+/*++
+	Routine Description:
+		Run COM server until all references have been released.
+--*/
+EXTERN_C CFIXCTLAPI HRESULT CFIXCTLCALLTYPE CfixctlServeHost();
 
 /*------------------------------------------------------------------------------
  *

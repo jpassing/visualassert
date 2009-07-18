@@ -104,7 +104,8 @@ namespace Cfix.Addin.Windows.Run
 							this.run.TaskCount,
 							this.run.Status.ToString(),
 							this.run.ItemsFailed,
-							this.run.ItemsInconclusive );
+							this.run.ItemsInconclusive,
+							this.run.ItemsSucceeded );
 					this.progressBar.Invalidate();
 					this.progressLabel.Invalidate();
 				} );
@@ -132,12 +133,19 @@ namespace Cfix.Addin.Windows.Run
 					//
 					// Run succeeded, but may have produced failures.
 					//
+					Debug.Assert(
+						this.run.ItemsCompleted >=
+						this.run.ItemsSucceeded +
+						this.run.ItemsFailed +
+						this.run.ItemsInconclusive );
+
 					this.progressLabel.Text =
 						String.Format(
 							Strings.ProgressInfoFinish,
 							GetStatusText( this.run.RootResult.Status ),
 							this.run.ItemsFailed,
-							this.run.ItemsInconclusive );
+							this.run.ItemsInconclusive,
+							this.run.ItemsSucceeded );
 				}
 				else
 				{
@@ -171,6 +179,7 @@ namespace Cfix.Addin.Windows.Run
 						this.run.ItemCount,
 						this.run.TaskCount,
 						this.run.Status.ToString(),
+						0,
 						0,
 						0 );
 				this.progressBar.Invalidate(); 

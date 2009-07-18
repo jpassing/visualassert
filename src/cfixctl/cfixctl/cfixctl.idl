@@ -12,7 +12,7 @@ import "ocidl.idl";
 //
 //
 //
-//d010ca02-1b6d-11de-b555-0016d3b98f9b
+//
 //d010ca03-1b6d-11de-b555-0016d3b98f9b
 //d010ca04-1b6d-11de-b555-0016d3b98f9b
 //d010ca05-1b6d-11de-b555-0016d3b98f9b
@@ -53,9 +53,10 @@ library Cfixctl
 		version( 1.0 )
 	]
 	enum CfixTestModuleType {
-		CfixTestModuleTypeUser		= 0,
-		CfixTestModuleTypeKernel	= 1,
-		CfixTestModuleTypeMax		= 1
+		CfixTestModuleTypeUser				= 1,
+		CfixTestModuleTypeUserEmbedded		= 2,
+		CfixTestModuleTypeKernel			= 4,
+		CfixTestModuleTypeMax				= 4
 	} CfixTestModuleType;
 
 	typedef 
@@ -110,7 +111,8 @@ library Cfixctl
 				current process.
 
 			Arguments:
-				Path		- Path to module.
+				Path		- Path to module, either a .sys or .dll.
+				              If NULL, the current executable is searched.
 				Module		- Result.
 		--*/
 		HRESULT LoadModule(
@@ -146,7 +148,8 @@ library Cfixctl
 			Arguments:
 				PathFilter	- Path or filter expression, e.g. c:\*.dll.
 				Flags		- CFIXCTL_SEARCH_FLAG_*.
-				Type		- CfixTestModuleType or -1 to search all.
+				Type		- OR-combination of CfixTestModuleType 
+							  or -1 to search all.
 				Arch		- One or more CfixTestModuleArchs.
 				Callback	- Object to receive events.
 		--*/
@@ -252,7 +255,7 @@ library Cfixctl
 
 	[
 	  object,
-	  uuid( 57f93e4b-d44f-11dd-99e2-0016d3b98f9b ),
+	  uuid( d010ca02-1b6d-11de-b555-0016d3b98f9b ),
 	  version( 1.0 ),
 	  oleautomation
 	]
@@ -282,8 +285,12 @@ library Cfixctl
 				Clsctx		- inproc/local server.
 				Flags		- 0 or CFIXCTL_AGENT_FLAG_*.
 				Timeout		- Timeout when waiting for process to spawn.
-				Environ		- Optional. See CreateProcess for formatting.
-				CurrentDir	- Optional.
+				HostPath	- Optional. Path to host binary. if null, the
+							  default host is used. Ignored for in-process
+							  hosts.
+				Environ		- Optional. Newline-separated list of 
+							  environemtn variables: FOO=BAR\nBAZ=QUUX\n.
+				CurrentDir	- Optional. Current directory to start host in.
 
 				Environ and CurrentDir are ignored for in-process hosts.
 		--*/
@@ -292,6 +299,7 @@ library Cfixctl
 			[in] DWORD Clsctx,
 			[in] ULONG Flags,
 			[in] ULONG Timeout,
+			[in] const BSTR HostPath,
 			[in] const BSTR Environment,
 			[in] const BSTR CurrentDirectory,
 			[out, retval] ICfixHost** Host

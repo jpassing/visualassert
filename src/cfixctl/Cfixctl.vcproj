@@ -154,6 +154,10 @@
 					RelativePath=".\cfixctl\resource.h"
 					>
 				</File>
+				<File
+					RelativePath=".\cfixctl\servehost.cpp"
+					>
+				</File>
 				<Filter
 					Name="testobjects"
 					>
@@ -363,6 +367,70 @@
 					</File>
 					<File
 						RelativePath=".\testlibs\testlib11\testlib11.def"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe10"
+					>
+					<File
+						RelativePath=".\testlibs\testexe10\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe10\suite.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe11"
+					>
+					<File
+						RelativePath=".\testlibs\testexe11\one.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe11\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe11\two.c"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe12"
+					>
+					<File
+						RelativePath=".\testlibs\testexe12\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe12\suite.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe13"
+					>
+					<File
+						RelativePath=".\testlibs\testexe13\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe13\suite.c"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe14"
+					>
+					<File
+						RelativePath=".\testlibs\testexe14\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe14\suite.c"
 						>
 					</File>
 				</Filter>

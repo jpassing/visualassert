@@ -124,6 +124,7 @@ namespace Cfix.Control.Test
 			uint Clsctx, 
 			uint Flags, 
 			uint Timeout, 
+			string hostPath,
 			string environment,
 			string CurrentDirectory )
 		{
@@ -132,7 +133,7 @@ namespace Cfix.Control.Test
 
 		public string GetHostPath( CfixTestModuleArch Arch )
 		{
-			throw new NotImplementedException();
+			return "mock";
 		}
 
 		public void RegisterHost( uint Cookie, ICfixHost Host )

@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Cfix.Control.RunControl
 {
 	// Non-threadsafe
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable" )]
 	public class SimpleRunCompiler : IRunCompiler
 	{
 		private readonly AgentSet agentSet;
@@ -12,17 +14,42 @@ namespace Cfix.Control.RunControl
 		private readonly ThreadingOptions threadingOptions;
 		private readonly EnvironmentOptions envOptions;
 		private readonly Run run;
-		private readonly bool allowMultipleArchitectures;
+		private readonly bool allowIncompatibleModules;
 
 		private readonly HostEnvironment env = new HostEnvironment();
 
 		//
-		// One action list per architecture.
+		// One bucket per architecture; one for embedded modules.
 		//
-		private IList<IAction>[] actions =
-			new IList<IAction>[ ( int ) Architecture.Max + 1 ];
-
+		private IList<IAction>[] actionBuckets = new IList<IAction>[ 3 ];
 		private IResultItem result;
+
+		private const int BucketEmbedded = 0;
+		private const int BucketAmd64 = 1;
+		private const int BucketI386 = 2;
+
+		private static int GetBucket( IAction action )
+		{
+			if ( action.ModuleType == ModuleType.UserEmbedded )
+			{
+				return BucketEmbedded;
+			}
+			else
+			{
+				switch ( action.Architecture )
+				{
+					case Architecture.Amd64:
+						return BucketAmd64;
+
+					case Architecture.I386:
+						return BucketI386;
+
+					default:
+						Debug.Fail( "Unrecognized architecture" );
+						return -1;
+				}
+			}
+		}
 
 		private static IResultItem GetRootAncestor( IResultItem item )
 		{
@@ -52,12 +79,12 @@ namespace Cfix.Control.RunControl
 			ExecutionOptions executionOptions,
 			ThreadingOptions threadingOptions,
 			EnvironmentOptions envOptions,
-			bool allowMultipleArchitectures
+			bool allowIncompatibleModules
 			)
 		{
-			for ( int i = 0; i < this.actions.Length; i++ )
+			for ( int i = 0; i < this.actionBuckets.Length; i++ )
 			{
-				this.actions[ i ] = new List<IAction>();
+				this.actionBuckets[ i ] = new List<IAction>();
 			}
 
 			this.agentSet = agentSet;
@@ -65,7 +92,7 @@ namespace Cfix.Control.RunControl
 			this.threadingOptions = threadingOptions;
 			this.envOptions = envOptions;
 
-			this.allowMultipleArchitectures = allowMultipleArchitectures;
+			this.allowIncompatibleModules = allowIncompatibleModules;
 			this.run = new Run( policy );
 		}
 
@@ -136,23 +163,24 @@ namespace Cfix.Control.RunControl
 				}
 			}
 
-			int actionsIndex = ( int ) action.Architecture;
-			if ( !this.allowMultipleArchitectures )
+			int bucket = GetBucket( action );
+			if ( !this.allowIncompatibleModules )
 			{
-				for ( int i = 0; i < this.actions.Length; i++ )
+				for ( int i = 0; i < this.actionBuckets.Length; i++ )
 				{
-					if ( i != actionsIndex && this.actions[ i ].Count > 0 )
+					if ( i != bucket && this.actionBuckets[ i ].Count > 0 )
 					{
 						//
-						// Architecture differs from previously added
-						// actions. This would result in another host
+						// Architecture/module type differs from previously 
+						// added actions. This would result in another host
 						// having to be created.
 						//
-						throw new ArchitectureMismatchException();
+						throw new IncompatibleModulesException();
 					}
 				}
 			}
-			this.actions[ actionsIndex ].Add( action );
+
+			this.actionBuckets[ bucket ].Add( action );
 		}
 
 		public void Add( IRunnableTestItem item )
@@ -169,22 +197,30 @@ namespace Cfix.Control.RunControl
 		public IRun Compile()
 		{
 			int tasks = 0;
-			for ( int i = 0; i < this.actions.Length; i++ )
+			for ( int i = 0; i < this.actionBuckets.Length; i++ )
 			{
-				if ( this.actions[ i ].Count > 0 )
+				Task task = null;
+				foreach ( IAction act in this.actionBuckets[ i ] )
 				{
-					IAgent agent = this.agentSet.GetAgent( ( Architecture ) i );
-					Task task = new Task( 
-						agent, 
-						agent.CreateHost( this.env ) );
-
-					foreach ( IAction act in this.actions[ i ] )
+					if ( task == null )
 					{
-						task.AddAction( act );
+						IAgent agent = this.agentSet.GetAgent( act.Architecture );
+						task = new Task( 
+							agent,
+							act.CreateHost( agent, env ) );
+						this.run.AddTask( task );
+						tasks++;
 					}
 
-					this.run.AddTask( task );
-					tasks++;
+					task.AddAction( act );
+
+					if ( i == BucketEmbedded )
+					{
+						//
+						// Create a fresh task/host for each action.
+						//
+						task = null;
+					}
 				}
 			}
 

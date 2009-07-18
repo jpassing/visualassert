@@ -66,8 +66,14 @@ namespace Cfix.Control
 			Add( "PATH", module );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower" )]
 		public void Add( string name, string value )
 		{
+			//
+			// To avoid casing-conflicts, force everything to lcase.
+			//
+			name = name.ToLower();
+
 			lock ( this.envLock )
 			{
 				string existing;
@@ -98,11 +104,9 @@ namespace Cfix.Control
 							buf.Append( pair.Key );
 							buf.Append( '=' );
 							buf.Append( pair.Value );
-							buf.Append( '\0' );
+							buf.Append( '\n' );
 						}
 					}
-
-					buf.Append( '\0' );
 					return buf.ToString();
 				}
 			}

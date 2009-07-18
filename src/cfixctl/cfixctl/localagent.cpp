@@ -56,6 +56,7 @@ private:
 		__in DWORD Cookie,
 		__in ULONG Timeout,
 		__in_opt HANDLE ProcessHandle,
+		__in BOOL IsCustomHost,
 		__out ICfixHost** Host
 		);
 
@@ -69,6 +70,7 @@ public:
 
 	STDMETHOD( CreateProcessHost )(
 		__in CfixTestModuleArch Arch,
+		__in_opt PCWSTR CustomHostPath,
 		__in_opt PCWSTR Environment,
 		__in_opt PCWSTR CurrentDirectory,
 		__in ULONG Flags,
@@ -100,6 +102,7 @@ public:
 		__in DWORD Clsctx,
 		__in ULONG Flags,
 		__in ULONG Timeout,
+		__in const BSTR HostPath,
 		__in const BSTR Environment,
 		__in const BSTR CurrentDirectory,
 		__out ICfixHost** Host
@@ -185,6 +188,11 @@ static HRESULT CfixctlsFindHostImage(
 	// Starting point is the directory this module was loaded from.
 	//
 	WCHAR OwnModulePath[ MAX_PATH ];
+
+	if ( ! CfixcrlpIsValidArch( Arch ) )
+	{
+		return E_INVALIDARG;
+	}
 
 	if ( 0 == GetModuleFileName(
 		CfixctlpGetModule(),
@@ -296,10 +304,14 @@ Cleanup:
 	return Hr;
 }
 
+#define CFIXCTLP_EMB_INIT_ENVVAR \
+		CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost"
+
 static HRESULT CfixctlsSpawnHost(
-	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
-	__in_opt PCWSTR Environment,
+	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
+	__in_opt PCWSTR CustomEnvironment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL Suspend,
 	__out PPROCESS_INFORMATION ProcessInfo
@@ -310,44 +322,117 @@ static HRESULT CfixctlsSpawnHost(
 		return E_INVALIDARG;
 	}
 
-	//
-	// Find image to load.
-	//
-	WCHAR HostPath[ MAX_PATH ];
-	HRESULT Hr = CfixctlsFindHostImage(
-		Arch, _countof( HostPath ), HostPath );
-	if ( FAILED( Hr ) )
-	{
-		return Hr;
-	}
-
 	LPOLESTR AgentMkDisplayName = NULL;
-	Hr = CfixctlsGetObjrefMonikerString( Agent, &AgentMkDisplayName );
+	HRESULT Hr = CfixctlsGetObjrefMonikerString( Agent, &AgentMkDisplayName );
 	if ( FAILED( Hr ) )
 	{
 		return Hr;
 	}
 
 	//
-	// Prepare command line.
+	// See which host image we have to use.
 	//
-	SIZE_T CommandLineCch = wcslen( AgentMkDisplayName ) + MAX_PATH + 1;
-	PWSTR CommandLine = new WCHAR[ CommandLineCch ];
-	if ( CommandLine == NULL )
+	WCHAR HostPathBuffer[ MAX_PATH ];
+	if ( CustomHostPath != NULL )
 	{
-		goto Cleanup;
+		//
+		// Custom host image.
+		//
+		if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( CustomHostPath ) )
+		{
+			return CFIXCTL_E_HOST_IMAGE_NOT_FOUND;
+		}
+
+		//
+		// Copy to make string non-const.
+		//
+		Hr = StringCchCopy(
+			HostPathBuffer,
+			_countof( HostPathBuffer ),
+			CustomHostPath );
 	}
+	else
+	{
+		//
+		// Use default host image.
+		//
+		Hr = CfixctlsFindHostImage(
+			Arch, 
+			_countof( HostPathBuffer ), 
+			HostPathBuffer );
+	}
+
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	//
+	// Prepare environment.
+	//
+	// The environment consists of the custom environment (if any)
+	// and a special variable that contains the moniker string.
+	//
+
+	SIZE_T FullEnvironmentCch = 
+		//
+		// Custom-environment
+		//
+		( CustomEnvironment == NULL ? 0 : wcslen( CustomEnvironment ) ) +
+
+		//
+		// Embedding\n.
+		//
+		( CustomHostPath == NULL ? 0 : wcslen( CFIXCTLP_EMB_INIT_ENVVAR ) + 1 ) +
+
+		//
+		// name=value\n
+		//
+		wcslen( CFIXCTLP_MONIKER_ENVVAR_NAME ) + 1 +
+		wcslen( AgentMkDisplayName ) + 1 +
+		
+		//
+		// Terminator.
+		//
+		1;
+
+	PWSTR FullEnvironment = new WCHAR[ FullEnvironmentCch ];
+	if ( FullEnvironment == NULL )
+	{
+		return E_OUTOFMEMORY;
+	}
+
+	ASSERT( 
+		CustomEnvironment == NULL || 
+		wcslen( CustomEnvironment ) == 0 ||
+		CustomEnvironment[ wcslen( CustomEnvironment ) - 1 ] == L'\n' );
 
 	Hr = StringCchPrintf(
-		CommandLine,
-		CommandLineCch,
-		L"\"%s\" %s",
-		HostPath,
-		AgentMkDisplayName );
+		FullEnvironment,
+		FullEnvironmentCch,
+		L"%s%s" CFIXCTLP_MONIKER_ENVVAR_NAME L"=%s\n",
+		CustomEnvironment ? CustomEnvironment : L"",
+		CustomHostPath ? CFIXCTLP_EMB_INIT_ENVVAR L"\n" : L"",
+		AgentMkDisplayName
+		);
 	if ( FAILED( Hr ) )
 	{
-		goto Cleanup;
+		return Hr;
 	}
+
+	//
+	// Replace all \n by \0 so that the buffer becomes a valid
+	// environment string.
+	//
+
+	PWSTR Newline;
+	while ( ( Newline = wcsrchr( FullEnvironment, L'\n' ) ) != NULL )
+	{
+		*Newline = UNICODE_NULL;
+	}
+
+	ASSERT( FullEnvironment[ FullEnvironmentCch - 2 ] == UNICODE_NULL );
+	ASSERT( FullEnvironment[ FullEnvironmentCch - 1 ] == UNICODE_NULL );
 
 	//
 	// Spawn.
@@ -357,13 +442,15 @@ static HRESULT CfixctlsSpawnHost(
 	StartupInfo.cb = sizeof( STARTUPINFO );
 
 	if ( ! CreateProcess(
-		HostPath,
-		CommandLine,
+		HostPathBuffer,
+		NULL,
 		NULL,
 		NULL,
 		FALSE,
-		CREATE_UNICODE_ENVIRONMENT | ( Suspend ? CREATE_SUSPENDED : 0 ),
-		( PVOID ) Environment,
+		CREATE_NO_WINDOW 
+			| CREATE_UNICODE_ENVIRONMENT 
+			| ( Suspend ? CREATE_SUSPENDED : 0 ),
+		( PVOID ) FullEnvironment,
 		CurrentDirectory,
 		&StartupInfo,
 		ProcessInfo ) )
@@ -380,17 +467,18 @@ Cleanup:
 		CoTaskMemFree( AgentMkDisplayName );
 	}
 
-	if ( CommandLine != NULL )
+	if ( FullEnvironment != NULL )
 	{
-		delete [] CommandLine;
+		delete [] FullEnvironment;
 	}
 
 	return Hr;
 }
 
 static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
-	__in CfixTestModuleArch Arch,
 	__in ICfixAgent *Agent,
+	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
@@ -411,8 +499,9 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	BOOL SuspendInitialThread = PutInJob;
 
 	HRESULT Hr = CfixctlsSpawnHost( 
-		Arch, 
-		Agent, 
+		Agent,
+		Arch,
+		CustomHostPath,
 		Environment,
 		CurrentDirectory, 
 		SuspendInitialThread,
@@ -586,6 +675,7 @@ STDMETHODIMP LocalAgent::GetHostPath(
 
 STDMETHODIMP LocalAgent::CreateProcessHost(
 	__in CfixTestModuleArch Arch,
+	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in ULONG Flags,
@@ -600,11 +690,6 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	else
 	{
 		*Result = NULL;
-	}
-
-	if ( ! CfixcrlpIsValidArch( Arch ) )
-	{
-		return E_INVALIDARG;
 	}
 
 	BOOL UseJob = ( Flags & CFIXCTL_AGENT_FLAG_USE_JOB );
@@ -625,8 +710,9 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	EnterCriticalSection( &this->SpawnLock );
 
 	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
-		Arch, 
-		this, 
+		this,
+		Arch,
+		CustomHostPath,
 		Environment,
 		CurrentDirectory, 
 		UseJob,
@@ -642,6 +728,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			Cookie,
 			Timeout,
 			ProcessOrJob,
+			CustomHostPath != NULL,
 			&RemoteHost );
 	}
 
@@ -739,6 +826,7 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in DWORD Clsctx,
 	__in ULONG Flags,
 	__in ULONG Timeout,
+	__in const BSTR CustomHostPath,
 	__in const BSTR Environment,
 	__in const BSTR CurrentDirectory,
 	__out ICfixHost** Host
@@ -761,6 +849,11 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
+		if ( CustomHostPath != NULL || Environment != NULL )
+		{
+			return E_INVALIDARG;
+		}
+
 		return CfixctlpGetLocalHostFactory().CreateInstance(
 			NULL, IID_ICfixHost, ( PVOID* ) Host );
 	}
@@ -784,8 +877,15 @@ STDMETHODIMP LocalAgent::CreateHost(
 		//
 		return CreateProcessHost(
 			Arch,
-			Environment,
-			CurrentDirectory,
+			CustomHostPath != NULL && SysStringByteLen( CustomHostPath ) > 0
+				? CustomHostPath
+				: NULL,
+			Environment != NULL && SysStringByteLen( Environment ) > 0
+				? Environment
+				: NULL,
+			CurrentDirectory != NULL && SysStringByteLen( CurrentDirectory ) > 0
+				? CurrentDirectory
+				: NULL,
 			Flags,
 			Timeout,
 			Host );
@@ -843,6 +943,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 	__in DWORD Cookie,
 	__in ULONG Timeout,
 	__in_opt HANDLE ProcessHandle,
+	__in BOOL IsCustomHost,
 	__out ICfixHost** Host
 	)
 {
@@ -939,7 +1040,20 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 					}
 					else
 					{
-						return ( HRESULT ) ExitCode;
+						HRESULT ExitHr = ( HRESULT ) ExitCode;
+						
+						if ( IsCustomHost )
+						{
+							return CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY;
+						}
+						else if ( FAILED( ExitHr ) )
+						{
+							return Hr;
+						}
+						else
+						{
+							return CFIXCTL_E_HOST_EXITED_PREMATURELY;
+						}
 					}
 				}
 				else
@@ -965,6 +1079,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnection(
 		Cookie,
 		Timeout,
 		NULL,
+		FALSE, // Do not know - assume.
 		Host );
 }
 

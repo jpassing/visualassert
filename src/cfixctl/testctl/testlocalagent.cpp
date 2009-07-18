@@ -10,7 +10,8 @@
 
 static DWORD LaunchHostAndWait( 
 	PCWSTR HostPath,
-	PWSTR CommandLine )
+	PWSTR Environment 
+	)
 {
 	PROCESS_INFORMATION ProcessInfo;
 	STARTUPINFO StartupInfo;
@@ -19,12 +20,12 @@ static DWORD LaunchHostAndWait(
 
 	CFIX_ASSERT( CreateProcess(
 		HostPath,
-		CommandLine,
+		NULL,
 		NULL,
 		NULL,
 		FALSE,
-		0,
-		NULL,
+		CREATE_UNICODE_ENVIRONMENT,
+		Environment,
 		NULL,
 		&StartupInfo,
 		&ProcessInfo ) );
@@ -97,6 +98,7 @@ public:
 			0,
 			NULL,
 			NULL,
+			NULL,
 			&LocalHost ) );
 
 		//
@@ -145,6 +147,7 @@ public:
 			CLSCTX_INPROC_SERVER,
 			0,
 			0,
+			NULL,
 			NULL,
 			NULL,
 			&LocalHost ) );
@@ -237,6 +240,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					NULL,
+					NULL,
 					WorkingDir,
 					&Host ) );
 			SysFreeString( WorkingDir );
@@ -246,6 +250,7 @@ public:
 				CLSCTX_LOCAL_SERVER,
 				FlagSets[ Flags ],
 				INFINITE,
+				NULL,
 				NULL,
 				NULL,
 				&Host ) );
@@ -292,6 +297,7 @@ public:
 					CLSCTX_LOCAL_SERVER,
 					FlagSets[ Flags ],
 					INFINITE,
+					NULL,
 					NULL,
 					NULL,
 					&Host ) );
@@ -364,10 +370,10 @@ public:
 		// Missing moniker.
 		//
 		CFIXCC_ASSERT_EQUALS( 
-			E_INVALIDARG,
+			CFIXCTL_E_MISSING_AGENT_MK,
 			( HRESULT ) LaunchHostAndWait(
 				HostPath,
-				L"" ) );
+				L"FOO=BAR\0" ) );
 
 		SysFreeString( HostPath );
 	}
@@ -407,25 +413,252 @@ public:
 		LPOLESTR DisplayName = NULL;
 		CFIX_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
 
-		SIZE_T CmdLineLen = wcslen( DisplayName ) * sizeof( WCHAR ) + 32;
-		PWSTR CmdLine = new WCHAR[ CmdLineLen ];
+		SIZE_T EnvCch = wcslen( L"CFIX_AGENT_MK=" ) + 
+			wcslen( DisplayName ) + 2;
+		PWSTR Env = new WCHAR[ EnvCch ];
+		ZeroMemory( Env, EnvCch * sizeof( WCHAR ) );
 		CFIX_ASSERT_OK( StringCchPrintf( 
-			CmdLine,
-			CmdLineLen,
-			L"cfixhost %s",
+			Env,
+			EnvCch,
+			L"CFIX_AGENT_MK=%s",
 			DisplayName ) );
 
 		//
-		// Missing moniker.
+		// Wrong moniker.
 		//
 		CFIXCC_ASSERT_EQUALS( 
 			E_NOINTERFACE,
 			( HRESULT ) LaunchHostAndWait(
 				HostPath,
-				CmdLine ) );
+				Env ) );
 
-		delete [] CmdLine;
+		delete [] Env;
 		SysFreeString( HostPath );
+		CoTaskMemFree( DisplayName );
+		AgentMk->Release();
+		BindCtx->Release();
+	}
+
+	void SpawnCustomHostWithoutEmbedding()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe10.exe" );
+
+		//
+		// The CRT initializer should not mess with the process.
+		//
+		CFIX_ASSERT_EQUALS_DWORD( 
+			0xBABE,
+			LaunchHostAndWait( Path, NULL ) );
+	}
+
+	void SpawnCustomHostWithNonExistingEmbeddingExport()
+	{
+		PWSTR ExportEnvVar[] = {
+			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!Idonotexist",
+			CFIX_EMB_INIT_ENVVAR_NAME L"=Idonotexist.dll!Idonotexist"
+		};
+
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe10.exe" );
+
+		//
+		// The CRT initializer should not mess with the process.
+		//
+		for ( ULONG Index = 0; Index < _countof( ExportEnvVar ); Index++ )
+		{
+			CFIX_ASSERT_EQUALS_DWORD( 
+				0xBABE,
+				LaunchHostAndWait( 
+					Path, 
+					ExportEnvVar[ Index ] ) );
+		}
+	}
+
+	void SpawnCustomHost()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		//
+		// C only, C++ only, C/C++ mixed.
+		//
+		PCWSTR HostImages[] = {
+			L"testexe11.exe",
+			L"testexe12.exe",
+			L"testexe13.exe"
+		};
+
+		for ( ULONG ImageIndex = 0; ImageIndex < _countof( HostImages ); ImageIndex++ )
+		{
+			WCHAR Path[ MAX_PATH ];
+			CFIXCC_ASSERT( GetModuleFileName(
+				GetModuleHandle( L"testctl" ),
+				Path,
+				_countof( Path ) ) );
+			PathRemoveFileSpec( Path );
+			PathAppend( Path,  HostImages[ ImageIndex ] );
+
+			BSTR HostImage = SysAllocString( Path );
+
+			ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+			for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+			{
+				ICfixHost *Host;
+				CFIX_ASSERT_OK( Agent->CreateHost(
+					CFIXCTL_OWN_ARCHITECTURE,
+					CLSCTX_LOCAL_SERVER,
+					FlagSets[ Flags ],
+					INFINITE,
+					HostImage,
+					NULL,
+					NULL,
+					&Host ) );
+
+				CFIX_ASSUME( Host );
+				Host->Release();
+			}
+
+			SysFreeString( HostImage );
+		}
+
+		Agent->Release();
+	}
+
+	void SpawnCustomHostWithNoFixtures()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path, L"testexe14.exe" );
+
+		BSTR HostImage = SysAllocString( Path );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			ICfixHost *Host;
+			CFIX_ASSERT_HRESULT( 
+				CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY,
+				Agent->CreateHost(
+					CFIXCTL_OWN_ARCHITECTURE,
+					CLSCTX_LOCAL_SERVER,
+					FlagSets[ Flags ],
+					INFINITE,
+					HostImage,
+					NULL,
+					NULL,
+					&Host ) );
+		}
+
+		SysFreeString( HostImage );
+
+		Agent->Release();
+	}
+	
+	void SpawnCustomHostWithoutMoniker()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe11.exe" );
+
+		BSTR HostImage = SysAllocString( Path );
+
+		//
+		// Missing moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			CFIXCTL_E_MISSING_AGENT_MK,
+			( HRESULT ) LaunchHostAndWait(
+				HostImage,
+				CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\0" ) );
+
+		SysFreeString( HostImage );
+	}
+
+	void SpawnCustomHostWithWrongMoniker()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe11.exe" );
+
+		BSTR HostImage = SysAllocString( Path );
+
+		//
+		// Create moniker to agentfactory rather than to agent.
+		//
+
+		IMoniker *AgentMk = NULL;
+		CFIX_ASSERT_OK( CreateObjrefMoniker( AgentFactory, &AgentMk ) );
+		
+		IBindCtx *BindCtx = NULL;
+		CFIX_ASSERT_OK( CreateBindCtx( 0, &BindCtx ) );
+		
+		LPOLESTR DisplayName = NULL;
+		CFIX_ASSERT_OK( AgentMk->GetDisplayName( BindCtx, NULL, &DisplayName ) );
+
+		PCWSTR FixedEnvPart = 
+			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\nCFIX_AGENT_MK=";
+
+		SIZE_T EnvCch = wcslen( FixedEnvPart ) + wcslen( DisplayName ) + 2;
+		PWSTR Env = new WCHAR[ EnvCch ];
+		ZeroMemory( Env, EnvCch * sizeof( WCHAR ) );
+		CFIX_ASSERT_OK( StringCchPrintf( 
+			Env,
+			EnvCch,
+			L"%s%s",
+			FixedEnvPart,
+			DisplayName ) );
+
+		*wcschr( Env, L'\n' ) = L'\0';
+
+		//
+		// Wrong moniker.
+		//
+		CFIXCC_ASSERT_EQUALS( 
+			E_NOINTERFACE,
+			( HRESULT ) LaunchHostAndWait(
+				HostImage,
+				Env ) );
+
+		delete [] Env;
+		SysFreeString( HostImage );
 		CoTaskMemFree( DisplayName );
 		AgentMk->Release();
 		BindCtx->Release();
@@ -443,4 +676,10 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( ResolveMessage )
 	CFIXCC_METHOD( SpawnWithoutMoniker )
 	CFIXCC_METHOD( SpawnWithWrongMoniker )
+	CFIXCC_METHOD( SpawnCustomHostWithoutEmbedding )
+	CFIXCC_METHOD( SpawnCustomHostWithNonExistingEmbeddingExport )
+	CFIXCC_METHOD( SpawnCustomHost )
+	CFIXCC_METHOD( SpawnCustomHostWithNoFixtures )
+	CFIXCC_METHOD( SpawnCustomHostWithoutMoniker )
+	CFIXCC_METHOD( SpawnCustomHostWithWrongMoniker )
 CFIXCC_END_CLASS()

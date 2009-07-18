@@ -15,9 +15,11 @@ namespace Cfix.Control
 		Amd64 = CfixTestModuleArch.CfixTestModuleArchAmd64,
 	}
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue" ), System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1027:MarkEnumsWithFlags" )]
 	public enum ModuleType
 	{
 		User = CfixTestModuleType.CfixTestModuleTypeUser,
+		UserEmbedded = CfixTestModuleType.CfixTestModuleTypeUserEmbedded,
 		Kernel = CfixTestModuleType.CfixTestModuleTypeKernel
 	}
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Cfix.Control.Diag;
 using Cfixctl;
 
 namespace Cfix.Control.Native
@@ -159,14 +158,21 @@ namespace Cfix.Control.Native
 
 		public virtual IHost CreateHost()
 		{
-			return CreateHost( null );
+			return CreateHost( null, null );
 		}
 
 		public virtual IHost CreateHost(
 			HostEnvironment env
 			)
 		{
-			string envString = null;
+			return CreateHost( null, env );
+		}
+
+		public virtual IHost CreateHost(
+			string customHostPath,
+			HostEnvironment env
+			)
+		{
 			string currentDir = null;
 
 			if ( env != null )
@@ -176,8 +182,11 @@ namespace Cfix.Control.Native
 				//
 				env = env.Merge( this.defaultHostEnv );
 
-				envString = env.NativeFormat;
 				currentDir = env.CurrentDirectory;
+			}
+			else
+			{
+				env = this.defaultHostEnv;
 			}
 
 			ICfixHost host = this.agent.CreateHost(
@@ -185,7 +194,8 @@ namespace Cfix.Control.Native
 				( uint ) this.clsctx,
 				( uint ) this.flags,
 				this.timeout,
-				envString,
+				customHostPath,
+				env.NativeFormat,
 				currentDir );
 
 			Debug.Assert( host != null );
@@ -195,7 +205,42 @@ namespace Cfix.Control.Native
 			//
 			this.processWatcher.Watch( ( int ) host.GetHostProcessId() );
 
-			return new Host( this, host );
+			return new Host( 
+				this, 
+				host,
+				customHostPath != null,
+				customHostPath != null 
+					? customHostPath
+					: this.agent.GetHostPath( this.arch ) );
+		}
+
+		public ITestItemCollection LoadModule(
+			HostEnvironment env,
+			ITestItemCollection parentCollection,
+			string path,
+			bool ignoreDuplicates
+			)
+		{
+			if ( path.EndsWith( ".exe", StringComparison.OrdinalIgnoreCase ) )
+			{
+				using ( IHost host = CreateHost( path, env ) )
+				{
+					return host.LoadModule(
+						parentCollection,
+						null,
+						ignoreDuplicates );
+				}
+			}
+			else
+			{
+				using ( IHost host = CreateHost( env ) )
+				{
+					return host.LoadModule(
+						parentCollection,
+						path,
+						ignoreDuplicates );
+				}
+			}
 		}
 
 		public Architecture Architecture

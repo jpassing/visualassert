@@ -101,6 +101,11 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
+		public ResultItemNode Parent
+		{
+			get { return this.parent; }
+		}
+
 		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */
@@ -133,6 +138,7 @@ namespace Cfix.Control.Ui.Result
 			get { return null; }
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)" )]
 		public String Expression
 		{
 			get 

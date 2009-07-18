@@ -15,7 +15,7 @@ namespace Cfix.Control.Test
 			env.Add( "FOO", "2" );
 			env.Add( "BAR", "3" );
 
-			Assert.AreEqual( "FOO=1;2\0BAR=3\0\0", env.NativeFormat );
+			Assert.AreEqual( "foo=1;2\nbar=3\n", env.NativeFormat );
 
 			Assert.IsNull( new HostEnvironment().NativeFormat );
 		}
@@ -29,8 +29,8 @@ namespace Cfix.Control.Test
 				Environment.GetEnvironmentVariables( EnvironmentVariableTarget.Process ) );
 			env.Add( "FOO", "2" );
 
-			Assert.IsTrue( env.NativeFormat.Contains( "__TEST=1\0" ) );
-			Assert.IsTrue( env.NativeFormat.Contains( "FOO=2\0" ) );
+			Assert.IsTrue( env.NativeFormat.Contains( "__test=1\n" ) );
+			Assert.IsTrue( env.NativeFormat.Contains( "foo=2\n" ) );
 		}
 	}
 }

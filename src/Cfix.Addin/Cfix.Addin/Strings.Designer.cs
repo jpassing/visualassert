@@ -70,15 +70,6 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures. To debug, please restrict your selection to modules of a single CPU architecture..
-        /// </summary>
-        internal static string ArchitectureMismatch {
-            get {
-                return ResourceManager.GetString("ArchitectureMismatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Beta, expired.
         /// </summary>
         internal static string BetaLicenseInvalid {
@@ -178,6 +169,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type..
+        /// </summary>
+        internal static string IncompatibleModule {
+            get {
+                return ResourceManager.GetString("IncompatibleModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to cfix.
         /// </summary>
         internal static string MsgBoxCaption {
@@ -187,7 +187,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Regulat Project -- does not define any tests..
+        ///   Looks up a localized string similar to Regular Project: The module does not define any tests..
         /// </summary>
         internal static string NotATestProjectToolTip {
             get {
@@ -196,7 +196,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {4} failed, {5} inconclusive..
+        ///   Looks up a localized string similar to {3}, {2} host process(es), {0}/{1} test cases completed, {6} succeeded, {4} failed, {5} inconclusive..
         /// </summary>
         internal static string ProgressInfo {
             get {
@@ -205,7 +205,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: {1} failed, {2} inconclusive..
+        ///   Looks up a localized string similar to {3} succeeded, {1} failed, {2} inconclusive..
         /// </summary>
         internal static string ProgressInfoFinish {
             get {
@@ -363,6 +363,15 @@ namespace Cfix.Addin {
         internal static string UnsupportedArchitecture {
             get {
                 return ResourceManager.GetString("UnsupportedArchitecture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of module is not supported..
+        /// </summary>
+        internal static string UnsupportedModule {
+            get {
+                return ResourceManager.GetString("UnsupportedModule", resourceCulture);
             }
         }
         

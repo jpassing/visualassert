@@ -22,6 +22,8 @@
 #include <strsafe.h>
 #pragma warning( pop )
 
+#define CFIXCTLP_MONIKER_ENVVAR_NAME L"CFIX_AGENT_MK"
+
 #define ASSERT _ASSERTE
 
 #ifndef VERIFY
@@ -196,6 +198,15 @@ HRESULT CfixctlpQueryLicenseInfo(
 	__in BOOL MachineWide,
 	__in ULONG ExternalDateOfInstallation,
 	__out PCFIXCTL_LICENSE_INFO Info
+	);
+
+/*++
+	Routine Description:
+		Register a callback that will be invoked when the server 
+		lock count drops to 0.
+--*/
+HRESULT CfixctlpRegisterServerUnlockCallback(
+	__in CFIXCRL_SERVER_UNLOCK_PROC Callback
 	);
 
 /*----------------------------------------------------------------------

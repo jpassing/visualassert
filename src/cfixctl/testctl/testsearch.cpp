@@ -119,7 +119,7 @@ public:
 			this->Amd64Files++;
 		}
 
-		if ( Type == CfixTestModuleTypeUser )
+		if ( Type == CfixTestModuleTypeUser || Type == CfixTestModuleTypeUserEmbedded )
 		{
 			this->UserFiles++;
 		}
@@ -192,6 +192,7 @@ public:
 			CLSCTX_INPROC_SERVER,
 			0,
 			0,
+			NULL,
 			NULL,
 			NULL,
 			&Host ) );

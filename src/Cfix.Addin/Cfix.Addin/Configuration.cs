@@ -18,7 +18,8 @@ namespace Cfix.Addin
 	public class Configuration : IDisposable
 	{
 		private const string CookieName = "CfixCookie";
-		private readonly String[] supportedExtensions = new String[] { ".DLL", ".SYS" };
+		private readonly String[] supportedExtensions = new String[] 
+			{ ".DLL", ".SYS", ".EXE" };
 
 		private const String BaseKeyPath = "Software\\cfix\\cfixstudio\\1.0";
 		private readonly RegistryKey key;

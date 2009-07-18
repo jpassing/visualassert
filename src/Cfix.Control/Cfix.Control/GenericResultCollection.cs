@@ -237,6 +237,7 @@ namespace Cfix.Control
 			return this.subItems[ ( int ) ordinal ];
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#" )]
 		public IResultItem GetItem( ITestItem testItem )
 		{
 			foreach ( IResultItem child in this.subItems )

@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Cfix.Control.Diag
+namespace Cfix.Control
 {
-	public class Logger
+	public sealed class Logger
 	{
 		private static TraceListener listener;
 		private static readonly TraceEventCache eventCache = new TraceEventCache();
@@ -14,6 +14,7 @@ namespace Cfix.Control.Diag
 		private Logger()
 		{ }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope" )]
 		public static void SetOutput( string file )
 		{
 			new FileInfo( file ).Directory.Create();
@@ -133,7 +134,7 @@ namespace Cfix.Control.Diag
 			}
 		}
 
-		public static void LogError( string source, string message, COMException x )
+		public static void LogError( string source, string message, ExternalException x )
 		{
 			if ( listener != null )
 			{

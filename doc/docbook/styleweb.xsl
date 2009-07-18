@@ -20,14 +20,15 @@
 	qandadiv  toc
 	qandaset  toc
 	reference toc,title
-	sect1     toc
-	sect2     toc
-	sect3     toc
-	sect4     toc
-	sect5     toc
+	sect1     toc,title
+	sect2     toc,title
+	sect3     toc,title
+	sect4     toc,title
+	sect5     toc,title
 	section   toc,title
 	set       toc,title
   </xsl:param>
+  <xsl:param name="generate.section.toc.level" select="4"></xsl:param>
   
   <xsl:template name="user.header.navigation">
   </xsl:template>
@@ -107,8 +108,15 @@
 					        <li><a href='index.html'>Table of Contents</a></li>
 					        <li><a href='TutorialUserVsCc.html'>Tutorial</a></li>
 					        <li><a href='KeyboardShortcuts.html'>Keyboard Shortcuts</a></li>
-					        <li><a href='API.html'>API Reference</a></li>
-					        <li><a href='WinUnitAPI.html'>WinUnit Compatibility</a></li>
+					        <li>
+								<a href='API.html'>API Reference</a>
+								<ul>
+									<li><a href='WhatsNew.html'>What's new</a></li>
+									<li><a href='TestAPI.html'>Base API (C/C++)</a></li>
+									<li><a href='CcAPI.html'>C++ API</a></li>
+									<li><a href='WinUnitAPI.html'>WinUnit Compatibility API</a></li>
+								</ul>
+							</li>
 				        </ul>  
 				    </div> 
 			    </div>

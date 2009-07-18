@@ -179,28 +179,31 @@ namespace Cfix.Addin.Test
 				this.currentPath = vcConfig.PrimaryOutput;
 				Debug.Print( this.currentPath );
 
-				if ( File.Exists( this.currentPath ) &&
-					 this.config.IsSupportedTestModulePath( this.currentPath ) )
+				if ( ! File.Exists( this.currentPath ) )
+				{
+				}
+				else 
 				{
 					ITestItem module;
-					try
+					if ( this.config.IsSupportedTestModulePath( this.currentPath ) )
 					{
-						//
-						// N.B. This module may be importing symbols from a DLL
-						// that resides in the same directory. 
-						//
-						// Augment search path.
-						//
-						FileInfo pathInfo = new FileInfo( this.currentPath );
-						HostEnvironment env = new HostEnvironment();
-						env.AddSearchPath( pathInfo.Directory.FullName );
-
-						using ( IHost host = this.agentSet.GetAgent( arch ).CreateHost( env ) )
+						try
 						{
-							module = host.LoadModule(
+							//
+							// N.B. This module may be importing symbols from a DLL
+							// that resides in the same directory. 
+							//
+							// Augment search path.
+							//
+							FileInfo pathInfo = new FileInfo( this.currentPath );
+							HostEnvironment env = new HostEnvironment();
+							env.AddSearchPath( pathInfo.Directory.FullName );
+
+							module = this.agentSet.GetAgent( arch ).LoadModule(
+								env,
 								this,
 								this.currentPath,
-								false );
+								true );
 
 							ITestItemCollection moduleColl =
 								module as ITestItemCollection;
@@ -213,13 +216,20 @@ namespace Cfix.Addin.Test
 								module = null;
 							}
 						}
+						catch ( Exception x )
+						{
+							module = new InvalidModule(
+								this,
+								new FileInfo( this.currentPath ).Name,
+								x );
+						}
 					}
-					catch ( Exception x )
+					else
 					{
 						module = new InvalidModule(
-							this,
-							new FileInfo( this.currentPath ).Name,
-							x );
+								this,
+								new FileInfo( this.currentPath ).Name,
+								new CfixException( Strings.UnsupportedModule ) );
 					}
 
 					if ( module != null )
@@ -375,15 +385,36 @@ namespace Cfix.Addin.Test
 				//
 				// Refresh module.
 				//
-				
+				// Note that we optimize for not having to refresh
+				// the entire tree.
 				//
-				// N.B. Full reload required to support 
-				// Invalid <-> Valid transitions.
-				//
-				Clear();
-				LoadPrimaryOutputModule( vcConfig ); 
-				
-				//base.Refresh();
+
+				if ( ItemCount >= 1 && GetItem( 0 ) is InvalidModule )
+				{
+					//
+					// Invalid -> Valid.
+					//
+					Clear();
+					LoadPrimaryOutputModule( vcConfig );
+				}
+				else
+				{
+					try
+					{
+						base.Refresh();
+					}
+					catch ( Exception x )
+					{
+						//
+						// Valid -> Invalid.
+						//
+						Clear();
+						Add( new InvalidModule(
+							this,
+							new FileInfo( this.currentPath ).Name,
+							x ) );
+					}
+				}
 			}
 
 			lock ( loadedProjectsLock )
