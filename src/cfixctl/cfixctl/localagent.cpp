@@ -482,13 +482,15 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
 	__in BOOL PutInJob,
-	__out HANDLE *ProcessOrJob,
-	__out PBOOL InJob,
+	__out HANDLE *Process,
+	__out HANDLE *Job,
 	__out DWORD *Cookie
 	)
 {
 	ASSERT( Agent );
-	ASSERT( ProcessOrJob );
+	ASSERT( Process );
+	ASSERT( Job );
+	ASSERT( Cookie );
 
 	//
 	// Spawn the process.
@@ -517,11 +519,12 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	//
 	// N.B. The process ID is the cookie.
 	//
-	*Cookie = ProcessInfo.dwProcessId;
+	*Cookie  = ProcessInfo.dwProcessId;
+	*Process = ProcessInfo.hProcess;
 
 	//
 	// Reconsider decision of assigning the process to a new job based on
-	// whether it already belongs to some otehr job.
+	// whether it already belongs to some other job.
 	//
 	if ( PutInJob )
 	{
@@ -534,22 +537,18 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 		PutInJob = PutInJob && ! AlreadyInJob;
 	}
 
-	*InJob = PutInJob;
-
 	if ( ! PutInJob )
 	{
-		*ProcessOrJob = ProcessInfo.hProcess;
-
+		*Job = NULL;
 		Hr = S_OK;
 	}
 	else
 	{
-		HANDLE Job = CreateJobObject( NULL, NULL );
-		if ( Job )
+		*Job = CreateJobObject( NULL, NULL );
+		if ( *Job )
 		{
-			if ( AssignProcessToJobObject( Job, ProcessInfo.hProcess ) )
+			if ( AssignProcessToJobObject( *Job, ProcessInfo.hProcess ) )
 			{
-				*ProcessOrJob = Job;
 				Hr = S_OK;
 			}
 			else
@@ -567,8 +566,6 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 		{
 			( VOID ) TerminateProcess( ProcessInfo.hProcess, 0 );
 		}
-
-		VERIFY( CloseHandle( ProcessInfo.hProcess ) );
 	}
 	
 	if ( SuspendInitialThread )
@@ -697,7 +694,8 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	// Spawn the process.
 	//
-	HANDLE ProcessOrJob = NULL;
+	HANDLE Process = NULL;
+	HANDLE Job	   = NULL;
 	DWORD Cookie;
 
 	ICfixHost *RemoteHost = NULL;
@@ -716,18 +714,21 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 		Environment,
 		CurrentDirectory, 
 		UseJob,
-		&ProcessOrJob,
-		&UseJob,			// Just because we want a job, we may still not get one.
+		&Process,
+		&Job,
 		&Cookie );
 	if ( SUCCEEDED( Hr ) )
 	{
 		//
 		// Wait for it to register and obtain its Host object.
 		//
+		// N.B. Wait for process, not for job. Waiting for jobs is
+		// futile in this context.
+		//
 		Hr = WaitForHostConnectionAndProcess(
 			Cookie,
 			Timeout,
-			ProcessOrJob,
+			Process,
 			CustomHostPath != NULL,
 			&RemoteHost );
 	}
@@ -752,7 +753,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 
 	Hr = ProcessHost->Initialize( 
 		RemoteHost, 
-		ProcessOrJob,
+		Job != NULL ? Job : Process,
 		UseJob );
 	if ( FAILED( Hr ) )
 	{
@@ -776,9 +777,14 @@ Cleanup:
 
 	if ( FAILED( Hr ) )
 	{
-		if ( ProcessOrJob )
+		if ( Process )
 		{
-			VERIFY( CloseHandle( ProcessOrJob ) );
+			VERIFY( CloseHandle( Process ) );
+		}
+
+		if ( Job )
+		{
+			VERIFY( CloseHandle( Job ) );
 		}
 	}
 
