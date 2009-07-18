@@ -30,7 +30,10 @@ namespace Cfix.Control.Ui.Explorer
 			else
 			{
 				this.Nodes.Add( node );
-				this.Expand();
+				if ( node is AbstractExplorerCollectionNode )
+				{
+					this.Expand();
+				}
 			}
 		}
 

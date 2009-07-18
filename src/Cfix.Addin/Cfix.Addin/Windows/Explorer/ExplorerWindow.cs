@@ -82,7 +82,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
 			Configuration config = this.workspace.Configuration;
-			this.autoRefreshButton.Checked = config.AutoRefreshAfterBuild;
+			this.refreshAfterBuildToolStripMenuItem.Checked = config.AutoRefreshAfterBuild;
 			
 			ExecutionOptions executionOpts = config.ExecutionOptions;
 
@@ -234,7 +234,7 @@ namespace Cfix.Addin.Windows.Explorer
 			SolutionTestCollection slnColl =
 				this.explorer.Session.Tests as SolutionTestCollection;
 			if ( !success || 
-				 !this.autoRefreshButton.Checked ||
+				 !this.refreshAfterBuildToolStripMenuItem.Checked ||
 				 slnColl == null )
 			{
 				//
@@ -262,7 +262,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			ITestItemCollection coll = this.explorer.Session.Tests;
 			SolutionTestCollection slnColl = coll as SolutionTestCollection;
-			if ( !this.autoRefreshButton.Checked ||
+			if ( !this.refreshAfterBuildToolStripMenuItem.Checked ||
 				 coll == null ||
 				 slnColl != null )
 			{
@@ -279,11 +279,11 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		private void autoRefreshButton_Click( object sender, EventArgs e )
+		private void refreshAfterBuildToolStripMenuItem_Click( object sender, EventArgs e )
 		{
 			try
 			{
-				this.workspace.Configuration.AutoRefreshAfterBuild = this.autoRefreshButton.Checked;
+				this.workspace.Configuration.AutoRefreshAfterBuild = this.refreshAfterBuildToolStripMenuItem.Checked;
 			}
 			catch ( Exception x )
 			{
@@ -366,7 +366,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Debug.Assert( this.workspace != null );
 
 			DisableRefresh();
-			this.autoRefreshButton.Enabled = true;
+			this.refreshAfterBuildToolStripMenuItem.Enabled = true;
 
 			DirectoryInfo dir;
 			String filter;
@@ -409,7 +409,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 
 			DisableRefresh();
-			this.autoRefreshButton.Enabled = true;
+			this.refreshAfterBuildToolStripMenuItem.Enabled = true;
 
 			Solution curSolution = this.dte.Solution;
 			if ( curSolution != null && curSolution.Projects.Count > 0 )

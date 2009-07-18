@@ -67,6 +67,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap CaptureStackTraces {
+            get {
+                object obj = ResourceManager.GetObject("CaptureStackTraces", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap cfix {
             get {
                 object obj = ResourceManager.GetObject("cfix", resourceCulture);
@@ -161,6 +168,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap Log {
             get {
                 object obj = ResourceManager.GetObject("Log", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Options {
+            get {
+                object obj = ResourceManager.GetObject("Options", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

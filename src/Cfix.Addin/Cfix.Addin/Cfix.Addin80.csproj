@@ -212,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\CaptureStackTraces.bmp" />
+    <None Include="Icons\StackFrame.bmp" />
+    <None Include="Icons\Options.bmp" />
     <None Include="Icons\DocMask.bmp" />
     <None Include="Resources\DocIcon.ico" />
     <None Include="Icons\Doc.bmp" />
