@@ -1048,7 +1048,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 						}
 						else if ( FAILED( ExitHr ) )
 						{
-							return Hr;
+							return ExitHr;
 						}
 						else
 						{

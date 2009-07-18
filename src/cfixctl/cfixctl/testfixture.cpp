@@ -11,6 +11,10 @@
 const GUID IID_ICfixTestFixtureInternal = 
 	{ 0xfdac652, 0x27d6, 0x4283, { 0x8b, 0x53, 0x97, 0x5a, 0x99, 0x28, 0xb, 0x97 } };
 
+C_ASSERT( CfixTestApiTypeBase == CfixApiTypeBase );
+C_ASSERT( CfixTestApiTypeCc == CfixApiTypeCc );
+C_ASSERT( CfixTestApiTypeWinUnit == CfixApiTypeWinUnit );
+
 /*------------------------------------------------------------------
  * 
  * Class Declaration.
@@ -22,7 +26,7 @@ const GUID IID_ICfixTestFixtureInternal =
 class TestFixture : 
 	public ComObjectBase, 
 	public ICfixTestFixtureInternal,
-	public ICfixTestContainer,
+	public ICfixTestFixture,
 	public IMarshal
 {
 	DECLARE_NOT_COPYABLE( TestFixture );
@@ -37,6 +41,7 @@ private:
 	BSTR Name;
 	ComArray< ICfixTestCaseInternal > Children;
 	ULONG Ordinal;
+	CfixTestApiType ApiType;
 	ICfixActionFactory *ActionFactory;
 
 protected:
@@ -132,6 +137,14 @@ public:
 		);
 
 	/*------------------------------------------------------------------
+	 * ICfixTestFixture methods.
+	 */
+
+	STDMETHOD( GetApiType )(
+        __out CfixTestApiType *Type
+		);
+
+	/*------------------------------------------------------------------
 	 * ICfixTestFixtureInternal methods.
 	 */
 
@@ -163,6 +176,7 @@ IClassFactory& CfixctlpGetTestFixtureFactory()
 TestFixture::TestFixture() 
 	: Name( NULL )
 	, Ordinal( 0 )
+	, ApiType( CfixTestApiUnknown )
 	, ActionFactory( NULL )
 {
 }
@@ -192,9 +206,10 @@ STDMETHODIMP TestFixture::QueryInterface(
 
 	if ( InlineIsEqualGUID( Iid, IID_IUnknown ) ||
 	     InlineIsEqualGUID( Iid, IID_ICfixTestItem ) ||
-	     InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) )
+	     InlineIsEqualGUID( Iid, IID_ICfixTestContainer ) ||
+		 InlineIsEqualGUID( Iid, IID_ICfixTestFixture ) )
 	{
-		*Ptr = static_cast< ICfixTestContainer* >( this );
+		*Ptr = static_cast< ICfixTestFixture* >( this );
 		Hr = S_OK;
 
 	}
@@ -274,6 +289,7 @@ STDMETHODIMP TestFixture::GetMarshalSizeMax(
 	SizeNeeded = ComGetUnmarshalSizeMaxBSTR( this->Name );
 	SizeNeeded += sizeof( ULONG );	// Count.
 	SizeNeeded += sizeof( ULONG );	// Ordinal.
+	SizeNeeded += sizeof( ULONG );	// ApiType.
 
 	ULONG ItfSize;
 	for ( ULONG Index = 0; Index < this->Children.GetCount(); Index++ )
@@ -343,6 +359,12 @@ STDMETHODIMP TestFixture::MarshalInterface(
 		return Hr;
 	}
 
+	Hr = Stm->Write( &this->ApiType, sizeof( ULONG ), NULL );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
 	for ( ULONG Index = 0; Index < this->Children.GetCount(); Index++ )
 	{
 		Hr = CoMarshalInterface(
@@ -402,6 +424,12 @@ STDMETHODIMP TestFixture::UnmarshalInterface(
 	}
 
 	Hr = Stm->Read( &this->Ordinal, sizeof( ULONG ), NULL );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	Hr = Stm->Read( &this->ApiType, sizeof( ULONG ), NULL );
 	if ( FAILED( Hr ) )
 	{
 		return Hr;
@@ -547,6 +575,18 @@ STDMETHODIMP TestFixture::CreateExecutionAction(
 }
 
 /*------------------------------------------------------------------
+ * ICfixTestItem methods.
+ */
+
+STDMETHODIMP TestFixture::GetApiType(
+    __out CfixTestApiType *Type
+	)
+{
+	*Type = this->ApiType;
+	return S_OK;
+}
+
+/*------------------------------------------------------------------
  * ICfixTestFixtureInternal methods.
  */
 
@@ -579,6 +619,7 @@ STDMETHODIMP TestFixture::Initialize(
 	}
 
 	this->Ordinal = FixtureOrdinal;
+	this->ApiType = ( CfixTestApiType ) Fixture->ApiType;
 
 	ActionFactory->AddRef();
 	this->ActionFactory = ActionFactory;

@@ -121,16 +121,22 @@ public:
 		//
 		// Unmarshal.
 		//
-		ICfixTestItem *Item2;
+		ICfixTestFixture *Item2;
 		CFIX_ASSERT_OK( CoGetInterfaceAndReleaseStream(
 			Stm,
-			IID_ICfixTestItem,
+			IID_ICfixTestFixture,
 			( PVOID* ) &Item2 ) );
 
 		BSTR Name2;
 		CFIX_ASSERT_OK( Item2->GetName( &Name2 ) );
 		CFIXCC_ASSERT_EQUALS( Fixture->Name, Name2 );
 		SysFreeString( Name2 );
+
+		CfixTestApiType ApiType;
+		CFIX_ASSERT_OK( Item2->GetApiType( &ApiType ) );
+		CFIXCC_ASSERT_EQUALS( 
+			( CfixTestApiType ) Fixture->ApiType, 
+			ApiType );
 
 		CFIXCC_ASSERT_EQUALS( 0UL, Item2->Release() );
 	}
@@ -144,6 +150,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
+			CfixApiTypeCc,
 			NULL,
 			0 };
 
@@ -159,6 +166,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
+			CfixApiTypeWinUnit,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -174,6 +182,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
+			CfixApiTypeCc,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -212,6 +221,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
+			CfixApiTypeBase,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -235,6 +245,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
+			CfixApiTypeWinUnit,
 			NULL,
 			0 };
 
@@ -281,6 +292,7 @@ public:
 				NULL,
 				NULL,
 				NULL,
+				CfixApiTypeBase,
 				NULL,
 				3,
 				{ L"test1", NULL, NULL } 

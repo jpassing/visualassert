@@ -13,8 +13,8 @@ import "ocidl.idl";
 //
 //
 //
-//d010ca03-1b6d-11de-b555-0016d3b98f9b
-//d010ca04-1b6d-11de-b555-0016d3b98f9b
+//
+//
 //d010ca05-1b6d-11de-b555-0016d3b98f9b
 //d010ca06-1b6d-11de-b555-0016d3b98f9b
 //d010ca07-1b6d-11de-b555-0016d3b98f9b
@@ -70,6 +70,20 @@ library Cfixctl
 		CfixTestModuleArchAmd64		= 2,
 		CfixTestModuleArchMax		= 2
 	} CfixTestModuleArch;
+
+	typedef 
+	[
+		uuid( d010ca04-1b6d-11de-b555-0016d3b98f9b ), 
+		v1_enum,
+		version( 1.0 )
+	]
+	enum CfixTestApiType {
+		CfixTestApiUnknown		= 0,
+		CfixTestApiTypeBase		= 1,
+		CfixTestApiTypeCc		= 2,
+		CfixTestApiTypeWinUnit	= 3
+	} CfixTestApiType;
+
 
 	[
 	  object,
@@ -422,6 +436,23 @@ library Cfixctl
 		HRESULT EnumItems( 
 			[in] DWORD Flags,
 			[out] IEnumUnknown **Enum
+			);
+	}
+
+	[
+	  object,
+	  uuid( d010ca03-1b6d-11de-b555-0016d3b98f9b ),
+	  version( 1.0 ),
+	  oleautomation
+	]
+	interface ICfixTestFixture : ICfixTestContainer 
+	{
+		/*++
+			Method Description:
+				Get API type used to implement this fixture.
+		--*/
+		HRESULT GetApiType(
+			[out, retval] CfixTestApiType *Type
 			);
 	}
 
