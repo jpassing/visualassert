@@ -442,8 +442,16 @@ public:
 		CFIXCC_ASSERT_EQUALS( 0UL, ( ULONG ) Info.SubProduct );
 		CFIXCC_ASSERT( Info.Valid );
 		CFIXCC_ASSERT_EQUALS( 1UL, Info.DaysInstalled );	// folder prevails.
-		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD - 1, Info.DaysLeft );
 
+#ifdef CFIXCTL_LIC_HARD_EXPIRY_DATE
+		CFIXCC_ASSERT_EQUALS( 
+			min( 
+				CFIXCTL_LIC_HARD_EXPIRY_DATE - CurrentLicensingDate(), 
+				CFIXCTL_LIC_TRIAL_PERIOD - 1 ),
+			Info.DaysLeft );
+#else
+		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD - 1, Info.DaysLeft );
+#endif
 
 		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - 2, &Info ) );
@@ -453,7 +461,16 @@ public:
 		CFIXCC_ASSERT_EQUALS( 0UL, ( ULONG ) Info.SubProduct );
 		CFIXCC_ASSERT( Info.Valid );
 		CFIXCC_ASSERT_EQUALS( 2UL, Info.DaysInstalled );	// external date prevails.
+
+#ifdef CFIXCTL_LIC_HARD_EXPIRY_DATE
+		CFIXCC_ASSERT_EQUALS( 
+			min( 
+				CFIXCTL_LIC_HARD_EXPIRY_DATE - CurrentLicensingDate(), 
+				CFIXCTL_LIC_TRIAL_PERIOD - 2 ),
+			Info.DaysLeft );
+#else
 		CFIXCC_ASSERT_EQUALS( CFIXCTL_LIC_TRIAL_PERIOD - 2, Info.DaysLeft );
+#endif
 
 		CFIX_ASSERT_OK( CfixctlQueryLicenseInfo(
 			FALSE, NowDays - CFIXCTL_LIC_TRIAL_PERIOD, &Info ) );
