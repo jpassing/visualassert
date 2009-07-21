@@ -176,16 +176,18 @@ namespace Cfix.Addin.Test
 
 				Debug.Assert( this.agentSet.IsArchitectureSupported( arch ) );
 
-				this.currentPath = vcConfig.PrimaryOutput;
-				Debug.Print( this.currentPath );
-
-				if ( ! File.Exists( this.currentPath ) )
+				string modulePath = vcConfig.PrimaryOutput;
+				if ( !File.Exists( modulePath ) )
 				{
+					//
+					// Do not save the path.
+					//
+					this.currentPath = null;
 				}
 				else 
 				{
 					ITestItem module;
-					if ( this.config.IsSupportedTestModulePath( this.currentPath ) )
+					if ( this.config.IsSupportedTestModulePath( modulePath ) )
 					{
 						try
 						{
@@ -195,14 +197,14 @@ namespace Cfix.Addin.Test
 							//
 							// Augment search path.
 							//
-							FileInfo pathInfo = new FileInfo( this.currentPath );
+							FileInfo pathInfo = new FileInfo( modulePath );
 							HostEnvironment env = new HostEnvironment();
 							env.AddSearchPath( pathInfo.Directory.FullName );
 
 							module = this.agentSet.GetAgent( arch ).LoadModule(
 								env,
 								this,
-								this.currentPath,
+								modulePath,
 								true );
 
 							ITestItemCollection moduleColl =
@@ -215,21 +217,26 @@ namespace Cfix.Addin.Test
 								//
 								module = null;
 							}
+
+							this.currentPath = modulePath;
+							Debug.Print( "Loaded " + modulePath );
 						}
 						catch ( Exception x )
 						{
 							module = new InvalidModule(
 								this,
-								new FileInfo( this.currentPath ).Name,
+								new FileInfo( modulePath ).Name,
 								x );
+							this.currentPath = null;
 						}
 					}
 					else
 					{
 						module = new InvalidModule(
 								this,
-								new FileInfo( this.currentPath ).Name,
+								new FileInfo( modulePath ).Name,
 								new CfixException( Strings.UnsupportedModule ) );
+						this.currentPath = null;
 					}
 
 					if ( module != null )
@@ -335,7 +342,7 @@ namespace Cfix.Addin.Test
 
 		public bool PrimaryOutputAvailable
 		{
-			get { return File.Exists( this.currentPath ); }
+			get { return this.currentPath != null && File.Exists( this.currentPath ); }
 		}
 
 		/*----------------------------------------------------------------------
@@ -370,7 +377,8 @@ namespace Cfix.Addin.Test
 				return;
 			}
 
-			if ( vcConfig.PrimaryOutput != this.currentPath )
+			if ( this.currentPath == null ||
+				 vcConfig.PrimaryOutput != this.currentPath )
 			{
 				//
 				// Configuration changed, reload from scratch.
