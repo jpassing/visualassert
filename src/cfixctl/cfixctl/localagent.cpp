@@ -922,20 +922,22 @@ STDMETHODIMP LocalAgent::RegisterHost(
 
 	if ( this->Registration != NULL )
 	{
-		Hr = E_UNEXPECTED;
+		//
+		// Leftover.
+		//
+		delete this->Registration;
+		this->Registration = NULL;
+	}
+	
+	this->Registration = new RegistrationEntry( Cookie, Host );
+	if ( this->Registration == NULL )
+	{
+		Hr = E_OUTOFMEMORY;
 	}
 	else
 	{
-		this->Registration = new RegistrationEntry( Cookie, Host );
-		if ( this->Registration == NULL )
-		{
-			Hr = E_OUTOFMEMORY;
-		}
-		else
-		{
-			VERIFY( SetEvent( this->NewRegistrationEvent ) );
-			Hr = S_OK;
-		}
+		VERIFY( SetEvent( this->NewRegistrationEvent ) );
+		Hr = S_OK;
 	}
 
 	LeaveCriticalSection( &this->RegistrationLock );
