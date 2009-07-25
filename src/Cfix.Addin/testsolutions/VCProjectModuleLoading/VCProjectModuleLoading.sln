@@ -70,4 +70,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		CfixLastUsedApiType = cfixcc
+	EndGlobalSection
 EndGlobal
