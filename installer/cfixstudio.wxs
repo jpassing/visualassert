@@ -41,7 +41,13 @@
     </Property>
 
     
-    <!-- Search VS installations -->
+    <!-- 
+    ****************************************************************************
+    Search VS installations.
+    ****************************************************************************
+    -->
+    
+    <!-- BEGIN VS VERSION SPECIFIC -->
     <Property Id="VS80INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs80" Root="HKCR" Key="VisualStudio.DTE.8.0" Type="raw" />
     </Property>
@@ -50,7 +56,13 @@
       <RegistrySearch Id="SearchVs80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0" Name="InstallDir" Type="directory" />
     </Property>
 
-    
+    <Property Id="VC80INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
+
+    <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
+
+
     <Property Id="VS90INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
     </Property>
@@ -59,7 +71,20 @@
       <RegistrySearch Id="SearchVs90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0" Name="InstallDir" Type="directory" />
     </Property>
 
-    
+    <Property Id="VC90INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
+
+    <Property Id='VS90DEVENV'>[VS90INSTALLDIR]devenv.exe</Property>
+
+    <!-- END VS VERSION SPECIFIC -->
+
+
+    <!-- 
+    ****************************************************************************
+    Launch Conditions. 
+    ****************************************************************************
+    -->
 
     <Condition Message='Windows 2000 SP4 or better required'>
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
@@ -88,16 +113,19 @@
       </Component>
 
       <Directory Id="CommonAppDataFolder">
+
+        <!-- BEGIN VS VERSION SPECIFIC -->
+
         <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
           <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
             <Directory Id="DirAppDataMsVs8080" Name="80" LongName="8.0">
               <Directory Id="DirAppDataMsVs80Addins80" Name="Addins">
                 <Component Id="CompVs80" Guid="71f3193d-ba2e-4293-a44c-b1bf868f80ef">
                   <File Id="FileVs80Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
-                  <XmlFile 
-                    Id="XmlConfigAssemblyVs80" 
-                    Action="setValue" 
-                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin" 
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/Addin/Assembly"
                     Value="[DirBinI386]cfix.addin.80.dll"/>
                   <XmlFile
@@ -106,7 +134,7 @@
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="8.0"/>
-                  </Component>
+                </Component>
               </Directory>
             </Directory>
           </Directory>
@@ -135,9 +163,44 @@
             </Directory>
           </Directory>
         </Directory>
+
+        <!-- END VS VERSION SPECIFIC -->
       </Directory>
       
       <Directory Id="ProgramFilesFolder">
+
+        <!-- BEGIN VS VERSION SPECIFIC -->
+        
+        <Directory Id="VC80INSTALLDIR" Name="VS">
+          <Directory Id="DirVcAddClassVs80" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs80" Name="cfix">
+              <Component Id="CompVcAddClassWizardVc80" Guid="9a21c934-16d1-4813-a1e3-354b5eefcde8">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs80" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVc80" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVc80" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVc80" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="VC90INSTALLDIR" Name="VS">
+          <Directory Id="DirVcAddClassVs90" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs90" Name="cfix">
+              <Component Id="CompVcAddClassWizardVc90" Guid="eccdbd83-f8e7-4948-83d4-20da8cedcec3">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs90" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVc90" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVc90" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVc90" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <!-- END VS VERSION SPECIFIC -->
+        
         <Directory Id="INSTALLLOCATION" Name="cfixstud" LongName="cfixstudio">
           <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
             <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
@@ -317,6 +380,33 @@
         </Directory>
       </Directory>
     </Directory>
+
+    <CustomTable Id="CfixVszParameters">
+      <Column Id="Id" Type="string" PrimaryKey="yes"/>
+      <Column Id="VszPath" Type="string"/>
+      <Column Id="ParameterName" Type="string"/>
+      <Column Id="ParameterValue" Type="string"/>
+      <Column Id="Condition" Type="string"/>
+
+      <!-- BEGIN VS VERSION SPECIFIC -->
+      
+      <Row>
+        <Data Column="Id">VszFixtureVc80</Data>
+        <Data Column="VszPath">[VC80INSTALLDIR]\VCAddClass\cfix\fixture.vsz</Data>
+        <Data Column="ParameterName">RELATIVE_PATH</Data>
+        <Data Column="ParameterValue">[INSTALLLOCATION]\wizards\fixture</Data>
+        <Data Column="Condition">[VS80INSTALLED]</Data>
+      </Row>
+      <Row>
+        <Data Column="Id">VszFixtureVc90</Data>
+        <Data Column="VszPath">[VC90INSTALLDIR]\VCAddClass\cfix\fixture.vsz</Data>
+        <Data Column="ParameterName">RELATIVE_PATH</Data>
+        <Data Column="ParameterValue">[INSTALLLOCATION]\wizards\fixture</Data>
+        <Data Column="Condition">[VS90INSTALLED]</Data>
+      </Row>
+
+      <!-- END VS VERSION SPECIFIC -->
+    </CustomTable>
     
 
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
@@ -341,6 +431,8 @@
         <ComponentRef Id="CompLibAmd64"/>
       </Feature>
 
+      <!-- BEGIN VS VERSION SPECIFIC -->
+      
       <Feature Id="FeatureVs80"
                Absent="allow"
                Title="Visual Studio 2005 integration"
@@ -350,6 +442,7 @@
         <Condition Level="0"><![CDATA[NOT VS80INSTALLED]]></Condition>
 
         <ComponentRef Id="CompVs80"/>
+        <ComponentRef Id="CompVcAddClassWizardVc80"/>
       </Feature>
 
       <Feature Id="FeatureVs90"
@@ -361,7 +454,10 @@
         <Condition Level="0"><![CDATA[NOT VS90INSTALLED]]></Condition>
 
         <ComponentRef Id="CompVs90"/>
+        <ComponentRef Id="CompVcAddClassWizardVc90"/>
       </Feature>
+
+      <!-- END VS VERSION SPECIFIC -->
 
       <ComponentRef Id="CompBinI386"/>
       <ComponentRef Id="CompLibI386"/>
@@ -392,12 +488,13 @@
     <Property Id='HTMLHELP'>hh.exe</Property>
     <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfixstudio.chm::ch04s01.html" />
 
-    <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
-    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+    <!-- BEGIN VS VERSION SPECIFIC -->
 
-    <Property Id='VS90DEVENV'>[VS90INSTALLDIR]devenv.exe</Property>
+    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
     <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
 
+    <!-- END VS VERSION SPECIFIC -->
+        
     <Icon Id="CfixIco" SourceFile="icon.ico" />
   </Product>
 </Wix>
