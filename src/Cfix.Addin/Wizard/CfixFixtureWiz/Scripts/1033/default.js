@@ -1,3 +1,8 @@
+/*++
+	This file is part of cfix studio.
+	
+	Copyright 2009, Johannes Passing.
+--*/
 
 function OnFinish(selProj, selObj)
 {
@@ -8,7 +13,7 @@ function OnFinish(selProj, selObj)
 		var strApiType = wizard.FindSymbol('FIXTURE_APITYPE');
 		var strTemplate = strTemplatePath + '\\' + strApiType + ".tpl";
 		var strFile = strProjectPath + '\\' + wizard.FindSymbol('FIXTURE_FILE');
-
+		
 		//
 		// Generate template code. If the file exists, the code is appended.
 		//

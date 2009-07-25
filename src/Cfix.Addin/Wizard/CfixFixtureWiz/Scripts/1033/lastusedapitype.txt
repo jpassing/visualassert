@@ -1,0 +1,30 @@
+
+function GetLastUsedApiType(defApiType)
+{
+	try
+	{
+		var globals = window.external.dte.Solution.Globals;
+		var key = "CfixLastUsedApiType";
+		if (globals.VariableExists(key))
+		{
+			return globals[key];
+		}
+		else
+		{
+			return defApiType;
+		}
+	}
+	catch(e)
+	{
+		return defApiType;
+	}
+}
+
+function SetLastUsedApiType(apiType)
+{
+	var globals = window.external.dte.Solution.Globals;
+	var key = "CfixLastUsedApiType";
+	
+	globals(key) = apiType;
+	globals.VariablePersists(key) = true;
+}

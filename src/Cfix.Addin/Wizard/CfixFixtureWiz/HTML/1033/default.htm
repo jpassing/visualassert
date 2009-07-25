@@ -1,4 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+	This file is part of cfix studio.
+	
+	Copyright 2009, Johannes Passing.
+-->
+
 <html DIR="LTR">
 	<head>
 		<title>Add Unit Test</title>
@@ -226,9 +233,9 @@ function OnApiTypeChange()
 	GENERATE_TEARDOWN.disabled = ( FIXTURE_APITYPE.value == "winunit" );
 }
 
+
 function InitDocument(document)
 {
-	FinishBtn.disabled = true;
 	setDirection();
 	
 	if (window.external.FindSymbol('DOCUMENT_FIRST_LOAD'))
@@ -237,6 +244,8 @@ function InitDocument(document)
 	}
 
 	window.external.Load(document);
+
+	FinishBtn.disabled = true;
 }
 
 function OnFinish(document)
