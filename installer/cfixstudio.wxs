@@ -253,7 +253,6 @@
             </Directory>
           </Directory>
 
-
           <Directory Id="DirSamples" Name="examples">
             <Component Id="CompSamples" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
               <CreateFolder>
@@ -261,7 +260,7 @@
                 <Permission GenericAll="yes" User="Everyone"/>
               </CreateFolder>
             </Component>
-            
+
             <Directory Id="DirSamplesKernel" Name="KernelMo" LongName="KernelMode">
               <Component Id="CompSamplesKernel" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
                 <?include cfix_samples_kern.wxs?>
@@ -279,9 +278,46 @@
             </Directory>
           </Directory>
 
+          <Directory Id="DirWizards" Name="wizards">
+            <Directory Id="DirWizFixture" Name="fixture">
+              <Directory Id="DirWizFixtureHtml" Name="html">
+                <Directory Id="DirWizFixtureHtml1033" Name="1033">
+                  <Component Id="CompWizFixtureHtml1033" Guid="71b4930c-d196-4683-8d84-1ab3d880360d">
+                    <RemoveFolder Id="RemoveDirWizFixtureHtml1033" On="uninstall"/>
+
+                    <File Id="FileDirWizFixtureHtml1033DefaultHtm" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                    <File Id="FileDirWizFixtureHtml1033HeaderJpg" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                    <File Id="FileDirWizFixtureHtml1033NewStylesCss" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                    <File Id="FileDirWizFixtureHtml1033PixGif" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                  </Component>
+                </Directory>
+              </Directory>
+              <Directory Id="DirWizFixtureScripts" Name="scripts">
+                <Directory Id="DirWizFixtureScripts1033" Name="1033">
+                  <Component Id="CompWizFixtureScripts1033" Guid="99545ad3-6949-4b97-8490-5cc35c72b4da">
+                    <RemoveFolder Id="RemoveDirWizFixtureScripts1033" On="uninstall"/>
+
+                    <File Id="FileDirWizFixtureScripts1033DefaultJs" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                  </Component>
+                </Directory>
+              </Directory>
+              <Directory Id="DirWizFixtureTemplates" Name="template" LongName="templates">
+                <Directory Id="DirWizFixtureTemplates1033" Name="1033">
+                  <Component Id="CompWizFixtureTemplates1033" Guid="89c1d2ae-4578-4ad4-8729-39cc33afb06c">
+                    <RemoveFolder Id="RemoveDirWizFixtureTemplates1033" On="uninstall"/>
+
+                    <File Id="FileDirWizFixtureTemplates1033CfixTpl" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                    <File Id="FileDirWizFixtureTemplates1033CfixccTpl" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                    <File Id="FileDirWizFixtureTemplates1033WinunitTpl" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                  </Component>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
         </Directory>
       </Directory>
     </Directory>
+    
 
     <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompCfixHome"/>
@@ -336,6 +372,10 @@
       <ComponentRef Id="CompDocQuickStartAssetsImg"/>
       
       <ComponentRef Id="CompIncludes"/>
+
+      <ComponentRef Id="CompWizFixtureHtml1033"/>
+      <ComponentRef Id="CompWizFixtureScripts1033"/>
+      <ComponentRef Id="CompWizFixtureTemplates1033"/>
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
