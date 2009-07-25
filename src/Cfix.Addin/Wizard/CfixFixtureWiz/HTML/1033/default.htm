@@ -7,7 +7,7 @@
 
 		<SYMBOL NAME="FIXTURE_NAME" TYPE="text" VALUE=""></SYMBOL>
 		<SYMBOL NAME="FIXTURE_FILE" TYPE="text" VALUE=""></SYMBOL>
-		<SYMBOL NAME="FIXTURE_APITYPE" TYPE="select-one" VALUE="CC"></SYMBOL>
+		<SYMBOL NAME="FIXTURE_APITYPE" TYPE="select-one" VALUE="cfixcc"></SYMBOL>
 		<SYMBOL NAME="GENERATE_SETUP" TYPE="checkbox" VALUE="false"></SYMBOL>
 		<SYMBOL NAME="GENERATE_TEARDOWN" TYPE="checkbox" VALUE="false"></SYMBOL>
 		<SYMBOL NAME="GENERATE_BEFORE" TYPE="checkbox" VALUE="false"></SYMBOL>
@@ -111,9 +111,9 @@
 						</td>
 						<td class='inputsRow1'>
 							<select class="inputsRow1control" id="FIXTURE_APITYPE" size="1" accesskey="p" title="Choose the API you wish to use." value="CC" tabindex="2" onPropertyChange="OnApiTypeChange();" >
-								<option value="CC">cfix C++ API</option>
-								<option value="Base">cfix C API</option>
-								<option value="WU">WinUnit API</option>
+								<option value="cfixcc">cfix C++ API</option>
+								<option value="cfix">cfix C API</option>
+								<option value="winunit">WinUnit API</option>
 							</select>
 						</td>
 						<td class='inputsRow1'>
@@ -186,7 +186,7 @@ function UpdateFileName()
 	var strLen = strClassName.length;
 	if ( strLen )
 	{
-		if ( FIXTURE_APITYPE.value == "Base" )
+		if ( FIXTURE_APITYPE.value == "cfix" )
 		{
 			extension = ".c";
 		}
@@ -222,8 +222,8 @@ function OnApiTypeChange()
 {
 	UpdateFileName();
 	
-	GENERATE_SETUP.disabled = ( FIXTURE_APITYPE.value == "WU" );
-	GENERATE_TEARDOWN.disabled = ( FIXTURE_APITYPE.value == "WU" );
+	GENERATE_SETUP.disabled = ( FIXTURE_APITYPE.value == "winunit" );
+	GENERATE_TEARDOWN.disabled = ( FIXTURE_APITYPE.value == "winunit" );
 }
 
 function InitDocument(document)
