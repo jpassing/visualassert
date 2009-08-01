@@ -464,7 +464,7 @@
                Level="1"
                AllowAdvertise="no"
                Description="Binaries for AMD64 (x64). Required if you intend to write tests for this platform.">
-        <Condition Level="2"><![CDATA[NOT VersionNT64]]></Condition>
+        <Condition Level="0"><![CDATA[NOT VersionNT64]]></Condition>
 
         <ComponentRef Id="CompBinAmd64"/>
         <ComponentRef Id="CompLibAmd64"/>
