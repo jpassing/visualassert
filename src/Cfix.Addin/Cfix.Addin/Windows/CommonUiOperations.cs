@@ -291,7 +291,7 @@ namespace Cfix.Addin.Windows
 			{ }
 		}
 
-		public static void OpenAddUnitTestWizard( DTE2 dte )
+		public static void LaunchAddFixtureWizardForCurrentHierarchyItem( DTE2 dte )
 		{
 			try
 			{
@@ -300,12 +300,7 @@ namespace Cfix.Addin.Windows
 					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
 
 				Project currentProject = selected.Object as Project;
-				ProjectItems projectItems;
-				if ( currentProject != null )
-				{
-					projectItems = currentProject.ProjectItems;
-				}
-				else
+				if ( currentProject == null )
 				{
 					//
 					// Should be a folder, then.
@@ -317,26 +312,9 @@ namespace Cfix.Addin.Windows
 					}
 
 					currentProject = item.ContainingProject;
-					projectItems = item.ProjectItems;
 				}
 
-				DirectoryInfo projectDir = new FileInfo( currentProject.FullName ).Directory;
-
-				string vszPath = Directories.GetVcAddUnitTestVszPath( dte );
-				object[] wizardParams = new object[]
-				{
-					"{0F90E1D0-4999-11D1-B6D1-00A0C90F2744}",
-					currentProject.Name,
-					projectDir.FullName, 
-					Directories.GetVsDirectory( dte ), 
-					false,
-					"",
-					false
-				};
-
-				dte.LaunchWizard(
-					vszPath,
-					ref wizardParams );
+				Wizards.LaunchAddFixtureWizard( dte, currentProject );
 			}
 			catch ( Exception x )
 			{

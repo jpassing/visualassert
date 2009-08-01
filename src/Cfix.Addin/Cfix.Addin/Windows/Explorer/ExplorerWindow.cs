@@ -133,8 +133,12 @@ namespace Cfix.Addin.Windows.Explorer
 
 			this.ctxMenuDebugButton.Enabled = runnable;
 			this.ctxMenuRunButton.Enabled = runnable;
-			
-			this.ctxMenuRefreshButton.Enabled = e.Item is ITestItemCollection;
+
+			this.ctxMenuRefreshButton.Visible = e.Item is ITestItemCollection;
+
+			bool showAddFixture = Wizards.CanAddFixture( e.Item );
+			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
+			this.ctxMenuSeparator.Visible = showAddFixture;
 
 			//
 			// Remember node to associate menu item clicks with
@@ -147,9 +151,31 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			if ( this.contextMenuReferenceNode != null )
 			{
-				this.explorer.RefreshSession(
-					true,
+				try
+				{
+					this.explorer.RefreshSession(
+						true,
+						this.contextMenuReferenceNode.Item );
+				}
+				catch ( Exception x )
+				{
+					CfixStudio.HandleError( x );
+				}
+			}
+		}
+
+		
+		private void ctxMenuAddFixtureButton_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				Wizards.LaunchAddFixtureWizard(
+					this.dte,
 					this.contextMenuReferenceNode.Item );
+			}
+			catch ( Exception x )
+			{
+				CfixStudio.HandleError( x );
 			}
 		}
 

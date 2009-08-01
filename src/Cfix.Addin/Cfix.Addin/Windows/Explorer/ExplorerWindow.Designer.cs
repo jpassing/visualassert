@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -55,8 +55,10 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
+			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuAddFixtureButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
+			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
@@ -222,7 +224,9 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.ctxMenuDebugButton,
             this.ctxMenuRunButton,
-            this.ctxMenuRefreshButton} );
+            this.ctxMenuRefreshButton,
+            this.ctxMenuSeparator,
+            this.ctxMenuAddFixtureButton} );
 			this.ctxMenu.Name = "ctxMenu";
 			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
 			// 
@@ -246,12 +250,17 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.ctxMenuRefreshButton, "ctxMenuRefreshButton" );
 			this.ctxMenuRefreshButton.Name = "ctxMenuRefreshButton";
 			// 
-			// explorer
+			// ctxMenuSeparator
 			// 
-			resources.ApplyResources( this.explorer, "explorer" );
-			this.explorer.Name = "explorer";
-			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory2;
+			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
+			resources.ApplyResources( this.ctxMenuSeparator, "ctxMenuSeparator" );
+			// 
+			// ctxMenuAddFixtureButton
+			// 
+			this.ctxMenuAddFixtureButton.Image = global::Cfix.Addin.Icons.Fixture;
+			resources.ApplyResources( this.ctxMenuAddFixtureButton, "ctxMenuAddFixtureButton" );
+			this.ctxMenuAddFixtureButton.Name = "ctxMenuAddFixtureButton";
+			this.ctxMenuAddFixtureButton.Click += new System.EventHandler( this.ctxMenuAddFixtureButton_Click );
 			// 
 			// throbberPic
 			// 
@@ -260,6 +269,13 @@ namespace Cfix.Addin.Windows.Explorer
 			this.throbberPic.InitialImage = null;
 			this.throbberPic.Name = "throbberPic";
 			this.throbberPic.TabStop = false;
+			// 
+			// explorer
+			// 
+			resources.ApplyResources( this.explorer, "explorer" );
+			this.explorer.Name = "explorer";
+			this.explorer.NodeContextMenu = null;
+			this.explorer.NodeFactory = nodeFactory1;
 			// 
 			// ExplorerWindow
 			// 
@@ -307,5 +323,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem captureStackTracesMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem refreshAfterBuildToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuAddFixtureButton;
 	}
 }

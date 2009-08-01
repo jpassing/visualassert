@@ -401,7 +401,7 @@
             </Component>
 
             <Directory Id="DirSamplesKernel" Name="KernelMo" LongName="KernelMode">
-              <Component Id="CompSamplesKernel" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
+              <Component Id="CompSamplesKernel" DiskId="1" Guid="92f7f6c8-8e43-4681-b146-fce0168ee1fe">
                 <?include cfix_samples_kern.wxs?>
               </Component>
             </Directory>

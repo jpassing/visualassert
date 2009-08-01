@@ -150,6 +150,7 @@
     <Compile Include="Windows\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Wizards.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>

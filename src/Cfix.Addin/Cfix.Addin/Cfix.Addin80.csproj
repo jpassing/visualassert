@@ -146,6 +146,7 @@
     <Compile Include="Windows\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Wizards.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Fixture.bmp" />
     <None Include="Icons\CaptureStackTraces.bmp" />
     <None Include="Icons\StackFrame.bmp" />
     <None Include="Icons\Options.bmp" />
