@@ -69,6 +69,27 @@ namespace Cfix.Addin.Dte
 			}
 		}
 
+		private static CommandBar FindCommandBar( 
+			DteConnect connect,
+			Guid guidCmdGroup, 
+			uint menuID )
+		{
+			CommandBar menuBarCommandBar =
+				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
+
+			Guid guidSvc = typeof( IVsProfferCommands ).GUID;
+			Object objService;
+
+			IOleServiceProvider sp = ( IOleServiceProvider ) connect.DTE;
+			sp.QueryService( ref guidSvc, ref guidSvc, out objService );
+			IVsProfferCommands vsProfferCmds = ( IVsProfferCommands ) objService;
+
+			return ( CommandBar ) vsProfferCmds.FindCommandBar(
+				IntPtr.Zero,
+				ref guidCmdGroup,
+				menuID ) as CommandBar;
+		}
+
 		private DteMainMenu(
 			DteConnect connect,
 			CommandBarPopup popup )
@@ -129,33 +150,39 @@ namespace Cfix.Addin.Dte
 
 		public static DteMainMenu GetToolsMenu( DteConnect connect )
 		{
-			CommandBar menuBarCommandBar =
-				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
-			CommandBarPopup popup = ( CommandBarPopup )
-				menuBarCommandBar.Controls[ GetMenuName( connect, "Tools" ) ];
+			CommandBar bar = FindCommandBar(
+				connect,
+				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
+				133 );
+			CommandBarPopup popup = ( CommandBarPopup ) bar.Parent;
 			return new DteMainMenu( connect, popup );
 		}
 
 		public static DteMainMenu GetHelpMenu( DteConnect connect )
 		{
-			CommandBar menuBarCommandBar =
-				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
-			CommandBarPopup popup = ( CommandBarPopup )
-				menuBarCommandBar.Controls[ GetMenuName( connect, "Help" ) ];
+			CommandBar bar = FindCommandBar(
+				connect,
+				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
+				136 );
+			CommandBarPopup popup = ( CommandBarPopup ) bar.Parent;
 			return new DteMainMenu( connect, popup );
 		}
 
 		public static DteCommandBar GetProjectContextMenu( DteConnect connect )
 		{
-			CommandBar commandBar =
-				( ( CommandBars ) connect.DTE.CommandBars )[ "Project" ];
+			CommandBar commandBar = FindCommandBar(
+				connect,
+				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
+				1026 );
 			return new DteCommandBar( connect, commandBar );
 		}
 
 		public static DteCommandBar GetSolutionContextMenu( DteConnect connect )
 		{
-			CommandBar commandBar =
-				( ( CommandBars ) connect.DTE.CommandBars )[ "Solution" ];
+			CommandBar commandBar = FindCommandBar(
+				connect,
+				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
+				1043 );
 			return new DteCommandBar( connect, commandBar );
 		}
 

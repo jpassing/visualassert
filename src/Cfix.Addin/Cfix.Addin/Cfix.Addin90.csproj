@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="CfixAddinException.cs" />
     <Compile Include="CfixStudio.cs" />
+    <Compile Include="Dte\IOleServiceProvider.cs" />
     <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
