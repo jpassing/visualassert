@@ -74,6 +74,10 @@ namespace Cfix.Addin.Dte
 			Guid guidCmdGroup, 
 			uint menuID )
 		{
+			//
+			// Touch MenuBar to make sure it is loaded. Otherwise, we may
+			// get E_FAILs.
+			//
 			CommandBar menuBarCommandBar =
 				( ( CommandBars ) connect.DTE.CommandBars )[ "MenuBar" ];
 
@@ -183,6 +187,27 @@ namespace Cfix.Addin.Dte
 				connect,
 				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
 				1043 );
+			return new DteCommandBar( connect, commandBar );
+		}
+
+		public static DteCommandBar GetAddItemMenu( DteConnect connect )
+		{
+			//
+			// This FindControl call, although seemingly pointless, seems
+			// to have the side effect that the menu is loaded, which in 
+			// turn is a prerequisite for the subsequent FindCommandBar
+			// call to work.
+			//
+			GetProjectContextMenu( connect ).CommandBar.FindControl(
+				null,
+				850,
+				null,
+				false,
+				true );
+			CommandBar commandBar = FindCommandBar(
+				connect,
+				new Guid( "D309F791-903F-11D0-9EFC-00A0C911004F" ),
+				850 );
 			return new DteCommandBar( connect, commandBar );
 		}
 

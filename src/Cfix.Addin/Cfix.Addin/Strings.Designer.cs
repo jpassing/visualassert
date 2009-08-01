@@ -70,6 +70,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit Test....
+        /// </summary>
+        internal static string AddUnitTestCmdCaption {
+            get {
+                return ResourceManager.GetString("AddUnitTestCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beta, expired.
         /// </summary>
         internal static string BetaLicenseInvalid {
@@ -108,9 +117,9 @@ namespace Cfix.Addin {
         /// <summary>
         ///   Looks up a localized string similar to R&amp;un Tests.
         /// </summary>
-        internal static string DebugCurrentHierItemCCaption {
+        internal static string DebugCurrentHierItemCaption {
             get {
-                return ResourceManager.GetString("DebugCurrentHierItemCCaption", resourceCulture);
+                return ResourceManager.GetString("DebugCurrentHierItemCaption", resourceCulture);
             }
         }
         

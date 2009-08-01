@@ -120,6 +120,9 @@
   <data name="AboutCmdCaption" xml:space="preserve">
     <value>About cfix studio...</value>
   </data>
+  <data name="AddUnitTestCmdCaption" xml:space="preserve">
+    <value>Unit Test...</value>
+  </data>
   <data name="BetaLicenseInvalid" xml:space="preserve">
     <value>Beta, expired</value>
   </data>
@@ -132,7 +135,7 @@
   <data name="CurrentSolution" xml:space="preserve">
     <value>(Current Solution)</value>
   </data>
-  <data name="DebugCurrentHierItemCCaption" xml:space="preserve">
+  <data name="DebugCurrentHierItemCaption" xml:space="preserve">
     <value>R&amp;un Tests</value>
   </data>
   <data name="DocCmdCaption" xml:space="preserve">

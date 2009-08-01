@@ -290,5 +290,58 @@ namespace Cfix.Addin.Windows
 			catch
 			{ }
 		}
+
+		public static void OpenAddUnitTestWizard( DTE2 dte )
+		{
+			try
+			{
+				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
+				UIHierarchyItem selected = ( UIHierarchyItem )
+					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+
+				Project currentProject = selected.Object as Project;
+				ProjectItems projectItems;
+				if ( currentProject != null )
+				{
+					projectItems = currentProject.ProjectItems;
+				}
+				else
+				{
+					//
+					// Should be a folder, then.
+					//
+					ProjectItem item = selected.Object as ProjectItem;
+					if ( item == null )
+					{
+						return;
+					}
+
+					currentProject = item.ContainingProject;
+					projectItems = item.ProjectItems;
+				}
+
+				DirectoryInfo projectDir = new FileInfo( currentProject.FullName ).Directory;
+
+				string vszPath = Directories.GetVcAddUnitTestVszPath( dte );
+				object[] wizardParams = new object[]
+				{
+					"{0F90E1D0-4999-11D1-B6D1-00A0C90F2744}",
+					currentProject.Name,
+					projectDir.FullName, 
+					Directories.GetVsDirectory( dte ), 
+					false,
+					"",
+					false
+				};
+
+				dte.LaunchWizard(
+					vszPath,
+					ref wizardParams );
+			}
+			catch ( Exception x )
+			{
+				CfixStudio.HandleError( x );
+			}
+		}
 	}
 }

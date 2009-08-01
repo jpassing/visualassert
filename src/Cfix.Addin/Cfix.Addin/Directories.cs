@@ -10,7 +10,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Microsoft.Win32;
 using Cfix.Control;
+using EnvDTE80;
 
 namespace Cfix.Addin
 {
@@ -123,6 +125,30 @@ namespace Cfix.Addin
 						throw new ArgumentException();
 				}
 			}
+		}
+
+		public static string GetVcDirectory( DTE2 dte )
+		{
+			using ( RegistryKey key = Registry.LocalMachine.OpenSubKey( 
+				dte.RegistryRoot + "\\Setup\\VC" ) )
+			{
+				return ( string ) key.GetValue( "ProductDir" );
+			}
+		}
+
+		public static string GetVsDirectory( DTE2 dte )
+		{
+			using ( RegistryKey key = Registry.LocalMachine.OpenSubKey(
+				dte.RegistryRoot ) )
+			{
+				string ideDir = ( string ) key.GetValue( "InstallDir" );
+				return new DirectoryInfo( ideDir ).Parent.Parent.FullName;
+			}
+		}
+
+		public static string GetVcAddUnitTestVszPath( DTE2 dte )
+		{
+			return GetVcDirectory( dte ) + "VcAddClass\\cfix\\fixture.vsz";
 		}
 
 		public static string LogDirectory
