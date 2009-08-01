@@ -178,7 +178,7 @@
                 <RemoveFolder Id="RemoveDirVcAddClassCfixVs80" On="uninstall"/>
 
                 <File Id="FileVcAddClassCfixVsdirVs80" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
-                <File Id="FileVcAddClassCfixVszVs80" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs80" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.80.vsz" DiskId="1"/>
                 <File Id="FileVcAddClassCfixIcoVs80" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
               </Component>
             </Directory>
@@ -226,13 +226,51 @@
         <Directory Id="VC90INSTALLDIR" Name="VC">
           <Directory Id="DirVcAddClassVs90" Name="VcAddCls" LongName="VCAddClass">
             <Directory Id="DirVcAddClassCfixVs90" Name="cfix">
-              <Component Id="CompVcAddClassWizardVc90" Guid="eccdbd83-f8e7-4948-83d4-20da8cedcec3">
+              <Component Id="CompVcAddClassWizardVs90" Guid="eccdbd83-f8e7-4948-83d4-20da8cedcec3">
                 <RemoveFolder Id="RemoveDirVcAddClassCfixVs90" On="uninstall"/>
 
-                <File Id="FileVcAddClassCfixVsdirVc90" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
-                <File Id="FileVcAddClassCfixVszVc90" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsz" DiskId="1"/>
-                <File Id="FileVcAddClassCfixIcoVc90" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVsdirVs90" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs90" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.90.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVs90" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
               </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DirWizardsVs90" Name="vcwiz" LongName="vcwizards">
+            <Directory Id="DirWizCfixVs90" Name="cfix">
+              <Directory Id="DirWizFixtureVs90" Name="fixture">
+                <Directory Id="DirWizFixtureHtmlVs90" Name="html">
+                  <Directory Id="DirWizFixtureHtml1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureHtml1033Vs90" Guid="48779dca-1b51-47ca-8c3a-57ebf8ed75b4">
+                      <RemoveFolder Id="RemoveDirWizFixtureHtml1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureHtml1033DefaultHtmVs90" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033HeaderJpgVs90" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033NewStylesCssVs90" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033PixGifVs90" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureScriptsVs90" Name="scripts">
+                  <Directory Id="DirWizFixtureScripts1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureScripts1033Vs90" Guid="2351dc4b-0673-46fc-96a0-861ba70d21fe">
+                      <RemoveFolder Id="RemoveDirWizFixtureScripts1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureScripts1033DefaultJsVs90" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureTemplatesVs90" Name="template" LongName="templates">
+                  <Directory Id="DirWizFixtureTemplates1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureTemplates1033Vs90" Guid="b9fa99c5-0468-4017-bf02-1c436e236811">
+                      <RemoveFolder Id="RemoveDirWizFixtureTemplates1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureTemplates1033CfixTplVs90" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033CfixccTplVs90" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033WinunitTplVs90" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
             </Directory>
           </Directory>
         </Directory>
@@ -458,7 +496,10 @@
         <Condition Level="0"><![CDATA[NOT VS90INSTALLED]]></Condition>
 
         <ComponentRef Id="CompVs90"/>
-        <ComponentRef Id="CompVcAddClassWizardVc90"/>
+        <ComponentRef Id="CompVcAddClassWizardVs90"/>
+        <ComponentRef Id="CompWizFixtureHtml1033Vs90"/>
+        <ComponentRef Id="CompWizFixtureScripts1033Vs90"/>
+        <ComponentRef Id="CompWizFixtureTemplates1033Vs90"/>
       </Feature>
 
       <!-- END VS VERSION SPECIFIC -->
