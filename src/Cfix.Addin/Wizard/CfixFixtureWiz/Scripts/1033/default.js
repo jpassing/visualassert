@@ -33,6 +33,22 @@ function OnFinish(selProj, selObj)
 		{
 			codeModel.AddInclude("<" + strApiType + ".h>", strFile, vsCMAddPositionEnd);
 		}
+		
+		//
+		// Get path to stdafx.h, may be empty.
+		//
+		var strSTDAFX = GetProjectFile(selProj, "STDAFX", false, true);
+				
+		if (strSTDAFX != "" )
+		{
+		    //
+		    // Make sure that we include this, too.
+		    //
+		    if (!DoesIncludeExist(selProj, "\"" + strSTDAFX + "\"", strFile))
+		    {
+			    codeModel.AddInclude("\"" + strSTDAFX + "\"", strFile, vsCMAddPositionStart);
+		    }
+		}
 
 		codeModel.CommitTransaction();
 		

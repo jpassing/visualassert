@@ -29,7 +29,7 @@ public:
 [!endif]
 	void Test()
 	{
-		CFIX_INCONCLUSIVE("Not implemented");
+		CFIX_INCONCLUSIVE(__TEXT("Not implemented"));
 	}
 };
 

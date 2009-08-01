@@ -2,5 +2,5 @@ VSWIZARD 7.0
 Wizard=VsWizard.VsWizardEngine.8.0
 
 Param="WIZARD_NAME = fixture"
-Param="ABSOLUTE_PATH = D:\dev\wdev\cfixplus\trunk\src\Cfix.Addin\Wizard\CfixFixtureWiz"
+Param="RELATIVE_PATH = vcwizards\cfix"
 Param="FALLBACK_LCID = 1033"

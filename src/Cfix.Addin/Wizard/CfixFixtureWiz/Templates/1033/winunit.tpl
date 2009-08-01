@@ -15,6 +15,6 @@ TEARDOWN([!output FIXTURE_NAME])
 
 BEGIN_TESTF(Test, [!output FIXTURE_NAME])
 {
-	CFIX_INCONCLUSIVE("Not implemented");
+	WIN_TRACE("Not implemented");
 }
 END_TESTF

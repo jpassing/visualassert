@@ -24,7 +24,7 @@ static void CFIXCALLTYPE After[!output FIXTURE_NAME]()
 [!endif]
 static void CFIXCALLTYPE Test()
 {
-	CFIX_INCONCLUSIVE("Not implemented");
+	CFIX_INCONCLUSIVE(__TEXT("Not implemented"));
 }
 
 CFIX_BEGIN_FIXTURE([!output FIXTURE_NAME])
