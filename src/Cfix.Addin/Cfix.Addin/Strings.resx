@@ -121,7 +121,7 @@
     <value>About cfix studio...</value>
   </data>
   <data name="AddUnitTestCmdCaption" xml:space="preserve">
-    <value>Unit Test...</value>
+    <value>Unit &amp;Test...</value>
   </data>
   <data name="BetaLicenseInvalid" xml:space="preserve">
     <value>Beta, expired</value>
@@ -227,6 +227,9 @@
   </data>
   <data name="UnsupportedModule" xml:space="preserve">
     <value>The type of module is not supported.</value>
+  </data>
+  <data name="VcDirectoriesUpdated" xml:space="preserve">
+    <value>The VC++ directory settings have been updated to include the cfix include and library directories. You may have to restart Visual Studio to have these changes take effect.</value>
   </data>
   <data name="WrongLicense" xml:space="preserve">
     <value>The installed license is not applicable for this product.</value>

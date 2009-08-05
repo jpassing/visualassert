@@ -70,7 +70,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit Test....
+        ///   Looks up a localized string similar to Unit &amp;Test....
         /// </summary>
         internal static string AddUnitTestCmdCaption {
             get {
@@ -390,6 +390,15 @@ namespace Cfix.Addin {
         internal static string UnsupportedModule {
             get {
                 return ResourceManager.GetString("UnsupportedModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The VC++ directory settings have been updated to include the cfix include and library directories. You may have to restart Visual Studio to have these changes take effect..
+        /// </summary>
+        internal static string VcDirectoriesUpdated {
+            get {
+                return ResourceManager.GetString("VcDirectoriesUpdated", resourceCulture);
             }
         }
         

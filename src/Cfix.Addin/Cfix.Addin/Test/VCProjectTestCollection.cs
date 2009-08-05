@@ -58,6 +58,8 @@ namespace Cfix.Addin.Test
 			}
 
 			IVCCollection platforms = ( IVCCollection ) engine.Platforms;
+			bool changePerformed = false;
+
 			foreach ( VCPlatform platform in platforms )
 			{
 				if ( !IsArchitectureSupported( platform ) )
@@ -70,12 +72,16 @@ namespace Cfix.Addin.Test
 				{
 					platform.IncludeDirectories +=
 						";" + Directories.IncludeDirectory;
+
+					changePerformed = true;
 				}
 
 				if ( ! platform.LibraryDirectories.Contains( Directories.GetLibDirectory( arch ) ) )
 				{
 					platform.LibraryDirectories +=
 						";" + Directories.GetLibDirectory( arch );
+
+					changePerformed = true;
 				}
 
 				//
@@ -85,6 +91,11 @@ namespace Cfix.Addin.Test
 			}
 
 			vcDirectoriesRegistered = true;
+
+			if ( changePerformed )
+			{
+				CfixStudio.ShowInfo( Strings.VcDirectoriesUpdated );
+			}
 		}
 		
 		private VCConfiguration CurrentConfiguration
