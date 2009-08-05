@@ -8,7 +8,7 @@ WIXBINPATH=..\tools\wix
 !ENDIF
 !INCLUDE __buildnum.inc
 
-VERSION = 1.0.0.$(BUILDNUMBER)
+VERSION = 1.0.1.$(BUILDNUMBER)
 
 
 #----------------------------------------------------------------------
