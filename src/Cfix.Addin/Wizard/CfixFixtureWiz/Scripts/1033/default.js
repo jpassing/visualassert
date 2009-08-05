@@ -77,6 +77,13 @@ function OnFinish( selProj, selObj )
 		codeModel.CommitTransaction();
 		
 		selProj.Object.Save();
+		
+		try
+		{
+			wizard.dte.ItemOperations.OpenFile( strFile );
+		}
+		catch (e)
+		{}
 	}
 	catch(e)
 	{
