@@ -293,7 +293,7 @@
 									Id="ShortcutCfixChm"
 									Description="cfix studio Documentation"
 									Directory="DirProgMenu"
-									Icon="CfixIco"
+									Icon="HelpIco"
 									Name="Doc"
 									LongName="cfix studio Documentation"/>
               </File>
@@ -397,6 +397,14 @@
               <CreateFolder>
                 <!-- Grant write permissions s.t. the examples work properly -->
                 <Permission GenericAll="yes" User="Everyone"/>
+
+                <Shortcut
+									Id="ShortcutSamples"
+									Description="Example Projects"
+									Directory="DirProgMenu"
+									Icon="CfixIco"
+									Name="Examples"
+									LongName="Example Projects"/>
               </CreateFolder>
             </Component>
 
@@ -536,6 +544,7 @@
 
     <!-- END VS VERSION SPECIFIC -->
         
-    <Icon Id="CfixIco" SourceFile="icon.ico" />
+    <Icon Id="CfixIco" SourceFile="bitmaps\icon.ico" />
+    <Icon Id="HelpIco" SourceFile="bitmaps\help.ico" />
   </Product>
 </Wix>
