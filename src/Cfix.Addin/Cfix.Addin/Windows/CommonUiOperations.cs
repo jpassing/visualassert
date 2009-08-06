@@ -291,34 +291,57 @@ namespace Cfix.Addin.Windows
 			{ }
 		}
 
+		private static Project GetProjectFromCurrentHierarchyItem( DTE2 dte )
+		{
+			UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
+			UIHierarchyItem selected = ( UIHierarchyItem )
+				( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+
+			Project currentProject = selected.Object as Project;
+			if ( currentProject == null )
+			{
+				//
+				// Should be a folder, then.
+				//
+				ProjectItem item = selected.Object as ProjectItem;
+				if ( item == null )
+				{
+					return null;
+				}
+
+				currentProject = item.ContainingProject;
+			}
+
+			return currentProject;
+		}
+
 		public static void LaunchAddFixtureWizardForCurrentHierarchyItem( DTE2 dte )
 		{
 			try
 			{
-				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
-				UIHierarchyItem selected = ( UIHierarchyItem )
-					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
-
-				Project currentProject = selected.Object as Project;
-				if ( currentProject == null )
+				Project currentProject = GetProjectFromCurrentHierarchyItem( dte );
+				if ( currentProject != null && currentProject.Kind == ProjectKinds.VcProject )
 				{
-					//
-					// Should be a folder, then.
-					//
-					ProjectItem item = selected.Object as ProjectItem;
-					if ( item == null )
-					{
-						return;
-					}
-
-					currentProject = item.ContainingProject;
+					Wizards.LaunchAddFixtureWizard( dte, currentProject );
 				}
-
-				Wizards.LaunchAddFixtureWizard( dte, currentProject );
 			}
 			catch ( Exception x )
 			{
 				CfixStudio.HandleError( x );
+			}
+		}
+
+		public static bool CanLaunchAddFixtureWizardForCurrentHierarchyItem( DTE2 dte )
+		{
+			try
+			{
+				Project currentProject = GetProjectFromCurrentHierarchyItem( dte );
+				return currentProject != null &&
+					currentProject.Kind == ProjectKinds.VcProject;
+			}
+			catch ( Exception x )
+			{
+				return false;
 			}
 		}
 	}
