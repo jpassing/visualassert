@@ -331,7 +331,7 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
-		public static bool CanLaunchAddFixtureWizardForCurrentHierarchyItem( DTE2 dte )
+		public static bool IsCurrentHierarchyItemPartOfVcProject( DTE2 dte )
 		{
 			try
 			{
