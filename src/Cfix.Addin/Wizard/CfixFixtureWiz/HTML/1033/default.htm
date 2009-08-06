@@ -11,7 +11,9 @@
 		<title>Add Unit Test</title>
 		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
 		<link id="LINKURL" rel="stylesheet" href="styles.css">
-
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="MSThemeCompatible" content="Yes">
+	
 		<SYMBOL NAME="FIXTURE_NAME" TYPE="text" VALUE=""></SYMBOL>
 		<SYMBOL NAME="FIXTURE_FILE" TYPE="text" VALUE=""></SYMBOL>
 		<SYMBOL NAME="FIXTURE_APITYPE" TYPE="select-one" VALUE="cfixcc"></SYMBOL>
@@ -243,23 +245,24 @@ function OnApiTypeChange()
 }
 
 
-function InitDocument(document)
+function InitDocument( document )
 {
 	setDirection();
 	
-	if (window.external.FindSymbol('DOCUMENT_FIRST_LOAD'))
+	if (window.external.FindSymbol( 'DOCUMENT_FIRST_LOAD' ) )
 	{
+		window.external.AddSymbol( "WIZARD_DIALOG_TITLE", "Add Unit Test Wizard" );
 		window.external.SetDefaults(document);
 	}
 
-	window.external.Load(document);
+	window.external.Load( document );
 
 	FinishBtn.disabled = true;
 }
 
-function OnFinish(document)
+function OnFinish( document )
 {
-	OnWizFinish(document);
+	OnWizFinish( document );
 }
 
 </script>
