@@ -286,6 +286,15 @@
             <File Id="FileStdoleDll" Name="stdole.dll" KeyPath="yes" Source="redist\stdole.dll" DiskId="1" Assembly=".net"/>
           </Component>
 
+          <Component Id="CompCfixEnvCmd" Guid="286e4353-a532-4df4-bc0d-358c6548a9a7">
+            <File
+							Id="FileCfixEnvCmd"
+							Name="cfixenv.cmd"
+							DiskId="1"
+							Source="$(var.CFIX_TREE)\cfix\cfixenv.cmd"
+							Vital="yes"/>
+          </Component>
+
           <Directory Id="DirDoc" Name="doc">
             <Component Id="CompDoc" DiskId="1" Guid="34c84943-04cb-4836-974f-81f327c0ee6c">
               <File Id="FileCfixChm" Name="cfixstud.chm" LongName="cfixstudio.chm" Source="doc\docbook\chm\cfixstudio.chm" Vital="yes">
@@ -460,6 +469,7 @@
       <ComponentRef Id="CompCfixHome"/>
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
+      <ComponentRef Id="CompCfixEnvCmd"/>
 
       <ComponentRef Id="CompSamples"/>
       <ComponentRef Id="CompSamplesKernel"/>
