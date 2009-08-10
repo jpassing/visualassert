@@ -98,7 +98,7 @@ namespace Cfix.Addin.Dte
 			DteConnect connect,
 			String caption,
 			Guid positionGuid,
-			Image tabIcon
+			Bitmap tabIcon
 			)
 		{
 			Windows2 win = ( Windows2 ) connect.DTE.Windows;
@@ -113,6 +113,11 @@ namespace Cfix.Addin.Dte
 				caption,
 				"{" + positionGuid.ToString() + "}",
 				ref userControl );
+
+			//
+			// Workaround for VS08 transparency issue.
+			//
+			tabIcon.MakeTransparent( Color.Magenta );
 			wnd.SetTabPicture(
 				IconUtil.GetIPictureDispFromImage( tabIcon ) );
 
