@@ -34,7 +34,42 @@
 			</para>
 		</section>
 		<section id="Terms">
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Terms']/*)" href="..\__cfix.xml" />
+			<title>Terms used</title>
+			<para>
+			The following terms are used throughout this documentation.
+			</para>
+			<simplesect>
+				<title>Test Case</title>
+				<para>
+					A Test Case<indexterm><primary>Test Case</primary></indexterm> contains the actual testing code. It utilizes assertions etc. to report
+					success or failure of certain operations. A test case is implemented as a single routine.
+				</para>
+				<para>
+					This understanding corresponds to test methods (i.e. methods decorated with [Test]) in NUnit.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Test Fixture</title>
+				<para>
+					A Test Fixture<indexterm><primary>Test Fixture</primary></indexterm> is a collection of test cases, accompanied by a setup and teardown routine.
+				</para>
+				<para>
+					This understanding corresponds to test classes (i.e. classes decorated with [TestFixture]) in NUnit.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Test Module</title>
+				<para>
+					All fixtures are compiled and linked into a single binary, which is either a DLL or EXE file. This DLL or EXE file
+					is referred to as Test Module<indexterm><primary>Test Module</primary></indexterm>.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Test Suite</title>
+				<para>
+					A collection of one or more test modules is referred to as test suite.
+				</para>
+			</simplesect>
 		</section>
 	</chapter>
 	
