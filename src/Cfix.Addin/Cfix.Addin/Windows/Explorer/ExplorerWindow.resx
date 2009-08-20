@@ -386,7 +386,7 @@
     <value>Add Fixture...</value>
   </data>
   <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 120</value>
+    <value>213, 98</value>
   </data>
   <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
     <value>ctxMenu</value>
@@ -440,7 +440,7 @@
     <value>explorer</value>
   </data>
   <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.3489, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.3504, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
     <value>$this</value>

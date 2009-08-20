@@ -196,6 +196,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Solution loaded.
+        /// </summary>
+        internal static string NoSlnLoaded {
+            get {
+                return ResourceManager.GetString("NoSlnLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regular Project: The module does not define any tests..
         /// </summary>
         internal static string NotATestProjectToolTip {

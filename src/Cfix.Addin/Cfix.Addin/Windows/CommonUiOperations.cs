@@ -339,7 +339,7 @@ namespace Cfix.Addin.Windows
 				return currentProject != null &&
 					currentProject.Kind == ProjectKinds.VcProject;
 			}
-			catch ( Exception x )
+			catch ( Exception )
 			{
 				return false;
 			}

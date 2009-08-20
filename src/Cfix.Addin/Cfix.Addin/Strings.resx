@@ -162,6 +162,9 @@
   <data name="MsgBoxCaption" xml:space="preserve">
     <value>cfix</value>
   </data>
+  <data name="NoSlnLoaded" xml:space="preserve">
+    <value>No Solution loaded</value>
+  </data>
   <data name="NotATestProjectToolTip" xml:space="preserve">
     <value>Regular Project: The module does not define any tests.</value>
   </data>

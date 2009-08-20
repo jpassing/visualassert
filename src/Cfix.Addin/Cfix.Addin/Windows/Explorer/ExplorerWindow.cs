@@ -81,6 +81,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
+			this.statusText.Text = Strings.NoSlnLoaded;
+
 			Configuration config = this.workspace.Configuration;
 			this.refreshAfterBuildToolStripMenuItem.Checked = config.AutoRefreshAfterBuild;
 			
