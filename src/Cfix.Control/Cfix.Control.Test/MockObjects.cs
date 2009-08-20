@@ -25,7 +25,7 @@ namespace Cfix.Control.Test
 		}
 	}
 
-	internal class MockContainer : MockItem, ICfixTestContainer
+	internal class MockContainer : MockItem, ICfixTestContainer, ICfixTestFixture
 	{
 		public IList<ICfixTestItem> Children = new List<ICfixTestItem>();
 
@@ -47,6 +47,11 @@ namespace Cfix.Control.Test
 		public void EnumItems( uint Flags, out IEnumUnknown Enum )
 		{
 			throw new NotImplementedException();
+		}
+
+		public CfixTestApiType GetApiType()
+		{
+			return CfixTestApiType.CfixTestApiUnknown;
 		}
 	}
 
