@@ -110,6 +110,7 @@ namespace Cfix.Control.Ui.Explorer
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.ArgumentException.#ctor(System.String)" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily" )]
 		public virtual AbstractExplorerNode CreateNode( 
 			TreeView treeView, 

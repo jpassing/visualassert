@@ -7,8 +7,7 @@ namespace Cfix.Control
 	public class GenericResultItem : IResultItem
 	{
 		private readonly ITestItem item;
-
-		protected readonly IActionEvents events;
+		private readonly IActionEvents events;
 		
 		private volatile ExecutionStatus status;
 		private volatile bool inconclusive;
@@ -41,6 +40,11 @@ namespace Cfix.Control
 		/*----------------------------------------------------------------------
 		 * Protected.
 		 */
+
+		protected IActionEvents Events
+		{
+			get { return this.events; }
+		}
 
 		protected void AddFailure( Failure failure )
 		{

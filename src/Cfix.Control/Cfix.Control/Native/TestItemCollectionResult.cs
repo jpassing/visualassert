@@ -115,8 +115,8 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				Debug.Assert( this.events != null );
-				this.events.OnThreadStarted( this, threadId );
+				Debug.Assert( this.Events != null );
+				this.Events.OnThreadStarted( this, threadId );
 			}
 			catch ( Exception x )
 			{
@@ -129,8 +129,8 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				Debug.Assert( this.events != null );
-				this.events.OnThreadFinished( this, threadId );
+				Debug.Assert( this.Events != null );
+				this.Events.OnThreadFinished( this, threadId );
 			}
 			catch ( Exception x )
 			{
@@ -164,9 +164,9 @@ namespace Cfix.Control.Native
 
 				AddFailure( ass );
 
-				Debug.Assert( this.events != null );
+				Debug.Assert( this.Events != null );
 				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-					this.events.DispositionPolicy.FailedAssertion( ass );
+					this.Events.DispositionPolicy.FailedAssertion( ass );
 
 				return disp;
 			}
@@ -205,9 +205,9 @@ namespace Cfix.Control.Native
 
 				AddFailure( fr );
 
-				Debug.Assert( this.events != null );
+				Debug.Assert( this.Events != null );
 				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-					this.events.DispositionPolicy.FailedAssertion( fr );
+					this.Events.DispositionPolicy.FailedAssertion( fr );
 
 				return disp;
 			}
@@ -231,9 +231,9 @@ namespace Cfix.Control.Native
 
 				AddFailure( u );
 
-				Debug.Assert( this.events != null );
+				Debug.Assert( this.Events != null );
 				CFIXCTL_REPORT_DISPOSITION disp = ( CFIXCTL_REPORT_DISPOSITION )
-					this.events.DispositionPolicy.UnhandledException( u );
+					this.Events.DispositionPolicy.UnhandledException( u );
 
 				return disp;
 			}
@@ -268,8 +268,8 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				Debug.Assert( this.events != null );
-				this.events.OnLog( this, message );
+				Debug.Assert( this.Events != null );
+				this.Events.OnLog( this, message );
 			}
 			catch ( Exception x )
 			{
@@ -282,9 +282,9 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				Debug.Assert( this.events != null );
+				Debug.Assert( this.Events != null );
 				return ( CFIXCTL_REPORT_DISPOSITION )
-					this.events.DispositionPolicy.DefaultFailedAssertionDisposition;
+					this.Events.DispositionPolicy.DefaultFailedAssertionDisposition;
 			}
 			catch ( Exception x )
 			{
@@ -297,9 +297,9 @@ namespace Cfix.Control.Native
 		{
 			try
 			{
-				Debug.Assert( this.events != null );
+				Debug.Assert( this.Events != null );
 				return ( CFIXCTL_REPORT_DISPOSITION )
-					this.events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
+					this.Events.DispositionPolicy.DefaultUnhandledExceptionDisposition;
 			}
 			catch ( Exception x )
 			{
