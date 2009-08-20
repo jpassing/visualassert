@@ -24,7 +24,7 @@ namespace Cfix.Control.Native
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_FAILURE		= 7;
 		public const uint CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES				= 256;
 
-		private readonly TestItem item;
+		private readonly NativeTestItem item;
 		private readonly ExecutionOptions executionOptions;
 		private readonly ThreadingOptions threadingOptions;
 		private readonly EnvironmentOptions envOptions;
@@ -61,7 +61,7 @@ namespace Cfix.Control.Native
 				// N.B. result.Item may be a child of NativeAction.item,
 				// which is relevant as the item may be a generic collection.
 				//
-				Debug.Assert( result.Item is TestItem );
+				Debug.Assert( result.Item is NativeTestItem );
 
 				this.agent = agent;
 				this.result = result;
@@ -167,7 +167,7 @@ namespace Cfix.Control.Native
 		}
 
 		public NativeAction( 
-			TestItem item,
+			NativeTestItem item,
 			IActionEvents events,
 			IResultItem result,
 			ExecutionOptions executionOptions,

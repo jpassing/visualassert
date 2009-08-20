@@ -14,7 +14,7 @@ namespace Cfix.Control.Native
 	 *		Threadsafe.
 	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
-	public class TestItemCollection : TestItem, ITestItemCollection
+	public class TestItemCollection : NativeTestItem, ITestItemCollection
 	{
 		//
 		// Children, indexed by ordinal.
@@ -157,7 +157,7 @@ namespace Cfix.Control.Native
 
 							if ( itemAdded )
 							{
-								this.subItems[ i ] = TestItem.Wrap(
+								this.subItems[ i ] = NativeTestItem.Wrap(
 									this,
 									i,
 									newItem );

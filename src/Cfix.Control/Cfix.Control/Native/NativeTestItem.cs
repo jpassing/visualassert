@@ -13,7 +13,7 @@ namespace Cfix.Control.Native
 	 * 
 	 *		Threadsafe.
 	 --*/
-	public class TestItem : ITestItem, IRunnableTestItem
+	public abstract class NativeTestItem : ITestItem, IRunnableTestItem
 	{
 		private readonly TestItemCollection parent;
 		private readonly uint ordinal;
@@ -38,7 +38,7 @@ namespace Cfix.Control.Native
 			}
 			else
 			{
-				return new TestItem(
+				return new TestCase(
 					parent,
 					ordinal,
 					ctlItem );
@@ -92,7 +92,7 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		internal TestItem(
+		internal NativeTestItem(
 			TestItemCollection parent,
 			uint ordinal,
 			ICfixTestItem item )
@@ -104,7 +104,7 @@ namespace Cfix.Control.Native
 			this.name = item.GetName();
 		}
 
-		~TestItem()
+		~NativeTestItem()
 		{
 			Dispose( false );
 		}
