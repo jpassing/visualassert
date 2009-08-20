@@ -14,7 +14,7 @@ namespace Cfix.Control.Native
 	 *		Threadsafe.
 	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix" )]
-	public class TestModule : TestItemCollection
+	public class TestModule : NativeTestItemCollection
 	{
 		private readonly String path;
 		private readonly CfixTestModuleArch arch;

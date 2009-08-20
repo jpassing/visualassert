@@ -14,7 +14,7 @@ namespace Cfix.Control.Native
 	 *		Threadsafe.
 	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
-	public class TestItemCollection : NativeTestItem, ITestItemCollection
+	public abstract class NativeTestItemCollection : NativeTestItem, ITestItemCollection
 	{
 		//
 		// Children, indexed by ordinal.
@@ -34,8 +34,8 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		internal TestItemCollection(
-			TestItemCollection parent,
+		internal NativeTestItemCollection(
+			NativeTestItemCollection parent,
 			uint ordinal,
 			ICfixTestItem item,
 			bool ignoreDuplicates
@@ -45,8 +45,8 @@ namespace Cfix.Control.Native
 			this.ignoreDuplicates = ignoreDuplicates;
 		}
 
-		internal TestItemCollection(
-			TestItemCollection parent,
+		internal NativeTestItemCollection(
+			NativeTestItemCollection parent,
 			uint ordinal,
 			ICfixTestItem item
 			)
@@ -169,8 +169,8 @@ namespace Cfix.Control.Native
 
 							Debug.Assert( this.subItems[ i ] != null );
 
-							TestItemCollection subContainer =
-								this.subItems[ i ] as TestItemCollection;
+							NativeTestItemCollection subContainer =
+								this.subItems[ i ] as NativeTestItemCollection;
 							if ( subContainer != null )
 							{
 								subContainer.Update(

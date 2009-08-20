@@ -6,15 +6,15 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	public class TestCase : NativeTestItem
+	public class TestFixture : NativeTestItemCollection
 	{
-		internal TestCase(
+		internal TestFixture(
 			NativeTestItemCollection parent,
 			uint ordinal,
-			ICfixTestItem item )
+			ICfixTestItem item
+			)
 			: base( parent, ordinal, item )
 		{
 		}
-
 	}
 }

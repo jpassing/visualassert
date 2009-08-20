@@ -15,7 +15,7 @@ namespace Cfix.Control.Native
 	 --*/
 	public abstract class NativeTestItem : ITestItem, IRunnableTestItem
 	{
-		private readonly TestItemCollection parent;
+		private readonly NativeTestItemCollection parent;
 		private readonly uint ordinal;
 		private readonly String name;
 
@@ -24,14 +24,14 @@ namespace Cfix.Control.Native
 		public event EventHandler Disposed;
 
 		internal static ITestItem Wrap(
-			TestItemCollection parent,
+			NativeTestItemCollection parent,
 			uint ordinal,
 			ICfixTestItem ctlItem
 			)
 		{
 			if ( ctlItem is ICfixTestContainer )
 			{
-				return new TestItemCollection(
+				return new TestFixture(
 					parent,
 					ordinal,
 					ctlItem );
@@ -77,7 +77,7 @@ namespace Cfix.Control.Native
 			IAgent agent,
 			HostEnvironment env )
 		{
-			TestItemCollection parentColl = this.Parent as TestItemCollection;
+			NativeTestItemCollection parentColl = this.Parent as NativeTestItemCollection;
 			if ( parentColl != null )
 			{
 				return parentColl.CreateHost( agent, env );
@@ -93,7 +93,7 @@ namespace Cfix.Control.Native
 		 */
 
 		internal NativeTestItem(
-			TestItemCollection parent,
+			NativeTestItemCollection parent,
 			uint ordinal,
 			ICfixTestItem item )
 		{

@@ -266,8 +266,8 @@ namespace Cfix.Control.Test
 					null,
 					this.binDir + "\\testmanaged.dll",
 					true ) )
-			using ( TestItemCollection fixture =
-				( TestItemCollection ) GetFixture( mod, "SinkTest" ) )
+			using ( TestFixture fixture =
+				( TestFixture ) GetFixture( mod, "SinkTest" ) )
 			{
 				Cfixctl.ICfixTestItem ctlItem = fixture.GetNativeItem( oohost );
 				try
