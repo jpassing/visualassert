@@ -175,28 +175,28 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Base.c"
+				>
+			</File>
+			<File
 				RelativePath=".\ConsExe.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Cpp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Fail.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Winunit.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
