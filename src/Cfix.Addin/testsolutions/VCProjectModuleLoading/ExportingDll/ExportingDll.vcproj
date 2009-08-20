@@ -335,10 +335,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\My1.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration

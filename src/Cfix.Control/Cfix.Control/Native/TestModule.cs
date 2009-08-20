@@ -48,11 +48,6 @@ namespace Cfix.Control.Native
 		 * Overrides.
 		 */
 
-		public override String FullName
-		{
-			get { return null; }
-		}
-		
 		internal override ICfixTestItem GetNativeItem( IHost host )
 		{
 			return ( ( Host ) host ).GetNativeItem().LoadModule( this.path );

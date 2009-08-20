@@ -137,6 +137,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuRunButton.Enabled = runnable;
 
 			this.ctxMenuRefreshButton.Visible = e.Item is ITestItemCollection;
+			this.ctxMenuViewCodeButton.Visible = e.Item is ITestCodeElement;
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -179,6 +180,11 @@ namespace Cfix.Addin.Windows.Explorer
 			{
 				CfixStudio.HandleError( x );
 			}
+		}
+
+		private void ctxMenuViewCodeButton_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.GoToTestItem( this.dte, this.contextMenuReferenceNode.Item );			
 		}
 
 		/*----------------------------------------------------------------------
@@ -676,6 +682,5 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
-
 	}
 }

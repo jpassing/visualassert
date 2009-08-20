@@ -214,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Code.bmp" />
     <None Include="Icons\Fixture.bmp" />
     <None Include="Icons\CaptureStackTraces.bmp" />
     <None Include="Icons\StackFrame.bmp" />

@@ -67,6 +67,7 @@
     <Compile Include="HostEnvironment.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Native\HostTestModule.cs" />
+    <Compile Include="Native\ITestCodeElement.cs" />
     <Compile Include="Native\LocalProcessWatcher.cs" />
     <Compile Include="Native\NativeTestItem.cs" />
     <Compile Include="Native\TestCase.cs" />

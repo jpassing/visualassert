@@ -15,6 +15,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Cfix.Control;
+using Cfix.Control.Native;
 using Cfix.Control.Ui.Result;
 using EnvDTE;
 using EnvDTE80;
@@ -249,7 +250,9 @@ namespace Cfix.Addin.Windows.Run
 				{
 					this.ctxMenuDebugButton.Enabled = !running;
 					this.ctxMenuRunButton.Enabled = !running;
-						
+
+					this.ctxMenuViewCodeButton.Visible = resultItem.ResultItem.Item is ITestCodeElement;
+
 					this.resultCtxMenu.Show( this.results, e.Location );
 					return;
 				}
@@ -311,6 +314,11 @@ namespace Cfix.Addin.Windows.Run
 					resultItem.ResultItem.Item,
 					false );
 			}
+		}
+
+		private void ctxMenuViewCodeButton_Click( object sender, EventArgs e )
+		{
+			GoTo( this.contextMenuReferenceItem );
 		}
 
 		private void GoTo( object node )
@@ -514,5 +522,6 @@ namespace Cfix.Addin.Windows.Run
 		{
 			CommonUiOperations.OpenDocumentation();
 		}
+
 	}
 }

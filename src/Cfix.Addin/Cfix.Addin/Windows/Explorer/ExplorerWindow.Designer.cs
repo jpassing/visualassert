@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -59,6 +59,7 @@ namespace Cfix.Addin.Windows.Explorer
 			this.ctxMenuAddFixtureButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
+			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.throbberPic ) ).BeginInit();
@@ -225,6 +226,7 @@ namespace Cfix.Addin.Windows.Explorer
             this.ctxMenuDebugButton,
             this.ctxMenuRunButton,
             this.ctxMenuRefreshButton,
+            this.ctxMenuViewCodeButton,
             this.ctxMenuSeparator,
             this.ctxMenuAddFixtureButton} );
 			this.ctxMenu.Name = "ctxMenu";
@@ -275,7 +277,14 @@ namespace Cfix.Addin.Windows.Explorer
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.NodeFactory = nodeFactory2;
+			// 
+			// ctxMenuViewCodeButton
+			// 
+			this.ctxMenuViewCodeButton.Image = global::Cfix.Addin.Icons.Code;
+			resources.ApplyResources( this.ctxMenuViewCodeButton, "ctxMenuViewCodeButton" );
+			this.ctxMenuViewCodeButton.Name = "ctxMenuViewCodeButton";
+			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
 			// 
 			// ExplorerWindow
 			// 
@@ -325,5 +334,6 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripMenuItem refreshAfterBuildToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuAddFixtureButton;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewCodeButton;
 	}
 }

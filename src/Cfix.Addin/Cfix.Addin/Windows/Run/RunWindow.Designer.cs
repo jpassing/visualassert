@@ -49,6 +49,7 @@ namespace Cfix.Addin.Windows.Run
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -169,16 +170,19 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.BackColor = System.Drawing.Color.LightYellow;
 			this.progressBar.Location = new System.Drawing.Point( 3, 28 );
 			this.progressBar.Name = "progressBar";
+			this.progressBar.ProgressBarColor = System.Drawing.Color.Blue;
 			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
 			this.progressBar.TabIndex = 2;
+			this.progressBar.Value = 0;
 			// 
 			// resultCtxMenu
 			// 
 			this.resultCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.ctxMenuDebugButton,
-            this.ctxMenuRunButton} );
+            this.ctxMenuRunButton,
+            this.ctxMenuViewCodeButton} );
 			this.resultCtxMenu.Name = "resultCtxMenu";
-			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 48 );
+			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 92 );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -236,6 +240,15 @@ namespace Cfix.Addin.Windows.Run
 			this.progressLabel.TabIndex = 3;
 			this.progressLabel.TabStop = false;
 			// 
+			// ctxMenuViewCodeButton
+			// 
+			this.ctxMenuViewCodeButton.Image = global::Cfix.Addin.Icons.Code;
+			this.ctxMenuViewCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ctxMenuViewCodeButton.Name = "ctxMenuViewCodeButton";
+			this.ctxMenuViewCodeButton.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuViewCodeButton.Text = "View Code";
+			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
+			// 
 			// RunWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -276,5 +289,6 @@ namespace Cfix.Addin.Windows.Run
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripButton lameButton;
 		private System.Windows.Forms.ToolStripButton docButton;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewCodeButton;
 	}
 }

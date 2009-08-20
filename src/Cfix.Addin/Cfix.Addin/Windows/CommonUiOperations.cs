@@ -132,26 +132,13 @@ namespace Cfix.Addin.Windows
 				return false;
 			}
 
-			string functionName = item.FullName;
-			if ( functionName == null )
+			ITestCodeElement codeElem = item as ITestCodeElement;
+			if ( codeElem == null )
 			{
 				return false;
 			}
 
-			bool success = GoToFunction( dte, project, functionName );
-
-			if ( !success && !( item is ITestItemCollection ) )
-			{
-				//
-				// Jumping to tests does not work for C++/WinUnit,
-				// try jumping to fixture.
-				//
-				return GoToTestItem( dte, item.Parent );
-			}
-			else
-			{
-				return success;
-			}
+			return GoToFunction( dte, project, codeElem.CodeElementName );
 		}
 
 		public static bool GoToFunction(
