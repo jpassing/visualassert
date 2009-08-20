@@ -210,6 +210,62 @@ public:
 
 		CustomHost->Release();
 	}
+
+	void ApiTypes()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testapis.exe" );
+
+		ICfixHost* CustomHost;
+		CFIX_ASSERT_OK( Agent->CreateHost( 
+			TESTCTLP_OWN_ARCHITECTURE,
+			CLSCTX_LOCAL_SERVER,
+			0,
+			INFINITE,
+			Path,
+			NULL,
+			NULL,
+			&CustomHost ) );
+
+		ICfixTestModule *Module;
+		CFIX_ASSERT_OK( 
+			CustomHost->LoadModule(
+				NULL,
+				&Module ) );
+
+		CfixTestApiType ExpectedTypes[] =
+		{
+			CfixTestApiTypeBase,
+			CfixTestApiTypeCc,
+			CfixTestApiTypeWinUnit
+		};
+
+		for ( ULONG Index = 0; Index < _countof( ExpectedTypes ); Index++ )
+		{
+			ICfixTestItem *Item;
+			CFIX_ASSERT_OK( Module->GetItem( Index, &Item ) );
+			
+			ICfixTestFixture *Fixture;
+			CFIX_ASSERT_OK( Item->QueryInterface(
+				IID_ICfixTestFixture, ( PVOID* ) &Fixture ) );
+
+			CfixTestApiType ApiType;
+			CFIX_ASSERT_OK( Fixture->GetApiType( &ApiType ) );
+
+			CFIXCC_ASSERT_EQUALS( ExpectedTypes[ Index ], ApiType );
+
+			Item->Release();
+			Fixture->Release();
+		}
+
+		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+		CustomHost->Release();
+	}
 };
 
 COM_EXPORTS TestHost::Exports;
@@ -220,4 +276,5 @@ CFIXCC_BEGIN_CLASS( TestHost )
 	CFIXCC_METHOD( LoadUserDll )
 	CFIXCC_METHOD( LoadInprocUserExe )
 	CFIXCC_METHOD( LoadUserExe )
+	CFIXCC_METHOD( ApiTypes )
 CFIXCC_END_CLASS()

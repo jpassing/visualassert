@@ -108,6 +108,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Base.c"
+				>
+			</File>
+			<File
 				RelativePath=".\DIRS"
 				>
 			</File>
@@ -431,6 +435,30 @@
 					</File>
 					<File
 						RelativePath=".\testlibs\testexe14\suite.c"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testapis"
+					>
+					<File
+						RelativePath=".\testlibs\testapis\base.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testapis\cpp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testapis\main.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testapis\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testapis\winunit.cpp"
 						>
 					</File>
 				</Filter>
