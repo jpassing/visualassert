@@ -73,17 +73,8 @@
 		</section>
 	</chapter>
 	
-	<chapter id="Overview">
-		<title>Overview</title>
-		
-		<section id="Background">
-			<title>Background</title>
-			
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='BackgroundIntroduction'])" href="..\__cfix.xml" />
-			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//section[@id='Portability'])" href="..\__cfix.xml" />
-		</section>
-	</chapter>
-	
+	&TutorialUserCc;
+
 	<chapter id="UI">
 		<title>The User Interface</title>
 		
@@ -134,8 +125,27 @@
 		</section>
 	</chapter>
 	
-	&TutorialUserCc;
-
+	<chapter id="CfixFramework">
+		<title>The cfix testing framework</title>
+		
+		<para>
+			cfix studio is built on top of the cfix testing framework, which is a full-fledged, open source unit testing framework for
+			C and C++ code on Windows platforms. In other words: cfix studio is a superset of and fully compatible to the cfix testing framework. In particular,
+			this means that any tests created using cfix studio can also be run using the appropriate command line tools.
+		</para>
+		<para>
+			The following sections provide an overview of the cfix testing framework, its background, and usage.
+		</para>
+		
+		<section id="Background">
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='Background']/*)" href="..\__cfix.xml" />
+		</section>
+		
+		<section id="Usage">
+			<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='Usage']/*)" href="..\__cfix.xml" />
+		</section>
+	</chapter>
+	
 	<chapter id="API">
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />
 	</chapter>

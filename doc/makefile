@@ -21,6 +21,8 @@ chmdoc: __cfix.xml
 	copy $(CFIX_TREE)\doc\docbook\stylechm.css .
 	
 	-3 robocopy ..\images images /MIR /XD .svn /XX /NJH /NJS
+	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.gif .
+	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.png .
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
 	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
@@ -37,7 +39,9 @@ webdoc: __cfix.xml
 	-3 robocopy ..\..\..\assets ..\assets /MIR /XD .svn /XX /NJH /NJS
 	-3 robocopy ..\..\images images /MIR /XD .svn /XX /NJH /NJS
 	-3 robocopy ..\..\chm\images images /MIR /XD .svn /XX /NJH /NJS
-	
+	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.gif .
+	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.png .
+
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
 	
 	cd ../../..

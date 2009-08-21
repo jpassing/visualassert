@@ -108,6 +108,7 @@
 					        <li><a href='index.html'>Table of Contents</a></li>
 					        <li><a href='TutorialUserVsCc.html'>Tutorial</a></li>
 					        <li><a href='KeyboardShortcuts.html'>Keyboard Shortcuts</a></li>
+					        <li><a href='CfixFramework.html'>The cfix framework</a></li>
 					        <li>
 								<a href='API.html'>API Reference</a>
 								<ul>
