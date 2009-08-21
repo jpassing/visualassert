@@ -13,14 +13,14 @@
 #define CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE_DATE L"State"
 
 //
-// Arbitrarily large dur to hard expiry.
+// Arbitrarily large due to hard expiry.
 // 
 #define CFIXCTL_LIC_TRIAL_PERIOD				200UL
 
 //
-// 2009-09-30.
+// 2009-10-31.
 //
-#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149291
+#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149322
 
 //
 // N.B. All versions numbers may not exceed 0xF.
