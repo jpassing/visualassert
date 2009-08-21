@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(CFIX_HOME)\Include"
+				AdditionalIncludeDirectories=""
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="exportingdll.lib"
-				AdditionalLibraryDirectories="$(CFIX_HOME)\lib\i386; $(SolutionDir)$(ConfigurationName)"
+				AdditionalLibraryDirectories=" $(SolutionDir)$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -209,7 +209,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="exportingdll.lib"
-				AdditionalLibraryDirectories="$(CFIX_HOME)\lib\i386; $(SolutionDir)$(ConfigurationName)"
+				AdditionalLibraryDirectories=" $(SolutionDir)$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -326,6 +326,10 @@
 			>
 			<File
 				RelativePath=".\big.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Export.cpp"
 				>
 			</File>
 			<File

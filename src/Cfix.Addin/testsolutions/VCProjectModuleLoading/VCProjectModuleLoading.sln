@@ -15,6 +15,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExportingDll", "ExportingDll\ExportingDll.vcproj", "{434D7F24-791F-4BFE-AC6B-6B73B95ADD00}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsExe", "ConsExe\ConsExe.vcproj", "{F3A2FA0F-9262-4293-817C-CD1F844C7E68}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25} = {FB3A078B-0F83-4A5B-B5C0-2B914F9FCF25}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

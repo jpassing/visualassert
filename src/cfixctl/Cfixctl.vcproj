@@ -462,6 +462,34 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testlib15"
+					>
+					<File
+						RelativePath=".\testlibs\testlib15\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib15\suite.c"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlib15\testlib15.def"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="testexe15"
+					>
+					<File
+						RelativePath=".\testlibs\testexe15\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testexe15\suite.c"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

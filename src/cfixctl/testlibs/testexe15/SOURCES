@@ -1,0 +1,34 @@
+#
+# setup VisualC++ source browsing
+#
+#BROWSER_INFO=1
+BSCMAKE_FLAGS=$(BSCMAKE_FLAGS) /n
+
+MSC_WARNING_LEVEL=/W4 /Wp64
+
+INCLUDES=$(CFIX_TREE)\include
+
+C_DEFINES=/D_UNICODE /DUNICODE /EHa
+
+LINKER_FLAGS=/nxcompat /dynamicbase
+
+!if "$(DDKBUILDENV)"=="chk"
+DEBUG_CRTS=1
+!endif
+
+UMTYPE=console
+UMENTRY=wmain
+USE_LIBCMT=1
+USE_STL=1
+
+TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
+		   $(CFIX_TREE)\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\cfix.lib \
+		   $(MAKEDIR)\..\..\..\..\bin\$(DDKBUILDENV)\$(TARGET_DIRECTORY)\testlib15.lib
+
+TARGETNAME=testexe15
+TARGETPATH=..\..\..\..\bin\$(DDKBUILDENV)
+TARGETTYPE=PROGRAM
+
+SOURCES=\
+	suite.c
+	

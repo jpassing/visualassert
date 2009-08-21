@@ -211,7 +211,7 @@ public:
 		CustomHost->Release();
 	}
 
-	void ApiTypes()
+	void TestApiTypes()
 	{
 		WCHAR Path[ MAX_PATH ];
 		CFIXCC_ASSERT( GetModuleFileName(
@@ -266,6 +266,47 @@ public:
 		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
 		CustomHost->Release();
 	}
+
+	void TestExeWithDependencyOnTestLib()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testexe15.exe" );
+
+		ICfixHost* CustomHost;
+		CFIX_ASSERT_OK( Agent->CreateHost( 
+			TESTCTLP_OWN_ARCHITECTURE,
+			CLSCTX_LOCAL_SERVER,
+			0,
+			INFINITE,
+			Path,
+			NULL,
+			NULL,
+			&CustomHost ) );
+
+		ICfixTestModule *Module;
+		CFIX_ASSERT_OK( 
+			CustomHost->LoadModule(
+				NULL,
+				&Module ) );
+
+		ICfixTestContainer *Container;
+		CFIX_ASSERT_OK( Module->QueryInterface( 
+			IID_ICfixTestContainer, ( PVOID* ) &Container ) );
+
+		ULONG FixtureCount;
+		CFIX_ASSERT_OK( Container->GetItemCount( &FixtureCount ) );
+		CFIXCC_ASSERT_EQUALS( 1UL, FixtureCount );
+
+		Container->Release();
+		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+
+		CustomHost->Release();
+	}
 };
 
 COM_EXPORTS TestHost::Exports;
@@ -276,5 +317,6 @@ CFIXCC_BEGIN_CLASS( TestHost )
 	CFIXCC_METHOD( LoadUserDll )
 	CFIXCC_METHOD( LoadInprocUserExe )
 	CFIXCC_METHOD( LoadUserExe )
-	CFIXCC_METHOD( ApiTypes )
+	CFIXCC_METHOD( TestApiTypes )
+	CFIXCC_METHOD( TestExeWithDependencyOnTestLib )
 CFIXCC_END_CLASS()

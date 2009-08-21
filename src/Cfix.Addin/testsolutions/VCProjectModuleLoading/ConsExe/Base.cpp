@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 #include <cfix.h>
+
+EXTERN_C extern BOOL ValidExport();
+
 static void CFIXCALLTYPE TestBase()
 {
-	CFIX_INCONCLUSIVE(__TEXT("Not implemented"));
+	ValidExport();
 }
 
 CFIX_BEGIN_FIXTURE(Base)
