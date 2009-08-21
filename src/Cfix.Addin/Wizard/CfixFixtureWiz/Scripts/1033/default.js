@@ -61,7 +61,17 @@ function OnFinish( selProj, selObj )
 		//
 		// Get path to stdafx.h, may be empty.
 		//
-		var strSTDAFX = GetProjectFile( selProj, "STDAFX", false, true );
+		var strSTDAFX = ""
+		try
+		{
+			strSTDAFX = GetProjectFile( selProj, "STDAFX", false, true );
+		}
+		catch (e)
+		{
+			//
+			// Fails for makefile projects.
+			//
+		}
 				
 		if ( strSTDAFX != "" )
 		{
