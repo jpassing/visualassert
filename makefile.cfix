@@ -184,7 +184,7 @@ docs:
 #----------------------------------------------------------------------
 installer: docs
 	cd installer
-	$(MAKE) clean cfixstudio.msi
+	$(MAKE) clean VisualAssert.msi
 	cd ..
 	
 release: build installer

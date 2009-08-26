@@ -2,5 +2,5 @@ VSWIZARD 7.0
 Wizard=VsWizard.VsWizardEngine.9.0
 
 Param="WIZARD_NAME = fixture"
-Param="RELATIVE_PATH = vcwizards\cfix"
+Param="RELATIVE_PATH = vcwizards\VisualAssert"
 Param="FALLBACK_LCID = 1033"

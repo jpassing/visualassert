@@ -8,7 +8,7 @@
  *		2009, Johannes Passing. All rights reserved.
  */
 
-#define CFIXCTL_LICENSE_REG_KEYPATH L"Software\\cfix\\cfixstudio\\1.0"
+#define CFIXCTL_LICENSE_REG_KEYPATH L"Software\\VisualAssert\\1.0"
 #define CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE L"License"
 #define CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE_DATE L"State"
 
