@@ -101,7 +101,7 @@
     <Compile Include="Dte\DteCommandBarButton.cs" />
     <Compile Include="Dte\DteCommandBarControl.cs" />
     <Compile Include="Dte\DteCommand.cs" />
-    <Compile Include="CfixStudio.cs">
+    <Compile Include="VisualAssert.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dte\DteConnect.cs" />

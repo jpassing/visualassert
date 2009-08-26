@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InfoChangeKey" xml:space="preserve">
-    <value>You are using a licensed copy of cfix studio. You may use this form 
+    <value>You are using a licensed copy of Visual Assert. You may use this form 
 to enter a different license key.</value>
   </data>
   <data name="InfoExpired" xml:space="preserve">
-    <value>The evaluation period has expired. To continue using cfix studio, 
+    <value>The evaluation period has expired. To continue using Visual Assert, 
 please enter a valid license key.</value>
   </data>
   <data name="InfoLicense" xml:space="preserve">
-    <value>To activate cfix studio, please enter a valid license key.</value>
+    <value>To activate Visual Assert, please enter a valid license key.</value>
   </data>
   <data name="InstallFailed" xml:space="preserve">
     <value>Installing the license key failed: {0}</value>

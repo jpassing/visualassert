@@ -21,7 +21,7 @@ namespace Cfix.Addin
 		private readonly String[] supportedExtensions = new String[] 
 			{ ".DLL", ".SYS", ".EXE" };
 
-		private const String BaseKeyPath = "Software\\cfix\\cfixstudio\\1.0";
+		private const String BaseKeyPath = "Software\\VisualAssert\\1.0";
 		private readonly RegistryKey key;
 
 		//
@@ -31,7 +31,7 @@ namespace Cfix.Addin
 
 		private Configuration(
 			RegistryKey key, 
-			CfixStudio addin 
+			VisualAssert addin 
 			)
 		{
 			this.key = key;
@@ -78,7 +78,7 @@ namespace Cfix.Addin
 			GC.SuppressFinalize( this );
 		}
 
-		public static Configuration Load( CfixStudio addin )
+		public static Configuration Load( VisualAssert addin )
 		{
 			return new Configuration(
 				Registry.CurrentUser.CreateSubKey( BaseKeyPath ), 

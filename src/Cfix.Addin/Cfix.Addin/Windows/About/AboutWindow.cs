@@ -137,7 +137,7 @@ namespace Cfix.Addin.Windows.About
 
 			this.workspace = ws;
 
-			this.versionLabel.Text += CfixStudio.Version;
+			this.versionLabel.Text += VisualAssert.Version;
 
 			try
 			{
@@ -154,7 +154,7 @@ namespace Cfix.Addin.Windows.About
 				}
 				catch ( Exception x )
 				{
-					CfixStudio.HandleError( x );
+					VisualAssert.HandleError( x );
 				}
 			}
 		}

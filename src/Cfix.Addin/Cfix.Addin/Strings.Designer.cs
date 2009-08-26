@@ -61,7 +61,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About cfix studio....
+        ///   Looks up a localized string similar to About Visual Assert....
         /// </summary>
         internal static string AboutCmdCaption {
             get {
@@ -124,7 +124,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Documentation.
+        ///   Looks up a localized string similar to Visual Assert Documentation.
         /// </summary>
         internal static string DocCmdCaption {
             get {
@@ -142,7 +142,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter cfix license key....
+        ///   Looks up a localized string similar to Enter Visual Assert License Key....
         /// </summary>
         internal static string EnterLicenseCmdCaption {
             get {
@@ -151,7 +151,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Test Explorer Window.
+        ///   Looks up a localized string similar to Visual Assert Test Explorer Window.
         /// </summary>
         internal static string ExplorerCmdCaption {
             get {
@@ -160,7 +160,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Test Explorer.
+        ///   Looks up a localized string similar to Visual Assert Test Explorer.
         /// </summary>
         internal static string ExplorerWindowCaption {
             get {
@@ -187,7 +187,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix.
+        ///   Looks up a localized string similar to Visual Assert.
         /// </summary>
         internal static string MsgBoxCaption {
             get {
@@ -241,7 +241,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Quick Start Page.
+        ///   Looks up a localized string similar to Visual Assert Quick Start Page.
         /// </summary>
         internal static string QuickStartCmdCaption {
             get {
@@ -277,7 +277,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Run Window.
+        ///   Looks up a localized string similar to Visual Assert Run Window.
         /// </summary>
         internal static string RunCmdCaption {
             get {
@@ -286,7 +286,7 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cfix Run.
+        ///   Looks up a localized string similar to Visual Assert Run.
         /// </summary>
         internal static string RunWindowCaption {
             get {

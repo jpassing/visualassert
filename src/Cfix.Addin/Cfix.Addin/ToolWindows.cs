@@ -19,7 +19,7 @@ namespace Cfix.Addin
 {
 	internal class ToolWindows : IDisposable
 	{
-		private readonly CfixStudio addin;
+		private readonly VisualAssert addin;
 		private readonly string extraCaption;
 		private readonly bool disableControls;
 
@@ -28,7 +28,7 @@ namespace Cfix.Addin
 		private OutputWindowPane logOutputWindow;
 
 		internal ToolWindows( 
-			CfixStudio addin,
+			VisualAssert addin,
 			Workspace ws
 			)
 		{
@@ -244,11 +244,11 @@ namespace Cfix.Addin
 #if BETA
 			if ( DialogResult.Yes == 
 				MessageBox.Show(
-					"Your cfix studio Beta installation has expired. Please visit the "+
-					"cfix studio website to obtain the current version "+
-					"of cfix studio.\r\n\r\n" +
-					"Would you like to open the cfix studio website now?",
-					"cfix studio",
+					"Your Visual Assert Beta installation has expired. Please visit the "+
+					"Visual Assert website to obtain the current version "+
+					"of Visual Assert.\r\n\r\n" +
+					"Would you like to open the Visual Assert website now?",
+					"Visual Assert",
 					MessageBoxButtons.YesNo ) )
 			{
 				Cfix.Addin.Windows.CommonUiOperations.OpenHomepage();
@@ -266,7 +266,7 @@ namespace Cfix.Addin
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 #endif
 		}

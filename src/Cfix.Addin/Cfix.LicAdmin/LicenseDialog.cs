@@ -95,7 +95,7 @@ namespace Cfix.LicAdmin
 			try
 			{
 				Process proc = new Process();
-				proc.StartInfo.FileName = "http://www.cfix-studio.com/go/buy";
+				proc.StartInfo.FileName = "http://www.visualassert.com/go/buy";
 				proc.Start();
 			}
 			catch ( Exception x )

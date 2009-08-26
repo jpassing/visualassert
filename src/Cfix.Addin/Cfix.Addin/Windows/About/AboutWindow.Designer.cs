@@ -110,7 +110,7 @@ namespace Cfix.Addin.Windows.About
 			this.linkLabel.Size = new System.Drawing.Size( 140, 13 );
 			this.linkLabel.TabIndex = 4;
 			this.linkLabel.TabStop = true;
-			this.linkLabel.Text = "http://www.cfix-studio.com/";
+			this.linkLabel.Text = "http://www.visualassert.com/";
 			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler( this.linkLabel_LinkClicked );
 			// 
 			// licenseValueLabel
@@ -173,7 +173,7 @@ namespace Cfix.Addin.Windows.About
 			this.versionLabel.Size = new System.Drawing.Size( 221, 23 );
 			this.versionLabel.TabIndex = 2;
 			this.versionLabel.TabStop = false;
-			this.versionLabel.Text = "cfix studio, Version ";
+			this.versionLabel.Text = "Visual Assert, Version ";
 			// 
 			// enterLicenseButton
 			// 
@@ -209,7 +209,7 @@ namespace Cfix.Addin.Windows.About
 			this.MinimizeBox = false;
 			this.Name = "AboutWindow";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "About cfix studio";
+			this.Text = "About Visual Assert";
 			( ( System.ComponentModel.ISupportInitialize ) ( this.pictureBox1 ) ).EndInit();
 			this.ResumeLayout( false );
 			this.PerformLayout();

@@ -162,7 +162,7 @@ namespace Cfix.Addin.Windows.Explorer
 				}
 				catch ( Exception x )
 				{
-					CfixStudio.HandleError( x );
+					VisualAssert.HandleError( x );
 				}
 			}
 		}
@@ -178,7 +178,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -242,7 +242,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -288,7 +288,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -309,7 +309,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -321,7 +321,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -340,7 +340,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -374,7 +374,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -388,7 +388,7 @@ namespace Cfix.Addin.Windows.Explorer
 			Cfix.Control.Ui.Explorer.ExceptionEventArgs e 
 			)
 		{
-			CfixStudio.HandleError( e.Exception );
+			VisualAssert.HandleError( e.Exception );
 		}
 
 		/*----------------------------------------------------------------------
@@ -495,7 +495,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -537,7 +537,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -553,7 +553,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -674,7 +674,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 

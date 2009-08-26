@@ -156,7 +156,7 @@ namespace Cfix.Addin
 			get
 			{
 				return Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ) +
-					"\\cfixstudio\\log";
+					"\\VisualAssert\\log";
 			}
 		}
 

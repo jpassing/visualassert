@@ -94,7 +94,7 @@ namespace Cfix.Addin.Test
 
 			if ( changePerformed )
 			{
-				CfixStudio.ShowInfo( Strings.VcDirectoriesUpdated );
+				VisualAssert.ShowInfo( Strings.VcDirectoriesUpdated );
 			}
 		}
 		

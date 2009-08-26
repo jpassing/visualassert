@@ -164,7 +164,7 @@ namespace Cfix.Addin.Windows.Run
 				Exception excp = e.Exception;
 				if ( excp != null )
 				{
-					CfixStudio.HandleError( excp );
+					VisualAssert.HandleError( excp );
 				}
 			} );
 		}
@@ -207,7 +207,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -266,7 +266,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -284,7 +284,7 @@ namespace Cfix.Addin.Windows.Run
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -438,7 +438,7 @@ namespace Cfix.Addin.Windows.Run
 							//
 							// Ask whether to terminate.
 							//
-							if ( CfixStudio.ShowQuestion( Strings.TerminateActiveRun ) )
+							if ( VisualAssert.ShowQuestion( Strings.TerminateActiveRun ) )
 							{
 								this.aborted = true;
 								this.run.Terminate();

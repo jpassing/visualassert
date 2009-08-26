@@ -68,15 +68,15 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( IncompatibleModulesException )
 			{
-				CfixStudio.ShowInfo( Strings.IncompatibleModule );
+				VisualAssert.ShowInfo( Strings.IncompatibleModule );
 			}
 			catch ( EmptyRunException )
 			{
-				CfixStudio.ShowInfo( Strings.EmptyRun );
+				VisualAssert.ShowInfo( Strings.EmptyRun );
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -225,7 +225,7 @@ namespace Cfix.Addin.Windows
 					Environment.OSVersion,
 					dte.Version,
 					windowName,
-					CfixStudio.Version,
+					VisualAssert.Version,
 					dte.LocaleID );
 
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
@@ -234,7 +234,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -243,12 +243,12 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
-				proc.StartInfo.FileName = "http://www.cfix-studio.com/";
+				proc.StartInfo.FileName = "http://www.visualassert.com/";
 				proc.Start();
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -257,12 +257,12 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
-				proc.StartInfo.FileName = Directories.DocDirectory + "\\cfixstudio.chm";
+				proc.StartInfo.FileName = Directories.DocDirectory + "\\VisualAssert.chm";
 				proc.Start();
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 
@@ -314,7 +314,7 @@ namespace Cfix.Addin.Windows
 			}
 			catch ( Exception x )
 			{
-				CfixStudio.HandleError( x );
+				VisualAssert.HandleError( x );
 			}
 		}
 

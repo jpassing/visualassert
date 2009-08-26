@@ -21,7 +21,7 @@ namespace Cfix.Addin
 	{
 		private readonly string VSStd97CmdID = "{5EFC7975-14BC-11CF-9B2B-00AA00573819}";
 
-		private readonly CfixStudio addin;
+		private readonly VisualAssert addin;
 		private readonly Configuration config;
 		private readonly ToolWindows toolWindows;
 		private readonly IAgent searchAgent;
@@ -55,7 +55,7 @@ namespace Cfix.Addin
 				}
 				catch ( Exception x )
 				{
-					CfixStudio.HandleError( x );
+					VisualAssert.HandleError( x );
 				}
 			}
 
@@ -259,7 +259,7 @@ namespace Cfix.Addin
 		 * ctor/dtor.
 		 */
 
-		internal Workspace( CfixStudio addin )
+		internal Workspace( VisualAssert addin )
 		{
 			this.addin = addin;
 
@@ -417,7 +417,7 @@ namespace Cfix.Addin
 					//
 					// No run active, yet there are host active processes.
 					//
-					if ( CfixStudio.ShowQuestion(
+					if ( VisualAssert.ShowQuestion(
 						Strings.TerminateActiveHosts ) )
 					{
 						this.runAgents.TerminateActiveHosts();
@@ -519,7 +519,7 @@ namespace Cfix.Addin
 						}
 						catch ( Exception x )
 						{
-							CfixStudio.HandleError( x );
+							VisualAssert.HandleError( x );
 							run.Terminate();
 						}
 					};
