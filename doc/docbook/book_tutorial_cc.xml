@@ -167,7 +167,7 @@ void TestTwo()
 		</para>
 		<para>
 			Switch back to the Explorer Window, righ-click on ExampleTest, and choose <emphasis>Run Test Without Debugging</emphasis>
-			again. cfix studio will cause a rebuild of the project and will start the test run. In the Run Window, we will
+			again. Visual Assert will cause a rebuild of the project and will start the test run. In the Run Window, we will
 			now see the following:
 			
 			<figure><title>Run window showing status and results of a test run</title>
@@ -176,7 +176,7 @@ void TestTwo()
 			
 			<note>
 				If you have enabled the <emphasis>Capture Stack Traces</emphasis> option, TestTwo may take 
-				a while to finish -- this delay is caused by cfix studio having to load the debug symbols
+				a while to finish -- this delay is caused by Visual Assert having to load the debug symbols
 				for your tests. Depending on your configuration (symbol server), this may take a few moments.
 			</note>
 			
