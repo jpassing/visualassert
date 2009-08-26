@@ -49,7 +49,7 @@
 	  </xsl:param>
 
 	  <title>
-		<xsl:copy-of select="$title"/> &#151; cfix studio &#151; C/C++ Unit Testing Framework and AddIn for Visual Studio
+		<xsl:copy-of select="$title"/> &#151; Visual Assert &#151; The Unit Testing Add-In for Visual C++
 	  </title>
 
 	  <xsl:if test="$html.stylesheet != ''">
@@ -77,15 +77,15 @@
 
 	<body>
 		<div id='tab'>
-			<div class='tab_active'><a href='http://www.cfix-studio.com/'>cfix studio &#x2013; C/C++ unit testing for Visual Studio</a></div>
+			<div class='tab_active'><a href='http://www.visualassert.com/'>Visual Assert &#x2013; The Unit Testing Add-In for Visual C++</a></div>
 			<div class='tab_active2passive'><img src='../assets/img/tab_active2passive.png' alt=''/></div>
-			<div class='tab_passive'><a href='http://www.cfix-testing.org/'>cfix &#x2013;  C/C++ unit testing for Win32 and NT</a></div>
+			<div class='tab_passive'><a href='http://www.cfix-testing.org/'>cfix &#x2013;  C/C++ Unit Testing for Win32 and NT</a></div>
 			<div class='tab_passiveend'><img src='../assets/img/tab_passiveend.png' alt=''/></div>
 			<div class='tab_pad'>&#xA0;</div>
 			<div class='tab_clear'></div>
 	    </div>
 		<div id='header'>
-			<img src='../assets/img/logo-cfixstudio.gif' alt='cfix studio &#x2013; C/C++ unit testing for Visual Studio' style="margin-left: 10px"/>
+			<img src='../assets/img/logo-visualassert.gif' alt='Visual Assert &#x2013; The Unit Testing Add-In for Visual C++' style="margin-left: 10px"/>
 	    </div>
 	    <div id='menu'>
 	        <div id='menu_box'>
@@ -110,7 +110,7 @@
 					        <li><a href='KeyboardShortcuts.html'>Keyboard Shortcuts</a></li>
 					        <li><a href='CfixFramework.html'>The cfix framework</a></li>
 					        <li>
-								<a href='API.html'>API Reference</a>
+								<a href='API.html'>cfix API Reference</a>
 								<ul>
 									<li><a href='WhatsNew.html'>What's new</a></li>
 									<li><a href='TestAPI.html'>Base API (C/C++)</a></li>
@@ -156,7 +156,7 @@
     	</div>
 	  
 		<div id='footer'>
-			cfix studio &#x2013; C/C++ Unit Testing Framework and AddIn for Visual Studio<br />
+			Visual Assert &#x2013; The Unit Testing Add-In for Visual C++<br />
 			Build <xsl:value-of select="$buildnumber" /><br />
 			
 			<a href='/unit-testing-framework/contact.html'>Contact</a> |

@@ -29,7 +29,7 @@
   
   <xsl:template name="user.header.navigation">
     <div id='cfixheader'>
-		cfix studio
+		Visual Assert
     </div>
   </xsl:template>
   <xsl:template name="user.footer.navigation">

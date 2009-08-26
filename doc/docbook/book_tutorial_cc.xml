@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="TutorialUserVsCc">
+    <title>Tutorial</title>
+	<section id="TutorialUserVsCcGettingStarted">
+		<title>Getting Started</title>
+		<para>
+			The first step to creating cfix tests is to decide on where to put them. You can add cfix tests
+			to any Visual C++ project, so you have the option of either creating a dedicated "test project" or adding
+			the tests to an existing project. Which of these two options is better depends on your specific requirements.
+		</para>
+		<para>
+			For the sake of a cleaner project structure, creating a separate Visual Studio project for unit tests may
+			be the preferred way to go. In this case, use the familiar <emphasis>Win32 Project</emphasis> template to add
+			a new project to your solution. 
+			<figure><title>Creating a new project (1/2)</title>
+				<graphic fileref="images/NewWin32Project_1.png"></graphic>
+			</figure>
+			As <emphasis>Application Type</emphasis>, choose <emphasis>DLL</emphasis>. DLL projects offer 
+			slightly more flexibility w.r.t. cfix unit testing and free you from having to maintain a main()
+			function.
+			<figure><title>Creating a new project (2/2)</title>
+				<graphic fileref="images/NewWin32Project_2.png"></graphic>
+			</figure>
+		</para>
+		<para>
+			For some  projects, however, maintaining unit tests in a separate Visual Studio project may not be practical: In 
+			particular when you would like to test classes and functions that are part of an EXE project and
+			are not exported, such separation may not be feasible. In such cases, it is therefore advisable to
+			make the unit tests part of the same Visual Studio project.
+		</para>
+		<para>
+			Of course, this is no strict either-or decision -- in case your Visual Studio solution spans multiple
+			projects, any of these projects may contain unit tests.
+		</para>
+		<para>				
+			Once you have identified the project to implement a unit test in, writing a test comprises the following steps:
+			<itemizedlist>
+				<listitem>include cfixcc.h</listitem>
+				<listitem>Create a fixture by writing a class that publicly derives from <link linkend='TestFixture'>cfixcc::TestFixture</link></listitem>
+				<listitem>Add one or more methods to this class that implement the actual tests</listitem>
+				<listitem>Optionally, implement before/after or setup/teardown methods</listitem>
+				<listitem>Make the class known to cfix by writing a <link linkend='FixtureDefAPI'>fixture definition</link></listitem>
+			</itemizedlist>
+			
+			(The steps slightly differ in case you intend to use the C or WinUnit API but the overall process is the same.)
+		</para>
+		<para>
+			Rather than performing these steps manually, you can use the <emphasis>Add Unit Test</emphasis> wizard: In the
+			<emphasis>Solution Explorer</emphasis>, right-click on a project or folder node, and choose 
+			<emphasis>Add | Unit Test...</emphasis>:
+			
+			<figure><title>Launching the Add Unit Test Wizard</title>
+				<graphic fileref="images/AddTestCtxMenu.png"></graphic>
+			</figure>
+			
+			In the wizard Window, enter a fixture name and click <emphasis>Finish</emphasis>:
+		
+			<figure><title>The Add Unit Test Wizard</title>
+				<graphic fileref="images/AddTestWiz.png"></graphic>
+			</figure>
+		</para>
+		<para>
+			Whether you typed it by hand or used the wizard, the result will look more or less the same. 
+			The following listing shows the scaffold of an example unit test. cfix does not require the class to be declared in 
+			a separate header file first, so the entire code can be placed in a single C++ source file (*.cpp).
+			<programlisting>
+#include &lt;cfixcc.h&gt;
+
+class ExampleTest : public <link linkend='TestFixture'>cfixcc::TestFixture</link>
+{
+public:
+  void TestOne() 
+  {}
+  
+  void TestTwo() 
+  {}
+};
+
+<link linkend='CFIXCC_BEGIN_CLASS'>CFIXCC_BEGIN_CLASS</link>( ExampleTest )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestOne )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestTwo )
+<link linkend='CFIXCC_END_CLASS'>CFIXCC_END_CLASS</link>()
+			</programlisting>
+			<emphasis>ExampleTest</emphasis> derives from  <link linkend='TestFixture'>cfixcc::TestFixture</link>, which makes it a fixture. 
+			<emphasis>TestOne</emphasis> and <emphasis>TestTwo</emphasis> are two arbitrarily named methods that implement tests. 
+			To tell cfix that these methhods indeed implement a test cases, we have to add the <link linkend='CFIXCC_BEGIN_CLASS'>CFIXCC_BEGIN_CLASS</link>/
+			<link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>/<link linkend='CFIXCC_END_CLASS'>CFIXCC_END_CLASS</link> construct at the end of 
+			the file.
+		</para>
+		<para>
+			Note that this is in fact all there is to do to write tests -- there is no need to write any additional
+			registration code, implement a main routine or anything else. Although the test does not do anything meaningful yet,
+			we can already compile and run it.
+		</para>
+		<para>
+			Once you have built the solution, you will notice that the Explorer Window has updated its contents:
+			
+			<figure><title>Explorer Window showing the fixtures and tests of the current project</title>
+				<graphic fileref="images/ExplorerWnd.png"></graphic>
+			</figure>
+			
+			It shows the current solution and project, the primary output module, the fixture we have just created, and,
+			as leaf nodes, our two test methods.
+		</para>
+		<para>
+			Now right-click 'ExampleTest' and select <emphasis>Run Test Without Debugging</emphasis> from the
+			context menu. Shortly thereafter, the Run Window will pop up and show the status of the run -- which, 
+			unsuprisingly, succeeded:
+		
+			<figure><title>Run window showing status and results of a test run</title>
+				<graphic fileref="images/RunWnd.png"></graphic>
+			</figure>
+			
+			Now that we have a basic test project in place and know how to run tests, we can do some more interesting things...
+		</para>
+	</section>
+
+	<section id="TutorialUserVsCcImplementingTests">
+		<title>Implementing the tests</title>
+		<para>
+			Now that we have an empty fixture in place and have seen how to run tests, we are ready to
+			do some more interesting things in our test methods:
+			<programlisting>
+void TestOne() 
+{
+  const wchar_t* testString = L"test";
+  
+  //
+  // Use typesafe assertions...
+  //
+  <link linkend='CFIXCC_ASSERT_EQUALS'>CFIXCC_ASSERT_EQUALS</link>( 1, 1 );
+  <link linkend='CFIXCC_ASSERT_EQUALS'>CFIXCC_ASSERT_EQUALS</link>( L"test", testString );
+  <link linkend='CFIXCC_ASSERT_EQUALS'>CFIXCC_ASSERT_EQUALS</link>( wcslen( testString ), ( size_t ) 4 );
+  
+  //
+  // ...log messages...
+  //
+  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"Test string is %s", testString );
+  
+  //
+  // ...or use plain assertions.
+  //
+  <link linkend='CFIX_ASSERT'>CFIX_ASSERT</link>( wcslen( testString ) == 4 );
+  <link linkend='CFIX_ASSERT_MESSAGE'>CFIX_ASSERT_MESSAGE</link>( testString[ 0 ] == 't', 
+    L"Test string should start with a 't'" );
+}
+			</programlisting>
+			Clearly, TestOne should succeed. To see what happens when an assertion fails, let us write 
+			TestTwo so that it fails:
+			<programlisting>
+void TestTwo() 
+{
+  wchar_t* testString = L"test";
+  
+  <link linkend='CFIXCC_ASSERT_LESS_MESSAGE'>CFIXCC_ASSERT_LESS_MESSAGE</link>( wcslen( testString ), ( size_t ) 4, 
+	L"String should be no longer than 3 chars -- but is it?" );
+
+  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"Will this line be executed at all?" );
+}
+			</programlisting>
+			<note>
+				As you may have noticed, some assertions begin with CFIXCC_ and some begin with CFIX_. All CFIXCC_
+				assertions are for use with C++ only, while CFIX_ assertions are available to both C and C++. To add
+				a bit of convenience, all CFIX_ assertions are also available with CFIXCC_ prefix. For instance, 
+				CFIXCC_ASSERT and CFIX_ASSERT are the same thing.
+			</note>
+		</para>
+		<para>
+			Switch back to the Explorer Window, righ-click on ExampleTest, and choose <emphasis>Run Test Without Debugging</emphasis>
+			again. cfix studio will cause a rebuild of the project and will start the test run. In the Run Window, we will
+			now see the following:
+			
+			<figure><title>Run window showing status and results of a test run</title>
+				<graphic fileref="images/RunWndFailed.png"></graphic>
+			</figure>
+			
+			<note>
+				If you have enabled the <emphasis>Capture Stack Traces</emphasis> option, TestTwo may take 
+				a while to finish -- this delay is caused by cfix studio having to load the debug symbols
+				for your tests. Depending on your configuration (symbol server), this may take a few moments.
+			</note>
+			
+			Indeed, TestTwo has triggered an assertion and failed. We can see the code location that caused the assertion,
+			as well as the expression message. If you double-click on the <emphasis>Failed Assertion</emphasis> node,
+			you will be taken to the appropriate line in the code editor. Finally, you can expand the node and will
+			be presented the full call stack that led to the assertion.
+		</para>
+		<para>
+			<figure><title>Show Log</title>
+				<graphic fileref="images/ShowLog.png"></graphic>
+			</figure>
+			There is one more thing to notice: When you click on the <emphasis>Show Log</emphasis> button, a
+			Visual Studio output window will open:
+			
+			<figure><title>Log Window</title>
+				<graphic fileref="images/LogWnd.png"></graphic>
+			</figure>
+			
+			Note that while the message of the <link linkend='CFIX_LOG'>CFIX_LOG</link> statement of TestOne is present,
+			the message of TestTwo is missing: Whenever an assertion fails (such as the one in TestTwo), the method
+			is left prematurely and all remaining statments (such as <link linkend='CFIX_LOG'>CFIX_LOG</link> in this case)
+			are skipped.
+		</para>
+		<para>
+			Now that we have a failing test, let us see how to debug it. In the Explorer Window, select the appropriate
+			node and choose <emphasis>Debug Test</emphasis>.
+			
+			Once the failing assertion in TestTwo is encountered, a breakpoint will be hit:
+			
+			<figure><title>A failed assertion</title>
+				<graphic fileref="images/AssertionHit.png"></graphic>
+			</figure>
+			
+			If we choosed 'Continue', the TestTwo would be left prematurely and the test run would continue. However, we would
+			like to cause a debugger breakin and thus choose 'Break'. If you now take a closer look at the Run Window, you will 
+			see that it already shows the details for this failed assertion:
+			
+			<figure><title>Debugging a failed assertion</title>
+				<graphic fileref="images/Breakin.png"></graphic>
+			</figure>
+		</para>
+		<para>
+			Now that we have seen how to create, run, and debug tests, we can dig into some more details...
+		</para>
+	</section>
+	<section id="TutorialUserVsCcExceptions">
+		<title>Exceptions</title>
+		<para>
+			C++ code frequently makes use of exceptions, so it makes sense to write tests
+			that check whether the right exceptions are thrown. For this purpose, cfix
+			provides <link linkend='CFIXCC_METHOD_EXPECT_EXCEPTION'>CFIXCC_METHOD_EXPECT_EXCEPTION</link>.
+		</para>
+		<para>
+			To illustrate how <link linkend='CFIXCC_METHOD_EXPECT_EXCEPTION'>CFIXCC_METHOD_EXPECT_EXCEPTION</link>
+			is used, we add another method to our fixture, <emphasis>TestThatThrows</emphasis>:
+						<programlisting>
+#include &lt;cfixcc.h&gt;
+#include &lt;bitset&gt;
+
+class ExampleTest : public <link linkend='TestFixture'>cfixcc::TestFixture</link>
+{
+public:
+  void TestOne() 
+  {
+    // As before.
+  }
+  
+  void TestTwo() 
+  {
+    // As before.
+  }
+  
+  void TestThatThrows()
+  {
+    std::bitset&lt; 33 &gt; bitset;
+    bitset[ 32 ] = 1;
+    bitset.to_ulong();	// Will throw an std::overflow_error.
+  }
+};
+
+<link linkend='CFIXCC_BEGIN_CLASS'>CFIXCC_BEGIN_CLASS</link>( ExampleTest )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestOne )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestTwo )
+  <link linkend='CFIXCC_METHOD_EXPECT_EXCEPTION'>CFIXCC_METHOD_EXPECT_EXCEPTION</link>( TestThatThrows, std::overflow_error )
+<link linkend='CFIXCC_END_CLASS'>CFIXCC_END_CLASS</link>()
+			</programlisting>
+		</para>
+		<para>
+			<emphasis>TestThatThrows</emphasis> should lead to an std::overflow_error being raised and by using
+			<link linkend='CFIXCC_METHOD_EXPECT_EXCEPTION'>CFIXCC_METHOD_EXPECT_EXCEPTION</link>, we check that
+			this is indeed the case.
+		</para>
+		<para>
+			Running the test should now yield the following output, indicating the test succeeds:
+			<figure><title>Testing exceptions</title>
+				<graphic fileref="images/Excp.png"></graphic>
+			</figure>
+			
+		</para>
+		<para>
+			Back to <emphasis>TestThatThrows</emphasis>, we now modify the code so that the exception is not
+			raised any more:
+			<programlisting>
+  void TestThatThrows()
+  {
+    std::bitset&lt; 33 &gt; bitset;
+    bitset[ 32 ] = 0;	
+    bitset.to_ulong();	// No overflow here.
+  }
+			</programlisting>
+		</para>
+		<para>
+			Indeed, if we now run the test again, the Run Window will indicate that no exception has been raised:
+			<figure><title>Testing exceptions</title>
+				<graphic fileref="images/ExcpFailed.png"></graphic>
+			</figure>
+		</para>
+	</section>
+
+	<section id="TutorialUserVsCcBeforeAfter">
+		<title>Before and after methods</title>
+		<para>
+			If several tests in a single fixture share common initialization and cleanup code, this code can
+			be moved into dedicated methods, <emphasis>before</emphasis>- and <emphasis>after</emphasis> methods.
+			Like JUnit's @Before and @After methods, these methods are run before and after each test method, respectively.
+		</para>
+		<para>
+			<link linkend='TestFixture'>cfixcc::TestFixture</link>, from which each test class inherits, provides empty
+			implementations for the methods <link linkend='TestFixture_Before'>Before</link> and <link linkend='TestFixture_After'>After</link>.
+			As such, implementing a <emphasis>before</emphasis>- or <emphasis>after</emphasis> method is merely a matter of overriding
+			these virtual methods.
+		</para>
+		<para>
+			To illustrate the order in which methods will now be invoked, consider the following code:
+			<programlisting>
+#include &lt;cfixcc.h&gt;
+
+class ExampleTest : public <link linkend='TestFixture'>cfixcc::TestFixture</link>
+{
+public:
+  //
+  // Overridden methods.
+  //
+  virtual void Before()
+  {
+	  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"In Before()" );
+  }
+
+  virtual void After()
+  {
+	  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"In After()" );
+  }
+
+  //
+  // Test methods.
+  //
+  void TestOne() 
+  {
+	  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"In TestOne()" );
+  }
+
+  void TestTwo() 
+  {
+	  <link linkend='CFIX_LOG'>CFIX_LOG</link>( L"In TestTwo()" );
+  }
+};
+
+<link linkend='CFIXCC_BEGIN_CLASS'>CFIXCC_BEGIN_CLASS</link>( ExampleTest )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestOne )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestTwo )
+<link linkend='CFIXCC_END_CLASS'>CFIXCC_END_CLASS</link>()
+			</programlisting>
+			Running this test will show the following output:
+			
+			<figure><title>Output Window</title>
+				<graphic fileref="images/LogBeforeAfter.png"></graphic>
+			</figure>
+		</para>
+		<para>
+			In practice, before and after methods are usually used to initialize any member variables of the
+			test class. In a way, implementing before and after methods is similar to implementing a default
+			constructor and a destructor for the fixture class. In fact, a new object of the fixture class will 
+			be created for each test, so using constructors and a destructors would actually work. 
+			There is, however, an important reason why before and after-methods should
+			be preferred: You may use the various kinds of assertions cfix offers in these methods. 
+		</para>
+		<para>
+			Although you could use assertions in constructors and destructors as well, in particular the 
+			latter case is problematic: If such an assertion fails, an assertion will be raised internally. Having a
+			destructor raise an exception, however, is something C++ does not like at all. 
+		</para>
+		<para>
+			So to keep yourself out of trouble, do not implement a constructor and destructor for your fixture
+			class but use before and after methods instead.
+		</para>
+	</section>
+
+	<section id="TutorialUserVsCcSetupTeardown">
+		<title>SetUp and TearDown methods</title>
+		<para>
+			Although it is might be possible to perform any necessary initialization and teardown work
+			in before and after-methods, it may be inefficient to do so. In particular when expensive resources
+			such as database connections or global resources have to be initialized, it is beneficial to
+			perform such actions once <emphasis>per fixture</emphasis> rather than once 
+			<emphasis>per test</emphasis>.
+		</para>
+		<para>
+			For such situations, cfix provides SetUp and TearDown methods. These are analogous to JUnit's 
+			@BeforeClass and @AfterClass methods. As SetUp and TearDown run only once per fixture and should
+			initialize global resources only, they are implemented as static methods.
+		</para>
+		<para>
+			Like Before and After methods, SetUp and TearDown do not need any further registration -- as
+			soon as you add static methods named <emphasis>SetUp</emphasis> and <emphasis>TearDown</emphasis>
+			to your fixture class, cfix will treat those appropriately. Needless to say, if you only need one
+			of these routines, you do not need to implement the other, too.
+		</para>
+		<para>
+			The following code illustrates the usage of  SetUp and TearDown methods:
+			<programlisting>
+#include &lt;cfixcc.h&gt;
+
+class ExampleTest : public <link linkend='TestFixture'>cfixcc::TestFixture</link>
+{
+public:
+  static void <link linkend='TestFixture_SetUp'>SetUp</link>()
+  {
+    CFIX_LOG( L"In SetUp()" );
+  }
+
+  static void <link linkend='TestFixture_TearDown'>TearDown</link>()
+  {    
+    CFIX_LOG( L"In TearDown()" );
+  }
+  
+
+  void TestOne() 
+  {
+	CFIX_LOG( L"In TestOne()" );
+  }
+};
+
+<link linkend='CFIXCC_BEGIN_CLASS'>CFIXCC_BEGIN_CLASS</link>( ExampleTest )
+  <link linkend='CFIXCC_METHOD'>CFIXCC_METHOD</link>( TestOne )
+<link linkend='CFIXCC_END_CLASS'>CFIXCC_END_CLASS</link>()
+			</programlisting>
+		</para>
+		<para>
+			Again, like in Before and After methods, you are free to use assertions within SetUp and TearDown methods.
+		</para>
+	</section>
+	<section id="TutorialUserVsCcConclusion">
+		<title>Conclusion</title>
+		<para>
+			This concludes the quick tutorial about writing cfix unit tests in C++. In %CFIX_HOME%\examples, you
+			will find additional example projects for Visual Studio 2005 and 2008.
+		</para>
+		<para>
+			For additional details on any of the methods and constructs used throughout the tutorial, please consult
+			the <link linkend='API'>API Reference</link>.
+		</para>
+		<para>
+			Finally, for help, feature suggestions and critique, do not hesitate to send feedback!
+		</para>
+	</section>
+</chapter>

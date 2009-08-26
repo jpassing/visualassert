@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
-	<!ENTITY TutorialUserCc SYSTEM "book_tutorial_usercc.xml">
+	<!ENTITY TutorialUserCc SYSTEM "book_tutorial_cc.xml">
 ]>
 
 <book >
-  <title>cfix studio</title>
+  <title>Visual Assert</title>
 	<bookinfo>
 		<releaseinfo>Release 1.0</releaseinfo>
 		<author>Johannes Passing</author>
@@ -95,7 +95,7 @@
 				<note>
 					You can assign custom keyboard shortcuts to the commands listed above in the Options 
 					dialog of Visual Studio (Environment &gt; Keyboard) -- all cfix commands are prefixed
-					 with <emphasis>CfixStudio</emphasis>.
+					 with <emphasis>Visual Assert</emphasis>.
 				</note>
 			</simplesect>
 			
@@ -129,9 +129,9 @@
 		<title>The cfix testing framework</title>
 		
 		<para>
-			cfix studio is built on top of the cfix testing framework, which is a full-fledged, open source unit testing framework for
-			C and C++ code on Windows platforms. In other words: cfix studio is a superset of and fully compatible to the cfix testing framework. In particular,
-			this means that any tests created using cfix studio can also be run using the appropriate command line tools.
+			Visual Assert is built on top of the cfix testing framework, which is a full-fledged, open source unit testing framework for
+			C and C++ code on Windows platforms. In other words: Visual Assert is a superset of and fully compatible to the cfix testing framework. In particular,
+			this means that any tests created using Visual Assert can also be run using the appropriate command line tools.
 		</para>
 		<para>
 			The following sections provide an overview of the cfix testing framework, its background, and usage.

@@ -12,7 +12,7 @@ __cfix.xml: $(CFIX_TREE)\doc\docbook\book.xml
 quickstartdoc:
 	cd quickstart
 	-3 robocopy $(CFIX_TREE)\doc\assets assets /MIR /XD .svn /XX /NJH /NJS
-	copy ..\assets\img\logo-cfixstudio.gif assets\img\logo-cfixstudio.gif
+	copy ..\assets\img\logo-visualassert.gif assets\img\logo-visualassert.gif
 	
 	cd ..
 	
@@ -26,7 +26,7 @@ chmdoc: __cfix.xml
 	
 	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
 	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
-	move cfix.chm ..\cfixstudio.chm
+	move cfix.chm ..\VisualAssert.chm
 
 	cd ..\..
 	
