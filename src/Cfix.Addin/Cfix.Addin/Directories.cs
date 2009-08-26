@@ -148,7 +148,7 @@ namespace Cfix.Addin
 
 		public static string GetVcAddUnitTestVszPath( DTE2 dte )
 		{
-			return GetVcDirectory( dte ) + "VcAddClass\\cfix\\fixture.vsz";
+			return GetVcDirectory( dte ) + "VcAddClass\\VisualAssert\\fixture.vsz";
 		}
 
 		public static string LogDirectory

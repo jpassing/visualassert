@@ -17,14 +17,14 @@ VERSION = 1.0.1.$(BUILDNUMBER)
 #
 #----------------------------------------------------------------------
 
-cfixstudio.msi: clean cfixstudio.wixobj ui.wixobj dialogs.wixlib 
+VisualAssert.msi: clean VisualAssert.wixobj ui.wixobj dialogs.wixlib 
 	if not exist wixca.dll copy /Y $(WIXBINPATH)\wixca.dll .
 	if not exist wixca.wixlib copy /Y $(WIXBINPATH)\wixca.wixlib .
-	$(WIXBINPATH)\light -b .. -nologo -w0 -loc dialogs\WixUI_en-us.wxl -loc cfixstudio_en-us.wxl wixca.wixlib dialogs.wixlib cfixstudio.wixobj ui.wixobj -out cfixstudio_$(VERSION).msi
+	$(WIXBINPATH)\light -b .. -nologo -w0 -loc dialogs\WixUI_en-us.wxl -loc VisualAssert_en-us.wxl wixca.wixlib dialogs.wixlib VisualAssert.wixobj ui.wixobj -out VisualAssert_$(VERSION).msi
 
-cfixstudio.wixobj: cfixstudio.wxs
+VisualAssert.wixobj: VisualAssert.wxs
 	copy /Y $(CFIX_TREE)\installer\cfix_*.wxs .
-	$(WIXBINPATH)\candle -dCFIX_TREE=$(CFIX_TREE) -dProductCode=$(PRODUCTCODE) -dPackageCode=$(PACKAGECODE) -dProductVersion=$(VERSION) -nologo cfixstudio.wxs
+	$(WIXBINPATH)\candle -dCFIX_TREE=$(CFIX_TREE) -dProductCode=$(PRODUCTCODE) -dPackageCode=$(PACKAGECODE) -dProductVersion=$(VERSION) -nologo VisualAssert.wxs
 
 ui.wixobj: ui.wxi
 	$(WIXBINPATH)\candle -nologo ui.wxi
@@ -40,7 +40,7 @@ clean:
 	del dialogs\*.wixobj
 	del *.wixobj
 	del *.wixlib
-	del cfixstudio.msi
+	del VisualAssert.msi
 	del examples.zip
 	
 #----------------------------------------------------------------------

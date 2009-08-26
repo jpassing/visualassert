@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
   <Product
 			Id="$(var.ProductCode)"
-			Name="cfix studio"
+			Name="Visual Assert"
 			Language="1033"
 			Version="$(var.ProductVersion)"
 			UpgradeCode="e62e11e1-3058-42cd-b855-e0a3743b380a"
@@ -33,11 +33,11 @@
       <Custom Action='UninstallAddinVs90' After='RemoveFiles'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
     </InstallExecuteSequence>
 
-    <Media Id="1" Cabinet="cfixstudio.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="VisualAssert.cab" EmbedCab="yes" />
 
     <!-- Retain install location on upgrade -->
     <Property Id="INSTALLLOCATION" Secure="yes">
-      <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="directory" />
+      <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\VisualAssert\1.0" Name="InstallLocation" Type="directory" />
     </Property>
 
     
@@ -90,14 +90,14 @@
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
     </Condition>
 
-    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for cfix studio. Please note that cfix studio cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
+    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
       <![CDATA[ VS80INSTALLED OR VS90INSTALLED ]]>
     </Condition>
 
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="DirProgMenu" Name="cfixstud" LongName="cfix studio">
+        <Directory Id="DirProgMenu" Name="VAssert" LongName="Visual Assert">
         </Directory>
       </Directory>
 
@@ -173,7 +173,7 @@
         
         <Directory Id="VC80INSTALLDIR" Name="VC">
           <Directory Id="DirVcAddClassVs80" Name="VcAddCls" LongName="VCAddClass">
-            <Directory Id="DirVcAddClassCfixVs80" Name="cfix">
+            <Directory Id="DirVcAddClassCfixVs80" Name="VAssert" LongName="VisualAssert">
               <Component Id="CompVcAddClassWizardVs80" Guid="9a21c934-16d1-4813-a1e3-354b5eefcde8">
                 <RemoveFolder Id="RemoveDirVcAddClassCfixVs80" On="uninstall"/>
 
@@ -184,7 +184,7 @@
             </Directory>
           </Directory>
           <Directory Id="DirWizardsVs80" Name="vcwiz" LongName="vcwizards">
-            <Directory Id="DirWizCfixVs80" Name="cfix">
+            <Directory Id="DirWizCfixVs80" Name="VAssert" LongName="VisualAssert">
               <Directory Id="DirWizFixtureVs80" Name="fixture">
                 <Directory Id="DirWizFixtureHtmlVs80" Name="html">
                   <Directory Id="DirWizFixtureHtml1033Vs80" Name="1033">
@@ -225,7 +225,7 @@
 
         <Directory Id="VC90INSTALLDIR" Name="VC">
           <Directory Id="DirVcAddClassVs90" Name="VcAddCls" LongName="VCAddClass">
-            <Directory Id="DirVcAddClassCfixVs90" Name="cfix">
+            <Directory Id="DirVcAddClassCfixVs90" Name="VAssert" LongName="VisualAssert">
               <Component Id="CompVcAddClassWizardVs90" Guid="eccdbd83-f8e7-4948-83d4-20da8cedcec3">
                 <RemoveFolder Id="RemoveDirVcAddClassCfixVs90" On="uninstall"/>
 
@@ -236,7 +236,7 @@
             </Directory>
           </Directory>
           <Directory Id="DirWizardsVs90" Name="vcwiz" LongName="vcwizards">
-            <Directory Id="DirWizCfixVs90" Name="cfix">
+            <Directory Id="DirWizCfixVs90" Name="VAssert" LongName="VisualAssert">
               <Directory Id="DirWizFixtureVs90" Name="fixture">
                 <Directory Id="DirWizFixtureHtmlVs90" Name="html">
                   <Directory Id="DirWizFixtureHtml1033Vs90" Name="1033">
@@ -277,9 +277,9 @@
 
         <!-- END VS VERSION SPECIFIC -->
         
-        <Directory Id="INSTALLLOCATION" Name="cfixstud" LongName="cfixstudio">
+        <Directory Id="INSTALLLOCATION" Name="VAssert" LongName="VisualAssert">
           <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
-            <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\cfix\cfixstudio\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
+            <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\VisualAssert\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
           </Component>
 
           <Component Id="CompStdole" Guid="579ce302-450f-4192-82c0-3289c8829c4a">
@@ -297,14 +297,14 @@
 
           <Directory Id="DirDoc" Name="doc">
             <Component Id="CompDoc" DiskId="1" Guid="34c84943-04cb-4836-974f-81f327c0ee6c">
-              <File Id="FileCfixChm" Name="cfixstud.chm" LongName="cfixstudio.chm" Source="doc\docbook\chm\cfixstudio.chm" Vital="yes">
+              <File Id="FileCfixChm" Name="VAssert.chm" LongName="VisualAssert.chm" Source="doc\docbook\VisualAssert.chm" Vital="yes">
                 <Shortcut
 									Id="ShortcutCfixChm"
-									Description="cfix studio Documentation"
+									Description="Visual Assert Documentation"
 									Directory="DirProgMenu"
 									Icon="HelpIco"
 									Name="Doc"
-									LongName="cfix studio Documentation"/>
+									LongName="Visual Assert Documentation"/>
               </File>
               <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
 
@@ -327,7 +327,7 @@
                 <Directory Id="DirDocQuickStartAssetsImg" Name="img">
                   <Component Id="CompDocQuickStartAssetsImg" DiskId="1" Guid="06cc93b0-7579-470a-a34e-f85b5b7ebbc1">
                     <File Id="FileQuickStartAssetsImgBgJpg" Name="bg.jpg" Source="doc\quickstart\assets\img\bg.jpg" Vital="yes"/>
-                    <File Id="FileQuickStartAssetsLogo" Name="logo.gif" LongName="logo-cfixstudio.gif" Source="doc\quickstart\assets\img\logo-cfixstudio.gif" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsLogo" Name="logo.gif" LongName="logo-visualassert.gif" Source="doc\quickstart\assets\img\logo-visualassert.gif" Vital="yes"/>
                     <File Id="FileQuickStartAssetsTab1" Name="tab1.png" LongName="tab_active.png" Source="doc\quickstart\assets\img\tab_active.png" Vital="yes"/>
                     <File Id="FileQuickStartAssetsTab2" Name="tab2.png" LongName="tab_active2passive.png" Source="doc\quickstart\assets\img\tab_active2passive.png" Vital="yes"/>
                     <File Id="FileQuickStartAssetsTab3" Name="tab3.png" LongName="tab_activeend.png" Source="doc\quickstart\assets\img\tab_activeend.png" Vital="yes"/>
@@ -465,7 +465,7 @@
     </CustomTable>
     
 
-    <Feature Id="FeatureMain" Title="cfix studio" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
+    <Feature Id="FeatureMain" Title="Visual Assert" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompCfixHome"/>
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
@@ -495,7 +495,7 @@
                Title="Visual Studio 2005 integration"
                Level="1"
                AllowAdvertise="no"
-               Description="Installs the cfix studio addin for Visual Studio 2005.">
+               Description="Installs the Visual Assert Add-In for Visual Studio 2005.">
         <Condition Level="0"><![CDATA[NOT VS80INSTALLED]]></Condition>
 
         <ComponentRef Id="CompVs80"/>
@@ -510,7 +510,7 @@
                Title="Visual Studio 2008 integration"
                Level="1"
                AllowAdvertise="no"
-               Description="Installs the cfix studio addin for Visual Studio 2008.">
+               Description="Installs the Visual Assert Add-In for Visual Studio 2008.">
         <Condition Level="0"><![CDATA[NOT VS90INSTALLED]]></Condition>
 
         <ComponentRef Id="CompVs90"/>
@@ -538,19 +538,19 @@
 
     <Property Id='ALLUSERS'>1</Property>
     
-    <Property Id='ARPHELPLINK'>http://www.cfix-studio.com/</Property>
-    <Property Id='ARPURLINFOABOUT'>http://www.cfix-studio.com/</Property>
+    <Property Id='ARPHELPLINK'>http://www.VisualAssert.com/</Property>
+    <Property Id='ARPURLINFOABOUT'>http://www.VisualAssert.com/</Property>
     <Property Id='ARPPRODUCTICON'>CfixIco</Property>
 
     <Property Id='OPENTUTORIALAFTERFINISH'>1</Property>
 
     <Property Id='HTMLHELP'>hh.exe</Property>
-    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\cfixstudio.chm::ch04s01.html" />
+    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\VisualAssert.chm::ch04s01.html" />
 
     <!-- BEGIN VS VERSION SPECIFIC -->
 
-    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
-    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
 
     <!-- END VS VERSION SPECIFIC -->
         
