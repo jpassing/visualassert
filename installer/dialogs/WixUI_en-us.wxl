@@ -556,5 +556,5 @@
   <String Id="UITextVolumeCostVolume">Volume</String>
   
   <String Id="InstallDirWarning">{\WixUI_Font_Bigger}Please Note</String>
-  <String Id="InstallDirWarningText">If you intend to use cfix in conjunction with the WDK and build.exe, make sure to choose a directory without spaces in its name. Otherwise, build.exe will not be able to use the cfix header files. This is a known limitation of build.exe.</String>
+  <String Id="InstallDirWarningText">If you intend to use VisualAssert/cfix in conjunction with the WDK and build.exe, make sure to choose a directory without spaces in its name. Otherwise, build.exe will not be able to use the cfix header files. This is a known limitation of build.exe.</String>
 </WixLocalization>

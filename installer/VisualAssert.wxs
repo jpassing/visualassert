@@ -29,8 +29,16 @@
       <RemoveExistingProducts After="InstallInitialize" />
       <Custom Action="ERRCA_CANCELNEWERVERSION" After="FindRelatedProducts"><![CDATA[NEWERPRODUCTFOUND AND NOT Installed]]></Custom>
 
-      <Custom Action='UninstallAddinVs80' After='RemoveFiles'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
-      <Custom Action='UninstallAddinVs90' After='RemoveFiles'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
+      <Custom Action='FormatDevenvPath80' After='RemoveFiles'></Custom>
+      <Custom Action='FormatDevenvPath90' After='RemoveFiles'></Custom>
+
+      <!-- N.B. REMOVE="ALL" also avoids reset during repair -->
+      <Custom Action='ResetAddinVs80' After='FormatDevenvPath80'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
+      <Custom Action='ResetAddinVs90' After='FormatDevenvPath90'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
+      
+      <!-- Older versions are faulty; be sure to reset again -->
+      <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ VS80INSTALLED ]]></Custom>
+      <Custom Action='ResetLegacyAddinVs90' After='FormatDevenvPath90'><![CDATA[ VS90INSTALLED ]]></Custom>
     </InstallExecuteSequence>
 
     <Media Id="1" Cabinet="VisualAssert.cab" EmbedCab="yes" />
@@ -60,9 +68,6 @@
       <RegistrySearch Id="SearchVc80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
 
-    <Property Id='VS80DEVENV'>[VS80INSTALLDIR]devenv.exe</Property>
-
-
     <Property Id="VS90INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
     </Property>
@@ -74,8 +79,6 @@
     <Property Id="VC90INSTALLDIR" Secure="yes">
       <RegistrySearch Id="SearchVc90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
-
-    <Property Id='VS90DEVENV'>[VS90INSTALLDIR]devenv.exe</Property>
 
     <!-- END VS VERSION SPECIFIC -->
 
@@ -314,8 +317,7 @@
               <Component Id="CompDocQuickStart" DiskId="1" Guid="118333d3-4f0e-407c-8338-810be4196592">
                 <File Id="FileQuickStartIndexHtml" Name="index.htm" LongName="index.html" Source="doc\quickstart\index.html" Vital="yes"/>
 
-                <File Id="FileQuickStartHelpMenuPng" Name="HelpMenu.png" Source="doc\quickstart\HelpMenu.png" Vital="yes"/>
-                <File Id="FileQuickStartToolMenuPng" Name="ToolMenu.png" Source="doc\quickstart\ToolMenu.png" Vital="yes"/>
+                <File Id="FileQuickStartMenuPng" Name="Menu.png" Source="doc\quickstart\Menu.png" Vital="yes"/>
                 <File Id="FileQuickStartSlnExplPng" Name="SlnExpl.png" Source="doc\quickstart\SlnExpl.png" Vital="yes"/>
               </Component>
 
@@ -437,34 +439,6 @@
       </Directory>
     </Directory>
 
-    <CustomTable Id="CfixVszParameters">
-      <Column Id="Id" Type="string" PrimaryKey="yes"/>
-      <Column Id="VszPath" Type="string"/>
-      <Column Id="ParameterName" Type="string"/>
-      <Column Id="ParameterValue" Type="string"/>
-      <Column Id="Condition" Type="string"/>
-
-      <!-- BEGIN VS VERSION SPECIFIC -->
-      
-      <Row>
-        <Data Column="Id">VszFixtureVc80</Data>
-        <Data Column="VszPath">[VC80INSTALLDIR]\VCAddClass\cfix\fixture.vsz</Data>
-        <Data Column="ParameterName">RELATIVE_PATH</Data>
-        <Data Column="ParameterValue">[INSTALLLOCATION]\wizards\fixture</Data>
-        <Data Column="Condition">[VS80INSTALLED]</Data>
-      </Row>
-      <Row>
-        <Data Column="Id">VszFixtureVc90</Data>
-        <Data Column="VszPath">[VC90INSTALLDIR]\VCAddClass\cfix\fixture.vsz</Data>
-        <Data Column="ParameterName">RELATIVE_PATH</Data>
-        <Data Column="ParameterValue">[INSTALLLOCATION]\wizards\fixture</Data>
-        <Data Column="Condition">[VS90INSTALLED]</Data>
-      </Row>
-
-      <!-- END VS VERSION SPECIFIC -->
-    </CustomTable>
-    
-
     <Feature Id="FeatureMain" Title="Visual Assert" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompCfixHome"/>
       <ComponentRef Id="CompInstallLocation"/>
@@ -549,8 +523,14 @@
 
     <!-- BEGIN VS VERSION SPECIFIC -->
 
-    <CustomAction Id="UninstallAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
-    <CustomAction Id="UninstallAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="FormatDevenvPath80" Property="VS80DEVENV" Value="[VS80INSTALLDIR]devenv.exe"/>
+    <CustomAction Id="FormatDevenvPath90" Property="VS90DEVENV" Value="[VS90INSTALLDIR]devenv.exe"/>
+
+    <CustomAction Id="ResetAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="ResetAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+
+    <CustomAction Id="ResetLegacyAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+    <CustomAction Id="ResetLegacyAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
 
     <!-- END VS VERSION SPECIFIC -->
         
