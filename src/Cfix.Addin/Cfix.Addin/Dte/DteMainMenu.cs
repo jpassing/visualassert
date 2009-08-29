@@ -113,12 +113,24 @@ namespace Cfix.Addin.Dte
 			CommandBars dteCommandBars = ( CommandBars ) connect.DTE.CommandBars;
 			CommandBar dteMainMenuBar = dteCommandBars[ "MenuBar" ];
 
+			//
+			// If already installed, delete them.
+			//
+			try
+			{
+				cmdBars[ name ].Delete();
+				dteMainMenuBar.Controls[ caption ].Delete( false );
+			}
+			catch ( Exception )
+			{ }
+
 			CommandBarPopup popup = ( CommandBarPopup ) dteMainMenuBar.Controls.Add(
 				MsoControlType.msoControlPopup,
 				Type.Missing,
 				Type.Missing,
 				CalculateMenuIndex( connect ),
 				true );
+			popup.CommandBar.Name = name;
 			popup.Caption = caption;
 			return new DteMainMenu( connect, popup );
 		}
