@@ -119,7 +119,6 @@ namespace Cfix.Addin.Dte
 				Type.Missing,
 				CalculateMenuIndex( connect ),
 				true );
-			popup.CommandBar.Name = name;
 			popup.Caption = caption;
 			return new DteMainMenu( connect, popup );
 		}

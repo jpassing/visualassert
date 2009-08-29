@@ -187,6 +187,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vis&amp;ual Assert.
+        /// </summary>
+        internal static string MainMenuCaption {
+            get {
+                return ResourceManager.GetString("MainMenuCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visual Assert.
         /// </summary>
         internal static string MsgBoxCaption {

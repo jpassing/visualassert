@@ -159,6 +159,9 @@
   <data name="IncompatibleModule" xml:space="preserve">
     <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type.</value>
   </data>
+  <data name="MainMenuCaption" xml:space="preserve">
+    <value>Vis&amp;ual Assert</value>
+  </data>
   <data name="MsgBoxCaption" xml:space="preserve">
     <value>Visual Assert</value>
   </data>
