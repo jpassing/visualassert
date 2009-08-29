@@ -37,8 +37,8 @@
       <Custom Action='ResetAddinVs90' After='FormatDevenvPath90'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
       
       <!-- Older versions are faulty; be sure to reset again -->
-      <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ VS80INSTALLED ]]></Custom>
-      <Custom Action='ResetLegacyAddinVs90' After='FormatDevenvPath90'><![CDATA[ VS90INSTALLED ]]></Custom>
+      <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS80INSTALLED ]]></Custom>
+      <Custom Action='ResetLegacyAddinVs90' After='FormatDevenvPath90'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS90INSTALLED ]]></Custom>
     </InstallExecuteSequence>
 
     <Media Id="1" Cabinet="VisualAssert.cab" EmbedCab="yes" />
