@@ -137,6 +137,11 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool IsExplorerLoaded
+		{
+			get { return this.explorer != null; }
+		}
+
 		public DteToolWindow<ExplorerWindow> Explorer
 		{
 			get

@@ -429,7 +429,7 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 		}
 
-		private void ExploreSolution()
+		public void ExploreSolution()
 		{
 			Debug.Assert( this.workspace != null );
 			if ( !this.workspace.ToolWindows.Explorer.Visible )

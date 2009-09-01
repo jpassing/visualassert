@@ -183,6 +183,20 @@ namespace Cfix.Addin.Windows
 		{
 			try
 			{
+				if ( !ws.ToolWindows.IsExplorerLoaded )
+				{
+					//
+					// Explorer not loaded -- this means two things:
+					// (1) The session probably has not been loaded
+					// yet and (2) we cannot be sure that we are in
+					// Solution mode.
+					//
+					// Escape by activating the Explorer.
+					//
+					ws.ToolWindows.Explorer.Activate();
+					return;
+				}
+
 				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
 				UIHierarchyItem selected = ( UIHierarchyItem )
 					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
