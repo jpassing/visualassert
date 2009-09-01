@@ -27,5 +27,13 @@ namespace Cfix.Control.Test
 				}
 			}
 		}
+
+		public static uint TrialLicenseCookie
+		{
+			get
+			{
+				return ( uint ) DateTime.Now.Subtract( DateTime.FromFileTime( 0 ) ).Days;
+			}
+		}
 	}
 }

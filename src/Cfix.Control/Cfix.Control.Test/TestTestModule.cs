@@ -22,6 +22,8 @@ namespace Cfix.Control.Test
 				Architecture.I386,
 				false );
 
+			this.target.SetTrialLicenseCookie( Util.TrialLicenseCookie );
+
 			String binDir = new FileInfo( 
 				Assembly.GetExecutingAssembly().FullName ).Directory.FullName;
 

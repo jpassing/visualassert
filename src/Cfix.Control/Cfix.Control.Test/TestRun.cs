@@ -28,6 +28,9 @@ namespace Cfix.Control.Test
 				Architecture.I386,
 				true );
 
+			this.ooProcTarget.SetTrialLicenseCookie( Util.TrialLicenseCookie );
+			this.inProcTarget.SetTrialLicenseCookie( Util.TrialLicenseCookie );
+
 			this.multiTarget = new AgentSet();
 			this.multiTarget.AddArchitecture( ooProcTarget );
 

@@ -17,6 +17,7 @@ namespace Cfix.Control.Test
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			agent.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 			IHost host = agent.CreateHost();
 
 			Assert.AreEqual( 1, agent.ActiveHostCount );
@@ -31,6 +32,7 @@ namespace Cfix.Control.Test
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			agent.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 			IHost host = agent.CreateHost();
 
 			Assert.AreEqual( 1, agent.ActiveHostCount );
