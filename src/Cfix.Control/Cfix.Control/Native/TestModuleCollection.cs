@@ -154,7 +154,7 @@ namespace Cfix.Control.Native
 							new InvalidModule(
 								this.collectionStack.Peek(),
 								new DirectoryInfo( path ).Name,
-								x ) );
+								agent.WrapException( x ) ) );
 					}
 				}
 			}

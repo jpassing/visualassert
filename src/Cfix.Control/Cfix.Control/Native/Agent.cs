@@ -265,6 +265,32 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		public String ResolveMessage( Exception x )
+		{
+			COMException comex = x as COMException;
+			if ( comex == null )
+			{
+				return x.ToString();
+			}
+			else
+			{
+				return ResolveMessage( comex.ErrorCode );
+			}
+		}
+
+		public CfixException WrapException( Exception x )
+		{
+			COMException comex = x as COMException;
+			if ( comex == null )
+			{
+				return new CfixException( x.ToString(), x );
+			}
+			else
+			{
+				return new CfixException( ResolveMessage( comex.ErrorCode ), x );
+			}
+		}
+
 		public HostEnvironment DefaultEnvironment
 		{
 			get { return this.defaultHostEnv; }

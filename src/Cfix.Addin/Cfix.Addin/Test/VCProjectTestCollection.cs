@@ -200,6 +200,7 @@ namespace Cfix.Addin.Test
 					ITestItem module;
 					if ( this.config.IsSupportedTestModulePath( modulePath ) )
 					{
+						IAgent agent = this.agentSet.GetAgent( arch );
 						try
 						{
 							//
@@ -212,7 +213,7 @@ namespace Cfix.Addin.Test
 							HostEnvironment env = new HostEnvironment();
 							env.AddSearchPath( pathInfo.Directory.FullName );
 
-							module = this.agentSet.GetAgent( arch ).LoadModule(
+							module = agent.LoadModule(
 								env,
 								this,
 								modulePath,
@@ -237,7 +238,7 @@ namespace Cfix.Addin.Test
 							module = new InvalidModule(
 								this,
 								new FileInfo( modulePath ).Name,
-								x );
+								agent.WrapException( x ) );
 							this.currentPath = null;
 						}
 					}
@@ -431,7 +432,7 @@ namespace Cfix.Addin.Test
 						Add( new InvalidModule(
 							this,
 							new FileInfo( this.currentPath ).Name,
-							x ) );
+							this.agentSet.GetAgent( Architecture.I386 ).WrapException( x ) ) );
 					}
 				}
 			}

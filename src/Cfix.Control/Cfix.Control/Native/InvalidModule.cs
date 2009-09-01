@@ -28,7 +28,7 @@ namespace Cfix.Control.Native
 		public InvalidModule(
 			ITestItemCollection parent,
 			String name,
-			Exception invalidityCause
+			CfixException invalidityCause
 			)
 		{
 			Debug.Assert( name != null );

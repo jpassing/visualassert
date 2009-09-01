@@ -22,6 +22,7 @@ namespace Cfix.Control
 			);
 		Architecture Architecture { get; }
 		String ResolveMessage( int code );
+		CfixException WrapException( Exception x );
 		HostEnvironment DefaultEnvironment { get; }
 		void SetTrialLicenseCookie( uint cookie );
 
