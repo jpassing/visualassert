@@ -1,1 +1,1 @@
-DIRS=testapis testlib10 testlib11 testslow testexe10 testexe11 testexe12 testexe13 testexe14 testlib15 testexe15
+DIRS=testapis testlib10 testlib11 testslow testexe10 testexe11 testexe12 testexe13 testexe14 testlib15 testexe15 emptylib

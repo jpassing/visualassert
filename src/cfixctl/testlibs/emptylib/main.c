@@ -4,13 +4,12 @@
  *		2009, Johannes Passing. All rights reserved.
  */
 
-#include <crtdbg.h>
+#include <cfix.h>
+#include <stdio.h>
 
-//
-// No fixture here.
-//
 
-int __cdecl wmain()
+__declspec( dllexport )
+void ExportFromTestLib15()
 {
-	return 0xDEAD;
+	printf( "test" );
 }

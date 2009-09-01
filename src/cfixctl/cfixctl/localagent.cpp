@@ -344,6 +344,35 @@ static HRESULT CfixctlsSpawnHost(
 		}
 
 		//
+		// If we start the custom host and it turns out that it 
+		// has no fixtures (and therefore, loads no agent library),
+		// we are in trouble: The host will launch and will run its
+		// main routine.
+		//
+		// Therefore, check if the EXE is a cfix EXE.
+		//
+		CFIX_MODULE_INFO ModuleInfo;
+		ModuleInfo.SizeOfStruct = sizeof( CFIX_MODULE_INFO );
+
+		Hr = CfixQueryPeImage(
+			CustomHostPath,
+			&ModuleInfo );
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
+
+		ASSERT( ModuleInfo.ModuleType == CfixModuleExe );
+
+		if ( ! ModuleInfo.FixtureExportsPresent )
+		{
+			//
+			// Do not launch, bail out.
+			//
+			return CFIXCTL_E_HOST_IMAGE_HAS_NO_FIXTURES;
+		}
+
+		//
 		// Copy to make string non-const.
 		//
 		Hr = StringCchCopy(

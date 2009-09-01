@@ -167,5 +167,13 @@ Severity		= Warning
 Facility		= Interface
 SymbolicName	= CFIXCTL_E_HOST_EXITED_PREMATURELY
 Language		= English
-The host process exited prematurely without setting a proper exit code.
+The custom host process exited prematurely without setting a proper exit code.
+.
+
+MessageId		= 0xB012
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_HOST_IMAGE_HAS_NO_FIXTURES
+Language		= English
+The custom host process contains no fixture and therefore was not started.
 .

@@ -307,6 +307,36 @@ public:
 
 		CustomHost->Release();
 	}
+
+	void LoadDllWithNoFixtures()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"emptylib.dll" );
+
+		BSTR BstrPath = SysAllocString( Path );
+
+		ICfixTestModule *Module;
+		CFIX_ASSERT_OK( 
+			Host->LoadModule(
+				BstrPath,
+				&Module ) );
+
+		SysFreeString( BstrPath );
+
+		ULONG FixtureCount;
+		CFIX_ASSERT_OK( Module->GetItemCount( &FixtureCount ) );
+
+		ICfixTestItem *Item;
+		CFIX_ASSERT_HRESULT( E_INVALIDARG, Module->GetItem( 0, &Item ) );
+		CFIXCC_ASSERT_EQUALS( 0UL, FixtureCount );
+
+		CFIXCC_ASSERT_EQUALS( 0UL, Module->Release() );
+	}
 };
 
 COM_EXPORTS TestHost::Exports;
@@ -319,4 +349,5 @@ CFIXCC_BEGIN_CLASS( TestHost )
 	CFIXCC_METHOD( LoadUserExe )
 	CFIXCC_METHOD( TestApiTypes )
 	CFIXCC_METHOD( TestExeWithDependencyOnTestLib )
+	CFIXCC_METHOD( LoadDllWithNoFixtures )
 CFIXCC_END_CLASS()

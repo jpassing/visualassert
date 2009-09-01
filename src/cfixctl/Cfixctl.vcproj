@@ -490,6 +490,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="emptylib"
+					>
+					<File
+						RelativePath=".\testlibs\emptylib\emptylib.def"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\emptylib\main.c"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\emptylib\SOURCES"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"
