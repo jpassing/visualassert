@@ -291,6 +291,11 @@ public:
 
 			for ( ULONG Arch = 0; Arch < _countof( Archs ); Arch++ )
 			{
+				if ( ! IsArchitectureSupportedOnThisMachine( Archs[ Arch ] ) )
+				{
+					continue;
+				}
+
 				ICfixHost *Host;
 				CFIX_ASSERT_OK( Agent->CreateHost(
 					Archs[ Arch ],

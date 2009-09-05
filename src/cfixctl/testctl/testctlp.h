@@ -141,3 +141,23 @@ void TestComServer(
 	);
 
 ULONG CurrentLicensingDate();
+
+__inline BOOL IsArchitectureSupportedOnThisMachine(
+	__in CfixTestModuleArch Arch 
+	)
+{
+	SYSTEM_INFO SystemInfo;
+	CfixklGetNativeSystemInfo( &SystemInfo );
+
+	switch ( SystemInfo.wProcessorArchitecture  )
+	{
+	case PROCESSOR_ARCHITECTURE_INTEL:
+		return Arch == CfixTestModuleArchI386;
+
+	case PROCESSOR_ARCHITECTURE_AMD64:
+		return Arch == CfixTestModuleArchI386 || CfixTestModuleArchAmd64;
+
+	default:
+		return FALSE;
+	}
+}
