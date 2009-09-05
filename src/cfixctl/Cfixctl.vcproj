@@ -89,7 +89,7 @@
 				BuildCommandLine="ddkbuild -WLHNETA64 free $(SolutionDir)"
 				ReBuildCommandLine="ddkbuild -WLHNETA64 free $(SolutionDir) -cZ"
 				CleanCommandLine=""
-				Output="..\bin\fre\amd64\testapi.dll"
+				Output="..\..\bin\fre\amd64\testctl.dll"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""

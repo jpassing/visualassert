@@ -91,7 +91,7 @@ private:
 			CFIXCTL_LICENSE_REG_KEY_NAME_LICENSE,
 			0,
 			REG_BINARY,
-			( LPBYTE ) &LicKey,
+			( LPBYTE ) LicKey,
 			sizeof( CFIXLIC_LICENSE_KEY ) ) );
 
 		CFIXCC_ASSERT_EQUALS( ERROR_SUCCESS, RegCloseKey( Key ) ); 
