@@ -20,7 +20,7 @@
 //
 // 2009-10-31.
 //
-#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149322
+#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149352
 
 //
 // N.B. All versions numbers may not exceed 0xF.
