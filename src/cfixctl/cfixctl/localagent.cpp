@@ -741,9 +741,9 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	EnterCriticalSection( &this->SpawnLock );
 
-	HRESULT Hr;
+	HRESULT Hr = E_UNEXPECTED;
 	
-	for ( ULONG Trials = 0; Trials < 9; Trials ++ )
+	for ( ULONG Trials = 0; Trials < 3; Trials ++ )
 	{
 		Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
 			this,
@@ -773,14 +773,15 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			CustomHostPath != NULL,
 			&RemoteHost );
 
-		if ( CO_E_OBJNOTREG == Hr )
+		if ( CO_E_OBJNOTREG == Hr || CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY == Hr )
 		{
 			//
 			// The host was unable to unreference the agent moniker.
 			//
 			// Wait and try again -- OLE is a bit flaky at times.
 			//
-			Sleep( 1 << Trials );
+			CFIXCTLP_TRACE( ( L"Host was unable to obtain agent, retrying (%d)\n", Trials ) );
+			Sleep( 100 * Trials );
 		}
 		else
 		{
@@ -1107,6 +1108,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 						
 						if ( IsCustomHost )
 						{
+							CFIXCTLP_TRACE( ( L"Custom host exited prematurely with exit code 0x%08X\n", ExitHr ) );
 							return CFIXCTL_E_CUSTOM_HOST_EXITED_PREMATURELY;
 						}
 						else if ( FAILED( ExitHr ) )
