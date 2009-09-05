@@ -290,6 +290,11 @@ static HRESULT CfixctlsGetObjrefMonikerString(
 	
 	Hr = AgentMk->GetDisplayName( BindCtx, NULL, DisplayName );
 
+	if ( SUCCEEDED( Hr ) )
+	{
+		CFIXCTLP_TRACE( ( L"ObjRef moniker of agent is '%s'\n", *DisplayName ) );
+	}
+
 Cleanup:
 	if ( AgentMk != NULL )
 	{
@@ -736,18 +741,25 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	EnterCriticalSection( &this->SpawnLock );
 
-	HRESULT Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
-		this,
-		Arch,
-		CustomHostPath,
-		Environment,
-		CurrentDirectory, 
-		UseJob,
-		&Process,
-		&Job,
-		&Cookie );
-	if ( SUCCEEDED( Hr ) )
+	HRESULT Hr;
+	
+	for ( ULONG Trials = 0; Trials < 9; Trials ++ )
 	{
+		Hr = CfixctlsSpawnHostAndPutInJobIfRequired( 
+			this,
+			Arch,
+			CustomHostPath,
+			Environment,
+			CurrentDirectory, 
+			UseJob,
+			&Process,
+			&Job,
+			&Cookie );
+		if ( FAILED( Hr ) )
+		{
+			break;
+		}
+		
 		//
 		// Wait for it to register and obtain its Host object.
 		//
@@ -760,6 +772,20 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			Process,
 			CustomHostPath != NULL,
 			&RemoteHost );
+
+		if ( CO_E_OBJNOTREG == Hr )
+		{
+			//
+			// The host was unable to unreference the agent moniker.
+			//
+			// Wait and try again -- OLE is a bit flaky at times.
+			//
+			Sleep( 1 << Trials );
+		}
+		else
+		{
+			break;
+		}
 	}
 
 	LeaveCriticalSection( &this->SpawnLock );
