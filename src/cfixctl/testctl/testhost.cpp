@@ -180,16 +180,18 @@ public:
 		PathRemoveFileSpec( Path );
 		PathAppend( Path,  L"testexe11.exe" );
 
+		BSTR CustomHostPath = SysAllocString( Path );
 		ICfixHost* CustomHost;
 		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_LOCAL_SERVER,
 			0,
 			INFINITE,
-			Path,
+			CustomHostPath,
 			NULL,
 			NULL,
 			&CustomHost ) );
+		SysFreeString( CustomHostPath );
 
 		ICfixTestModule *Module;
 		CFIX_ASSERT_OK( 
@@ -221,16 +223,18 @@ public:
 		PathRemoveFileSpec( Path );
 		PathAppend( Path,  L"testapis.exe" );
 
+		BSTR CustomHostPath = SysAllocString( Path );
 		ICfixHost* CustomHost;
 		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_LOCAL_SERVER,
 			0,
 			INFINITE,
-			Path,
+			CustomHostPath,
 			NULL,
 			NULL,
 			&CustomHost ) );
+		SysFreeString( CustomHostPath );
 
 		ICfixTestModule *Module;
 		CFIX_ASSERT_OK( 
@@ -277,16 +281,18 @@ public:
 		PathRemoveFileSpec( Path );
 		PathAppend( Path,  L"testexe15.exe" );
 
+		BSTR CustomHostPath = SysAllocString( Path );
 		ICfixHost* CustomHost;
 		CFIX_ASSERT_OK( Agent->CreateHost( 
 			TESTCTLP_OWN_ARCHITECTURE,
 			CLSCTX_LOCAL_SERVER,
 			0,
 			INFINITE,
-			Path,
+			CustomHostPath,
 			NULL,
 			NULL,
 			&CustomHost ) );
+		SysFreeString( CustomHostPath );
 
 		ICfixTestModule *Module;
 		CFIX_ASSERT_OK( 
