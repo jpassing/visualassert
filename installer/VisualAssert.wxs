@@ -298,6 +298,15 @@
 							Vital="yes"/>
           </Component>
 
+          <Component Id="CompEula" Guid="55596724-7d2c-42ef-af95-d0c9d1e2cd67">
+            <File
+							Id="FileEula"
+							Name="EULA.rtf"
+							DiskId="1"
+							Source="installer\License.rtf"
+							Vital="yes"/>
+          </Component>
+
           <Directory Id="DirDoc" Name="doc">
             <Component Id="CompDoc" DiskId="1" Guid="34c84943-04cb-4836-974f-81f327c0ee6c">
               <File Id="FileCfixChm" Name="VAssert.chm" LongName="VisualAssert.chm" Source="doc\docbook\VisualAssert.chm" Vital="yes">
@@ -444,6 +453,7 @@
       <ComponentRef Id="CompInstallLocation"/>
       <ComponentRef Id="CompStdole"/>
       <ComponentRef Id="CompCfixEnvCmd"/>
+      <ComponentRef Id="CompEula"/>
 
       <ComponentRef Id="CompSamples"/>
       <ComponentRef Id="CompSamplesKernel"/>

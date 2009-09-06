@@ -45,14 +45,9 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 	  
 	  
 	  
-      <!--	  
       <Property Id="WixUI_WelcomeDlg_Next" Value="LicenseAgreementDlg" />
       <Property Id="WixUI_CustomizeDlg_BackFeatureTree" Value="LicenseAgreementDlg" />
-      -->
       
-      <Property Id="WixUI_WelcomeDlg_Next" Value="CustomizeDlg" />
-      <Property Id="WixUI_CustomizeDlg_BackFeatureTree" Value="WelcomeDlg" />
-
       
       <Property Id="WixUI_LicenseAgreementDlg_Back" Value="WelcomeDlg" />
       <Property Id="WixUI_LicenseAgreementDlg_Next" Value="CustomizeDlg" />
