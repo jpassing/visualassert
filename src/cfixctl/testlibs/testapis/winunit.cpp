@@ -6,10 +6,16 @@
 
 #include <winunit.h>
 
-FIXTURE(Winunit);
+FIXTURE(WinunitFixture);
 
-BEGIN_TESTF(Test, Winunit)
+BEGIN_TESTF(Test, WinunitFixture)
 {
 	WIN_TRACE("Not implemented");
 }
 END_TESTF
+
+BEGIN_TEST(WinunitStandalone)
+{
+	WIN_TRACE("Not implemented");
+}
+END_TEST

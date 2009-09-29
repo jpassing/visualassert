@@ -246,7 +246,8 @@ public:
 		{
 			CfixTestApiTypeBase,
 			CfixTestApiTypeCc,
-			CfixTestApiTypeWinUnit
+			CfixTestApiTypeWinUnitFixture,
+			CfixTestApiTypeWinUnitStandalone,
 		};
 
 		for ( ULONG Index = 0; Index < _countof( ExpectedTypes ); Index++ )

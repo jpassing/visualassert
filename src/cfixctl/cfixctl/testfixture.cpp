@@ -13,7 +13,8 @@ const GUID IID_ICfixTestFixtureInternal =
 
 C_ASSERT( CfixTestApiTypeBase == CfixApiTypeBase );
 C_ASSERT( CfixTestApiTypeCc == CfixApiTypeCc );
-C_ASSERT( CfixTestApiTypeWinUnit == CfixApiTypeWinUnit );
+C_ASSERT( CfixTestApiTypeWinUnitFixture == CfixApiTypeWinUnitFixture );
+C_ASSERT( CfixTestApiTypeWinUnitStandalone == CfixApiTypeWinUnitStandalone );
 
 /*------------------------------------------------------------------
  * 

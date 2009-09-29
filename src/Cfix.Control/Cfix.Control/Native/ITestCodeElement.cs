@@ -8,7 +8,8 @@ namespace Cfix.Control.Native
 		Unknown = CfixTestApiType.CfixTestApiUnknown,
 		CfixBase = CfixTestApiType.CfixTestApiTypeBase,
 		CfixCc = CfixTestApiType.CfixTestApiTypeCc,
-		WinUnit = CfixTestApiType.CfixTestApiTypeWinUnit,
+		WinUnitFixture = CfixTestApiType.CfixTestApiTypeWinUnitFixture,
+		WinUnitStandalone = CfixTestApiType.CfixTestApiTypeWinUnitStandalone,
 	}
 
 	public interface ITestCodeElement

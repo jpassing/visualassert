@@ -78,10 +78,11 @@ library Cfixctl
 		version( 1.0 )
 	]
 	enum CfixTestApiType {
-		CfixTestApiUnknown		= 0,
-		CfixTestApiTypeBase		= 1,
-		CfixTestApiTypeCc		= 2,
-		CfixTestApiTypeWinUnit	= 3
+		CfixTestApiUnknown					= 0,
+		CfixTestApiTypeBase					= 1,
+		CfixTestApiTypeCc					= 2,
+		CfixTestApiTypeWinUnitFixture		= 3,
+		CfixTestApiTypeWinUnitStandalone	= 4
 	} CfixTestApiType;
 
 

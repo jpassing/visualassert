@@ -166,7 +166,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
-			CfixApiTypeWinUnit,
+			CfixApiTypeWinUnitFixture,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -245,7 +245,7 @@ public:
 			NULL,
 			NULL,
 			NULL,
-			CfixApiTypeWinUnit,
+			CfixApiTypeWinUnitFixture,
 			NULL,
 			0 };
 

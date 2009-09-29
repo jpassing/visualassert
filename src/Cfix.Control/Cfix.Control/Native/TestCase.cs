@@ -43,8 +43,11 @@ namespace Cfix.Control.Native
 					case ApiType.CfixCc:
 						return String.Format( "{0}::{1}", Parent.Name, this.Name );
 
-					case ApiType.WinUnit:
+					case ApiType.WinUnitFixture:
 						return String.Format( "{0}_{1}", Parent.Name, this.Name );
+
+					case ApiType.WinUnitStandalone:
+						return this.Name;
 
 					default:
 						Debug.Fail( "Unrecognized ApiType" );
