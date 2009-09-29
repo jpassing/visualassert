@@ -52,6 +52,26 @@ namespace Cfix.Addin.Dte
 			}
 		}
 
+		private void InitializeSizeLazily()
+		{
+			//
+			// N.B. Setting the size is not allowed until the
+			// window has been made visible.
+			//
+			if ( ! this.sizeInitialized )
+			{
+				try
+				{
+					this.Height = this.defaultHeight;
+					this.Width = this.defaultWidth;
+
+					this.sizeInitialized = true;
+				}
+				catch ( Exception )
+				{ }
+			}
+		}
+
 		private DteToolWindow(
 			DteConnect connect,
 			Window window,
@@ -148,17 +168,9 @@ namespace Cfix.Addin.Dte
 				// N.B. Setting the size is not allowed until the
 				// window has been made visible.
 				//
-				if ( value && !this.sizeInitialized )
+				if ( value  )
 				{
-					try
-					{
-						this.Height = this.defaultHeight;
-						this.Width = this.defaultWidth;
-
-						this.sizeInitialized = true;
-					}
-					catch ( Exception )
-					{ }
+					InitializeSizeLazily();
 				}
 			}
 		}
@@ -210,6 +222,8 @@ namespace Cfix.Addin.Dte
 				//
 				// A true activation.
 				//
+				InitializeSizeLazily();
+
 				IDteToolWindowControl ctl = this.userControl as IDteToolWindowControl;
 				if ( ctl != null )
 				{

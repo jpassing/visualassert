@@ -25,7 +25,7 @@ namespace Cfix.Addin.Windows.Run
 	public partial class RunWindow : UserControl
 	{
 		public static readonly Guid Guid = 
-			new Guid( "80c3fde2-9f60-4709-b1d2-28561e3cff9f" );
+			new Guid( "1e1dc7d9-818b-422c-8d16-92c4655c071c" );
 
 		private static readonly Color FailedColor = Color.Tomato;
 		private static readonly Color SuccessColor = Color.PaleGreen;
