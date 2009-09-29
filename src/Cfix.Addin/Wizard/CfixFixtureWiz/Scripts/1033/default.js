@@ -1,8 +1,49 @@
 /*++
-	This file is part of cfix studio.
+	This file is part of Visual Assert.
 	
 	Copyright 2009, Johannes Passing.
 --*/
+
+vsProjectKindSolutionFolder = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
+vsProjectVcProject = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}";
+
+function FindProject( wizard, collection, strProjectName )
+{
+	for ( i = 1; i <= collection.Count; i++ )
+	{
+	    var project = collection.Item( i );
+		if ( project.Name == strProjectName )
+		{
+			return project;
+		}
+		else if ( project.kind == vsProjectKindSolutionFolder )
+		{
+		    //
+		    // SolutionFolder -- ProjectItems collection contains a ProjectItem
+		    // for each sub-project.
+		    //
+		    return FindProject( wizard, project.ProjectItems, strProjectName ).Object;
+		}
+	}
+	
+	return null;
+}
+			
+
+//function FindProject( wizard, strProjectName )
+//{
+//	var projects = wizard.dte.solution.Projects;
+//	for ( i = 1; i <= projects.Count; i++ )
+//	{
+//		var project = projects.Item( i );
+//		if ( project.Name == strProjectName )
+//		{
+//			return project;
+//		}
+//	}
+//	
+//	return null;
+//}
 
 function OnFinish( selProj, selObj )
 {
@@ -21,15 +62,8 @@ function OnFinish( selProj, selObj )
 			// If launched via LaunchWizard, selProj is null. So we
 			// have to look it up in the solution.
 			//
-			var projects = wizard.dte.Solution.Projects;
-			for ( i = 1; i <= projects.Count; i++ )
-			{
-				var project = projects.Item( i );
-				if ( project.Name == strProjectName )
-				{
-					selProj = project;
-				}
-			}
+			//selProj = FindProject( wizard, strProjectName );
+			selProj = FindProject( wizard, wizard.dte.Solution.Projects, strProjectName );
 			
 			if ( selProj == null )
 			{
@@ -55,7 +89,7 @@ function OnFinish( selProj, selObj )
 		codeModel.StartTransaction("Add Unit Test");
 		if ( ! DoesIncludeExist( selProj, "<" + strApiType + ".h>", strFile ) )
 		{
-			codeModel.AddInclude( "<" + strApiType + ".h>", strFile, vsCMAddPositionEnd );
+			codeModel.AddInclude( "<" + strApiType + ".h>", strFile, vsCMAddPositionDefault );
 		}
 		
 		//
