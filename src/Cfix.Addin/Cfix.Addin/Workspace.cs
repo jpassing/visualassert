@@ -295,7 +295,6 @@ namespace Cfix.Addin
 		{
 			if ( this.toolWindows != null )
 			{
-				this.toolWindows.SaveWindowState();
 				this.toolWindows.CloseAll();
 				this.toolWindows.Dispose();
 			}

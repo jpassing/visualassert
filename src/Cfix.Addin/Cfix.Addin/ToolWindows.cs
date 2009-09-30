@@ -126,7 +126,7 @@ namespace Cfix.Addin
 		{
 			if ( this.explorer != null )
 			{
-				this.addin.Workspace.Configuration.ExplorerWindowVisible = 
+				this.addin.Workspace.Configuration.ExplorerWindowVisible =
 					this.explorer.Visible;
 			}
 
