@@ -9,9 +9,10 @@ vsProjectVcProject = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}";
 
 function FindProject( wizard, collection, strProjectName )
 {
-	for ( i = 1; i <= collection.Count; i++ )
+    for ( index = 1; index <= collection.Count; index++ )
 	{
-	    var project = collection.Item( i );
+	    var project = collection.Item( index );
+	    
 		if ( project.Name == strProjectName )
 		{
 			return project;
@@ -22,28 +23,24 @@ function FindProject( wizard, collection, strProjectName )
 		    // SolutionFolder -- ProjectItems collection contains a ProjectItem
 		    // for each sub-project.
 		    //
-		    return FindProject( wizard, project.ProjectItems, strProjectName ).Object;
+		    
+		    //
+		    // This is totally spooky -- JScript does not save the
+		    // variable 'index' when recusrively calling this function.
+		    //
+		    var savedIndex = index;
+		    var subproject = FindProject( wizard, project.ProjectItems, strProjectName );
+		    index = savedIndex;
+		    
+		    if ( subproject != null )
+		    {
+		        return subproject.Object;
+            }
 		}
 	}
 	
 	return null;
 }
-			
-
-//function FindProject( wizard, strProjectName )
-//{
-//	var projects = wizard.dte.solution.Projects;
-//	for ( i = 1; i <= projects.Count; i++ )
-//	{
-//		var project = projects.Item( i );
-//		if ( project.Name == strProjectName )
-//		{
-//			return project;
-//		}
-//	}
-//	
-//	return null;
-//}
 
 function OnFinish( selProj, selObj )
 {
@@ -62,7 +59,6 @@ function OnFinish( selProj, selObj )
 			// If launched via LaunchWizard, selProj is null. So we
 			// have to look it up in the solution.
 			//
-			//selProj = FindProject( wizard, strProjectName );
 			selProj = FindProject( wizard, wizard.dte.Solution.Projects, strProjectName );
 			
 			if ( selProj == null )
@@ -117,7 +113,7 @@ function OnFinish( selProj, selObj )
 			    codeModel.AddInclude( "\"" + strSTDAFX + "\"", strFile, vsCMAddPositionStart );
 		    }
 		}
-
+		
 		codeModel.CommitTransaction();
 		
 		selProj.Object.Save();
