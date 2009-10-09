@@ -91,6 +91,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Test\ProjectCollectionBase.cs" />
+    <Compile Include="Test\SolutionFolderTestCollection.cs" />
     <Compile Include="VSStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,6 +216,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Resources\VSFolder_closed.bmp" />
+    <None Include="Resources\folderopen.ico" />
     <None Include="Icons\Code.bmp" />
     <None Include="Icons\Fixture.bmp" />
     <None Include="Icons\CaptureStackTraces.bmp" />

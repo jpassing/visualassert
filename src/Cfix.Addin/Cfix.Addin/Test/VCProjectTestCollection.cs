@@ -264,13 +264,19 @@ namespace Cfix.Addin.Test
 		 */
 
 		public VCProjectTestCollection(
+			ITestItemCollection parent,
 			Solution2 solution,
 			Project project,
 			AgentSet agents,
 			Configuration config
 			)
-			: base( null, project.Name )
+			: base( parent, project.Name )
 		{
+			//
+			// N.B. When this project is part of a solution folder, then
+			// parent != solution.
+			//
+
 			this.solution = solution;
 			this.uniqueName = project.UniqueName;
 			this.project = project;

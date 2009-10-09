@@ -18,6 +18,8 @@ namespace Cfix.Addin.Test
 	{
 		private readonly int SolutionIconIndex;
 		private readonly int SolutionIconSelectedIndex;
+		private readonly int SolutionFolderIconIndex;
+		private readonly int SolutionFolderIconSelectedIndex;
 		private readonly int ProjectIconIndex;
 		private readonly int ProjectIconSelectedIndex;
 
@@ -34,6 +36,29 @@ namespace Cfix.Addin.Test
 					treeView,
 					factory,
 					sln,
+					iconIndex,
+					iconSelectedIndex )
+			{
+				//
+				// Children always available, so load them.
+				//
+				LoadChildren();
+			}
+		}
+
+		private class SolutionFolderNode : AbstractExplorerCollectionNode
+		{
+			public SolutionFolderNode(
+				TreeView treeView,
+				NodeFactory factory,
+				SolutionFolderTestCollection slnFolder,
+				int iconIndex,
+				int iconSelectedIndex
+				)
+				: base(
+					treeView,
+					factory,
+					slnFolder,
 					iconIndex,
 					iconSelectedIndex )
 			{
@@ -109,10 +134,13 @@ namespace Cfix.Addin.Test
 			//
 			this.SolutionIconIndex = explorer.ImageList.Images.Add(
 				Icons.VSObject_Solution, Color.Magenta );
+			this.SolutionFolderIconIndex = explorer.ImageList.Images.Add(
+				Icons.VSFolder, Color.Magenta );
 			this.ProjectIconIndex = explorer.ImageList.Images.Add(
 				Icons.VSObject_VCProject, Color.Magenta );
 
 			this.SolutionIconSelectedIndex = SolutionIconIndex;
+			this.SolutionFolderIconSelectedIndex = SolutionFolderIconIndex;
 			this.ProjectIconSelectedIndex = ProjectIconIndex;
 		}
 
@@ -128,6 +156,15 @@ namespace Cfix.Addin.Test
 					( SolutionTestCollection ) item,
 					this.SolutionIconIndex,
 					this.SolutionIconSelectedIndex );
+			}
+			else if ( item is SolutionFolderTestCollection )
+			{
+				return new SolutionFolderNode(
+					treeView,
+					this,
+					( SolutionFolderTestCollection ) item,
+					this.SolutionFolderIconIndex,
+					this.SolutionFolderIconSelectedIndex );
 			}
 			else if ( item is VCProjectTestCollection )
 			{

@@ -17,38 +17,17 @@ using Cfix.Control.Native;
 
 namespace Cfix.Addin.Test
 {
-	internal class SolutionTestCollection 
-		: GenericTestItemCollection, IBuildableTestItem
+	internal class SolutionTestCollection
+		: ProjectCollectionBase, IBuildableTestItem
 	{
 		public event EventHandler Closed;
 
-		private readonly Configuration config;
-		private readonly Solution2 solution;
 		private readonly SolutionEvents solutionEvents;
-		private readonly AgentSet agentSet;
-
 		private static SolutionTestCollection loadedSolution;
 
-		private bool IsVcProject( Project prj )
+		private void LoadProjects( Projects projects )
 		{
-			return prj.Kind == ProjectKinds.VcProject;
-		}
-
-		private void AddProject( Project prj )
-		{
-			if ( IsVcProject( prj ) )
-			{
-				Add( new VCProjectTestCollection( 
-					this.solution,
-					prj, 
-					this.agentSet,
-					this.config ) );
-			}
-		}
-
-		private void LoadProjects()
-		{
-			foreach ( Project project in this.solution.Projects )
+			foreach ( Project project in projects )
 			{
 				AddProject( project );
 			}
@@ -68,19 +47,19 @@ namespace Cfix.Addin.Test
 				//
 				String.IsNullOrEmpty( solution.FullName ) 
 					? Strings.CurrentSolution 
-					: new FileInfo( solution.FullName ).Name )
+					: new FileInfo( solution.FullName ).Name,
+				solution,
+				agentSet,
+				config )
 		{
-			this.solution = solution;
 			this.solutionEvents = solution.DTE.Events.SolutionEvents;
-			this.agentSet = agentSet;
-			this.config = config;
 
 			this.solutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler( solutionEvents_ProjectAdded );
 			this.solutionEvents.ProjectRemoved += new _dispSolutionEvents_ProjectRemovedEventHandler( solutionEvents_ProjectRemoved );
 			this.solutionEvents.ProjectRenamed += new _dispSolutionEvents_ProjectRenamedEventHandler( solutionEvents_ProjectRenamed );
 			this.solutionEvents.AfterClosing += new _dispSolutionEvents_AfterClosingEventHandler( solutionEvents_AfterClosing );
 
-			LoadProjects();
+			LoadProjects( solution.Projects  );
 		}
 
 		/*----------------------------------------------------------------------
@@ -107,7 +86,7 @@ namespace Cfix.Addin.Test
 			string oldName 
 			)
 		{
-			if ( project != null && ! IsVcProject( project ) )
+			if ( project != null && ! CanProjectBeAdded( project ) )
 			{
 				return;
 			}
@@ -182,26 +161,6 @@ namespace Cfix.Addin.Test
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
-
-		public void RefreshProject( string name )
-		{
-			//
-			// N.B. Assume project collection is small.
-			//
-			lock ( listLock )
-			{
-				foreach ( ITestItem item in this.list )
-				{
-					VCProjectTestCollection vcPrj =
-						( VCProjectTestCollection ) item;
-					if ( vcPrj.UniqueName == name )
-					{
-						vcPrj.Refresh();
-						break;
-					}
-				}
-			}
-		}
 
 		public static SolutionTestCollection TryGet()
 		{
