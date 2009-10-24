@@ -345,5 +345,21 @@ namespace Cfix.Addin.Windows
 				return false;
 			}
 		}
+
+		public static bool IsCurrentHierarchyItemSolution( DTE2 dte )
+		{
+			try
+			{
+				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
+				UIHierarchyItem selected = ( UIHierarchyItem )
+					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+
+				return selected.Object is Solution;
+			}
+			catch ( Exception )
+			{
+				return false;
+			}
+		}
 	}
 }
