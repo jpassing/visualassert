@@ -210,10 +210,14 @@ namespace Cfix.Addin.Windows
 					//
 					testItem = SolutionTestCollection.TryGet();
 				}
-				else if ( selected.Object is Project )
+				else
 				{
-					testItem = VCProjectTestCollection.TryGetByName(
-						selected.Name );
+					Project prj = GetProjectFromCurrentHierarchyItem( dte );
+					if ( prj != null )
+					{
+						testItem = VCProjectTestCollection.TryGetByName(
+							prj.Name );
+					}
 				}
 
 				if ( testItem != null )
@@ -299,21 +303,33 @@ namespace Cfix.Addin.Windows
 				( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
 
 			Project currentProject = selected.Object as Project;
-			if ( currentProject == null )
+			if ( currentProject != null )
 			{
-				//
-				// Should be a folder, then.
-				//
-				ProjectItem item = selected.Object as ProjectItem;
-				if ( item == null )
-				{
-					return null;
-				}
-
-				currentProject = item.ContainingProject;
+				return currentProject;
 			}
 
-			return currentProject;
+			//
+			// May be a folder or sub-project, then.
+			//
+			ProjectItem item = selected.Object as ProjectItem;
+			if ( item == null )
+			{
+				return null;
+			}
+
+			currentProject = item.Object as Project;
+			if ( currentProject != null )
+			{
+				//
+				// Sub-project.
+				//
+				return currentProject;
+			}
+
+			//
+			// Folder.
+			//
+			return item.ContainingProject;
 		}
 
 		public static void LaunchAddFixtureWizardForCurrentHierarchyItem( DTE2 dte )
