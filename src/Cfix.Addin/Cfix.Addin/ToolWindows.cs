@@ -19,6 +19,8 @@ namespace Cfix.Addin
 {
 	internal class ToolWindows : IDisposable
 	{
+		private const string LogWindowName = "Visual Assert Log";
+
 		private readonly VisualAssert addin;
 		private readonly string extraCaption;
 		private readonly bool disableControls;
@@ -211,7 +213,7 @@ namespace Cfix.Addin
 						this.addin.DTE.ToolWindows.OutputWindow.OutputWindowPanes;
 					try
 					{
-						this.logOutputWindow = panes.Item( "cfix" );
+						this.logOutputWindow = panes.Item( LogWindowName );
 					}
 					catch ( Exception )
 					{ }
@@ -221,7 +223,7 @@ namespace Cfix.Addin
 					//
 					if ( this.logOutputWindow == null )
 					{
-						this.logOutputWindow = panes.Add( "cfix" );
+						this.logOutputWindow = panes.Add( LogWindowName );
 					}
 				}
 
