@@ -259,6 +259,12 @@ namespace Cfix.Addin.Test
 			}
 		}
 
+		private void FullRefresh( VCConfiguration vcConfig )
+		{
+			Clear();
+			LoadPrimaryOutputModule( vcConfig );
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -399,12 +405,11 @@ namespace Cfix.Addin.Test
 				 vcConfig.PrimaryOutput != this.currentPath )
 			{
 				//
-				// Configuration changed, reload from scratch.
+				// First load or configuration changed, reload from scratch.
 				//
 				Debug.Print( "Full reload" );
 
-				Clear();
-				LoadPrimaryOutputModule( vcConfig );
+				FullRefresh( vcConfig );
 			}
 			else
 			{
@@ -414,14 +419,21 @@ namespace Cfix.Addin.Test
 				// Note that we optimize for not having to refresh
 				// the entire tree.
 				//
-
-				if ( ItemCount >= 1 && GetItem( 0 ) is InvalidModule )
+				if ( ItemCount == 0 )
 				{
 					//
-					// Invalid -> Valid.
+					// Module did not contain any fixtures -- reload to
+					// see whether one has been added (#285).
 					//
-					Clear();
-					LoadPrimaryOutputModule( vcConfig );
+					FullRefresh( vcConfig );
+				}
+				else if ( ItemCount >= 1 && GetItem( 0 ) is InvalidModule )
+				{
+					//
+					// Current state is invalid. Allow transition to Valid
+					// by performing a full refresh.
+					//
+					FullRefresh( vcConfig );
 				}
 				else
 				{
