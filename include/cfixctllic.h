@@ -15,12 +15,12 @@
 //
 // Arbitrarily large due to hard expiry.
 // 
-#define CFIXCTL_LIC_TRIAL_PERIOD				200UL
+#define CFIXCTL_LIC_TRIAL_PERIOD				300UL
 
 //
-// 2009-10-31.
+// 2010-02-28.
 //
-#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149352
+#define CFIXCTL_LIC_HARD_EXPIRY_DATE			149442
 
 //
 // N.B. All versions numbers may not exceed 0xF.
