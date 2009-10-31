@@ -60,7 +60,21 @@ namespace Cfix.Control.Native
 					throw new TestItemDisappearedException();
 				}
 
-				return parentContainer.GetItem( this.ordinal );
+				ICfixTestItem nativeItem = parentContainer.GetItem( this.ordinal );
+				if ( nativeItem.GetName() != this.name )
+				{
+					//
+					// Although the ordinal matches, the names do not --
+					// most likely, the test/fixture we are looking for 
+					// has been deleted.
+					//
+					this.Module.Agent.ReleaseObject( nativeItem );
+					throw new TestItemDisappearedException();
+				}
+				else
+				{
+					return nativeItem;
+				}
 			}
 			catch ( COMException x )
 			{
