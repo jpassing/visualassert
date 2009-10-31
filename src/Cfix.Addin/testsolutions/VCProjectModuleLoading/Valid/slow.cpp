@@ -7,7 +7,7 @@ static void __stdcall Dummy1()
 
 static void __stdcall Dummy2()
 {
-	//CFIX_ASSERT( !"fail" );
+	CFIX_ASSERT( !"fail" );
 }
 
 static void __stdcall Slow2()                 
