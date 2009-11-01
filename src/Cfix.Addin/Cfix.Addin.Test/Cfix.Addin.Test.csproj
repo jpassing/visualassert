@@ -59,12 +59,6 @@
     <Compile Include="TestConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cfix.Addin\Cfix.Addin80.csproj">
-      <Project>{052333CA-B105-48D5-8821-0802729438F4}</Project>
-      <Name>Cfix.Addin80</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
