@@ -245,7 +245,14 @@ namespace Cfix.Addin.Dte
 			// N.B. See KB555417 for details on icon handling.
 			//
 			buttonCtl.Picture = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( icon );
+
+#if !VS100
+            //
+            // N.B. VS100 has deprecated the Mask Property and supports RGB=(0,254,0) 
+            // transparency instead.
+            //
 			buttonCtl.Mask = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( maskIcon );
+#endif
 			this.commands.Add( item );
 		}
 
