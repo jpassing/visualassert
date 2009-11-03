@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cfix.Addin.100-vs100", "Cfix.Addin\Cfix.Addin.100-vs100.csproj", "{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}.Debug|x86.ActiveCfg = Debug|x86
+		{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}.Debug|x86.Build.0 = Debug|x86
+		{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}.Release|x86.ActiveCfg = Release|x86
+		{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
