@@ -40,6 +40,12 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			InitializeComponent();
 
+#if VS100
+            this.BackColor = VSColors.WindowBackColor;
+            this.statusText.BackColor = VSColors.WindowBackColor;
+            this.toolbar.BackColor = VSColors.WindowBackColor;
+#endif
+
 			//
 			// Switch NodeFactory s.t. we can use our own nodes.
 			//

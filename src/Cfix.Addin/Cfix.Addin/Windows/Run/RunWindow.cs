@@ -397,6 +397,11 @@ namespace Cfix.Addin.Windows.Run
 		{
 			InitializeComponent();
 
+#if VS100
+            this.BackColor = VSColors.WindowBackColor;
+            this.toolbar.BackColor = VSColors.WindowBackColor;
+#endif
+
 			this.results.ContextMenuRequested += new EventHandler<Cfix.Control.Ui.Result.ContextMenuEventArgs>(results_ContextMenuRequested);
 			this.results.TreeKeyDown += new KeyEventHandler( results_TreeKeyDown );
 			this.results.TreeDoubleClick += new MouseEventHandler( results_TreeDoubleClick );
