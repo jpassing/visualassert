@@ -398,8 +398,8 @@ namespace Cfix.Addin.Windows.Run
 			InitializeComponent();
 
 #if VS100
-            this.BackColor = VSColors.WindowBackColor;
-            this.toolbar.BackColor = VSColors.WindowBackColor;
+            this.BackColor = Chrome.WindowBackColor;
+            this.toolbar.BackColor = Chrome.WindowBackColor;
 #endif
 
 			this.results.ContextMenuRequested += new EventHandler<Cfix.Control.Ui.Result.ContextMenuEventArgs>(results_ContextMenuRequested);

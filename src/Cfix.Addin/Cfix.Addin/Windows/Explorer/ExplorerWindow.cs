@@ -41,9 +41,9 @@ namespace Cfix.Addin.Windows.Explorer
 			InitializeComponent();
 
 #if VS100
-            this.BackColor = VSColors.WindowBackColor;
-            this.statusText.BackColor = VSColors.WindowBackColor;
-            this.toolbar.BackColor = VSColors.WindowBackColor;
+            this.BackColor = Chrome.WindowBackColor;
+            this.statusText.BackColor = Chrome.WindowBackColor;
+            this.toolbar.BackColor = Chrome.WindowBackColor;
 #endif
 
 			//
