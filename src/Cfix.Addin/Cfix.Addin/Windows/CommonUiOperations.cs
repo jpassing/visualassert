@@ -150,21 +150,33 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				VCCodeModel codeModel = ( VCCodeModel ) project.CodeModel;
+
+#if VS100
+                CodeElements matches = codeModel.CodeElementFromFullName2( functionName );
+#else
 				CodeElements matches = codeModel.CodeElementFromFullName( functionName );
+#endif
 				if ( matches == null || matches.Count == 0 )
 				{
 					return false;
 				}
 
-				VCCodeFunction func = ( VCCodeFunction ) matches.Item( 1 );
+                for (int i = 1; i <= matches.Count; i++)
+                {
+                    VCCodeFunction func = (VCCodeFunction)matches.Item(1);
 
-				//TextPoint point = func.get_StartPointOf( 
-				//    vsCMPart.vsCMPartWhole, 
-				//    vsCMWhere.vsCMWhereDefinition );
-				TextPoint point = func.GetStartPoint(vsCMPart.vsCMPartHeader);
+                    TextPoint point = func.GetStartPoint(vsCMPart.vsCMPartHeader);
 
-				GoToSource( dte, func.File, ( uint ) point.Line );
-				return true;
+                    if (GoToSource(dte, func.File, (uint)point.Line))
+                    {
+                        return true;
+                    }
+                }
+
+                //
+                // None of the matches worked.
+                //
+                return false;
 			}
 			catch ( Exception )
 			{

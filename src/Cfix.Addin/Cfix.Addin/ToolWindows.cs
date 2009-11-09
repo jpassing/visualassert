@@ -154,7 +154,7 @@ namespace Cfix.Addin
 						this.addin,
 						Strings.ExplorerWindowCaption + " " + this.extraCaption,
 						ExplorerWindow.Guid,
-						Icons.cfix );
+                        Windows.Chrome.CfixIcon );
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
 						this.addin.DTE );
@@ -182,7 +182,7 @@ namespace Cfix.Addin
 						this.addin,
 						Strings.RunWindowCaption + " " + this.extraCaption,
 						RunWindow.Guid,
-						Icons.cfix );
+                        Windows.Chrome.CfixIcon);
 					this.run.UserControl.Initialize(
 						this.addin.Workspace,
 						this.addin.DTE );

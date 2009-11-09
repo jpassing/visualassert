@@ -169,6 +169,7 @@
     <Compile Include="Windows\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\Wizards.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
@@ -237,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\CfixTransparent.png" />
     <None Include="Icons\RefreshOnBuild.bmp" />
     <None Include="Icons\AbortRefresh.bmp" />
     <None Include="Icons\cfix.bmp" />

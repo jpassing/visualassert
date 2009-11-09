@@ -82,13 +82,15 @@ namespace Cfix.Addin.Test
 						";" + Directories.GetLibDirectory( arch );
 
 					changePerformed = true;
-				}
+                }
 
+#if !VS100
 				//
 				// Write to disk.
 				//
 				platform.CommitChanges();
-			}
+#endif
+            }
 
 			vcDirectoriesRegistered = true;
 

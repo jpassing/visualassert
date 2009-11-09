@@ -58,10 +58,12 @@
     <Reference Include="Microsoft.VisualStudio.VCCodeModel, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\redist\Vs90\Microsoft.VisualStudio.VCCodeModel.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.VCProjectEngine, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\redist\Vs90\Microsoft.VisualStudio.VCProjectEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -130,6 +132,7 @@
     <Compile Include="Windows\About\AboutWindow.designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>

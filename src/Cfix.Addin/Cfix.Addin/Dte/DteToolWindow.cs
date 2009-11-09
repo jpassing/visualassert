@@ -134,10 +134,6 @@ namespace Cfix.Addin.Dte
 				"{" + positionGuid.ToString() + "}",
 				ref userControl );
 
-			//
-			// Workaround for VS08 transparency issue.
-			//
-			tabIcon.MakeTransparent( Color.Magenta );
 			wnd.SetTabPicture(
 				IconUtil.GetIPictureDispFromImage( tabIcon ) );
 
