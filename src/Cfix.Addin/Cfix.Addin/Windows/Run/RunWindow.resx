@@ -121,6 +121,27 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="redebugButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAALZJREFUOE9jYBi+
+        IGFGwv/zD0//J9uHIAMcKgz+n3twijxDEmYE/N9wYwHYkLMPTpJuSMCEgP8FBwrghpy5f4I0QwI6HMAG
+        gHDCggCwS87cO068IQ4NQAM2JEA0Nxj8NyhQ+K+QIfD/0g0iA9YAqAlZs0ACA/GaQVFnUKEAtxmk+cJ1
+        EsNAAehkkLNBms9fJcHvsIQD8i9I89nLR4kPOORUJ5Ag8P/0xUPkaQYZdPLCAfI1k5L+AavAchYZ+3ZD
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="restartButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAQpJREFUOE9jYBgS
+        4MTtA/8pcmhov+//4zf3k29IxKSA/74tLv+P3thLniEhfd7/Nx5f8d+yTP//0Wt7cBvy/cPq/1evrvm/
+        Zsu6/10z18EV+nW7/n/25P7/zSdWgQ05fHUXaS7xaLMHG/Dk0d3/Sw/OARty6MpOhCEgm18+hdh+8AjQ
+        BVvX/p+xBOEChyZzuAGPH9z+P2VD13+JNO7/h08jGYIvmsyr9eAGTN3Y/Z8/geX/kTO7Ub0BcsXTR6v/
+        nzm35v/W3Wv/z1mOcIFeqTLYgGmbesCaj50jMTZU8qX+T9/SB9Z8/DwZ6UE6QxCs+cRFMlOkSDLn/1OX
+        D5EWdciBevrKEfI1E8pEAAm8tV9EYCUcAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="scrollLockButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -133,9 +154,47 @@
         RU5ErkJggg==
 </value>
   </data>
+  <data name="lameButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAHZJREFUOE9jYBgU
+        oO1s33+zHlOS8MqrK//DHQ/STCoA6aG+AUpyk/8Tg0GuHRgXIIcTbVxASkyguCBguzfWNIDuZOS04r/N
+        CxGN2FIzctoAsZ1mO+LXgG4IzAAQ7b+dgG24XEC2ZpCBCi3G5NkMc83knbOJ8jMAOvyohQl1qEQAAAAA
+        SUVORK5CYII=
+</value>
+  </data>
   <metadata name="resultCtxMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>103, 17</value>
   </metadata>
+  <data name="ctxMenuDebugButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAALlJREFUOE9jYBi0
+        IGFGwv/zD0//J9uBIAMcKgz+n3twijxDEmYE/N9wYwHYkLMPTpJuSMCEgP8FBwrghpy5f4I0QwI6HMAG
+        gHDCggCwS87cO068IQ4NQAM2JEA0Nxj8NyhQ+K+QIfD/0g0iA9YAqAlZs0ACA/GaQVFnUKEAtxmk+cJ1
+        EsNAAehkkLNBms9fJcHvsIQD8i9I89nLR4kPOORUJ5Ag8P/0xUPkaQYZdPLCAfI1k53+ydEIAKTIchbd
+        Cep1AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ctxMenuRunButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAQpJREFUOE9jYBgS
+        4MTtA/8pcmhov+//4zf3k29IxKSA/74tLv+P3thLniEhfd7/Nx5f8d+yTP//0Wt7cBvy/cPq/1evrvm/
+        Zsu6/10z18EV+nW7/n/25P7/zSdWgQ05fHUXaS7xaLMHG/Dk0d3/Sw/OARty6MpOhCEgm18+hdh+8AjQ
+        BVvX/p+xBOEChyZzuAGPH9z+P2VD13+JNO7/h08jGYIvmsyr9eAGTN3Y/Z8/geX/kTO7Ub0BcsXTR6v/
+        nzm35v/W3Wv/z1mOcIFeqTLYgGmbesCaj50jMTZU8qX+T9/SB9Z8/DwZ6UE6QxCs+cRFMlOkSDLn/1OX
+        D5EWdciBevrKEfI1E8pEAAm8tV9EYCUcAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ctxMenuViewCodeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGJJREFUOE9jYKAG
+        mNBT859UbGmq8R9uN0jzqWObwJhYQFsDGFT+/4dhkIvWrFmDgkFitHUBLBxwuYR+LkD3O4gPA7QNA2S/
+        I8cGchqhrQuISY0oLoiNDgInDFIxNfIh5WYAAP0mRqrPbR0zAAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="stackTraceCtxMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>225, 17</value>
   </metadata>

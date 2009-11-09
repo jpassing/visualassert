@@ -130,6 +130,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap DocMagenta {
+            get {
+                object obj = ResourceManager.GetObject("DocMagenta", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap DocMask {
             get {
                 object obj = ResourceManager.GetObject("DocMask", resourceCulture);

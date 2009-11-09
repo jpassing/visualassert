@@ -221,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\DocMagenta.bmp" />
     <None Include="Icons\RefreshOnBuild.bmp" />
     <None Include="Icons\AbortRefresh.bmp" />
     <None Include="Icons\cfix.bmp" />
