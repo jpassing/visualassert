@@ -40,6 +40,12 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			InitializeComponent();
 
+#if VS100
+            this.BackColor = Chrome.WindowBackColor;
+            this.statusText.BackColor = Chrome.WindowBackColor;
+            this.toolbar.BackColor = Chrome.WindowBackColor;
+#endif
+
 			//
 			// Switch NodeFactory s.t. we can use our own nodes.
 			//

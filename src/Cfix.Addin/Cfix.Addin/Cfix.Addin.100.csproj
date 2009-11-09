@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\bin\fre\i386\</OutputPath>
-    <DefineConstants>TRACE;BETA</DefineConstants>
+    <DefineConstants>TRACE;BETA, VS100</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
@@ -15,12 +15,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{052333CA-B105-48D5-8821-0802729438F4}</ProjectGuid>
+    <ProjectGuid>{1A580F0C-BF69-4B06-B5CB-0FCC03FD9F71}</ProjectGuid>
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>Cfix.Addin.80</AssemblyName>
+    <AssemblyName>Cfix.Addin.100</AssemblyName>
     <RootNamespace>Cfix.Addin</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,7 +44,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\..\bin\chk\i386\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;BETA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;BETA, VS100</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
@@ -55,8 +55,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.VisualStudio.VCCodeModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.VisualStudio.VCProjectEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.VCCodeModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\redist\Vs100\Microsoft.VisualStudio.VCCodeModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.VCProjectEngine, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\redist\Vs100\Microsoft.VisualStudio.VCProjectEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -93,6 +99,10 @@
     </Compile>
     <Compile Include="Test\ProjectCollectionBase.cs" />
     <Compile Include="Test\SolutionFolderTestCollection.cs" />
+    <Compile Include="Test\SolutionTestCollection.cs" />
+    <Compile Include="Test\VCProjectTestCollection.cs" />
+    <Compile Include="Test\VSNodeFactory.cs" />
+    <Compile Include="VisualAssert.cs" />
     <Compile Include="VSStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,9 +113,6 @@
     <Compile Include="Dte\DteCommandBarButton.cs" />
     <Compile Include="Dte\DteCommandBarControl.cs" />
     <Compile Include="Dte\DteCommand.cs" />
-    <Compile Include="VisualAssert.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Dte\DteConnect.cs" />
     <Compile Include="Dte\DteIconConverter.cs">
     </Compile>
@@ -120,23 +127,21 @@
     <Compile Include="Windows\About\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\About\AboutWindow.Designer.cs">
+    <Compile Include="Windows\About\AboutWindow.designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\CommonUiOperations.cs" />
-    <Compile Include="Test\VCProjectTestCollection.cs" />
     <Compile Include="Windows\Explorer\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\Explorer\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Test\SolutionTestCollection.cs" />
-    <Compile Include="Test\VSNodeFactory.cs" />
     <Compile Include="Windows\PlainProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\PlainProgressBar.Designer.cs">
+    <Compile Include="Windows\PlainProgressBar.designer.cs">
       <DependentUpon>PlainProgressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Run\RunWindow.cs">
@@ -168,8 +173,8 @@
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\About\AboutWindow.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>AboutWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Explorer\ExplorerWindow.resx">
       <SubType>Designer</SubType>
@@ -216,22 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
-    <None Include="Resources\VSFolder_closed.bmp" />
-    <None Include="Resources\folderopen.ico" />
-    <None Include="Icons\Code.bmp" />
-    <None Include="Icons\Fixture.bmp" />
-    <None Include="Icons\CaptureStackTraces.bmp" />
-    <None Include="Icons\StackFrame.bmp" />
-    <None Include="Icons\Options.bmp" />
-    <None Include="Icons\DocMask.bmp" />
-    <None Include="Resources\DocIcon.ico" />
-    <None Include="Icons\Doc.bmp" />
-    <None Include="Icons\Feedback.bmp" />
-    <None Include="Icons\Start2.bmp" />
-    <None Include="Icons\Log.bmp" />
-    <None Include="Icons\ScrollLock.bmp" />
-    <None Include="Icons\StartMask.bmp" />
-    <None Include="Icons\FfwdMask.bmp" />
     <None Include="Icons\RefreshOnBuild.bmp" />
     <None Include="Icons\AbortRefresh.bmp" />
     <None Include="Icons\cfix.bmp" />

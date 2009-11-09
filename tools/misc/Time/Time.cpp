@@ -25,9 +25,9 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	SYSTEMTIME t;
 	ZeroMemory( &t, sizeof( SYSTEMTIME ) );
-	t.wYear = 2009;
-	t.wMonth = 10;
-	t.wDay = 31;
+	t.wYear = 2010;
+	t.wMonth = 2;
+	t.wDay = 28;
 
 	FILETIME Ft;
 	SystemTimeToFileTime( &t, &Ft );
