@@ -120,35 +120,11 @@
   <metadata name="toolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 25</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="toolbar.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
-    <value>toolbar</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="debugButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="debugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -200,15 +176,6 @@
   <data name="separator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="optionsButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="optionsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="optionsButton.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
   <data name="shortCircuitFixtureOnFailureMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>215, 22</value>
   </data>
@@ -242,32 +209,17 @@
   <data name="refreshAfterBuildToolStripMenuItem.Text" xml:space="preserve">
     <value>Refresh after build</value>
   </data>
-  <data name="separator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+  <data name="optionsButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAehJREFUOE/Nkt1P
-        UnEch/1/6q47r7uwmdrypq211os1l2WZzMoa9iZTK+Z6kdnMFyTWMpskzk20jIEQBkqR0NnAJkrZZMEM
-        Dig8cQ4TvIizddfZPjvbb/s85/n+zres7L9+Hg5O0NU7ys1uI3UtWo41auTUnlVz8PgVFOUf9JnIZmFr
-        e5ukmGYlEkVY/iHncyCMyxuivLq+CLF/FHg96SwcXOscIJFMEYsnWN+Iy6X5XEmKdf4rKs0Q+ypOFQGG
-        sTm+BL9j84Tw+COK6habj0u3+4qAkWkPr8zvkN4dw2Yutj/j+YRbUb1B3ZsH5NXn2BA3iQFCIoPeGeTI
-        +U5m3Ssl1euvP8kDpK8GwuvyhaVzieQA9p8ZusYXGBoxyZclzSxlt7pUlgHtPS9YTW7J5c1MmuWYyOw3
-        EZ11jQNHL2N15YtSxmcW2VEvjNBvnOZtKEpIBN+vFB/W4rzx/0ZtdFFeeZqrHQaa7gzIudD2lB31wghW
-        h5vWfjOW1RSWcBZTMIV2Ksjhhvvcaj0ha5ZKYZFGJ62caRvkht6BSjdD1blu7rVUEF3SMPxo179WWr2A
-        IDA2ZcPy3smC10v1oUocur1E/XcxPD6pvLZ/Ay99clFTU4W9Zw/Ndfv/HSBBfYtOVM1NvNRrSwL+AEpb
-        2yAp3gTfAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="selectModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>White</value>
-  </data>
-  <data name="selectModeButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="optionsButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 22</value>
   </data>
-  <data name="selectModeButton.Text" xml:space="preserve">
-    <value>Select exploration mode</value>
+  <data name="optionsButton.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="separator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
   </data>
   <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -303,6 +255,30 @@
   <data name="selectSlnModeButton.Text" xml:space="preserve">
     <value>Current Solution</value>
   </data>
+  <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAehJREFUOE/Nkt1P
+        UnEch/1/6q47r7uwmdrypq211os1l2WZzMoa9iZTK+Z6kdnMFyTWMpskzk20jIEQBkqR0NnAJkrZZMEM
+        Dig8cQ4TvIizddfZPjvbb/s85/n+zres7L9+Hg5O0NU7ys1uI3UtWo41auTUnlVz8PgVFOUf9JnIZmFr
+        e5ukmGYlEkVY/iHncyCMyxuivLq+CLF/FHg96SwcXOscIJFMEYsnWN+Iy6X5XEmKdf4rKs0Q+ypOFQGG
+        sTm+BL9j84Tw+COK6habj0u3+4qAkWkPr8zvkN4dw2Yutj/j+YRbUb1B3ZsH5NXn2BA3iQFCIoPeGeTI
+        +U5m3Ssl1euvP8kDpK8GwuvyhaVzieQA9p8ZusYXGBoxyZclzSxlt7pUlgHtPS9YTW7J5c1MmuWYyOw3
+        EZ11jQNHL2N15YtSxmcW2VEvjNBvnOZtKEpIBN+vFB/W4rzx/0ZtdFFeeZqrHQaa7gzIudD2lB31wghW
+        h5vWfjOW1RSWcBZTMIV2Ksjhhvvcaj0ha5ZKYZFGJ62caRvkht6BSjdD1blu7rVUEF3SMPxo179WWr2A
+        IDA2ZcPy3smC10v1oUocur1E/XcxPD6pvLZ/Ay99clFTU4W9Zw/Ndfv/HSBBfYtOVM1NvNRrSwL+AEpb
+        2yAp3gTfAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="selectModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>White</value>
+  </data>
+  <data name="selectModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="selectModeButton.Text" xml:space="preserve">
+    <value>Select exploration mode</value>
+  </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
@@ -317,6 +293,30 @@
   </data>
   <data name="lameButton.ToolTipText" xml:space="preserve">
     <value>Have comments about this window or some other feature? Let us now!</value>
+  </data>
+  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>365, 25</value>
+  </data>
+  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolbar.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
+    <value>toolbar</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="statusText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -347,7 +347,7 @@
     <value>86, 0</value>
   </metadata>
   <data name="ctxMenuDebugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
+    <value>Magenta</value>
   </data>
   <data name="ctxMenuDebugButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>212, 22</value>
@@ -403,6 +403,30 @@
   <data name="&gt;&gt;ctxMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="explorer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="explorer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>365, 308</value>
+  </data>
+  <data name="explorer.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;explorer.Name" xml:space="preserve">
+    <value>explorer</value>
+  </data>
+  <data name="&gt;&gt;explorer.Type" xml:space="preserve">
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.2.3600, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;explorer.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="throbberPic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -433,30 +457,6 @@
   <data name="&gt;&gt;throbberPic.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="explorer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="explorer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="explorer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 308</value>
-  </data>
-  <data name="explorer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;explorer.Name" xml:space="preserve">
-    <value>explorer</value>
-  </data>
-  <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.0.3504, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;explorer.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -465,6 +465,36 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>365, 359</value>
+  </data>
+  <data name="&gt;&gt;separator2.Name" xml:space="preserve">
+    <value>separator2</value>
+  </data>
+  <data name="&gt;&gt;separator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator3.Name" xml:space="preserve">
+    <value>separator3</value>
+  </data>
+  <data name="&gt;&gt;separator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separator4.Name" xml:space="preserve">
+    <value>separator4</value>
+  </data>
+  <data name="&gt;&gt;separator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuSeparator.Name" xml:space="preserve">
+    <value>ctxMenuSeparator</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuSeparator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;debugButton.Name" xml:space="preserve">
     <value>debugButton</value>
@@ -478,12 +508,6 @@
   <data name="&gt;&gt;runButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;separator2.Name" xml:space="preserve">
-    <value>separator2</value>
-  </data>
-  <data name="&gt;&gt;separator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;refreshButton.Name" xml:space="preserve">
     <value>refreshButton</value>
   </data>
@@ -495,12 +519,6 @@
   </data>
   <data name="&gt;&gt;abortRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;separator3.Name" xml:space="preserve">
-    <value>separator3</value>
-  </data>
-  <data name="&gt;&gt;separator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;optionsButton.Name" xml:space="preserve">
     <value>optionsButton</value>
@@ -538,12 +556,6 @@
   <data name="&gt;&gt;refreshAfterBuildToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;separator4.Name" xml:space="preserve">
-    <value>separator4</value>
-  </data>
-  <data name="&gt;&gt;separator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;selectModeButton.Name" xml:space="preserve">
     <value>selectModeButton</value>
   </data>
@@ -561,12 +573,6 @@
   </data>
   <data name="&gt;&gt;selectSlnModeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lameButton.Name" xml:space="preserve">
     <value>lameButton</value>
@@ -592,22 +598,16 @@
   <data name="&gt;&gt;ctxMenuRefreshButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ctxMenuSeparator.Name" xml:space="preserve">
-    <value>ctxMenuSeparator</value>
+  <data name="&gt;&gt;ctxMenuViewCodeButton.Name" xml:space="preserve">
+    <value>ctxMenuViewCodeButton</value>
   </data>
-  <data name="&gt;&gt;ctxMenuSeparator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;ctxMenuViewCodeButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ctxMenuAddFixtureButton.Name" xml:space="preserve">
     <value>ctxMenuAddFixtureButton</value>
   </data>
   <data name="&gt;&gt;ctxMenuAddFixtureButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuViewCodeButton.Name" xml:space="preserve">
-    <value>ctxMenuViewCodeButton</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuViewCodeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

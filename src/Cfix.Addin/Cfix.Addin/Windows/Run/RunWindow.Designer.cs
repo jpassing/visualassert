@@ -45,11 +45,11 @@ namespace Cfix.Addin.Windows.Run
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
-			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -187,7 +187,7 @@ namespace Cfix.Addin.Windows.Run
 			// ctxMenuDebugButton
 			// 
 			this.ctxMenuDebugButton.Image = global::Cfix.Addin.Icons.Start;
-			this.ctxMenuDebugButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.ctxMenuDebugButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.ctxMenuDebugButton.Name = "ctxMenuDebugButton";
 			this.ctxMenuDebugButton.Size = new System.Drawing.Size( 242, 22 );
 			this.ctxMenuDebugButton.Text = "Debug Test Again";
@@ -201,6 +201,15 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuRunButton.Size = new System.Drawing.Size( 242, 22 );
 			this.ctxMenuRunButton.Text = "Run Test Again Without Debugging";
 			this.ctxMenuRunButton.Click += new System.EventHandler( this.ctxMenuRunButton_Click );
+			// 
+			// ctxMenuViewCodeButton
+			// 
+			this.ctxMenuViewCodeButton.Image = global::Cfix.Addin.Icons.Code;
+			this.ctxMenuViewCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ctxMenuViewCodeButton.Name = "ctxMenuViewCodeButton";
+			this.ctxMenuViewCodeButton.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuViewCodeButton.Text = "View Code";
+			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
 			// 
 			// results
 			// 
@@ -239,15 +248,6 @@ namespace Cfix.Addin.Windows.Run
 			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
 			this.progressLabel.TabIndex = 3;
 			this.progressLabel.TabStop = false;
-			// 
-			// ctxMenuViewCodeButton
-			// 
-			this.ctxMenuViewCodeButton.Image = global::Cfix.Addin.Icons.Code;
-			this.ctxMenuViewCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ctxMenuViewCodeButton.Name = "ctxMenuViewCodeButton";
-			this.ctxMenuViewCodeButton.Size = new System.Drawing.Size( 242, 22 );
-			this.ctxMenuViewCodeButton.Text = "View Code";
-			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
 			// 
 			// RunWindow
 			// 
