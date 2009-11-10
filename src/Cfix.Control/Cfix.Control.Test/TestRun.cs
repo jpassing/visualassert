@@ -72,17 +72,22 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
-		private IRun CreateRun( TestModule mod, ITestItem item )
+		private IRun CreateRun( TestModule mod, ITestItem item, ExecutionOptions options )
 		{
 			IRunCompiler comp = new RunControl.SimpleRunCompiler(
 				this.ooProcTarget,
 				new StandardDispositionPolicy(
 						Disposition.Continue, Disposition.Break ),
-				ExecutionOptions.CatureStackTraces,
+				options,
 				ThreadingOptions.ComNeutralThreading,
 				EnvironmentOptions.AutoAdjustCurrentDirectory );
 			comp.Add( ( IRunnableTestItem ) item );
 			return comp.Compile();
+		}
+
+		private IRun CreateRun( TestModule mod, ITestItem item )
+		{
+			return CreateRun( mod, item, ExecutionOptions.CatureStackTraces );
 		}
 
 		[Test]
@@ -950,6 +955,91 @@ namespace Cfix.Control.Test
 					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
 				}
 			}
+		}
+
+		private void RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				string fixtureName,
+				ExecutionStatus expectedTestStatus )
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( TestFixture fixture =
+				( TestFixture ) GetItemByName( mod, fixtureName ) )
+			using ( IRun run = CreateRun( mod, fixture, ExecutionOptions.ShortCircuitRunOnFailure ) )
+			{
+				Assert.AreEqual( TaskStatus.Ready, run.Status );
+
+				AutoResetEvent done = new AutoResetEvent( false );
+
+				int failuresOccured = 0;
+				run.FailureOccured += delegate( object sender, EventArgs e )
+				{
+					failuresOccured++;
+				};
+
+				run.Finished += delegate( object sender, FinishedEventArgs e )
+				{
+					Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+					done.Set();
+				};
+
+				run.Start();
+				done.WaitOne();
+
+				Assert.AreEqual( 1, run.RootResult.ItemCount );
+
+				Assert.AreEqual( 1, failuresOccured );
+
+				Assert.AreEqual(
+					ExecutionStatus.Failed,
+					run.RootResult.Status );
+				Assert.AreEqual(
+					expectedTestStatus,
+					run.RootResult.GetItem( 0 ).Status );
+			}
+		}
+
+		[Test]
+		public void TestFailingSetupFailsRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				"Fail_FailInSetup",
+				ExecutionStatus.Skipped );
+		}
+
+		[Test]
+		public void TestFailingTeardownFailsRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				"Fail_FailInTeardown",
+				ExecutionStatus.Succeeded );
+		}
+
+		[Test]
+		public void TestFailingBeforeFailsRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				"Fail_FailInBefore",
+				ExecutionStatus.Failed );
+		}
+
+		[Test]
+		public void TestFailingAfterFailsRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				"Fail_FailInAfter",
+				ExecutionStatus.Failed );
+		}
+
+		[Test]
+		public void TestFailingTestFailsRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+				"Fail_FailInTest",
+				ExecutionStatus.Failed );
 		}
 	}
 }

@@ -175,6 +175,10 @@
 				RelativePath=".\basic.c"
 				>
 			</File>
+			<File
+				RelativePath=".\failures.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

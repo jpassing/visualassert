@@ -14,6 +14,8 @@ namespace Cfix.Control.RunControl
 	{
 		private const uint CFIX_E_SETUP_ROUTINE_FAILED = ( uint ) 0x8004800b;
 		private const uint CFIX_E_TEARDOWN_ROUTINE_FAILED = ( uint ) 0x8004800c;
+		private const uint CFIX_E_BEFORE_ROUTINE_FAILED = ( uint ) 0x80048011;
+		private const uint CFIX_E_AFTER_ROUTINE_FAILED = ( uint ) 0x80048012;
 		private const uint CFIX_E_TEST_ROUTINE_FAILED = ( uint ) 0x8004800e;
 		private const uint RPC_S_CALL_FAILED = ( uint ) 0x800706BE;
 		
@@ -42,6 +44,22 @@ namespace Cfix.Control.RunControl
 		//
 		private readonly RundownLock rundownLock = new RundownLock();
 		private readonly object actionLock = new object();
+
+		private static bool IsTestRoutineFailureHr( uint hr )
+		{
+			switch ( hr )
+			{
+				case CFIX_E_TEST_ROUTINE_FAILED:
+				case CFIX_E_SETUP_ROUTINE_FAILED:
+				case CFIX_E_TEARDOWN_ROUTINE_FAILED:
+				case CFIX_E_BEFORE_ROUTINE_FAILED:
+				case CFIX_E_AFTER_ROUTINE_FAILED:
+					return true;
+
+				default:
+					return false;
+			}
+		}
 
 		public Task( 
 			IAgent agent,
@@ -149,10 +167,7 @@ namespace Cfix.Control.RunControl
 					// after termination.
 					//
 				}
-				else if ( 
-					( uint ) x.ErrorCode == CFIX_E_SETUP_ROUTINE_FAILED ||
-					( uint ) x.ErrorCode == CFIX_E_TEARDOWN_ROUTINE_FAILED ||
-					( uint ) x.ErrorCode == CFIX_E_TEST_ROUTINE_FAILED )
+				else if ( IsTestRoutineFailureHr( ( uint ) x.ErrorCode ) )
 				{
 					//
 					// Expected cfix failures.
