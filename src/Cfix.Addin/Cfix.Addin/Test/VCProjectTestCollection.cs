@@ -215,11 +215,16 @@ namespace Cfix.Addin.Test
 							HostEnvironment env = new HostEnvironment();
 							env.AddSearchPath( pathInfo.Directory.FullName );
 
+							//
+							// N.B. Never ignore duplicates -- duplicates lead
+							// to failures for lookup during test run, so better 
+							// fail early.
+							//
 							module = agent.LoadModule(
 								env,
 								this,
 								modulePath,
-								true );
+								false );
 
 							ITestItemCollection moduleColl =
 								module as ITestItemCollection;

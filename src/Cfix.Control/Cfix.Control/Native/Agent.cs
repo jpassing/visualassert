@@ -280,14 +280,20 @@ namespace Cfix.Control.Native
 
 		public CfixException WrapException( Exception x )
 		{
-			COMException comex = x as COMException;
-			if ( comex == null )
+			CfixException cfixEx = x as CfixException;
+			if ( cfixEx != null )
 			{
-				return new CfixException( x.ToString(), x );
+				return cfixEx;
+			}
+
+			COMException comEx = x as COMException;
+			if ( comEx == null )
+			{
+				return new CfixException( x.Message, x );
 			}
 			else
 			{
-				return new CfixException( ResolveMessage( comex.ErrorCode ), x );
+				return new CfixException( ResolveMessage( comEx.ErrorCode ), x );
 			}
 		}
 
