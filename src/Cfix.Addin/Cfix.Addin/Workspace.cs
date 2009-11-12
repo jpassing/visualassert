@@ -172,23 +172,13 @@ namespace Cfix.Addin
 		}
 
 		/*----------------------------------------------------------------------
-		 * Private - Run.
-		 */
-
-		/*----------------------------------------------------------------------
-		 * Private - Run events.
-		 * 
-		 * N.B. Execute on non-GUI thread.
-		 */
-
-		private void run_Log( object sender, LogEventArgs e )
-		{
-			
-		}
-
-		/*----------------------------------------------------------------------
 		 * Private - Misc.
 		 */
+
+		private string ResolveMessage( int code )
+		{
+			return this.searchAgent.ResolveMessage( code );
+		}
 
 		private IDispositionPolicy GetDispositionPolicy( bool debug )
 		{
@@ -341,8 +331,7 @@ namespace Cfix.Addin
 					ref license );
 				if ( hr != 0 )
 				{
-					throw new CfixException(
-						this.searchAgent.ResolveMessage( hr ) );
+					throw new CfixException( ResolveMessage( hr ) );
 				}
 				else
 				{
@@ -479,7 +468,6 @@ namespace Cfix.Addin
 				compiler.Add( item );
 
 				IRun run = compiler.Compile();
-				run.Log += new EventHandler<LogEventArgs>( run_Log );
 
 				if ( debug )
 				{
