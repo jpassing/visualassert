@@ -106,7 +106,7 @@ namespace Cfix.Control
 						String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
 						TraceEventType.Error,
 						0,
-						"[Exception Message {1}] {2}",
+						"[Exception Message {0}] {1}",
 						x.Message, 
 						x.StackTrace );
 					listener.Flush();
