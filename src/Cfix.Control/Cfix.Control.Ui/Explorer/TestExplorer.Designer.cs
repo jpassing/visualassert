@@ -55,8 +55,8 @@ namespace Cfix.Control.Ui.Explorer
 			this.imageList.Images.SetKeyName( 0, "VSFolder_closed.bmp" );
 			this.imageList.Images.SetKeyName( 1, "VSFolder_open.bmp" );
 			this.imageList.Images.SetKeyName( 2, "VSObject_Assembly.bmp" );
-			this.imageList.Images.SetKeyName( 3, "VSObject_Class.bmp" );
-			this.imageList.Images.SetKeyName( 4, "VSObject_Method.bmp" );
+			this.imageList.Images.SetKeyName( 3, "TestFixture.bmp" );
+			this.imageList.Images.SetKeyName( 4, "TestCase.bmp" );
 			this.imageList.Images.SetKeyName( 5, "VSObject_InvalidAssembly.bmp" );
 			// 
 			// TestExplorer
