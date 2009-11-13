@@ -92,7 +92,7 @@ namespace Cfix.Control.Ui.Result
 					if ( !warningShown && !node.IsProperlyUnwound )
 					{
 						warningShown = true;
-						yield return new UnwindWarningNode();
+						yield return new UnwindWarningNode( node );
 					}
 
 					yield return node;
@@ -101,14 +101,14 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		public ResultItemNode Parent
-		{
-			get { return this.parent; }
-		}
-
 		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */
+
+		public IResultNode Parent
+		{
+			get { return this.parent; }
+		}
 
 		public bool IsLeaf
 		{
@@ -197,6 +197,18 @@ namespace Cfix.Control.Ui.Result
 
 	public class UnwindWarningNode : IResultNode
 	{
+		private readonly IResultNode parent;
+
+		internal UnwindWarningNode( IResultNode parent )
+		{
+			this.parent = parent;
+		}
+
+		public IResultNode Parent
+		{
+			get { return this.parent; }
+		}
+
 		public bool IsLeaf
 		{
 			get { return true; }

@@ -40,7 +40,7 @@ namespace Cfix.Control.Ui.Result
 		 * Events.
 		 */
 
-		private static TreePath GetTreePath( ResultItemNode n )
+		private static TreePath GetTreePath( IResultNode n )
 		{
 			if ( n == null )
 			{
@@ -103,13 +103,33 @@ namespace Cfix.Control.Ui.Result
 						// To avoid adding duplicates, we have to 
 						// clear the list of existing failures first.
 						//
+						// N.B. In case of a fixture, there may be non-failure
+						// children -- make sure to leave these in place.
+						//
 
-						this.NodesRemoved(
-							this,
-							new TreeModelEventArgs(
-								nodePath,
-								null,
-								null ) );
+						TreeNodeAdv node = this.tree.FindNode( nodePath );
+						Debug.Assert( node.Tag == affectedNode );
+
+						List<object> nodesToDelete = new List<object>();
+						
+						foreach ( TreeNodeAdv childNode in node.Children )
+						{
+							FailureNode failure = childNode.Tag as FailureNode;
+							if ( failure != null )
+							{
+								nodesToDelete.Add( failure );
+							}
+						}
+
+						if ( nodesToDelete.Count > 0 )
+						{
+							this.NodesRemoved(
+								this,
+								new TreeModelEventArgs(
+									nodePath,
+									null,
+									nodesToDelete.ToArray() ) );
+						}
 					}
 
 					if ( this.NodesInserted != null )

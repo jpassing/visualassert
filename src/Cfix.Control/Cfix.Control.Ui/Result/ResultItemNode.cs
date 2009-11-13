@@ -24,11 +24,6 @@ namespace Cfix.Control.Ui.Result
 			get { return this.result; }
 		}
 
-		internal ResultItemNode Parent
-		{
-			get { return this.parent; }
-		}
-
 		internal ICollection<Failure> Failures
 		{
 			get { return this.result.Failures; }
@@ -42,6 +37,11 @@ namespace Cfix.Control.Ui.Result
 		/*----------------------------------------------------------------------
 		 * IResultNode.
 		 */
+
+		public IResultNode Parent
+		{
+			get { return this.parent; }
+		}
 
 		public bool IsLeaf 
 		{

@@ -6,6 +6,8 @@ namespace Cfix.Control.Ui.Result
 {
 	public interface IResultNode
 	{
+		IResultNode Parent { get; }
+		
 		bool IsLeaf { get; }
 		IEnumerable<IResultNode> GetChildren();
 

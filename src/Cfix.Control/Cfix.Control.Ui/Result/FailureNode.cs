@@ -124,6 +124,11 @@ namespace Cfix.Control.Ui.Result
 		 * IResultNode.
 		 */
 
+		public IResultNode Parent
+		{
+			get { return this.parent; }
+		}
+
 		public bool IsLeaf
 		{
 			get
