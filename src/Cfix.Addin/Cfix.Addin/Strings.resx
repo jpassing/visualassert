@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutCmdCaption" xml:space="preserve">
-    <value>About Visual Assert...</value>
+    <value>About...</value>
   </data>
   <data name="AddUnitTestCmdCaption" xml:space="preserve">
     <value>Unit &amp;Test...</value>
@@ -139,19 +139,19 @@
     <value>R&amp;un Tests</value>
   </data>
   <data name="DocCmdCaption" xml:space="preserve">
-    <value>Visual Assert Documentation</value>
+    <value>Documentation</value>
   </data>
   <data name="EmptyRun" xml:space="preserve">
     <value>Selection does not include any test item</value>
   </data>
   <data name="EnterLicenseCmdCaption" xml:space="preserve">
-    <value>Enter Visual Assert License Key...</value>
+    <value>Enter License Key...</value>
   </data>
   <data name="ExplorerCmdCaption" xml:space="preserve">
-    <value>Visual Assert Test Explorer Window</value>
+    <value>Test Explorer Window</value>
   </data>
   <data name="ExplorerWindowCaption" xml:space="preserve">
-    <value>Visual Assert Test Explorer</value>
+    <value>Test Explorer</value>
   </data>
   <data name="FailedToObtainCurrentConfig" xml:space="preserve">
     <value>Failed to obtain current configuration</value>
@@ -181,7 +181,7 @@
     <value>Build output not available -- rebuild the project</value>
   </data>
   <data name="QuickStartCmdCaption" xml:space="preserve">
-    <value>Visual Assert Quick Start Page</value>
+    <value>Quick Start Page</value>
   </data>
   <data name="ReDebugRunCmdCaption" xml:space="preserve">
     <value>Restart Last Run</value>
@@ -193,10 +193,10 @@
     <value>Run still active</value>
   </data>
   <data name="RunCmdCaption" xml:space="preserve">
-    <value>Visual Assert Run Window</value>
+    <value>Test Run Window</value>
   </data>
   <data name="RunWindowCaption" xml:space="preserve">
-    <value>Visual Assert Run</value>
+    <value>Test Run</value>
   </data>
   <data name="Searching" xml:space="preserve">
     <value>Searching...</value>
