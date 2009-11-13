@@ -1042,14 +1042,23 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 
 				delete this->Registration;
 				this->Registration = NULL;
+
+				KeepSpinning = FALSE;
 				Hr = S_OK;
 			}
 			else
 			{
-				Hr = CFIXCTL_E_HOST_NOT_FOUND;
+				//
+				// Nevermind, the host may show up later.
+				//
+				// N.B. If there was a previous activation attempt that
+				// timed out, this->Registration is non-NULL, yet the
+				// cookie does not match. In this case, it is important
+				// to wait until the new process shows up and clears the
+				// leftover registration.
+				//
+				KeepSpinning = TRUE;
 			}
-
-			KeepSpinning = FALSE;
 		}
 
 		LeaveCriticalSection( &this->RegistrationLock );
