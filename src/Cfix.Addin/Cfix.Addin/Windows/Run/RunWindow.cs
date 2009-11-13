@@ -43,6 +43,7 @@ namespace Cfix.Addin.Windows.Run
 		private IResultNode contextMenuReferenceItem;
 
 		private DTE2 dte;
+		private Window window;
 		private Workspace workspace;
 
 		private SolutionEvents solutionEvents;
@@ -56,6 +57,17 @@ namespace Cfix.Addin.Windows.Run
 			}
 
 			return text;
+		}
+
+		private void SetActiveItem( IResultItem item )
+		{
+			//
+			// Update property window.
+			//
+
+			object[] propObjects = 
+				item == null ? new object[ 0 ] : new object[] { item };
+			this.window.SetSelectionContainer( ref propObjects );
 		}
 
 		/*----------------------------------------------------------------------
@@ -222,6 +234,11 @@ namespace Cfix.Addin.Windows.Run
 			{
 				VisualAssert.HandleError( x );
 			}
+		}
+
+		private void results_SelectionChanged( object sender, EventArgs e )
+		{
+			SetActiveItem( this.results.SelectedItem );
 		}
 
 		/*----------------------------------------------------------------------
@@ -411,10 +428,13 @@ namespace Cfix.Addin.Windows.Run
 
 		public void Initialize(
 			Workspace ws,
-			DTE2 dte )
+			DTE2 dte,
+			Window window )
 		{
 			this.workspace = ws;
 			this.dte = dte;
+			this.window = window;
+
 			this.solutionEvents = dte.Events.SolutionEvents;
 
 			this.solutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler( solutionEvents_BeforeClosing );
@@ -526,6 +546,11 @@ namespace Cfix.Addin.Windows.Run
 		private void docButton_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.OpenDocumentation();
+		}
+
+		private void ctxMenuViewProperties_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.ActivatePropertyWindow( this.dte );
 		}
 
 	}

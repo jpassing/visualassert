@@ -20,6 +20,7 @@ namespace Cfix.Control.Ui.Result
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
 		public event KeyEventHandler TreeKeyDown;
 		public event MouseEventHandler TreeDoubleClick;
+		public event EventHandler SelectionChanged;
 
 		private readonly ResultModel model;
 
@@ -169,6 +170,14 @@ namespace Cfix.Control.Ui.Result
 
 		}
 
+		private void tree_SelectionChanged( object sender, EventArgs e )
+		{
+			if ( SelectionChanged != null )
+			{
+				this.SelectionChanged( this, EventArgs.Empty );
+			}
+		}
+
 		/*----------------------------------------------------------------------
 		 * Internal.
 		 */
@@ -239,6 +248,28 @@ namespace Cfix.Control.Ui.Result
 		{
 			get { return this.failureNodeContextMenu; }
 			set { this.failureNodeContextMenu = value; }
+		}
+
+		public IResultItem SelectedItem
+		{
+			get
+			{
+				TreeNodeAdv selectedNode = this.tree.SelectedNode;
+				if ( selectedNode == null )
+				{
+					return null;
+				}
+
+				ResultItemNode resultNode = selectedNode.Tag as ResultItemNode;
+				if ( resultNode != null )
+				{
+					return resultNode.ResultItem;
+				}
+				else
+				{
+					return null;
+				}
+			}
 		}
 	}
 

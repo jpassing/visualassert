@@ -17,6 +17,7 @@ using Cfix.Control;
 using Cfix.Control.Native;
 using Cfix.Control.Ui;
 using Microsoft.VisualStudio.VCProjectEngine;
+using System.ComponentModel;
 
 namespace Cfix.Addin.Test
 {
@@ -345,11 +346,13 @@ namespace Cfix.Addin.Test
 			base.Dispose( disposing );
 		}
 
+		[Browsable( false )]
 		public string UniqueName
 		{
 			get { return uniqueName; }
 		}
 
+		[Browsable( false )]
 		public Project Project
 		{
 			get { return this.project; }

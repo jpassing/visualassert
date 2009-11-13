@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Cfixctl;
+using System.ComponentModel;
 
 namespace Cfix.Control.Native
 {
@@ -81,11 +82,13 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[Description( "Processor architecture of module" )]
 		public Architecture Architecture
 		{
 			get { return ( Architecture ) this.arch; }
 		}
 
+		[Description( "Type of module" )]
 		public ModuleType Type
 		{
 			get { return ( ModuleType ) this.type; }

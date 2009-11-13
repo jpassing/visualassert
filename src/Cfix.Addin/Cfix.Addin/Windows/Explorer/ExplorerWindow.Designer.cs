@@ -38,7 +38,9 @@ namespace Cfix.Addin.Windows.Explorer
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.statusText = new System.Windows.Forms.TextBox();
 			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
-			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
 			this.throbberPic = new System.Windows.Forms.PictureBox();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
@@ -118,15 +120,29 @@ namespace Cfix.Addin.Windows.Explorer
             this.ctxMenuRunButton,
             this.ctxMenuRefreshButton,
             this.ctxMenuViewCodeButton,
-            this.ctxMenuSeparator,
-            this.ctxMenuAddFixtureButton} );
+            this.ctxMenuSeparator1,
+            this.ctxMenuAddFixtureButton,
+            this.ctxMenuSeparator2,
+            this.ctxMenuViewProperties} );
 			this.ctxMenu.Name = "ctxMenu";
 			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
 			// 
-			// ctxMenuSeparator
+			// ctxMenuSeparator1
 			// 
-			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
-			resources.ApplyResources( this.ctxMenuSeparator, "ctxMenuSeparator" );
+			this.ctxMenuSeparator1.Name = "ctxMenuSeparator1";
+			resources.ApplyResources( this.ctxMenuSeparator1, "ctxMenuSeparator1" );
+			// 
+			// ctxMenuSeparator2
+			// 
+			this.ctxMenuSeparator2.Name = "ctxMenuSeparator2";
+			resources.ApplyResources( this.ctxMenuSeparator2, "ctxMenuSeparator2" );
+			// 
+			// ctxMenuViewProperties
+			// 
+			this.ctxMenuViewProperties.Image = global::Cfix.Addin.Icons.Properties;
+			resources.ApplyResources( this.ctxMenuViewProperties, "ctxMenuViewProperties" );
+			this.ctxMenuViewProperties.Name = "ctxMenuViewProperties";
+			this.ctxMenuViewProperties.Click += new System.EventHandler( this.ctxMenuViewProperties_Click );
 			// 
 			// explorer
 			// 
@@ -332,8 +348,10 @@ namespace Cfix.Addin.Windows.Explorer
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem captureStackTracesMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem refreshAfterBuildToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator;
+		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuAddFixtureButton;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewCodeButton;
+		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewProperties;
 	}
 }

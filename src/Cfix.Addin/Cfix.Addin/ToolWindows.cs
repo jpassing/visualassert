@@ -157,7 +157,8 @@ namespace Cfix.Addin
                         Windows.Chrome.CfixIcon );
 					this.explorer.UserControl.Initialize( 
 						this.addin.Workspace,
-						this.addin.DTE );
+						this.addin.DTE,
+						this.explorer.Window );
 
 					this.explorer.DefaultHeight = 400;
 					this.explorer.DefaultWidth = 350;
@@ -185,7 +186,8 @@ namespace Cfix.Addin
                         Windows.Chrome.CfixIcon);
 					this.run.UserControl.Initialize(
 						this.addin.Workspace,
-						this.addin.DTE );
+						this.addin.DTE,
+						this.run.Window );
 
 					this.run.DefaultHeight = 300;
 					this.run.DefaultWidth = 700;

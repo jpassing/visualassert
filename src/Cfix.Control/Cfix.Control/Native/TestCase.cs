@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Cfixctl;
+using System.ComponentModel;
 
 
 namespace Cfix.Control.Native
@@ -20,6 +21,7 @@ namespace Cfix.Control.Native
 		 * ITestCodeElement.
 		 */
 
+		[DescriptionAttribute( "API used to define test" )]
 		public ApiType ApiType 
 		{ 
 			get 
@@ -31,6 +33,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[Browsable( false )]
 		public string CodeElementName 
 		{
 			get 

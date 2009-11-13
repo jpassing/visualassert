@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
+using System.ComponentModel;
 
 namespace Cfix.Control.Native
 {
@@ -74,6 +75,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[Browsable( false )]
 		public bool IgnoreDuplicates
 		{
 			get { return ignoreDuplicates; }
@@ -248,6 +250,7 @@ namespace Cfix.Control.Native
 			return this.subItems[ ordinal ];
 		}
 
+		[DescriptionAttribute( "Number of children" )]
 		public uint ItemCount
 		{
 			get
@@ -263,6 +266,7 @@ namespace Cfix.Control.Native
 			}
 		}
 
+		[DescriptionAttribute( "Total number of children" )]
 		public uint ItemCountRecursive
 		{
 			get

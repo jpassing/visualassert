@@ -353,7 +353,7 @@
     <value>212, 22</value>
   </data>
   <data name="ctxMenuDebugButton.Text" xml:space="preserve">
-    <value>Debug Test</value>
+    <value>&amp;Debug Test</value>
   </data>
   <data name="ctxMenuRunButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -362,7 +362,7 @@
     <value>212, 22</value>
   </data>
   <data name="ctxMenuRunButton.Text" xml:space="preserve">
-    <value>Run Test Without Debugging</value>
+    <value>&amp;Run Test Without Debugging</value>
   </data>
   <data name="ctxMenuRefreshButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
@@ -371,7 +371,7 @@
     <value>212, 22</value>
   </data>
   <data name="ctxMenuRefreshButton.Text" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Re&amp;fresh</value>
   </data>
   <data name="ctxMenuViewCodeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -380,9 +380,9 @@
     <value>212, 22</value>
   </data>
   <data name="ctxMenuViewCodeButton.Text" xml:space="preserve">
-    <value>View Code</value>
+    <value>View &amp;Code</value>
   </data>
-  <data name="ctxMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ctxMenuSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 6</value>
   </data>
   <data name="ctxMenuAddFixtureButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -392,10 +392,22 @@
     <value>212, 22</value>
   </data>
   <data name="ctxMenuAddFixtureButton.Text" xml:space="preserve">
-    <value>Add Fixture...</value>
+    <value>&amp;Add Fixture...</value>
+  </data>
+  <data name="ctxMenuSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 6</value>
+  </data>
+  <data name="ctxMenuViewProperties.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="ctxMenuViewProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>212, 22</value>
+  </data>
+  <data name="ctxMenuViewProperties.Text" xml:space="preserve">
+    <value>&amp;Properties</value>
   </data>
   <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 142</value>
+    <value>213, 170</value>
   </data>
   <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
     <value>ctxMenu</value>
@@ -419,7 +431,7 @@
     <value>explorer</value>
   </data>
   <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.2.3600, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.2.3604, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -490,11 +502,23 @@
   <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ctxMenuSeparator.Name" xml:space="preserve">
-    <value>ctxMenuSeparator</value>
+  <data name="&gt;&gt;ctxMenuSeparator1.Name" xml:space="preserve">
+    <value>ctxMenuSeparator1</value>
   </data>
-  <data name="&gt;&gt;ctxMenuSeparator.Type" xml:space="preserve">
+  <data name="&gt;&gt;ctxMenuSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuSeparator2.Name" xml:space="preserve">
+    <value>ctxMenuSeparator2</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuViewProperties.Name" xml:space="preserve">
+    <value>ctxMenuViewProperties</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuViewProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;debugButton.Name" xml:space="preserve">
     <value>debugButton</value>

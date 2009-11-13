@@ -68,6 +68,7 @@ namespace Cfix.Control.Ui.Result
 			this.tree.Size = new System.Drawing.Size( 488, 314 );
 			this.tree.TabIndex = 0;
 			this.tree.UseColumns = true;
+			this.tree.SelectionChanged += new System.EventHandler( this.tree_SelectionChanged );
 			// 
 			// colName
 			// 

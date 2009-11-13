@@ -33,6 +33,8 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private Workspace workspace;
 		private DTE2 dte;
+		private Window window;
+
 		private SolutionEvents solutionEvents;
 		private BuildEvents buildEvents;
 
@@ -66,13 +68,16 @@ namespace Cfix.Addin.Windows.Explorer
 
 		public void Initialize( 
 			Workspace ws, 
-			DTE2 dte )
+			DTE2 dte,
+			Window window )
 		{
 			Debug.Assert( this.workspace == null );
 			Debug.Assert( this.dte == null );
 			
 			this.workspace = ws;
 			this.dte = dte;
+			this.window = window;
+
 			this.solutionEvents = dte.Events.SolutionEvents;
 			this.buildEvents = dte.Events.BuildEvents;
 
@@ -149,7 +154,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
-			this.ctxMenuSeparator.Visible = showAddFixture;
+			this.ctxMenuSeparator1.Visible = showAddFixture;
 
 			//
 			// Remember node to associate menu item clicks with
@@ -195,6 +200,13 @@ namespace Cfix.Addin.Windows.Explorer
 			CommonUiOperations.GoToTestItem( this.dte, this.contextMenuReferenceNode.Item );			
 		}
 
+
+		private void ctxMenuViewProperties_Click( object sender, EventArgs e )
+		{
+			SetActiveItem( this.contextMenuReferenceNode.Item );
+			CommonUiOperations.ActivatePropertyWindow( this.dte );
+		}
+
 		/*----------------------------------------------------------------------
 		 * Refreshing.
 		 */
@@ -212,6 +224,16 @@ namespace Cfix.Addin.Windows.Explorer
 			this.abortRefreshButton.Enabled = false;
 		}
 
+		private void SetActiveItem( ITestItem item )
+		{
+			//
+			// Update property window.
+			//
+
+			object[] propObjects = new object[] { item };
+			this.window.SetSelectionContainer( ref propObjects );
+		}
+
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
 			bool runnable = e.Item is IRunnableTestItem;
@@ -220,6 +242,8 @@ namespace Cfix.Addin.Windows.Explorer
 			this.runButton.Enabled = runnable;
 
 			UpdateRefreshButtonStatus();
+
+			SetActiveItem( e.Item );
 		}
 
 		private void explorer_RefreshFinished( object sender, EventArgs e )
@@ -701,5 +725,6 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
+
 	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
 
 namespace Cfix.Control
 {
@@ -133,6 +134,7 @@ namespace Cfix.Control
 		 * ITestItem.
 		 */
 
+		[Browsable( false )]
 		public bool IsDisposed
 		{
 			get { return this.disposed; }
@@ -146,11 +148,13 @@ namespace Cfix.Control
 			}
 		}
 
+		[Browsable( false )]
 		public String FullName
 		{
 			get { return null; }
 		}
 
+		[Browsable( false )]
 		public uint Ordinal
 		{
 			get
@@ -159,6 +163,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[Browsable( false )]
 		public ITestItemCollection Parent
 		{
 			get
@@ -246,6 +251,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[DescriptionAttribute( "Number of children" )]
 		public uint ItemCount
 		{
 			get
@@ -257,6 +263,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[DescriptionAttribute( "Total number of children" )]
 		public uint ItemCountRecursive
 		{
 			get
@@ -317,6 +324,7 @@ namespace Cfix.Control
 		 * IRunnableTestItemCollection.
 		 */
 
+		[Browsable( false )]
 		public uint RunnableItemCount
 		{
 			get

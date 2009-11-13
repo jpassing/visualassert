@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Cfixctl;
+using System.ComponentModel;
 
 namespace Cfix.Control.Native
 {
@@ -155,6 +156,7 @@ namespace Cfix.Control.Native
 		 * ITestItem.
 		 */
 
+		[Browsable( false )]
 		public bool IsDisposed
 		{
 			get { return this.disposed; }
@@ -165,11 +167,13 @@ namespace Cfix.Control.Native
 			get { return this.name; }
 		}
 
+		[Browsable( false )]
 		public uint Ordinal
 		{
 			get { return this.ordinal; }
 		}
 
+		[Browsable( false )]
 		public virtual ITestItemCollection Parent
 		{
 			get { return this.parent; }

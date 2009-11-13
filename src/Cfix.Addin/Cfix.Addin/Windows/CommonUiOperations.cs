@@ -389,5 +389,10 @@ namespace Cfix.Addin.Windows
 				return false;
 			}
 		}
+
+		public static void ActivatePropertyWindow( DTE2 dte )
+		{
+			dte.ExecuteCommand( "View.PropertiesWindow", "" );
+		}
 	}
 }

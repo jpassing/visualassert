@@ -217,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\Properties.bmp" />
     <None Include="Icons\CfixTickWithMagentaBg.png" />
     <None Include="Icons\CfixTickWithAlmostGreenBg.png" />
     <None Include="Resources\VSFolder_closed.bmp" />

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Cfix.Control
 {
@@ -222,6 +223,7 @@ namespace Cfix.Control
 		 * IResultItemCollection.
 		 */
 
+		[Browsable( false )]
 		public ITestItemCollection ItemCollection
 		{
 			get { return this.item; }

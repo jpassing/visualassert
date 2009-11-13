@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Cfix.Control
 {
@@ -171,6 +172,7 @@ namespace Cfix.Control
 		 * IResultItem.
 		 */
 
+		[Browsable( false )]
 		public IResultItemCollection Parent
 		{
 			get
@@ -195,6 +197,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[Browsable( false )]
 		public ITestItem Item
 		{
 			get { return this.item; }
@@ -205,6 +208,7 @@ namespace Cfix.Control
 			get { return this.item.Name; }
 		}
 
+		[ReadOnly( true )]
 		public ExecutionStatus Status
 		{
 			get { return this.status; }
@@ -251,6 +255,7 @@ namespace Cfix.Control
 			}
 		}
 
+		[Browsable( false )]
 		public ICollection<Failure> Failures
 		{
 			get { return this.failures; }
