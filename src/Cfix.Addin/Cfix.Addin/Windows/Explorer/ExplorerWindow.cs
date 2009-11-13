@@ -29,6 +29,8 @@ namespace Cfix.Addin.Windows.Explorer
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
 
+		private string lastUsedDirectory = null;
+
 		private Workspace workspace;
 		private DTE2 dte;
 		private SolutionEvents solutionEvents;
@@ -490,18 +492,29 @@ namespace Cfix.Addin.Windows.Explorer
 					ShellBrowseForFolderDialog.BrowseInfoFlag.BIF_VALIDATE;
 				dialog.OnSelChanged +=
 					new ShellBrowseForFolderDialog.SelChangedHandler(dialog_OnSelChanged);
+				dialog.OnInitialized += new ShellBrowseForFolderDialog.InitializedHandler( dialog_OnInitialized );
 
 				dialog.Title = Strings.SelectFileOrFolder;
 				dialog.ShowDialog();
-
+				
 				if ( ! dialog.Canceled )
 				{
-					ExploreDirectoryOrFile( dialog.FullName );
+					string directoryPath = dialog.FullName;
+					this.lastUsedDirectory = directoryPath;
+					ExploreDirectoryOrFile( directoryPath );
 				}
 			}
 			catch ( Exception x )
 			{
 				VisualAssert.HandleError( x );
+			}
+		}
+
+		private void dialog_OnInitialized( ShellBrowseForFolderDialog sender, ShellBrowseForFolderDialog.InitializedEventArgs args )
+		{
+			if ( lastUsedDirectory != null )
+			{
+				sender.SetSelection( args.hwnd, this.lastUsedDirectory );
 			}
 		}
 
