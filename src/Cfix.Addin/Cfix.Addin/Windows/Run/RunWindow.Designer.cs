@@ -238,11 +238,11 @@ namespace Cfix.Addin.Windows.Run
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.results.AutoScrollToActiveNode = false;
 			this.results.FailureNodeContextMenu = null;
-			this.results.Location = new System.Drawing.Point( 3, 54 );
+			this.results.Location = new System.Drawing.Point( 3, 48 );
 			this.results.Name = "results";
 			this.results.ResultNodeContextMenu = null;
 			this.results.Run = null;
-			this.results.Size = new System.Drawing.Size( 555, 211 );
+			this.results.Size = new System.Drawing.Size( 555, 214 );
 			this.results.TabIndex = 1;
 			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
 			// 
@@ -250,7 +250,7 @@ namespace Cfix.Addin.Windows.Run
 			// 
 			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.progressLabel.Location = new System.Drawing.Point( 5, 31 );
+			this.progressLabel.Location = new System.Drawing.Point( 5, 28 );
 			this.progressLabel.Name = "progressLabel";
 			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
 			this.progressLabel.TabIndex = 3;
@@ -261,7 +261,7 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.progressBar.BackColor = System.Drawing.Color.LightYellow;
-			this.progressBar.Location = new System.Drawing.Point( 3, 28 );
+			this.progressBar.Location = new System.Drawing.Point( 3, 25 );
 			this.progressBar.Name = "progressBar";
 			this.progressBar.ProgressBarColor = System.Drawing.Color.Blue;
 			this.progressBar.Size = new System.Drawing.Size( 552, 20 );

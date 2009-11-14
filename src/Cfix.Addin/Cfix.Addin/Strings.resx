@@ -138,6 +138,9 @@
   <data name="DebugCurrentHierItemCaption" xml:space="preserve">
     <value>R&amp;un Tests</value>
   </data>
+  <data name="DefaultInfoText" xml:space="preserve">
+    <value>Number of tests: {0}</value>
+  </data>
   <data name="DocCmdCaption" xml:space="preserve">
     <value>Documentation</value>
   </data>
@@ -170,6 +173,9 @@
   </data>
   <data name="NotATestProjectToolTip" xml:space="preserve">
     <value>Regular Project: The module does not define any tests.</value>
+  </data>
+  <data name="NoTestsAvailable" xml:space="preserve">
+    <value>No tests available.</value>
   </data>
   <data name="ProgressInfo" xml:space="preserve">
     <value>{3}, {2} host process(es), {0}/{1} test cases completed, {6} succeeded, {4} failed, {5} inconclusive.</value>

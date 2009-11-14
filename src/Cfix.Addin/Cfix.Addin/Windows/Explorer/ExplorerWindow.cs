@@ -46,7 +46,6 @@ namespace Cfix.Addin.Windows.Explorer
 
 #if VS100
             this.BackColor = Chrome.WindowBackColor;
-            this.statusText.BackColor = Chrome.WindowBackColor;
             this.toolbar.BackColor = Chrome.WindowBackColor;
 #endif
 
@@ -57,7 +56,6 @@ namespace Cfix.Addin.Windows.Explorer
 
 			this.workspace = null;
 
-			this.statusText.GotFocus += new EventHandler( statusText_GotFocus );
 			this.selectModeButton.DropDownOpening += new EventHandler( selectModeButton_DropDownOpening );
 			
 			this.explorer.NodeContextMenu = this.ctxMenu;
@@ -94,8 +92,6 @@ namespace Cfix.Addin.Windows.Explorer
 			this.buildEvents.OnBuildProjConfigDone += new _dispBuildEvents_OnBuildProjConfigDoneEventHandler( buildEvents_OnBuildProjConfigDone );
 			this.buildEvents.OnBuildDone += new _dispBuildEvents_OnBuildDoneEventHandler( buildEvents_OnBuildDone );
 
-			this.statusText.Text = Strings.NoSlnLoaded;
-
 			Configuration config = this.workspace.Configuration;
 			this.refreshAfterBuildToolStripMenuItem.Checked = config.AutoRefreshAfterBuild;
 			
@@ -113,6 +109,8 @@ namespace Cfix.Addin.Windows.Explorer
 			
 			this.captureStackTracesMenuItem.Checked =
 				( executionOpts & ExecutionOptions.CatureStackTraces ) != 0;
+
+			SetInfoPanel();
 		}
 
 		private void UpdateExecutionOptions()
@@ -134,6 +132,47 @@ namespace Cfix.Addin.Windows.Explorer
 			}
 
 			this.workspace.Configuration.ExecutionOptions = options;
+		}
+
+		/*----------------------------------------------------------------------
+		 * Status/Info panel.
+		 */
+
+		private void SetInfoPanel( string text, Image icon )
+		{
+			this.infoIcon.Image = icon;
+			this.infoLabel.Text = text;
+
+			this.infoBar.Invalidate();
+			this.infoLabel.Invalidate();
+			this.infoIcon.Invalidate();
+		}
+
+		private void SetInfoPanel( string text )
+		{
+			SetInfoPanel( text, Icons.Information );
+		}
+
+		private void SetInfoPanel()
+		{
+			if ( this.explorer.Session.Tests != null )
+			{
+				uint testCount = this.explorer.Session.Tests.ItemCountRecursive;
+				if ( testCount > 0 )
+				{
+					SetInfoPanel( String.Format(
+						Strings.DefaultInfoText,
+						testCount ) );
+				}
+				else
+				{
+					SetInfoPanel( Strings.NoTestsAvailable );
+				}
+			}
+			else
+			{
+				SetInfoPanel( Strings.NoSlnLoaded );
+			}
 		}
 
 		/*----------------------------------------------------------------------
@@ -248,9 +287,9 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void explorer_RefreshFinished( object sender, EventArgs e )
 		{
-			this.throbberPic.Visible = false;
 			this.selectModeButton.Enabled = true;
-			this.statusText.Text = "";
+
+			SetInfoPanel();
 
 			UpdateRefreshButtonStatus();
 			this.abortRefreshButton.Enabled = false;
@@ -258,9 +297,9 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void explorer_RefreshStarted( object sender, EventArgs e )
 		{
-			this.throbberPic.Visible = true;
 			this.selectModeButton.Enabled = false;
-			this.statusText.Text = Strings.Searching;
+
+			SetInfoPanel( Strings.Searching, Icons.Throb );
 
 			DisableRefresh();
 			this.abortRefreshButton.Enabled = true;
@@ -492,7 +531,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void slnCollection_Closed( object sender, EventArgs e )
 		{
 			this.workspace.Session.Tests = null;
-			this.statusText.Text = Strings.NoSlnLoaded;
+			SetInfoPanel();
 		}
 
 		/*----------------------------------------------------------------------

@@ -124,6 +124,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of tests: {0}.
+        /// </summary>
+        internal static string DefaultInfoText {
+            get {
+                return ResourceManager.GetString("DefaultInfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Documentation.
         /// </summary>
         internal static string DocCmdCaption {
@@ -219,6 +228,15 @@ namespace Cfix.Addin {
         internal static string NotATestProjectToolTip {
             get {
                 return ResourceManager.GetString("NotATestProjectToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No tests available..
+        /// </summary>
+        internal static string NoTestsAvailable {
+            get {
+                return ResourceManager.GetString("NoTestsAvailable", resourceCulture);
             }
         }
         
