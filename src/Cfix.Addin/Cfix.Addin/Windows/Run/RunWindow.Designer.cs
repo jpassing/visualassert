@@ -45,13 +45,13 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
-			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -174,7 +174,7 @@ namespace Cfix.Addin.Windows.Run
             this.ctxMenuSeparator,
             this.ctxMenuViewProperties} );
 			this.resultCtxMenu.Name = "resultCtxMenu";
-			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 120 );
+			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 98 );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -203,6 +203,20 @@ namespace Cfix.Addin.Windows.Run
 			this.ctxMenuViewCodeButton.Text = "View Code";
 			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
 			// 
+			// ctxMenuSeparator
+			// 
+			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
+			this.ctxMenuSeparator.Size = new System.Drawing.Size( 239, 6 );
+			// 
+			// ctxMenuViewProperties
+			// 
+			this.ctxMenuViewProperties.Image = global::Cfix.Addin.Icons.Properties;
+			this.ctxMenuViewProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ctxMenuViewProperties.Name = "ctxMenuViewProperties";
+			this.ctxMenuViewProperties.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuViewProperties.Text = "Properties";
+			this.ctxMenuViewProperties.Click += new System.EventHandler( this.ctxMenuViewProperties_Click );
+			// 
 			// stackTraceCtxMenu
 			// 
 			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
@@ -224,11 +238,11 @@ namespace Cfix.Addin.Windows.Run
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.results.AutoScrollToActiveNode = false;
 			this.results.FailureNodeContextMenu = null;
-			this.results.Location = new System.Drawing.Point( 3, 64 );
+			this.results.Location = new System.Drawing.Point( 3, 54 );
 			this.results.Name = "results";
 			this.results.ResultNodeContextMenu = null;
 			this.results.Run = null;
-			this.results.Size = new System.Drawing.Size( 555, 201 );
+			this.results.Size = new System.Drawing.Size( 555, 211 );
 			this.results.TabIndex = 1;
 			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
 			// 
@@ -253,20 +267,6 @@ namespace Cfix.Addin.Windows.Run
 			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
 			this.progressBar.TabIndex = 2;
 			this.progressBar.Value = 0;
-			// 
-			// ctxMenuSeparator
-			// 
-			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
-			this.ctxMenuSeparator.Size = new System.Drawing.Size( 239, 6 );
-			// 
-			// ctxMenuViewProperties
-			// 
-			this.ctxMenuViewProperties.Image = global::Cfix.Addin.Icons.Properties;
-			this.ctxMenuViewProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ctxMenuViewProperties.Name = "ctxMenuViewProperties";
-			this.ctxMenuViewProperties.Size = new System.Drawing.Size( 242, 22 );
-			this.ctxMenuViewProperties.Text = "Properties";
-			this.ctxMenuViewProperties.Click += new System.EventHandler( this.ctxMenuViewProperties_Click );
 			// 
 			// RunWindow
 			// 
