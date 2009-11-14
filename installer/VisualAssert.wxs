@@ -360,7 +360,10 @@
                 <File Id="FileCfixctDllI386" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\i386\cfixctl.dll" DiskId="1">
                   <?include cfixctl-comreg.wxs?>
                 </File>
+                <File Id="FileCfixctPublicPdbI386" Name="cfixctl.pdb" Source="bin\fre\i386\cfixctl-public.pdb" DiskId="1"/>
+                
                 <File Id="FileCfixhsExeI386" Name="cfixhs32.exe" Source="bin\fre\i386\cfixhs32.exe" DiskId="1"/>
+                <File Id="FileCfixhsPublicPdbI386" Name="cfixhs32.pdb" Source="bin\fre\i386\cfixhs32-public.pdb" DiskId="1"/>
 
                 <File Id="FileInteropCfixctlI386" Name="cfintero.dll" LongName="interop.cfixctl.dll" Source="bin\fre\i386\interop.cfixctl.dll" DiskId="1"/>
                 <File Id="FileCfixControlDllI386" Name="cfcontr.dll" LongName="cfix.control.dll" Source="bin\fre\i386\cfix.control.dll" DiskId="1"/>
@@ -383,8 +386,10 @@
                 <File Id="FileCfixctAmd64" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\amd64\cfixctl.dll" DiskId="1">
                   <?include cfixctl-comreg.wxs?>
                 </File>
+                <File Id="FileCfixctPublicAmd64" Name="cfixctl.pdb" Source="bin\fre\amd64\cfixctl-public.pdb" DiskId="1"/>
+                
                 <File Id="FileCfixhsExeAmd64" Name="cfixhs64.exe" Source="bin\fre\amd64\cfixhs64.exe" DiskId="1"/>
-
+                <File Id="FileCfixhsPublicAmd64" Name="cfixhs64.pdb" Source="bin\fre\amd64\cfixhs64-public.pdb" DiskId="1"/>
               </Component>
             </Directory>
           </Directory>
