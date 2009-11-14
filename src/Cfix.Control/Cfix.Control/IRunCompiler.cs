@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Cfix.Control
 {
 	[Flags]
-	public enum ThreadingOptions
+	public enum EnvironmentOptions
 	{
 		None = 0,
 
@@ -12,20 +12,13 @@ namespace Cfix.Control
 		// Run tests on threads that are COM-neutral, i.e. have not
 		// joined any apartment.
 		//
-		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL
-	}
-
-	[Flags]
-	public enum EnvironmentOptions
-	{
-		None = 0,
-		AutoAdjustCurrentDirectory = 1
+		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL,
+		AutoAdjustCurrentDirectory = ( int ) Native.NativeAction.CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY
 	}
 
 	public interface IRunCompiler
 	{
 		ExecutionOptions ExecutionOptions { get; }
-		ThreadingOptions ThreadingOptions { get; }
 		EnvironmentOptions EnvironmentOptions { get; }
 
 		IRun Compile();

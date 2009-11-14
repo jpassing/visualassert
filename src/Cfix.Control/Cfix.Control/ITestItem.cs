@@ -11,7 +11,7 @@ namespace Cfix.Control
 		ShurtCircuitRunOnSetupFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_SETUP_FAILURE,
 		ShortCircuitRunOnFailure = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_FAILURE,
 
-		CatureStackTraces = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES
+		CaptureStackTraces = ( int ) Native.NativeAction.CFIX_FIXTURE_EXECUTION_CAPTURE_STACK_TRACES
 	}
 
 	public interface ITestItem : IDisposable

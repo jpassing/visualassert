@@ -104,6 +104,7 @@ IClassFactory& CfixctlpGetStackTraceFrameFactory();
 HRESULT CfixctlpCreateExecutionContextAdapter(
 	__in ICfixTestModule *Module,
 	__in ICfixProcessEventSink *ProcessSink,
+	__in BOOL AutoAdjustCurrentDirectory,
 	__out PCFIX_EXECUTION_CONTEXT *Context
 	);
 

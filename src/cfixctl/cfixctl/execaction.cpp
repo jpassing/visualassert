@@ -281,7 +281,7 @@ STDMETHODIMP ExecutionAction::Run(
 		return E_POINTER;
 	}
 
-	if ( Flags > CFIXCTL_ACTION_COM_NEUTRAL )
+	if ( Flags > ( CFIXCTL_ACTION_COM_NEUTRAL | CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY ) )
 	{
 		return E_INVALIDARG;
 	}
@@ -313,6 +313,7 @@ STDMETHODIMP ExecutionAction::Run(
 	Hr = CfixctlpCreateExecutionContextAdapter(
 		this->Module,
 		ProcessSink,
+		( Flags & CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY ),
 		&Adapter );
 	if ( FAILED( Hr ) )
 	{

@@ -11,8 +11,7 @@ namespace Cfix.Control.RunControl
 	{
 		private readonly AgentSet agentSet;
 		private readonly ExecutionOptions executionOptions;
-		private readonly ThreadingOptions threadingOptions;
-		private readonly EnvironmentOptions envOptions;
+		private readonly EnvironmentOptions environmentOptions;
 		private readonly Run run;
 		private readonly bool allowIncompatibleModules;
 
@@ -77,8 +76,7 @@ namespace Cfix.Control.RunControl
 			AgentSet agentSet,
 			IDispositionPolicy policy,
 			ExecutionOptions executionOptions,
-			ThreadingOptions threadingOptions,
-			EnvironmentOptions envOptions,
+			EnvironmentOptions environmentOptions,
 			bool allowIncompatibleModules
 			)
 		{
@@ -89,8 +87,7 @@ namespace Cfix.Control.RunControl
 
 			this.agentSet = agentSet;
 			this.executionOptions = executionOptions;
-			this.threadingOptions = threadingOptions;
-			this.envOptions = envOptions;
+			this.environmentOptions = environmentOptions;
 
 			this.allowIncompatibleModules = allowIncompatibleModules;
 			this.run = new Run( policy );
@@ -100,15 +97,13 @@ namespace Cfix.Control.RunControl
 			IAgent agent,
 			IDispositionPolicy policy,
 			ExecutionOptions executionOptions,
-			ThreadingOptions threadingOptions,
-			EnvironmentOptions envOptions
+			EnvironmentOptions environmentOptions
 			)
 			: this(
 				CreateSingleArchitectureAgentSet( agent ),
 				policy,
 				executionOptions,
-				threadingOptions,
-				envOptions,
+				environmentOptions,
 				true )
 		{ }
 
@@ -121,14 +116,9 @@ namespace Cfix.Control.RunControl
 			get { return this.executionOptions; }
 		}
 
-		public ThreadingOptions ThreadingOptions
-		{
-			get { return this.threadingOptions; }
-		}
-
 		public EnvironmentOptions EnvironmentOptions
 		{
-			get { return this.envOptions; }
+			get { return this.environmentOptions; }
 		}
 
 		public void Add( IAction action )

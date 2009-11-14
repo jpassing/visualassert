@@ -186,6 +186,7 @@ library Cfixctl
 	}
 
 	const ULONG CFIXCTL_ACTION_COM_NEUTRAL = 1;
+	const ULONG CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY = 2;
 
 	[
 	  object,

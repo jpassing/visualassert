@@ -199,7 +199,6 @@ namespace Cfix.Control.Native
 					events,
 					result,
 					compiler.ExecutionOptions,
-					compiler.ThreadingOptions,
 					compiler.EnvironmentOptions ) );
 		}
 

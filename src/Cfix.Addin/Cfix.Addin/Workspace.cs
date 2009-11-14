@@ -492,7 +492,6 @@ namespace Cfix.Addin
 					this.runAgents,
 					GetDispositionPolicy( debug ),
 					this.config.ExecutionOptions,
-					this.config.ThreadingOptions,
 					this.config.EnvironmentOptions,
 					allowArchMixing );
 				compiler.Add( item );

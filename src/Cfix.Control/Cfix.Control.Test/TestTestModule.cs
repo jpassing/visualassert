@@ -76,8 +76,7 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					ExecutionOptions.None,
-					ThreadingOptions.ComNeutralThreading,
-					EnvironmentOptions.AutoAdjustCurrentDirectory );
+					EnvironmentOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
 					sink,
@@ -127,8 +126,7 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					ExecutionOptions.None,
-					ThreadingOptions.ComNeutralThreading,
-					EnvironmentOptions.None );
+					EnvironmentOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
 					sink,
@@ -178,8 +176,7 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					ExecutionOptions.None,
-					ThreadingOptions.ComNeutralThreading,
-					EnvironmentOptions.None );
+					EnvironmentOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
 					sink,
@@ -235,8 +232,7 @@ namespace Cfix.Control.Test
 					new StandardDispositionPolicy(
 						Disposition.Break, Disposition.Break ),
 					ExecutionOptions.None,
-					ThreadingOptions.ComNeutralThreading,
-					EnvironmentOptions.None );
+					EnvironmentOptions.ComNeutralThreading );
 				mod.Add(
 					comp,
 					sink,
@@ -267,10 +263,10 @@ namespace Cfix.Control.Test
 		[Test]
 		public void LoadTestlibAndTerminate()
 		{
-			ThreadingOptions[] opts = { 
-					ThreadingOptions.None, ThreadingOptions.ComNeutralThreading };
+			EnvironmentOptions[] opts = { 
+					EnvironmentOptions.None, EnvironmentOptions.ComNeutralThreading };
 
-			foreach ( ThreadingOptions opt in opts )
+			foreach ( EnvironmentOptions opt in opts )
 			{
 				using ( IHost host = this.target.CreateHost() )
 				{
@@ -299,8 +295,7 @@ namespace Cfix.Control.Test
 						new StandardDispositionPolicy(
 							Disposition.Break, Disposition.Break ),
 						ExecutionOptions.None,
-						ThreadingOptions.ComNeutralThreading,
-						EnvironmentOptions.None );
+						EnvironmentOptions.ComNeutralThreading );
 					comp.Add( mod );
 					IRun run = comp.Compile();
 					AutoResetEvent done = new AutoResetEvent( false );

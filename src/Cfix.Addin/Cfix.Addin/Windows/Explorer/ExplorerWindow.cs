@@ -106,7 +106,7 @@ namespace Cfix.Addin.Windows.Explorer
 					== ExecutionOptions.ShortCircuitRunOnFailure;
 			
 			this.captureStackTracesMenuItem.Checked =
-				( executionOpts & ExecutionOptions.CatureStackTraces ) != 0;
+				( executionOpts & ExecutionOptions.CaptureStackTraces ) != 0;
 
 			SetInfoPanel();
 		}
@@ -126,7 +126,7 @@ namespace Cfix.Addin.Windows.Explorer
 
 			if ( this.captureStackTracesMenuItem.Checked )
 			{
-				options |= ExecutionOptions.CatureStackTraces;
+				options |= ExecutionOptions.CaptureStackTraces;
 			}
 
 			this.workspace.Configuration.ExecutionOptions = options;

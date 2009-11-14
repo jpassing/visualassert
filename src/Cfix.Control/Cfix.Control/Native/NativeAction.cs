@@ -17,6 +17,7 @@ namespace Cfix.Control.Native
 	internal class NativeAction : IAction
 	{
 		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
+		public const uint CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY = 2;
 
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_FIXTURE_ON_FAILURE	= 1;
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_SETUP_FAILURE	= 2;
@@ -26,8 +27,7 @@ namespace Cfix.Control.Native
 
 		private readonly NativeTestItem item;
 		private readonly ExecutionOptions executionOptions;
-		private readonly ThreadingOptions threadingOptions;
-		private readonly EnvironmentOptions envOptions;
+		private readonly EnvironmentOptions environmentOptions;
 
 		private readonly IResultItem result;
 		private readonly IActionEvents events;
@@ -41,13 +41,11 @@ namespace Cfix.Control.Native
 			private readonly Agent agent;
 			private readonly IResultItem result;
 			private readonly IActionEvents events;
-			private readonly bool autoAdjustCurrentDirectory;
 
 			public Sink( 
 				Agent agent,
 				IResultItem result, 
-				IActionEvents events,
-				bool autoAdjustCurrentDirectory 
+				IActionEvents events
 				)
 			{
 				//
@@ -66,7 +64,6 @@ namespace Cfix.Control.Native
 				this.agent = agent;
 				this.result = result;
 				this.events = events;
-				this.autoAdjustCurrentDirectory = autoAdjustCurrentDirectory;
 			}
 
 			/*------------------------------------------------------------------
@@ -94,15 +91,6 @@ namespace Cfix.Control.Native
 			{
 				try
 				{
-					if ( this.autoAdjustCurrentDirectory )
-					{
-						//
-						// Set CWD to directory the module resides in.
-						//
-						Environment.CurrentDirectory =
-							new FileInfo( module.GetPath() ).Directory.FullName;
-					}
-					
 					if ( this.result.Item is TestModule )
 					{
 						//
@@ -171,8 +159,7 @@ namespace Cfix.Control.Native
 			IActionEvents events,
 			IResultItem result,
 			ExecutionOptions executionOptions,
-			ThreadingOptions threadingOptions,
-			EnvironmentOptions envOptions
+			EnvironmentOptions environmentOptions
 			)
 		{
 			Debug.Assert( item != null );
@@ -181,8 +168,7 @@ namespace Cfix.Control.Native
 			this.item = item;
 			this.events = events;
 			this.executionOptions = executionOptions;
-			this.threadingOptions = threadingOptions;
-			this.envOptions = envOptions;
+			this.environmentOptions = environmentOptions;
 
 			this.result = result;
 		}
@@ -295,9 +281,8 @@ namespace Cfix.Control.Native
 						new Sink(
 							this.item.Module.Agent,
 							this.result,
-							this.events,
-							( this.envOptions & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 ),
-						( uint ) this.threadingOptions );
+							this.events ),
+						( uint ) this.environmentOptions );
 				}
 			}
 			finally

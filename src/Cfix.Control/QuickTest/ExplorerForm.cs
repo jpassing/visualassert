@@ -88,7 +88,6 @@ namespace QuickTest
 					new StandardDispositionPolicy(
 							Disposition.Continue, Disposition.Break ),
 					ExecutionOptions.None,
-					ThreadingOptions.None,
 					EnvironmentOptions.None,
 					true );
 				comp.Add( ( IRunnableTestItem ) mod );

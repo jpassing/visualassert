@@ -365,28 +365,13 @@ namespace Cfix.Addin
 			}
 		}
 
-		public ThreadingOptions ThreadingOptions
-		{
-			get
-			{
-				return ( ThreadingOptions ) this.key.GetValue(
-					"ThreadingOptions", ThreadingOptions.ComNeutralThreading );
-			}
-			set
-			{
-				this.key.SetValue(
-					"ThreadingOptions",
-					value,
-					RegistryValueKind.DWord );
-			}
-		}
-
 		public EnvironmentOptions EnvironmentOptions
 		{
 			get
 			{
 				return ( EnvironmentOptions ) this.key.GetValue(
-					"EnvironmentOptions", EnvironmentOptions.AutoAdjustCurrentDirectory );
+					"EnvironmentOptions",
+					EnvironmentOptions.ComNeutralThreading | EnvironmentOptions.AutoAdjustCurrentDirectory );
 			}
 			set
 			{

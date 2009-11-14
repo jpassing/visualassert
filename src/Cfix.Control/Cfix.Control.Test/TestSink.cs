@@ -288,7 +288,7 @@ namespace Cfix.Control.Test
 								Sink sink = new Sink( mask );
 								ctlAction.Run(
 									sink,
-									( uint ) ThreadingOptions.ComNeutralThreading );
+									( uint ) EnvironmentOptions.ComNeutralThreading );
 							}
 							catch ( ArgumentException )
 							{

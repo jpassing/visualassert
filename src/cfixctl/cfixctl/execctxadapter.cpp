@@ -6,6 +6,7 @@
  *		2009, Johannes Passing. All rights reserved.
  */
 
+#include <shlwapi.h>
 #include "cfixctlp.h"
 
 C_ASSERT( CfixctlDispositionContinue	== CfixContinue );
@@ -35,6 +36,8 @@ typedef struct _CFIXCTLP_EXEC_CONTEXT
 	ICfixTestÌtemEventSink *TestCaseSink;				// May be NULL.
 
 	volatile BOOL IssueAbort;
+
+	BOOL AutoAdjustCurrentDirectory;
 } CFIXCTLP_EXEC_CONTEXT, *PCFIXCTLP_EXEC_CONTEXT;
 
 /*----------------------------------------------------------------------
@@ -86,6 +89,48 @@ static ICfixReportEventSink* CfixctlsGetEffectiveReportSink(
 		ASSERT( !"No Sink" );
 		return NULL;
 	}
+}
+
+static HRESULT CfixctlsGetModuleDirectory(
+	__in ICfixTestModule *Module,
+	__in SIZE_T BufferCount,
+	__out_ecount( BufferCount ) PWSTR Buffer 
+	)
+{
+	ASSERT( Module );
+	ASSERT( BufferCount );
+	ASSERT( Buffer );
+
+	if ( BufferCount > MAX_PATH )
+	{
+		return E_INVALIDARG;	// We are using shlwapi.
+	}
+
+	//
+	// Obtain path of module.
+	//
+
+	BSTR BstrPath;
+	HRESULT Hr = Module->GetPath( &BstrPath );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	Hr = StringCchCopy( Buffer, BufferCount, BstrPath );
+	SysFreeString( BstrPath );
+
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	//
+	// Strip the file name.
+	//
+	PathRemoveFileSpec( Buffer );
+	PathAddBackslash( Buffer );
+	return S_OK;
 }
 
 /*----------------------------------------------------------------------
@@ -331,6 +376,28 @@ static HRESULT CfixctlsExecCtxBeforeFixtureStart(
 		return CFIXCTL_E_USER_ABORT;
 	}
 
+	if ( Context->AutoAdjustCurrentDirectory )
+	{
+		WCHAR DirectoryPath[ MAX_PATH ];
+		HRESULT Hr = CfixctlsGetModuleDirectory( 
+			Context->Module,
+			_countof( DirectoryPath ),
+			DirectoryPath );
+
+		if ( FAILED( Hr ) )
+		{
+			return Hr;
+		}
+
+		CFIXCTLP_TRACE( 
+			( L"ExecCtxAdapter: SetCurrentDirectory( %s )\n", DirectoryPath ) );
+
+		if ( ! SetCurrentDirectory( DirectoryPath ) )
+		{
+			return HRESULT_FROM_WIN32( GetLastError() );
+		}
+	}
+
 	//
 	// Obtain new fixture sink.
 	//
@@ -425,7 +492,7 @@ static VOID CfixctlsExecCtxAfterFixtureFinish(
 		//
 		// Does not really matter.
 		//
-		CFIXCTLP_TRACE( ( L"AfterFixtureFinish failed: 0x%08X", Hr ) );
+		CFIXCTLP_TRACE( ( L"AfterFixtureFinish failed: 0x%08X\n", Hr ) );
 	}
 
 	Context->FixtureSink->Release();
@@ -460,7 +527,7 @@ static VOID CfixctlsExecCtxAfterTestCaseFinish(
 		//
 		// Does not really matter.
 		//
-		CFIXCTLP_TRACE( ( L"AfterTestCaseFinish failed: 0x%08X", Hr ) );
+		CFIXCTLP_TRACE( ( L"AfterTestCaseFinish failed: 0x%08X\n", Hr ) );
 	}
 
 	Context->TestCaseSink->Release();
@@ -556,6 +623,7 @@ static VOID CfixctlsExecCtxOnUnhandledException(
 HRESULT CfixctlpCreateExecutionContextAdapter(
 	__in ICfixTestModule *Module,
 	__in ICfixProcessEventSink *ProcessSink,
+	__in BOOL AutoAdjustCurrentDirectory,
 	__out PCFIX_EXECUTION_CONTEXT *Context
 	)
 {
@@ -590,6 +658,7 @@ HRESULT CfixctlpCreateExecutionContextAdapter(
 	NewContext->Module						= ModuleInternal;
 	NewContext->ProcessSink					= ProcessSink;
 	NewContext->IssueAbort					= FALSE;
+	NewContext->AutoAdjustCurrentDirectory	= AutoAdjustCurrentDirectory;
 
 	NewContext->Base.Version				= CFIX_TEST_CONTEXT_VERSION;
 	NewContext->Base.ReportEvent			= CfixctlsExecCtxReportEvent;
