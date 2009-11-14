@@ -283,7 +283,14 @@ namespace Cfix.Addin
 			// is safe to do in-process and there is no need to set up a 
 			// special environment and search path.
 			//
-			this.searchAgent = CreateInProcessLocalAgent( Architecture.I386 );
+			if ( config.SearchOutOfProcess )
+			{
+				this.searchAgent = CreateOutOfProcessLocalAgent( Architecture.I386 );
+			}
+			else
+			{
+				this.searchAgent = CreateInProcessLocalAgent( Architecture.I386 );
+			}
 			
 			//
 			// N.B. We only need the Stop command for the Terminator.

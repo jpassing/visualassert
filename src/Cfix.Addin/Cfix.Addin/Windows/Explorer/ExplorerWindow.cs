@@ -29,8 +29,6 @@ namespace Cfix.Addin.Windows.Explorer
 	{
 		public static readonly Guid Guid = new Guid( "e89c09c9-4e89-4ae2-b328-79dcbdfd852c" );
 
-		private string lastUsedDirectory = null;
-
 		private Workspace workspace;
 		private DTE2 dte;
 		private Window window;
@@ -564,7 +562,7 @@ namespace Cfix.Addin.Windows.Explorer
 				if ( ! dialog.Canceled )
 				{
 					string directoryPath = dialog.FullName;
-					this.lastUsedDirectory = directoryPath;
+					this.workspace.Configuration.MostRecentlyUsedDirectory = directoryPath;
 					ExploreDirectoryOrFile( directoryPath );
 				}
 			}
@@ -576,9 +574,10 @@ namespace Cfix.Addin.Windows.Explorer
 
 		private void dialog_OnInitialized( ShellBrowseForFolderDialog sender, ShellBrowseForFolderDialog.InitializedEventArgs args )
 		{
-			if ( lastUsedDirectory != null )
+			string mruDirectory = this.workspace.Configuration.MostRecentlyUsedDirectory;
+			if ( mruDirectory != null )
 			{
-				sender.SetSelection( args.hwnd, this.lastUsedDirectory );
+				sender.SetSelection( args.hwnd, mruDirectory );
 			}
 		}
 

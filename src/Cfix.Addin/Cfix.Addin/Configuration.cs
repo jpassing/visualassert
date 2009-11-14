@@ -396,5 +396,36 @@ namespace Cfix.Addin
 					RegistryValueKind.DWord );
 			}
 		}
+
+		public string MostRecentlyUsedDirectory
+		{
+			get
+			{
+				return ( string ) this.key.GetValue( "MruDirectory", null );;
+			}
+			set
+			{
+				this.key.SetValue( "MruDirectory", value, RegistryValueKind.String );
+			}
+		}
+
+		/*----------------------------------------------------------------------
+		 * Advanced.
+		 */
+
+		public bool SearchOutOfProcess
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "SearchOutOfProcess", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"SearchOutOfProcess",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
 	}
 }
