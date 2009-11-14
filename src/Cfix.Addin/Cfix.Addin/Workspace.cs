@@ -107,7 +107,7 @@ namespace Cfix.Addin
 			}
 		}
 
-		private IAgent CreateLocalAgent( Architecture arch )
+		private IAgent CreateOutOfProcessLocalAgent( Architecture arch )
 		{
 			Debug.Assert( this.config != null );
 
@@ -137,6 +137,24 @@ namespace Cfix.Addin
 			return agent;
 		}
 
+		private IAgent CreateInProcessLocalAgent( Architecture arch )
+		{
+			Debug.Assert( this.config != null );
+
+			IAgent agent = Agent.CreateLocalAgent(
+				arch,
+				true,
+				this.config.HostCreationOptions );
+			agent.SetTrialLicenseCookie( this.config.Cookie );
+
+			//
+			// N.B. No need to specify environment or search path.
+			// (would not work either)
+			//
+
+			return agent;
+		}
+
 		/*++
 		 * Create AgentSet for all supported architectures.
 		 --*/
@@ -149,17 +167,17 @@ namespace Cfix.Addin
 			{
 				case Architecture.Amd64:
 					target.AddArchitecture(
-						CreateLocalAgent(
+						CreateOutOfProcessLocalAgent(
 							Architecture.Amd64 ) );
 					target.AddArchitecture(
-						CreateLocalAgent(
+						CreateOutOfProcessLocalAgent(
 							Architecture.I386 ) );
 
 					break;
 
 				case Architecture.I386:
 					target.AddArchitecture(
-						CreateLocalAgent(
+						CreateOutOfProcessLocalAgent(
 							Architecture.I386 ) );
 					break;
 
@@ -258,9 +276,14 @@ namespace Cfix.Addin
 			this.session = new Session();
 
 			//
-			// N.B. Search target is always i386 and inproc.
+			// N.B. Search target is always i386 merely because this works on
+			// all machines.
 			//
-			this.searchAgent = CreateLocalAgent( Architecture.I386 );
+			// N.B. Searching does not involve loading test modules, so it 
+			// is safe to do in-process and there is no need to set up a 
+			// special environment and search path.
+			//
+			this.searchAgent = CreateInProcessLocalAgent( Architecture.I386 );
 			
 			//
 			// N.B. We only need the Stop command for the Terminator.
