@@ -492,6 +492,7 @@ namespace Cfix.Addin.Windows.Explorer
 		private void slnCollection_Closed( object sender, EventArgs e )
 		{
 			this.workspace.Session.Tests = null;
+			this.statusText.Text = Strings.NoSlnLoaded;
 		}
 
 		/*----------------------------------------------------------------------
