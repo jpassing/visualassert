@@ -10,7 +10,7 @@ namespace Cfix.Addin.Windows
         public static readonly Bitmap CfixIcon = Icons.CfixTransparent;
 #elif VS90
         public static readonly Color WindowBackColor = SystemColors.Control;
-        public static readonly Bitmap CfixIcon = Icons.CfixTickWithAlmostGreenBg;
+        public static readonly Bitmap CfixIcon = Icons.CfixTransparent;
 #else // VS80
 		public static readonly Color WindowBackColor = SystemColors.Control;
         public static readonly Bitmap CfixIcon = Icons.CfixTickWithMagentaBg;
