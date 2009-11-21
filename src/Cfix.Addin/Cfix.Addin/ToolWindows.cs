@@ -14,6 +14,7 @@ using Cfix.Addin.Dte;
 using Cfix.Addin.Windows.Explorer;
 using Cfix.Addin.Windows.Run;
 using EnvDTE;
+using EnvDTE80;
 
 namespace Cfix.Addin
 {
@@ -21,7 +22,10 @@ namespace Cfix.Addin
 	{
 		private const string LogWindowName = "Visual Assert Log";
 
-		private readonly VisualAssert addin;
+		private readonly DTE2 dte;
+		private AddIn addin;
+		private readonly Workspace workspace;
+
 		private readonly string extraCaption;
 		private readonly bool disableControls;
 
@@ -30,11 +34,14 @@ namespace Cfix.Addin
 		private OutputWindowPane logOutputWindow;
 
 		internal ToolWindows( 
-			VisualAssert addin,
+			DTE2 dte,
+			AddIn addin,
 			Workspace ws
 			)
 		{
+			this.dte = dte;
 			this.addin = addin;
+			this.workspace = ws;
 
 			try
 			{
@@ -113,12 +120,12 @@ namespace Cfix.Addin
 			// activate them.
 			//
 
-			if ( this.addin.Workspace.Configuration.ExplorerWindowVisible )
+			if ( this.workspace.Configuration.ExplorerWindowVisible )
 			{
 				Explorer.Activate();
 			}
 
-			if ( this.addin.Workspace.Configuration.RunWindowVisible )
+			if ( this.workspace.Configuration.RunWindowVisible )
 			{
 				Run.Activate();
 			}
@@ -128,13 +135,13 @@ namespace Cfix.Addin
 		{
 			if ( this.explorer != null )
 			{
-				this.addin.Workspace.Configuration.ExplorerWindowVisible =
+				this.workspace.Configuration.ExplorerWindowVisible =
 					this.explorer.Visible;
 			}
 
 			if ( this.run != null )
 			{
-				this.addin.Workspace.Configuration.RunWindowVisible =
+				this.workspace.Configuration.RunWindowVisible =
 					this.run.Visible;
 			}
 		}
@@ -151,13 +158,14 @@ namespace Cfix.Addin
 				if ( this.explorer == null )
 				{
 					this.explorer = DteToolWindow<ExplorerWindow>.Create(
+						this.dte,
 						this.addin,
 						Strings.ExplorerWindowCaption + " " + this.extraCaption,
 						ExplorerWindow.Guid,
                         Windows.Chrome.CfixIcon );
 					this.explorer.UserControl.Initialize( 
-						this.addin.Workspace,
-						this.addin.DTE,
+						this.workspace,
+						this.dte,
 						this.explorer.Window );
 
 					this.explorer.DefaultHeight = 400;
@@ -180,13 +188,14 @@ namespace Cfix.Addin
 				if ( this.run == null )
 				{
 					this.run= DteToolWindow<RunWindow>.Create(
+						this.dte,
 						this.addin,
 						Strings.RunWindowCaption + " " + this.extraCaption,
 						RunWindow.Guid,
                         Windows.Chrome.CfixIcon);
 					this.run.UserControl.Initialize(
-						this.addin.Workspace,
-						this.addin.DTE,
+						this.workspace,
+						this.dte,
 						this.run.Window );
 
 					this.run.DefaultHeight = 300;
@@ -212,7 +221,7 @@ namespace Cfix.Addin
 					// Try using existing.
 					//
 					OutputWindowPanes panes = 
-						this.addin.DTE.ToolWindows.OutputWindow.OutputWindowPanes;
+						this.dte.ToolWindows.OutputWindow.OutputWindowPanes;
 					try
 					{
 						this.logOutputWindow = panes.Item( LogWindowName );

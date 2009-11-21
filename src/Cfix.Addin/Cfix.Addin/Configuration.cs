@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.Win32;
 using Cfix.Control;
 using Cfix.Control.Native;
+using EnvDTE80;
 
 namespace Cfix.Addin
 {
@@ -31,19 +32,19 @@ namespace Cfix.Addin
 
 		private Configuration(
 			RegistryKey key, 
-			VisualAssert addin 
+			DTE2 dte
 			)
 		{
 			this.key = key;
 
-			if ( addin.DTE.Globals.get_VariableExists( CookieName ) )
+			if ( dte.Globals.get_VariableExists( CookieName ) )
 			{
 				//
 				// Try using it.
 				//
 				try
 				{
-					this.cookie = uint.Parse( ( string ) addin.DTE.Globals[ CookieName ] );
+					this.cookie = uint.Parse( ( string ) dte.Globals[ CookieName ] );
 				}
 				catch
 				{
@@ -57,8 +58,8 @@ namespace Cfix.Addin
 				//
 				this.cookie = ( uint ) DateTime.Now.Subtract( DateTime.FromFileTime( 0 ) ).Days;
 
-				addin.DTE.Globals[ CookieName ] = this.cookie.ToString();
-				addin.DTE.Globals.set_VariablePersists( CookieName, true );
+				dte.Globals[ CookieName ] = this.cookie.ToString();
+				dte.Globals.set_VariablePersists( CookieName, true );
 			}
 		}
 
@@ -78,11 +79,11 @@ namespace Cfix.Addin
 			GC.SuppressFinalize( this );
 		}
 
-		public static Configuration Load( VisualAssert addin )
+		public static Configuration Load( DTE2 dte )
 		{
 			return new Configuration(
-				Registry.CurrentUser.CreateSubKey( BaseKeyPath ), 
-				addin
+				Registry.CurrentUser.CreateSubKey( BaseKeyPath ),
+				dte
 				);
 		}
 

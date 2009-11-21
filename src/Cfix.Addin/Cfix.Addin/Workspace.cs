@@ -21,7 +21,7 @@ namespace Cfix.Addin
 	{
 		private readonly string VSStd97CmdID = "{5EFC7975-14BC-11CF-9B2B-00AA00573819}";
 
-		private readonly VisualAssert addin;
+		private readonly DTE2 dte;
 		private readonly Configuration config;
 		private readonly ToolWindows toolWindows;
 		private readonly IAgent searchAgent;
@@ -218,7 +218,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				return this.addin.DTE.Windows.Item(
+				return this.dte.Windows.Item(
 					"{34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3}" );
 			}
 		}
@@ -267,11 +267,11 @@ namespace Cfix.Addin
 		 * ctor/dtor.
 		 */
 
-		internal Workspace( VisualAssert addin )
+		internal Workspace( DTE2 dte, AddIn addin )
 		{
-			this.addin = addin;
+			this.dte = dte;
 
-			this.config = Configuration.Load( addin );
+			this.config = Configuration.Load( dte );
 			this.runAgents = CreateRunAgent();
 			this.session = new Session();
 
@@ -295,15 +295,14 @@ namespace Cfix.Addin
 			//
 			// N.B. We only need the Stop command for the Terminator.
 			//
-			Events2 events = ( Events2 ) addin.Events;
-			this.cmdEvents = events.get_CommandEvents( 
+			this.cmdEvents = dte.Events.get_CommandEvents( 
 				VSStd97CmdID, 
 				( int ) Dte.VSStd97CmdID.Stop );
 
 			//
 			// N.B. Uses agents and config, therefore, create last.
 			//
-			this.toolWindows = new ToolWindows( addin, this );
+			this.toolWindows = new ToolWindows( dte, addin, this );
 		}
 
 		~Workspace()
@@ -334,7 +333,7 @@ namespace Cfix.Addin
 				this.config.Dispose();
 			}
 
-			this.addin.DTE.Debugger.DetachAll();
+			this.dte.Debugger.DetachAll();
 		}
 
 		public void Dispose()
@@ -396,7 +395,7 @@ namespace Cfix.Addin
 		{
 			get
 			{
-				Solution curSolution = this.addin.DTE.Solution;
+				Solution curSolution = this.dte.Solution;
 				return curSolution.Projects.Count > 0;
 			}
 		}
@@ -453,7 +452,7 @@ namespace Cfix.Addin
 					//
 					// Bail out. Show error window.
 					//
-					this.addin.DTE.ToolWindows.ErrorList.Parent.Activate();
+					this.dte.ToolWindows.ErrorList.Parent.Activate();
 					return;
 				}
 
@@ -514,7 +513,7 @@ namespace Cfix.Addin
 					{
 						try
 						{
-							Debugger2 debugger = ( Debugger2 ) this.addin.DTE.Debugger;
+							Debugger2 debugger = ( Debugger2 ) this.dte.Debugger;
 							Process2 process = FindProcess( debugger, e.HostProcessId );
 							if ( process == null )
 							{

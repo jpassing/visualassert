@@ -73,7 +73,7 @@ namespace Cfix.Addin.Dte
 		}
 
 		private DteToolWindow(
-			DteConnect connect,
+			DTE2 dte,
 			Window window,
 			ControlT userControl
 			)
@@ -81,7 +81,7 @@ namespace Cfix.Addin.Dte
 			this.window = window;
 			this.userControl = userControl;
 
-			this.events = connect.Events.get_WindowEvents( null );
+			this.events = dte.Events.get_WindowEvents( null );
 
 			this.events.WindowClosing += WindowClosingEvent;
 			this.events.WindowActivated += WindowActivateEvent;
@@ -115,19 +115,20 @@ namespace Cfix.Addin.Dte
 		 */
 
 		public static DteToolWindow<ControlT> Create(
-			DteConnect connect,
+			DTE2 dte,
+			AddIn addin,
 			String caption,
 			Guid positionGuid,
 			Bitmap tabIcon
 			)
 		{
-			Windows2 win = ( Windows2 ) connect.DTE.Windows;
+			Windows2 win = ( Windows2 ) dte.Windows;
 			object userControl = null;
 
 			Type userControlType = typeof( ControlT );
 			
 			Window wnd = win.CreateToolWindow2(
-				connect.Addin,
+				addin,
 				userControlType.Assembly.Location,
 				userControlType.FullName,
 				caption,
@@ -138,7 +139,7 @@ namespace Cfix.Addin.Dte
 				IconUtil.GetIPictureDispFromImage( tabIcon ) );
 
 			return new DteToolWindow<ControlT>( 
-				connect, 
+				dte, 
 				wnd, 
 				( ControlT ) userControl ); ;
 		}
