@@ -94,8 +94,8 @@
 				</para>
 				<note>
 					You can assign custom keyboard shortcuts to the commands listed above in the Options 
-					dialog of Visual Studio (Environment &gt; Keyboard) -- all cfix commands are prefixed
-					 with <emphasis>Visual Assert</emphasis>.
+					dialog of Visual Studio (Environment &gt; Keyboard) -- all commands are prefixed
+					 with <emphasis>VisualAssert</emphasis>.
 				</note>
 			</simplesect>
 			
