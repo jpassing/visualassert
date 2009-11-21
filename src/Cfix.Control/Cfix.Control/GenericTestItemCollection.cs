@@ -369,5 +369,36 @@ namespace Cfix.Control
 				return count;
 			}
 		}
+
+		//[Browsable( false )]
+		public bool IsRunnable
+		{
+			get
+			{
+				if ( RunnableItemCountRecursive > 0 )
+				{
+					return true;
+				}
+				else
+				{
+					lock ( this.listLock )
+					{
+						foreach ( ITestItem item in this.list )
+						{
+							if ( item is IRunnableTestItem )
+							{
+								//
+								// At least one item is runnable, that
+								// is enough.
+								//
+								return true;
+							}
+						}
+
+						return false;
+					}
+				}
+			}
+		}
 	}
 }

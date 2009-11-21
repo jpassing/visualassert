@@ -34,8 +34,26 @@ namespace Cfix.Control
 	public interface IRunnableTestItemCollection
 		: ITestItemCollection, IRunnableTestItem
 	{
+		/*++
+		 * Number of immediate children that are runnable, i.e. 
+		 * implement IRunnableItem.
+		 --*/
 		uint RunnableItemCount { get; }
+
+		/*++
+		 * Number of all children that are runnable, i.e. 
+		 * implement IRunnableItem.
+		 --*/
 		uint RunnableItemCountRecursive { get; }
+
+		/*++
+		 * Indicates whether this collection is worth running. If
+		 * RunnableItemCountRecursive == 0, it depends on the nature of
+		 * the items (invalid or not) whether it can still be run or not.
+		 * 
+		 * If RunnableItemCountRecursive > 0, IsRunnable is always true.
+		 --*/
+		bool IsRunnable { get; }
 	}
 
 	/*++

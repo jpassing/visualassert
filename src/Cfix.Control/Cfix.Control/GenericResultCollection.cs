@@ -67,7 +67,7 @@ namespace Cfix.Control
 					// If the collection contains non-runnables only,
 					// omit it.
 					//
-					resultRequired = facColl.RunnableItemCount > 0;
+					resultRequired = facColl.IsRunnable;
 				}
 				else
 				{
