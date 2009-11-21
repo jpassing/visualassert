@@ -432,5 +432,18 @@ namespace Cfix.Control.Native
 				return count;
 			}
 		}
+
+		//[Browsable( false )]
+		public bool IsRunnable 
+		{
+			get
+			{
+				//
+				// Native tests are always runnable, even though
+				// they might be empty (#338).
+				//
+				return true;
+			}
+		}
 	}
 }
