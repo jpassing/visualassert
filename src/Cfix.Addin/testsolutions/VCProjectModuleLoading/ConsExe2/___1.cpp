@@ -12,6 +12,6 @@ public:
 };
 
 CFIXCC_BEGIN_CLASS(___1)
-	CFIXCC_METHOD(Test)
+//	CFIXCC_METHOD(Test)
 CFIXCC_END_CLASS()
 

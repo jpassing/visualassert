@@ -21,6 +21,7 @@ public:
 
 	void After()
 	{
+		CFIX_ASSERT(!"hjhj");
 	}
 
 	void Test()

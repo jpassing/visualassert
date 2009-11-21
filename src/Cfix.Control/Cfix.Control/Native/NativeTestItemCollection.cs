@@ -387,7 +387,7 @@ namespace Cfix.Control.Native
 		 * IRunnableTestItemCollection.
 		 */
 
-		[Browsable( false )]
+		//[Browsable( false )]
 		public uint RunnableItemCount
 		{
 			get
