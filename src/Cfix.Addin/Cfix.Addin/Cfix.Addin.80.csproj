@@ -116,7 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
-    <Compile Include="ToolWindows.cs" />
+    <Compile Include="Windows\ToolWindows.cs" />
     <Compile Include="Windows\About\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>

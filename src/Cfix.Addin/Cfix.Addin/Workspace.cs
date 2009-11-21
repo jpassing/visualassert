@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Cfix.Control;
 using Cfix.Control.Native;
 using Cfix.Control.RunControl;
+using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 
@@ -23,7 +24,7 @@ namespace Cfix.Addin
 
 		private readonly DTE2 dte;
 		private readonly Configuration config;
-		private readonly ToolWindows toolWindows;
+		private readonly Cfix.Addin.Windows.ToolWindows toolWindows;
 		private readonly IAgent searchAgent;
 		private readonly AgentSet runAgents;
 		private readonly ISession session;
@@ -302,7 +303,7 @@ namespace Cfix.Addin
 			//
 			// N.B. Uses agents and config, therefore, create last.
 			//
-			this.toolWindows = new ToolWindows( dte, addin, this );
+			this.toolWindows = new Cfix.Addin.Windows.ToolWindows( dte, addin, this );
 		}
 
 		~Workspace()
@@ -371,7 +372,7 @@ namespace Cfix.Addin
 			return this.cachedLicenseInfo;
 		}
 
-		internal ToolWindows ToolWindows
+		internal Cfix.Addin.Windows.ToolWindows ToolWindows
 		{
 			get { return this.toolWindows; }
 		}

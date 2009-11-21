@@ -19,6 +19,7 @@ using EnvDTE80;
 using Cfix.Addin.Dte;
 using Cfix.Addin.ShellBrowse;
 using Cfix.Addin.Test;
+using Cfix.Addin.Windows;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;

@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Control.Native;
 using Cfix.Control.Ui.Result;
+using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 

@@ -123,7 +123,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
-    <Compile Include="ToolWindows.cs" />
     <Compile Include="Windows\About\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +149,7 @@
     <Compile Include="Windows\Run\RunWindow.Designer.cs">
       <DependentUpon>RunWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ToolWindows.cs" />
     <Compile Include="Windows\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>

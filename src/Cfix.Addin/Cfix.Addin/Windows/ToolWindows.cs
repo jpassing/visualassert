@@ -16,7 +16,7 @@ using Cfix.Addin.Windows.Run;
 using EnvDTE;
 using EnvDTE80;
 
-namespace Cfix.Addin
+namespace Cfix.Addin.Windows
 {
 	internal class ToolWindows : IDisposable
 	{

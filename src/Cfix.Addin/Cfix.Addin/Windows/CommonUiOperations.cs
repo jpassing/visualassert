@@ -12,6 +12,7 @@ using System.IO;
 using Cfix.Control;
 using Cfix.Control.Native;
 using Cfix.Addin.Test;
+using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.VCCodeModel;
