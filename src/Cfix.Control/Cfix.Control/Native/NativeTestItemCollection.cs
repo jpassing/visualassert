@@ -15,7 +15,7 @@ namespace Cfix.Control.Native
 	 *		Threadsafe.
 	 --*/
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1063:ImplementIDisposableCorrectly" )]
-	public abstract class NativeTestItemCollection : NativeTestItem, ITestItemCollection
+	public abstract class NativeTestItemCollection : NativeTestItem, ITestItemCollection, IRunnableTestItemCollection
 	{
 		//
 		// Children, indexed by ordinal.
@@ -380,6 +380,56 @@ namespace Cfix.Control.Native
 			if ( ItemRemoved != null )
 			{
 				ItemRemoved( this, new TestItemEventArgs( item ) );
+			}
+		}
+
+		/*--------------------------------------------------------------
+		 * IRunnableTestItemCollection.
+		 */
+
+		[Browsable( false )]
+		public uint RunnableItemCount
+		{
+			get
+			{
+				uint count = 0;
+				lock ( this.updateLock )
+				{
+					foreach ( ITestItem item in this.subItems )
+					{
+						if ( item is IRunnableTestItem )
+						{
+							count++;
+						}
+					}
+				}
+
+				return count;
+			}
+		}
+
+		//[Browsable( false )]
+		public uint RunnableItemCountRecursive
+		{
+			get
+			{
+				uint count = 0;
+				lock ( this.updateLock )
+				{
+					foreach ( ITestItem item in this.subItems )
+					{
+						if ( item is IRunnableTestItemCollection )
+						{
+							count += ( ( IRunnableTestItemCollection ) item ).RunnableItemCountRecursive;
+						}
+						else if ( item is IRunnableTestItem )
+						{
+							count++;
+						}
+					}
+				}
+
+				return count;
 			}
 		}
 	}

@@ -35,6 +35,7 @@ namespace Cfix.Control
 		: ITestItemCollection, IRunnableTestItem
 	{
 		uint RunnableItemCount { get; }
+		uint RunnableItemCountRecursive { get; }
 	}
 
 	/*++

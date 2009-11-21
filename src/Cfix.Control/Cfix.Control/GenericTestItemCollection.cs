@@ -344,5 +344,30 @@ namespace Cfix.Control
 				return count;
 			}
 		}
+
+		//[Browsable( false )]
+		public uint RunnableItemCountRecursive
+		{
+			get
+			{
+				uint count = 0;
+				lock ( this.listLock )
+				{
+					foreach ( ITestItem item in this.list )
+					{
+						if ( item is IRunnableTestItemCollection )
+						{
+							count += ( ( IRunnableTestItemCollection ) item ).RunnableItemCountRecursive;
+						}
+						else if ( item is IRunnableTestItem )
+						{
+							count++;
+						}
+					}
+				}
+
+				return count;
+			}
+		}
 	}
 }

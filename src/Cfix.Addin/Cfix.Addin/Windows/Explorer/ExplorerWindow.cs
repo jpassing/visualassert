@@ -155,8 +155,11 @@ namespace Cfix.Addin.Windows.Explorer
 		{
 			if ( this.explorer.Session.Tests != null )
 			{
-				uint testCount = this.explorer.Session.Tests.ItemCountRecursive;
-				if ( testCount > 0 )
+				IRunnableTestItemCollection runnableColl =
+					this.explorer.Session.Tests as IRunnableTestItemCollection;
+
+				uint testCount;
+				if ( runnableColl != null && ( testCount = runnableColl.RunnableItemCountRecursive ) > 0 )
 				{
 					SetInfoPanel( String.Format(
 						Strings.DefaultInfoText,
@@ -354,6 +357,8 @@ namespace Cfix.Addin.Windows.Explorer
 			try
 			{
 				slnColl.RefreshProject( project );
+
+				SetInfoPanel();
 			}
 			catch ( Exception x )
 			{
