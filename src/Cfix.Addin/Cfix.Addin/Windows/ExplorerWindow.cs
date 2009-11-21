@@ -24,7 +24,7 @@ using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
 
-namespace Cfix.Addin.Windows.Explorer
+namespace Cfix.Addin.Windows
 {
 	public partial class ExplorerWindow : UserControl, IDteToolWindowControl
 	{

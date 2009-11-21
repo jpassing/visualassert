@@ -1,4 +1,4 @@
-namespace Cfix.Addin.Windows.About
+namespace Cfix.Addin.Windows
 {
 	partial class AboutWindow
 	{

@@ -11,8 +11,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Cfix.Control;
 using Cfix.Addin.Dte;
-using Cfix.Addin.Windows.Explorer;
-using Cfix.Addin.Windows.Run;
 using EnvDTE;
 using EnvDTE80;
 

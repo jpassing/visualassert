@@ -1,4 +1,4 @@
-namespace Cfix.Addin.Windows.Run
+namespace Cfix.Addin.Windows
 {
 	partial class RunWindow
 	{

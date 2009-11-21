@@ -117,19 +117,19 @@
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Windows\ToolWindows.cs" />
-    <Compile Include="Windows\About\AboutWindow.cs">
+    <Compile Include="Windows\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\About\AboutWindow.Designer.cs">
+    <Compile Include="Windows\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Test\VCProjectTestCollection.cs" />
-    <Compile Include="Windows\Explorer\ExplorerWindow.cs">
+    <Compile Include="Windows\ExplorerWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Explorer\ExplorerWindow.Designer.cs">
+    <Compile Include="Windows\ExplorerWindow.Designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Test\SolutionTestCollection.cs" />
@@ -140,10 +140,10 @@
     <Compile Include="Windows\PlainProgressBar.Designer.cs">
       <DependentUpon>PlainProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Run\RunWindow.cs">
+    <Compile Include="Windows\RunWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Run\RunWindow.Designer.cs">
+    <Compile Include="Windows\RunWindow.Designer.cs">
       <DependentUpon>RunWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\TransparentLabel.cs">
@@ -168,15 +168,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\About\AboutWindow.resx">
+    <EmbeddedResource Include="Windows\AboutWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Explorer\ExplorerWindow.resx">
+    <EmbeddedResource Include="Windows\ExplorerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Run\RunWindow.resx">
+    <EmbeddedResource Include="Windows\RunWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RunWindow.cs</DependentUpon>
     </EmbeddedResource>

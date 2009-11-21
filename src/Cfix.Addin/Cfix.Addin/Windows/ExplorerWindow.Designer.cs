@@ -1,4 +1,4 @@
-namespace Cfix.Addin.Windows.Explorer
+namespace Cfix.Addin.Windows
 {
 	partial class ExplorerWindow
 	{

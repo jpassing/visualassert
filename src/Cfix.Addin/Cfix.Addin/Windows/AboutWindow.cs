@@ -11,7 +11,7 @@ using Cfix.Control;
 using Cfix.Addin.Windows;
 using System.Runtime.InteropServices;
 
-namespace Cfix.Addin.Windows.About
+namespace Cfix.Addin.Windows
 {
 	public partial class AboutWindow : Form
 	{

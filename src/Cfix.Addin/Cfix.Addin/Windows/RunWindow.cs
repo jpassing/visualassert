@@ -21,7 +21,7 @@ using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 
-namespace Cfix.Addin.Windows.Run
+namespace Cfix.Addin.Windows
 {
 	public partial class RunWindow : UserControl
 	{
