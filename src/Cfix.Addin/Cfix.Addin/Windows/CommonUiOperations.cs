@@ -41,6 +41,20 @@ namespace Cfix.Addin.Windows
 			return null;
 		}
 
+		public static void RunItemOnCommandLine( 
+			Workspace ws, 
+			ITestItem item
+			)
+		{
+			NativeTestItem nativeItem = item as NativeTestItem;
+			Debug.Assert( nativeItem != null );
+
+			if ( nativeItem != null )
+			{
+				ws.RunItemOnCommandLine( nativeItem );
+			}
+		}
+
 		public static void RunItem( Workspace ws, ITestItem item, bool debug )
 		{
 			try

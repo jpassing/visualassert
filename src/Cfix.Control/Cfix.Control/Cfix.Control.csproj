@@ -66,6 +66,7 @@
     <Compile Include="ITask.cs" />
     <Compile Include="HostEnvironment.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Native\CfixCommandLine.cs" />
     <Compile Include="Native\HostTestModule.cs" />
     <Compile Include="Native\ITestCodeElement.cs" />
     <Compile Include="Native\LocalProcessWatcher.cs" />

@@ -66,7 +66,7 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		internal override TestModule Module
+		public override TestModule Module
 		{
 			get
 			{

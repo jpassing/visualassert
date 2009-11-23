@@ -217,6 +217,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\RunOnConsole.bmp" />
+    <None Include="Icons\Console.bmp" />
     <None Include="Icons\Information.gif" />
     <None Include="Resources\Information.bmp" />
     <None Include="Icons\Properties.bmp" />

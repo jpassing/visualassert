@@ -15,6 +15,7 @@ using Cfix.Control.RunControl;
 using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
+using System.IO;
 
 namespace Cfix.Addin
 {
@@ -561,6 +562,56 @@ namespace Cfix.Addin
 					run.Dispose();
 					throw;
 				}
+			}
+		}
+
+		public void RunItemOnCommandLine( 
+			NativeTestItem item
+			)
+		{
+			NativeTestItem nativeItem = item as NativeTestItem;
+			Debug.Assert( nativeItem != null );
+
+			if ( !BuildNodeIfRequired( item ) )
+			{
+				//
+				// Bail out. Show error window.
+				//
+				this.dte.ToolWindows.ErrorList.Parent.Activate();
+				return;
+			}
+
+			Architecture arch = nativeItem.Module.Architecture;
+			
+			string cfixCmdLine = "\"" + 
+				Path.Combine(
+					Directories.GetBinDirectory( arch ),
+					CfixCommandLine.GetExecutableName( arch ) ) + "\" " +
+				CfixCommandLine.CreateArguments(
+					nativeItem,
+					this.Configuration.ExecutionOptions,
+					GetDispositionPolicy( false ),
+					true,
+					false,
+					false );
+
+			ProcessStartInfo procInfo = new ProcessStartInfo();
+
+			if ( ( this.config.EnvironmentOptions & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 )
+			{
+				procInfo.WorkingDirectory = new FileInfo( nativeItem.Module.Path ).Directory.FullName;
+			}
+
+			procInfo.FileName = "cmd.exe";
+			procInfo.Arguments = "/c \"" + cfixCmdLine + "\" & pause";
+
+			try
+			{
+				System.Diagnostics.Process.Start( procInfo );
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
 			}
 		}
 	}

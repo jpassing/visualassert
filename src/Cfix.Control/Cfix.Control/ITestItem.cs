@@ -2,7 +2,7 @@ using System;
 
 namespace Cfix.Control
 {
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags" )]
+	[Flags]
 	public enum ExecutionOptions
 	{
 		None = 0,

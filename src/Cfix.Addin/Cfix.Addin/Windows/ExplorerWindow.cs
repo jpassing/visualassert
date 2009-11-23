@@ -192,6 +192,7 @@ namespace Cfix.Addin.Windows
 
 			this.ctxMenuRefreshButton.Visible = e.Item is ITestItemCollection;
 			this.ctxMenuViewCodeButton.Visible = e.Item is ITestCodeElement;
+			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -679,6 +680,13 @@ namespace Cfix.Addin.Windows
 				this.workspace,
 				this.contextMenuReferenceNode.Item, 
 				false );
+		}
+
+		private void ctxMenuRunOnConsole_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemOnCommandLine(
+				this.workspace,
+				this.contextMenuReferenceNode.Item );
 		}
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )

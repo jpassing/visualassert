@@ -109,6 +109,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap Console {
+            get {
+                object obj = ResourceManager.GetObject("Console", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Delete {
             get {
                 object obj = ResourceManager.GetObject("Delete", resourceCulture);
@@ -259,6 +266,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap ResultsMask {
             get {
                 object obj = ResourceManager.GetObject("ResultsMask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap RunOnConsole {
+            get {
+                object obj = ResourceManager.GetObject("RunOnConsole", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

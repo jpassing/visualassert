@@ -144,7 +144,7 @@ namespace Cfix.Control.Native
 			GC.SuppressFinalize( this );
 		}
 		
-		internal virtual TestModule Module
+		public virtual TestModule Module
 		{
 			get
 			{
