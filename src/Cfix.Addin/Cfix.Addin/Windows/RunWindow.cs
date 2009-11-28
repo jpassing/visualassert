@@ -572,5 +572,15 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
+		private void selectNextFailureButton_Click( object sender, EventArgs e )
+		{
+			this.results.HighlightNextFailure( false );
+		}
+
+		private void selectPrevFailureButton_Click( object sender, EventArgs e )
+		{
+			this.results.HighlightNextFailure( true );
+		}
+
 	}
 }

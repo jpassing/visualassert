@@ -242,9 +242,23 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap NextFailure {
+            get {
+                object obj = ResourceManager.GetObject("NextFailure", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Options {
             get {
                 object obj = ResourceManager.GetObject("Options", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap PrevFailure {
+            get {
+                object obj = ResourceManager.GetObject("PrevFailure", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

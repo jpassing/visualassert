@@ -189,11 +189,25 @@ namespace Aga.Controls.Tree
 		{
 			get
 			{
-				if (_parent != null)
+				if ( _parent != null )
 				{
 					int index = Index;
-					if (index < _parent.Nodes.Count - 1)
-						return _parent.Nodes[index + 1];
+					if ( index < _parent.Nodes.Count - 1 )
+						return _parent.Nodes[ index + 1 ];
+				}
+				return null;
+			}
+		}
+
+		public TreeNodeAdv PreviousNode
+		{
+			get
+			{
+				if ( _parent != null )
+				{
+					int index = Index;
+					if ( index > 0 )
+						return _parent.Nodes[ index - 1 ];
 				}
 				return null;
 			}

@@ -15,6 +15,7 @@ namespace Cfix.Control.Ui.Result
 		public event EventHandler<TreePathEventArgs> StructureChanged;
 
 		private delegate void VoidDelegate();
+		public delegate bool VisitNodeDelegate( TreeNodeAdv node );
 
 		private readonly ImageList iconsList;
 		private readonly TreeViewAdv tree;
@@ -209,6 +210,11 @@ namespace Cfix.Control.Ui.Result
 
 			if ( !this.rootExpanded )
 			{
+				//
+				// Make sure that the the tree is initially expanded.
+				// All-successful nodes are then collapsed automatically.
+				//
+
 				Expand( new TreePath( this.root ), true );
 				this.rootExpanded = true;
 			}
@@ -360,6 +366,100 @@ namespace Cfix.Control.Ui.Result
 		public void ExpandAll()
 		{
 			Expand( TreePath.Empty, true );
+		}
+
+		public bool Traverse( VisitNodeDelegate callback, TreeNodeAdv node, bool reverse )
+		{
+			Debug.Assert( node != null );
+			Debug.Assert( callback != null );
+
+			if ( !reverse )
+			{
+				if ( callback( node ) )
+				{
+					return true;
+				}
+			}
+
+			//
+			// Recursively visit children (if any).
+			//
+			IEnumerable<TreeNodeAdv> children;
+			if ( reverse )
+			{
+				List<TreeNodeAdv> list = new List<TreeNodeAdv>( node.Children );
+				list.Reverse();
+				children = list;
+			}
+			else
+			{
+				children = new List<TreeNodeAdv>( node.Children );
+			}
+
+			foreach ( TreeNodeAdv child in children )
+			{
+				if ( Traverse( callback, child, reverse ) )
+				{
+					return true;
+				}
+			}
+
+			if ( reverse )
+			{
+				if ( callback( node ) )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private TreeNodeAdv GetNeighborNode( TreeNodeAdv node, bool reverse )
+		{
+			TreeNodeAdv neighbor = reverse
+					? node.PreviousNode
+					: node.NextNode;
+
+			if ( neighbor != null )
+			{
+				return neighbor;
+			}
+			else if ( node.Parent != null )
+			{
+				return GetNeighborNode( node.Parent, reverse );
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public bool Traverse( VisitNodeDelegate callback, TreeNodeAdv node, bool reverse, bool escalate )
+		{
+			Debug.Assert( node != null );
+			Debug.Assert( callback != null );
+
+			if ( Traverse( callback, node, reverse ) )
+			{
+				return true;
+			}
+
+			if ( escalate )
+			{
+				while ( ( node = GetNeighborNode( node, reverse ) )!= null )
+				{
+					//
+					// Recurse.
+					//
+					if ( Traverse( callback, node, reverse, false ) )
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 }

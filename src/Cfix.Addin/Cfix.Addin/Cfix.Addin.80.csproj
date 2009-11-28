@@ -228,6 +228,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\PrevFailure.bmp" />
+    <None Include="Icons\NextFailure.bmp" />
+    <None Include="Icons\UpArrow.bmp" />
+    <None Include="Icons\DownArrow.bmp" />
     <None Include="Icons\FailureFilter.bmp" />
     <None Include="Icons\DebugWithWinDbg.bmp" />
     <None Include="Icons\RunOnConsole.bmp" />

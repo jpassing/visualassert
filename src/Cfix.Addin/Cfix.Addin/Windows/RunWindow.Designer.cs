@@ -38,14 +38,17 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
-			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
 			this.redebugButton = new System.Windows.Forms.ToolStripButton();
 			this.restartButton = new System.Windows.Forms.ToolStripButton();
 			this.showLogButton = new System.Windows.Forms.ToolStripButton();
 			this.showFailuresOnlyButton = new System.Windows.Forms.ToolStripButton();
+			this.selectPrevFailureButton = new System.Windows.Forms.ToolStripButton();
+			this.selectNextFailureButton = new System.Windows.Forms.ToolStripButton();
 			this.scrollLockButton = new System.Windows.Forms.ToolStripButton();
 			this.lameButton = new System.Windows.Forms.ToolStripButton();
 			this.docButton = new System.Windows.Forms.ToolStripButton();
@@ -68,6 +71,9 @@ namespace Cfix.Addin.Windows
             this.showLogButton,
             this.toolStripSeparator1,
             this.showFailuresOnlyButton,
+            this.selectPrevFailureButton,
+            this.selectNextFailureButton,
+            this.toolStripSeparator4,
             this.scrollLockButton,
             this.toolStripSeparator3,
             this.lameButton,
@@ -123,6 +129,22 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
 			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
 			// 
+			// results
+			// 
+			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+						| System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.results.AutoScrollToActiveNode = false;
+			this.results.FailureNodeContextMenu = null;
+			this.results.Filter = ( ( Cfix.Control.Ui.Result.ResultNodeFilter ) ( ( Cfix.Control.Ui.Result.ResultNodeFilter.FailureNodes | Cfix.Control.Ui.Result.ResultNodeFilter.NonFailureNodes ) ) );
+			this.results.Location = new System.Drawing.Point( 3, 48 );
+			this.results.Name = "results";
+			this.results.ResultNodeContextMenu = null;
+			this.results.Run = null;
+			this.results.Size = new System.Drawing.Size( 555, 214 );
+			this.results.TabIndex = 1;
+			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
+			// 
 			// progressLabel
 			// 
 			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
@@ -145,21 +167,10 @@ namespace Cfix.Addin.Windows
 			this.progressBar.TabIndex = 2;
 			this.progressBar.Value = 0;
 			// 
-			// results
+			// toolStripSeparator4
 			// 
-			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.results.AutoScrollToActiveNode = false;
-			this.results.FailureNodeContextMenu = null;
-			this.results.Filter = ( ( Cfix.Control.Ui.Result.ResultNodeFilter ) ( ( Cfix.Control.Ui.Result.ResultNodeFilter.FailureNodes | Cfix.Control.Ui.Result.ResultNodeFilter.NonFailureNodes ) ) );
-			this.results.Location = new System.Drawing.Point( 3, 48 );
-			this.results.Name = "results";
-			this.results.ResultNodeContextMenu = null;
-			this.results.Run = null;
-			this.results.Size = new System.Drawing.Size( 555, 214 );
-			this.results.TabIndex = 1;
-			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size( 6, 25 );
 			// 
 			// terminateButton
 			// 
@@ -214,6 +225,26 @@ namespace Cfix.Addin.Windows
 			this.showFailuresOnlyButton.Size = new System.Drawing.Size( 23, 22 );
 			this.showFailuresOnlyButton.Text = "Show Failures Only";
 			this.showFailuresOnlyButton.Click += new System.EventHandler( this.showFailuresOnlyButton_Click );
+			// 
+			// selectPrevFailureButton
+			// 
+			this.selectPrevFailureButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.selectPrevFailureButton.Image = global::Cfix.Addin.Icons.PrevFailure;
+			this.selectPrevFailureButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.selectPrevFailureButton.Name = "selectPrevFailureButton";
+			this.selectPrevFailureButton.Size = new System.Drawing.Size( 23, 22 );
+			this.selectPrevFailureButton.Text = "Previous Failure";
+			this.selectPrevFailureButton.Click += new System.EventHandler( this.selectPrevFailureButton_Click );
+			// 
+			// selectNextFailureButton
+			// 
+			this.selectNextFailureButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.selectNextFailureButton.Image = global::Cfix.Addin.Icons.NextFailure;
+			this.selectNextFailureButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.selectNextFailureButton.Name = "selectNextFailureButton";
+			this.selectNextFailureButton.Size = new System.Drawing.Size( 23, 22 );
+			this.selectNextFailureButton.Text = "Next Failure";
+			this.selectNextFailureButton.Click += new System.EventHandler( this.selectNextFailureButton_Click );
 			// 
 			// scrollLockButton
 			// 
@@ -326,5 +357,8 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewProperties;
 		private System.Windows.Forms.ToolStripButton showFailuresOnlyButton;
+		private System.Windows.Forms.ToolStripButton selectNextFailureButton;
+		private System.Windows.Forms.ToolStripButton selectPrevFailureButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 	}
 }

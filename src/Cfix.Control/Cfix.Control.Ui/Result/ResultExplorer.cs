@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
+using System.Diagnostics;
 
 namespace Cfix.Control.Ui.Result
 {
@@ -281,6 +282,44 @@ namespace Cfix.Control.Ui.Result
 		public void ExpandAll()
 		{
 			this.model.ExpandAll();
+		}
+
+		public void HighlightNextFailure( bool reverse )
+		{
+			TreeNodeAdv selected = this.tree.SelectedNode ?? this.tree.Root;
+			
+			this.model.Traverse( 
+				( ResultModel.VisitNodeDelegate ) delegate( TreeNodeAdv node )
+				{
+					if ( ReferenceEquals( node, this.tree.SelectedNode ) )
+					{
+						//
+						// Ignore current.
+						//
+						return false;
+					}
+
+					FailureNode failureNode = node.Tag as FailureNode;
+					if ( failureNode != null )
+					{
+						//
+						// Hightlight this node.
+						//
+						this.tree.SelectedNode = node;
+
+						//
+						// Stop traversal.
+						//
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				},
+				selected, 
+				reverse, 
+				true );
 		}
 	}
 
