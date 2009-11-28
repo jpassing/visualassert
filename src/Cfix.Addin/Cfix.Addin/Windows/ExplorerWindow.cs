@@ -108,6 +108,10 @@ namespace Cfix.Addin.Windows
 			
 			this.captureStackTracesMenuItem.Checked =
 				( executionOpts & ExecutionOptions.CaptureStackTraces ) != 0;
+			this.breakOnFailedAssertionsWhenDebuggingMenuItem.Checked =
+				( config.DefaultDebugFailedAssertionDisposition == Disposition.Break );
+			this.breakOnUnhandledExceptionsWhenDebuggingMenuItem.Checked =
+				( config.DefaultDebugUnhandledExceptionDisposition == Disposition.Break );
 
 			SetInfoPanel();
 		}
@@ -748,7 +752,14 @@ namespace Cfix.Addin.Windows
 				this.shortCircuitRunOnFailureMenuItem.Checked = false;
 			}
 
-			UpdateExecutionOptions();
+			try
+			{
+				UpdateExecutionOptions();
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
+			}
 		}
 
 		private void shurtcutRunOnFailureButton_Click( object sender, EventArgs e )
@@ -758,13 +769,58 @@ namespace Cfix.Addin.Windows
 				this.shortCircuitFixtureOnFailureMenuItem.Checked = false;
 			}
 
-			UpdateExecutionOptions();
+			try
+			{
+				UpdateExecutionOptions();
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
+			}
 		}
 
 
 		private void captureStackTracesMenuItem_Click( object sender, EventArgs e )
 		{
-			UpdateExecutionOptions();
+			try
+			{
+				UpdateExecutionOptions();
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
+			}
+		}
+
+
+		private void breakOnFailedAssertionsWhenDebuggingMenuItem_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				this.workspace.Configuration.DefaultDebugFailedAssertionDisposition =
+					breakOnFailedAssertionsWhenDebuggingMenuItem.Checked
+						? Disposition.Break
+						: Disposition.Continue;
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
+			}
+		}
+
+		private void breakOnUnhandledExceptionsWhenDebuggingMenuItem_Click( object sender, EventArgs e )
+		{
+			try
+			{
+				this.workspace.Configuration.DefaultDebugUnhandledExceptionDisposition =
+					breakOnUnhandledExceptionsWhenDebuggingMenuItem.Checked
+						? Disposition.Break
+						: Disposition.Continue;
+			}
+			catch ( Exception x )
+			{
+				VisualAssert.HandleError( x );
+			}
 		}
 
 		/*----------------------------------------------------------------------
@@ -787,5 +843,6 @@ namespace Cfix.Addin.Windows
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
+
 	}
 }
