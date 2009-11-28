@@ -37,12 +37,13 @@ namespace Cfix.Addin.Windows
 			this.separator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
-			this.ctxMenuSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.infoLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.infoBar = new Cfix.Addin.Windows.PlainProgressBar();
+			this.ctxMenuDebugWithWindbg = new System.Windows.Forms.ToolStripMenuItem();
 			this.infoIcon = new System.Windows.Forms.PictureBox();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -113,6 +114,7 @@ namespace Cfix.Addin.Windows
             this.ctxMenuDebugButton,
             this.ctxMenuRunButton,
             this.ctxMenuRunInConsole,
+            this.ctxMenuDebugWithWindbg,
             this.ctxMenuSeparator4,
             this.ctxMenuRefreshButton,
             this.ctxMenuViewCodeButton,
@@ -122,6 +124,11 @@ namespace Cfix.Addin.Windows
             this.ctxMenuViewProperties} );
 			this.ctxMenu.Name = "ctxMenu";
 			resources.ApplyResources( this.ctxMenu, "ctxMenu" );
+			// 
+			// ctxMenuSeparator4
+			// 
+			this.ctxMenuSeparator4.Name = "ctxMenuSeparator4";
+			resources.ApplyResources( this.ctxMenuSeparator4, "ctxMenuSeparator4" );
 			// 
 			// ctxMenuSeparator1
 			// 
@@ -140,11 +147,6 @@ namespace Cfix.Addin.Windows
 			this.explorer.NodeContextMenu = null;
 			this.explorer.NodeFactory = nodeFactory1;
 			// 
-			// ctxMenuSeparator4
-			// 
-			this.ctxMenuSeparator4.Name = "ctxMenuSeparator4";
-			resources.ApplyResources( this.ctxMenuSeparator4, "ctxMenuSeparator4" );
-			// 
 			// infoLabel
 			// 
 			resources.ApplyResources( this.infoLabel, "infoLabel" );
@@ -158,6 +160,13 @@ namespace Cfix.Addin.Windows
 			this.infoBar.Name = "infoBar";
 			this.infoBar.ProgressBarColor = System.Drawing.Color.Blue;
 			this.infoBar.Value = 0;
+			// 
+			// ctxMenuDebugWithWindbg
+			// 
+			this.ctxMenuDebugWithWindbg.Image = global::Cfix.Addin.Icons.DebugWithWinDbg;
+			resources.ApplyResources( this.ctxMenuDebugWithWindbg, "ctxMenuDebugWithWindbg" );
+			this.ctxMenuDebugWithWindbg.Name = "ctxMenuDebugWithWindbg";
+			this.ctxMenuDebugWithWindbg.Click += new System.EventHandler( this.ctxMenuDebugWithWindbg_Click );
 			// 
 			// infoIcon
 			// 
@@ -379,5 +388,6 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.PictureBox infoIcon;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInConsole;
 		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuDebugWithWindbg;
 	}
 }

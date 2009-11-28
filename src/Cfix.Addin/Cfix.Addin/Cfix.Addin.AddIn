@@ -15,4 +15,12 @@
 		<CommandPreload>1</CommandPreload>
 		<CommandLineSafe>0</CommandLineSafe>
 	</Addin>
+  <ToolsOptionsPage>
+    <Category Name="Visual Assert">
+      <SubCategory Name="WinDBG Integration">
+        <Assembly>D:\dev\wdev\cfixplus\trunk\bin\chk\i386\Cfix.Addin.80.dll</Assembly>
+        <FullClassName>Cfix.Addin.Windows.OptionsPageWindbg</FullClassName>
+      </SubCategory>
+    </Category>
+  </ToolsOptionsPage>
 </Extensibility>

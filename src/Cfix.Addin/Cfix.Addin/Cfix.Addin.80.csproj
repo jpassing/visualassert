@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArchitectureUtil.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +116,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OptionsPageWindbg.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageWindbg.Designer.cs">
+      <DependentUpon>OptionsPageWindbg.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ToolWindows.cs" />
     <Compile Include="Windows\AboutWindow.cs">
@@ -176,6 +183,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageWindbg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsPageWindbg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\RunWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RunWindow.cs</DependentUpon>
@@ -217,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\DebugWithWinDbg.bmp" />
     <None Include="Icons\RunOnConsole.bmp" />
     <None Include="Icons\Console.bmp" />
     <None Include="Icons\Information.gif" />
@@ -269,6 +281,9 @@
       <Project>{C48FD013-1C86-4C95-B4BA-126C8749E008}</Project>
       <Name>Cfix.Control</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

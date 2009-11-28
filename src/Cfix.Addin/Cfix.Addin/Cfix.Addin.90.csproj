@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArchitectureUtil.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,6 +140,12 @@
     <Compile Include="Windows\ExplorerWindow.designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\OptionsPageWindbg.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageWindbg.Designer.cs">
+      <DependentUpon>OptionsPageWindbg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PlainProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -180,6 +187,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ExplorerWindow.resx">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageWindbg.resx">
+      <DependentUpon>OptionsPageWindbg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\RunWindow.resx">
@@ -252,6 +263,9 @@
       <Project>{C48FD013-1C86-4C95-B4BA-126C8749E008}</Project>
       <Name>Cfix.Control</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

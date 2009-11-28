@@ -150,6 +150,12 @@
   <data name="EnterLicenseCmdCaption" xml:space="preserve">
     <value>Enter License Key...</value>
   </data>
+  <data name="ExecutableCouldNotBeLaunched" xml:space="preserve">
+    <value>The executable '{0}' could not be launched</value>
+  </data>
+  <data name="ExecutableNotFound" xml:space="preserve">
+    <value>The executable '{0}' could not be found</value>
+  </data>
   <data name="ExplorerCmdCaption" xml:space="preserve">
     <value>Test Explorer Window</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="IncompatibleModule" xml:space="preserve">
     <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type.</value>
+  </data>
+  <data name="InvalidWindbgInstallFolder" xml:space="preserve">
+    <value>The path '{0}' does not refer to a valid WinDBG installation folder</value>
   </data>
   <data name="MainMenuCaption" xml:space="preserve">
     <value>Vis&amp;ual Assert</value>
@@ -242,6 +251,12 @@
   </data>
   <data name="VcDirectoriesUpdated" xml:space="preserve">
     <value>The VC++ directory settings have been updated to include the cfix include and library directories. You may have to restart Visual Studio to have these changes take effect.</value>
+  </data>
+  <data name="WinDbgInstallFolder" xml:space="preserve">
+    <value>WinDBG installation folder</value>
+  </data>
+  <data name="WindbgNotConfigured" xml:space="preserve">
+    <value>WinDBG integration not configured yet. In the options dialog, open the 'Visual Assert/WinDBG Integration' page and configure WinDBG integration.</value>
   </data>
   <data name="WrongLicense" xml:space="preserve">
     <value>The installed license is not applicable for this product.</value>

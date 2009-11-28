@@ -43,7 +43,8 @@ namespace Cfix.Addin.Windows
 
 		public static void RunItemOnCommandLine( 
 			Workspace ws, 
-			ITestItem item
+			ITestItem item,
+			bool debug
 			)
 		{
 			NativeTestItem nativeItem = item as NativeTestItem;
@@ -51,7 +52,7 @@ namespace Cfix.Addin.Windows
 
 			if ( nativeItem != null )
 			{
-				ws.RunItemOnCommandLine( nativeItem );
+				ws.RunItemOnCommandLine( nativeItem, debug );
 			}
 		}
 

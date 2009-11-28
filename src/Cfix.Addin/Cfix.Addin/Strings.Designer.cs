@@ -160,6 +160,24 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The executable &apos;{0}&apos; could not be launched.
+        /// </summary>
+        internal static string ExecutableCouldNotBeLaunched {
+            get {
+                return ResourceManager.GetString("ExecutableCouldNotBeLaunched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The executable &apos;{0}&apos; could not be found.
+        /// </summary>
+        internal static string ExecutableNotFound {
+            get {
+                return ResourceManager.GetString("ExecutableNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test Explorer Window.
         /// </summary>
         internal static string ExplorerCmdCaption {
@@ -192,6 +210,15 @@ namespace Cfix.Addin {
         internal static string IncompatibleModule {
             get {
                 return ResourceManager.GetString("IncompatibleModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path &apos;{0}&apos; does not refer to a valid WinDBG installation folder.
+        /// </summary>
+        internal static string InvalidWindbgInstallFolder {
+            get {
+                return ResourceManager.GetString("InvalidWindbgInstallFolder", resourceCulture);
             }
         }
         
@@ -435,6 +462,24 @@ namespace Cfix.Addin {
         internal static string VcDirectoriesUpdated {
             get {
                 return ResourceManager.GetString("VcDirectoriesUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WinDBG installation folder.
+        /// </summary>
+        internal static string WinDbgInstallFolder {
+            get {
+                return ResourceManager.GetString("WinDbgInstallFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WinDBG integration not configured yet. In the options dialog, open the &apos;Visual Assert/WinDBG Integration&apos; page and configure WinDBG integration..
+        /// </summary>
+        internal static string WindbgNotConfigured {
+            get {
+                return ResourceManager.GetString("WindbgNotConfigured", resourceCulture);
             }
         }
         

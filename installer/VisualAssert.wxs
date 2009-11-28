@@ -137,6 +137,12 @@
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="8.0"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAssemblyVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    Value="[DirBinI386]cfix.addin.80.dll"/>
                 </Component>
               </Directory>
             </Directory>
@@ -161,6 +167,12 @@
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="9.0"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
                 </Component>
               </Directory>
             </Directory>

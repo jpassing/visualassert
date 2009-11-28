@@ -686,7 +686,16 @@ namespace Cfix.Addin.Windows
 		{
 			CommonUiOperations.RunItemOnCommandLine(
 				this.workspace,
-				this.contextMenuReferenceNode.Item );
+				this.contextMenuReferenceNode.Item,
+				false );
+		}
+
+		private void ctxMenuDebugWithWindbg_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemOnCommandLine(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				true );
 		}
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
@@ -778,6 +787,5 @@ namespace Cfix.Addin.Windows
 		{
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
-
 	}
 }

@@ -7,7 +7,7 @@ private:
 public:
 	void Test()
 	{
-		CFIX_INCONCLUSIVE(__TEXT("Not implemented"));
+		CFIX_FAIL(__TEXT("Not implemented"));
 	}
 };
 

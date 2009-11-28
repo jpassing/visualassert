@@ -87,28 +87,6 @@ namespace Cfix.Addin
 		 * Private - Agent creation.
 		 */
 
-		private static Architecture GetNativeArchitecture()
-		{
-			//
-			// N.B. Use CfixklGetNativeSystemInfo for downlevel compat.
-			//
-			Native.SYSTEM_INFO info = new Native.SYSTEM_INFO();
-			Native.CfixklGetNativeSystemInfo( ref info );
-
-			switch ( info.processorArchitecture )
-			{
-				case Native.PROCESSOR_ARCHITECTURE_AMD64:
-					return Architecture.Amd64;
-
-				case Native.PROCESSOR_ARCHITECTURE_INTEL:
-					return Architecture.I386;
-
-				default:
-					throw new CfixAddinException(
-						Strings.UnsupportedArchitecture );
-			}
-		}
-
 		private IAgent CreateOutOfProcessLocalAgent( Architecture arch )
 		{
 			Debug.Assert( this.config != null );
@@ -165,7 +143,7 @@ namespace Cfix.Addin
 			Debug.Assert( this.config != null );
 
 			AgentSet target = new AgentSet();
-			switch ( GetNativeArchitecture() )
+			switch ( ArchitectureUtil.NativeArchitecture )
 			{
 				case Architecture.Amd64:
 					target.AddArchitecture(
@@ -566,7 +544,8 @@ namespace Cfix.Addin
 		}
 
 		public void RunItemOnCommandLine( 
-			NativeTestItem item
+			NativeTestItem item,
+			bool debug
 			)
 		{
 			NativeTestItem nativeItem = item as NativeTestItem;
@@ -582,12 +561,11 @@ namespace Cfix.Addin
 			}
 
 			Architecture arch = nativeItem.Module.Architecture;
-			
-			string cfixCmdLine = "\"" + 
-				Path.Combine(
+
+			string cfixPath = Path.Combine(
 					Directories.GetBinDirectory( arch ),
-					CfixCommandLine.GetExecutableName( arch ) ) + "\" " +
-				CfixCommandLine.CreateArguments(
+					CfixCommandLine.GetExecutableName( arch ) );
+			string cfixArguments = CfixCommandLine.CreateArguments(
 					nativeItem,
 					this.Configuration.ExecutionOptions,
 					GetDispositionPolicy( false ),
@@ -595,23 +573,81 @@ namespace Cfix.Addin
 					false,
 					false );
 
+			string cfixCmdLine = "\"" + cfixPath + "\" " + cfixArguments;
+
+			if ( debug )
+			{
+				string windbgPath = this.Configuration.GetWinDbgInstallFolder( arch );
+				if ( String.IsNullOrEmpty( windbgPath ) )
+				{
+					VisualAssert.ShowInfo( Strings.WindbgNotConfigured );
+					return;
+				}
+				else
+				{
+					windbgPath = Path.Combine( windbgPath, "windbg.exe" );
+				}
+
+				SpawnProcess(
+					windbgPath,
+					this.Configuration.WinDbgAdditionalOptions + " " + cfixCmdLine,
+					nativeItem.Module.Path,
+					arch );
+			}
+			else
+			{
+				SpawnProcess(
+					Path.Combine( Environment.SystemDirectory, "cmd.exe" ),
+					"/c \"" + cfixCmdLine + "\" & pause",
+					nativeItem.Module.Path,
+					arch );
+			}
+		}
+
+		private void SpawnProcess( 
+			string executable, 
+			string arguments, 
+			string workingDir,
+			Architecture arch )
+		{
+			if ( !File.Exists( executable ) )
+			{
+				VisualAssert.ShowError( 
+					String.Format( Strings.ExecutableNotFound, executable ) );
+				return;
+			}
+
 			ProcessStartInfo procInfo = new ProcessStartInfo();
 
 			if ( ( this.config.EnvironmentOptions & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 )
 			{
-				procInfo.WorkingDirectory = new FileInfo( nativeItem.Module.Path ).Directory.FullName;
+				procInfo.WorkingDirectory = new FileInfo(
+					workingDir ).Directory.FullName;
 			}
-
-			procInfo.FileName = "cmd.exe";
-			procInfo.Arguments = "/c \"" + cfixCmdLine + "\" & pause";
 
 			try
 			{
+				procInfo.FileName = executable;
+				procInfo.Arguments = arguments;
+
+				procInfo.UseShellExecute = false;
+
+				//
+				// Add own library path to PATH s.t. custom hosts can
+				// find cfix.dll etc..
+				//
+				string pathEnvVar = procInfo.EnvironmentVariables[ "PATH" ];
+				procInfo.EnvironmentVariables[ "PATH" ] = 
+					( String.IsNullOrEmpty( pathEnvVar ) ? "" : pathEnvVar + ";" ) +
+					Directories.GetBinDirectory( arch );
+			
 				System.Diagnostics.Process.Start( procInfo );
 			}
 			catch ( Exception x )
 			{
-				VisualAssert.HandleError( x );
+				VisualAssert.HandleError( 
+					String.Format( Strings.ExecutableCouldNotBeLaunched, executable ), 
+					x );
 			}
 		}
 	}

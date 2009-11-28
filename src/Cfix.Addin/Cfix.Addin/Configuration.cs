@@ -395,6 +395,57 @@ namespace Cfix.Addin
 			}
 		}
 
+		public string WinDbgInstallFolder32
+		{
+			get
+			{
+				return ( string ) this.key.GetValue( "WinDbgInstallFolder32", null ); ;
+			}
+			set
+			{
+				this.key.SetValue( "WinDbgInstallFolder32", value, RegistryValueKind.String );
+			}
+		}
+
+		public string WinDbgInstallFolder64
+		{
+			get
+			{
+				return ( string ) this.key.GetValue( "WinDbgInstallFolder64", null ); ;
+			}
+			set
+			{
+				this.key.SetValue( "WinDbgInstallFolder64", value, RegistryValueKind.String );
+			}
+		}
+
+		public string GetWinDbgInstallFolder( Architecture arch )
+		{
+			switch ( arch )
+			{
+				case Architecture.I386:
+					return WinDbgInstallFolder32;
+
+				case Architecture.Amd64:
+					return WinDbgInstallFolder64;
+
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		public string WinDbgAdditionalOptions
+		{
+			get
+			{
+				return ( string ) this.key.GetValue( "WinDbgAdditionalOptions", null ); ;
+			}
+			set
+			{
+				this.key.SetValue( "WinDbgAdditionalOptions", value, RegistryValueKind.String );
+			}
+		}
+
 		/*----------------------------------------------------------------------
 		 * Advanced.
 		 */

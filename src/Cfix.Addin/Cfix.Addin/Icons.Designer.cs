@@ -116,6 +116,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap DebugWithWinDbg {
+            get {
+                object obj = ResourceManager.GetObject("DebugWithWinDbg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Delete {
             get {
                 object obj = ResourceManager.GetObject("Delete", resourceCulture);
