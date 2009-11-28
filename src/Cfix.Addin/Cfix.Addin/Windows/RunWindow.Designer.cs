@@ -31,27 +31,28 @@ namespace Cfix.Addin.Windows
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( RunWindow ) );
 			this.toolbar = new System.Windows.Forms.ToolStrip();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
+			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
+			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
 			this.terminateButton = new System.Windows.Forms.ToolStripButton();
 			this.redebugButton = new System.Windows.Forms.ToolStripButton();
 			this.restartButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.showLogButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.showFailuresOnlyButton = new System.Windows.Forms.ToolStripButton();
 			this.scrollLockButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.lameButton = new System.Windows.Forms.ToolStripButton();
 			this.docButton = new System.Windows.Forms.ToolStripButton();
-			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
-			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
-			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
-			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
-			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
 			this.toolbar.SuspendLayout();
 			this.resultCtxMenu.SuspendLayout();
 			this.stackTraceCtxMenu.SuspendLayout();
@@ -66,6 +67,7 @@ namespace Cfix.Addin.Windows
             this.toolStripSeparator2,
             this.showLogButton,
             this.toolStripSeparator1,
+            this.showFailuresOnlyButton,
             this.scrollLockButton,
             this.toolStripSeparator3,
             this.lameButton,
@@ -75,6 +77,89 @@ namespace Cfix.Addin.Windows
 			this.toolbar.Size = new System.Drawing.Size( 558, 25 );
 			this.toolbar.TabIndex = 0;
 			this.toolbar.Text = "toolStrip1";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size( 6, 25 );
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size( 6, 25 );
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size( 6, 25 );
+			// 
+			// resultCtxMenu
+			// 
+			this.resultCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuDebugButton,
+            this.ctxMenuRunButton,
+            this.ctxMenuViewCodeButton,
+            this.ctxMenuSeparator,
+            this.ctxMenuViewProperties} );
+			this.resultCtxMenu.Name = "resultCtxMenu";
+			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 98 );
+			// 
+			// ctxMenuSeparator
+			// 
+			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
+			this.ctxMenuSeparator.Size = new System.Drawing.Size( 239, 6 );
+			// 
+			// stackTraceCtxMenu
+			// 
+			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.ctxMenuCopyTraceButton} );
+			this.stackTraceCtxMenu.Name = "stackTraceCtxMenu";
+			this.stackTraceCtxMenu.Size = new System.Drawing.Size( 156, 26 );
+			// 
+			// ctxMenuCopyTraceButton
+			// 
+			this.ctxMenuCopyTraceButton.Name = "ctxMenuCopyTraceButton";
+			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
+			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
+			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
+			// 
+			// progressLabel
+			// 
+			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.progressLabel.Location = new System.Drawing.Point( 5, 28 );
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
+			this.progressLabel.TabIndex = 3;
+			this.progressLabel.TabStop = false;
+			// 
+			// progressBar
+			// 
+			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.progressBar.BackColor = System.Drawing.Color.LightYellow;
+			this.progressBar.Location = new System.Drawing.Point( 3, 25 );
+			this.progressBar.Name = "progressBar";
+			this.progressBar.ProgressBarColor = System.Drawing.Color.Blue;
+			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
+			this.progressBar.TabIndex = 2;
+			this.progressBar.Value = 0;
+			// 
+			// results
+			// 
+			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+						| System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.results.AutoScrollToActiveNode = false;
+			this.results.FailureNodeContextMenu = null;
+			this.results.Filter = ( ( Cfix.Control.Ui.Result.ResultNodeFilter ) ( ( Cfix.Control.Ui.Result.ResultNodeFilter.FailureNodes | Cfix.Control.Ui.Result.ResultNodeFilter.NonFailureNodes ) ) );
+			this.results.Location = new System.Drawing.Point( 3, 48 );
+			this.results.Name = "results";
+			this.results.ResultNodeContextMenu = null;
+			this.results.Run = null;
+			this.results.Size = new System.Drawing.Size( 555, 214 );
+			this.results.TabIndex = 1;
+			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
 			// 
 			// terminateButton
 			// 
@@ -109,11 +194,6 @@ namespace Cfix.Addin.Windows
 			this.restartButton.Text = "Restart Last Run Without Debugging";
 			this.restartButton.Click += new System.EventHandler( this.restartButton_Click );
 			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size( 6, 25 );
-			// 
 			// showLogButton
 			// 
 			this.showLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -124,10 +204,16 @@ namespace Cfix.Addin.Windows
 			this.showLogButton.Text = "Show Log";
 			this.showLogButton.Click += new System.EventHandler( this.showLogButton_Click );
 			// 
-			// toolStripSeparator1
+			// showFailuresOnlyButton
 			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size( 6, 25 );
+			this.showFailuresOnlyButton.CheckOnClick = true;
+			this.showFailuresOnlyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.showFailuresOnlyButton.Image = global::Cfix.Addin.Icons.FailureFilter;
+			this.showFailuresOnlyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.showFailuresOnlyButton.Name = "showFailuresOnlyButton";
+			this.showFailuresOnlyButton.Size = new System.Drawing.Size( 23, 22 );
+			this.showFailuresOnlyButton.Text = "Show Failures Only";
+			this.showFailuresOnlyButton.Click += new System.EventHandler( this.showFailuresOnlyButton_Click );
 			// 
 			// scrollLockButton
 			// 
@@ -139,11 +225,6 @@ namespace Cfix.Addin.Windows
 			this.scrollLockButton.Size = new System.Drawing.Size( 23, 22 );
 			this.scrollLockButton.Text = "Scroll Lock";
 			this.scrollLockButton.Click += new System.EventHandler( this.autoScrollButton_Click );
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size( 6, 25 );
 			// 
 			// lameButton
 			// 
@@ -164,17 +245,6 @@ namespace Cfix.Addin.Windows
 			this.docButton.Size = new System.Drawing.Size( 23, 22 );
 			this.docButton.Text = "Open Documentation";
 			this.docButton.Click += new System.EventHandler( this.docButton_Click );
-			// 
-			// resultCtxMenu
-			// 
-			this.resultCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.ctxMenuDebugButton,
-            this.ctxMenuRunButton,
-            this.ctxMenuViewCodeButton,
-            this.ctxMenuSeparator,
-            this.ctxMenuViewProperties} );
-			this.resultCtxMenu.Name = "resultCtxMenu";
-			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 98 );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -203,11 +273,6 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuViewCodeButton.Text = "View Code";
 			this.ctxMenuViewCodeButton.Click += new System.EventHandler( this.ctxMenuViewCodeButton_Click );
 			// 
-			// ctxMenuSeparator
-			// 
-			this.ctxMenuSeparator.Name = "ctxMenuSeparator";
-			this.ctxMenuSeparator.Size = new System.Drawing.Size( 239, 6 );
-			// 
 			// ctxMenuViewProperties
 			// 
 			this.ctxMenuViewProperties.Image = global::Cfix.Addin.Icons.Properties;
@@ -216,57 +281,6 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuViewProperties.Size = new System.Drawing.Size( 242, 22 );
 			this.ctxMenuViewProperties.Text = "Properties";
 			this.ctxMenuViewProperties.Click += new System.EventHandler( this.ctxMenuViewProperties_Click );
-			// 
-			// stackTraceCtxMenu
-			// 
-			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.ctxMenuCopyTraceButton} );
-			this.stackTraceCtxMenu.Name = "stackTraceCtxMenu";
-			this.stackTraceCtxMenu.Size = new System.Drawing.Size( 156, 26 );
-			// 
-			// ctxMenuCopyTraceButton
-			// 
-			this.ctxMenuCopyTraceButton.Name = "ctxMenuCopyTraceButton";
-			this.ctxMenuCopyTraceButton.Size = new System.Drawing.Size( 155, 22 );
-			this.ctxMenuCopyTraceButton.Text = "Copy stack trace";
-			this.ctxMenuCopyTraceButton.Click += new System.EventHandler( this.ctxMenuCopyTraceButton_Click );
-			// 
-			// results
-			// 
-			this.results.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.results.AutoScrollToActiveNode = false;
-			this.results.FailureNodeContextMenu = null;
-			this.results.Location = new System.Drawing.Point( 3, 48 );
-			this.results.Name = "results";
-			this.results.ResultNodeContextMenu = null;
-			this.results.Run = null;
-			this.results.Size = new System.Drawing.Size( 555, 214 );
-			this.results.TabIndex = 1;
-			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
-			// 
-			// progressLabel
-			// 
-			this.progressLabel.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.progressLabel.Location = new System.Drawing.Point( 5, 28 );
-			this.progressLabel.Name = "progressLabel";
-			this.progressLabel.Size = new System.Drawing.Size( 542, 23 );
-			this.progressLabel.TabIndex = 3;
-			this.progressLabel.TabStop = false;
-			// 
-			// progressBar
-			// 
-			this.progressBar.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.progressBar.BackColor = System.Drawing.Color.LightYellow;
-			this.progressBar.Location = new System.Drawing.Point( 3, 25 );
-			this.progressBar.Name = "progressBar";
-			this.progressBar.ProgressBarColor = System.Drawing.Color.Blue;
-			this.progressBar.Size = new System.Drawing.Size( 552, 20 );
-			this.progressBar.TabIndex = 2;
-			this.progressBar.Value = 0;
 			// 
 			// RunWindow
 			// 
@@ -311,5 +325,6 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewCodeButton;
 		private System.Windows.Forms.ToolStripSeparator ctxMenuSeparator;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewProperties;
+		private System.Windows.Forms.ToolStripButton showFailuresOnlyButton;
 	}
 }

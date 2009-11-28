@@ -125,6 +125,7 @@
     <None Include="Icons\Status_Pending.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Icons\Status_Running.bmp" />
   </ItemGroup>
   <ItemGroup>

@@ -172,6 +172,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap FailureFilter {
+            get {
+                object obj = ResourceManager.GetObject("FailureFilter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Feedback {
             get {
                 object obj = ResourceManager.GetObject("Feedback", resourceCulture);

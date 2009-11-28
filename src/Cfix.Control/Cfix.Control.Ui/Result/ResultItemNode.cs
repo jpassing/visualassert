@@ -51,22 +51,28 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		public IEnumerable<IResultNode> GetChildren()
+		public IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
 		{
 			IResultItemCollection coll = this.result as IResultItemCollection;
 			if ( coll != null )
 			{
 				foreach ( IResultItem child in coll )
 				{
-					yield return new ResultItemNode( child, this.iconsList, this );
+					if ( ResultModel.MatchesFilter( child, filter ) )
+					{
+						yield return new ResultItemNode( child, this.iconsList, this );
+					}
 				}
 			}
 
-			if ( this.result.Failures != null )
+			if ( ( filter & ResultNodeFilter.FailureNodes ) != 0 )
 			{
-				foreach ( Failure f in this.result.Failures )
+				if ( this.result.Failures != null )
 				{
-					yield return FailureNode.Create( f, this.iconsList, this );
+					foreach ( Failure f in this.result.Failures )
+					{
+						yield return FailureNode.Create( f, this.iconsList, this );
+					}
 				}
 			}
 		}

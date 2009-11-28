@@ -238,6 +238,12 @@ namespace Cfix.Control.Ui.Result
 			set { this.model.AutoScroll = value; }
 		}
 
+		public ResultNodeFilter Filter
+		{
+			get { return this.model.Filter; }
+			set { this.model.Filter = value; }
+		}
+		
 		public ContextMenuStrip ResultNodeContextMenu
 		{
 			get { return this.resultNodeContextMenu; }
@@ -270,6 +276,11 @@ namespace Cfix.Control.Ui.Result
 					return null;
 				}
 			}
+		}
+
+		public void ExpandAll()
+		{
+			this.model.ExpandAll();
 		}
 	}
 

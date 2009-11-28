@@ -35,6 +35,7 @@ namespace Cfix.Control.Ui.Result
 
 		private bool rootExpanded;
 		private bool autoScroll;
+		private ResultNodeFilter filter;
 
 		/*----------------------------------------------------------------------
 		 * Events.
@@ -67,6 +68,16 @@ namespace Cfix.Control.Ui.Result
 		private void Collapse( TreePath path )
 		{
 			this.tree.FindNode( path ).Collapse();
+		}
+
+		private void Reload()
+		{
+			if ( this.StructureChanged != null )
+			{
+				this.StructureChanged(
+					this,
+					new TreePathEventArgs( TreePath.Empty ) );
+			}
 		}
 
 		private void run_StatusChangedOrFailureOccured( object sender, EventArgs e )
@@ -202,7 +213,35 @@ namespace Cfix.Control.Ui.Result
 				this.rootExpanded = true;
 			}
 		}
-		
+
+		/*----------------------------------------------------------------------
+		 * Internal helpers.
+		 */
+
+		internal static bool MatchesFilter( IResultItem item, ResultNodeFilter filter )
+		{
+			switch ( item.Status )
+			{
+				case ExecutionStatus.Pending:
+				case ExecutionStatus.Running:
+				case ExecutionStatus.Skipped:
+				case ExecutionStatus.Stopped:
+
+				case ExecutionStatus.Succeeded:
+				case ExecutionStatus.SucceededWithSkippedParts:
+					return ( filter & ResultNodeFilter.NonFailureNodes ) != 0;
+
+				case ExecutionStatus.SucceededWithInconclusiveParts:
+				case ExecutionStatus.Failed:
+				case ExecutionStatus.Inconclusive:
+					return ( filter & ResultNodeFilter.FailureNodes ) != 0;
+
+				default:
+					Debug.Fail( "Unrecognized status: " + item.Status );
+					return false;
+			}
+		}
+
 		/*----------------------------------------------------------------------
 		 * Public.
 		 */
@@ -217,6 +256,16 @@ namespace Cfix.Control.Ui.Result
 		{
 			get { return this.autoScroll; }
 			set { this.autoScroll = value; }
+		}
+
+		public ResultNodeFilter Filter
+		{
+			get { return this.filter; }
+			set 
+			{
+				this.filter = value;
+				Reload();
+			}
 		}
 
 		public IRun Run
@@ -239,6 +288,13 @@ namespace Cfix.Control.Ui.Result
 					this.run = value;
 					this.rootExpanded = false;
 
+					//
+					// N.B. Filter must be reset because the model does
+					// not supported being updated dynamically while having
+					// a filter applied.
+					//
+					this.filter = ResultNodeFilter.All;
+
 					if ( this.run != null )
 					{
 						Debug.Assert( value.Status == TaskStatus.Ready );
@@ -254,12 +310,7 @@ namespace Cfix.Control.Ui.Result
 						this.run.FailureOccured += new EventHandler( run_StatusChangedOrFailureOccured );
 					}
 
-					if ( this.StructureChanged != null )
-					{
-						this.StructureChanged(
-							this,
-							new TreePathEventArgs( TreePath.Empty ) );
-					}
+					Reload();
 				}
 			}
 		}
@@ -272,12 +323,19 @@ namespace Cfix.Control.Ui.Result
 			}
 			else if ( treePath.IsEmpty() )
 			{
-				yield return this.root;
+				if ( MatchesFilter( this.root.ResultItem, this.filter ) )
+				{
+					yield return this.root;
+				}
+				else
+				{
+					yield break;
+				}
 			}
 			else
 			{
 				IResultNode node = ( IResultNode ) treePath.LastNode;
-				foreach ( IResultNode child in node.GetChildren() )
+				foreach ( IResultNode child in node.GetChildren( this.filter ) )
 				{
 					ResultItemNode resultChild = child as ResultItemNode;
 					if ( resultChild != null )
@@ -297,6 +355,11 @@ namespace Cfix.Control.Ui.Result
 		{
 			IResultNode node = ( IResultNode ) treePath.LastNode;
 			return node.IsLeaf;
+		}
+
+		public void ExpandAll()
+		{
+			Expand( TreePath.Empty, true );
 		}
 	}
 }

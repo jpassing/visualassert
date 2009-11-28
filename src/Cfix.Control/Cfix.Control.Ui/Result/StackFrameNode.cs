@@ -118,7 +118,7 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		public IEnumerable<IResultNode> GetChildren()
+		public IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
 		{
 			yield break;
 		}
@@ -214,7 +214,7 @@ namespace Cfix.Control.Ui.Result
 			get { return true; }
 		}
 
-		public IEnumerable<IResultNode> GetChildren()
+		public IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
 		{
 			yield break;
 		}

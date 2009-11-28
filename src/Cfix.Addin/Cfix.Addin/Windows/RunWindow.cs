@@ -174,6 +174,8 @@ namespace Cfix.Addin.Windows
 				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
 
+				this.showFailuresOnlyButton.Enabled = true;
+
 				Exception excp = e.Exception;
 				if ( excp != null )
 				{
@@ -186,6 +188,9 @@ namespace Cfix.Addin.Windows
 		{
 			this.BeginInvoke( ( VoidDelegate ) delegate
 			{
+				this.showFailuresOnlyButton.Checked = false;
+				this.showFailuresOnlyButton.Enabled = false;
+
 				this.progressLabel.Text =
 					String.Format(
 						Strings.ProgressInfo,
@@ -552,6 +557,19 @@ namespace Cfix.Addin.Windows
 		private void ctxMenuViewProperties_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.ActivatePropertyWindow( this.dte );
+		}
+
+		private void showFailuresOnlyButton_Click( object sender, EventArgs e )
+		{
+			if ( this.showFailuresOnlyButton.Checked )
+			{
+				this.results.Filter = ResultNodeFilter.FailureNodes;
+				this.results.ExpandAll();
+			}
+			else
+			{
+				this.results.Filter = ResultNodeFilter.All;
+			}
 		}
 
 	}

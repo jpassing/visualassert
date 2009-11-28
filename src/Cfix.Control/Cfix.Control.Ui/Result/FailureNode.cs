@@ -137,7 +137,7 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		public IEnumerable<IResultNode> GetChildren()
+		public IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
 		{
 			return StackFrameNode.EnumerateFrames( 
 				this.stackTrace,
