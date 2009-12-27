@@ -54,7 +54,8 @@ version:
 	
 i386chk: version
 	if not exist bin\chk\i386 md bin\chk\i386
-	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix32.exe	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix.dll 		bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixemb.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
@@ -70,12 +71,13 @@ i386chk: version
 	
 i386fre: version
 	if not exist bin\fre\i386 md bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix32.exe	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix.dll 		bin\fre\i386
-	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixemb.dll 		bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixemb.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
-	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\chk\i386
-	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\fre\i386
 	                                           
 	cmd /C ddkbuild -WNETW2K free . -cZ
 	tools\pdbcopy.exe bin\fre\i386\cfixctl.pdb bin\fre\i386\cfixctl-public.pdb -p
@@ -86,6 +88,7 @@ i386fre: version
 	
 amd64chk: version
 	if not exist bin\chk\amd64 md bin\chk\amd64
+	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix64.exe	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixemb.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
@@ -99,12 +102,13 @@ amd64chk: version
 		
 amd64fre: version
 	if not exist bin\fre\amd64 md bin\fre\amd64
+	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix64.exe	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixemb.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
-	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\amd64
-	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\fre\amd64
 	                                                   
 	cmd /C ddkbuild -WLHNETA64 free . -cZ	
 	tools\pdbcopy.exe bin\fre\amd64\cfixctl.pdb bin\fre\amd64\cfixctl-public.pdb -p

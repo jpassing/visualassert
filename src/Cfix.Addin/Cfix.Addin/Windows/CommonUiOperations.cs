@@ -48,9 +48,12 @@ namespace Cfix.Addin.Windows
 			)
 		{
 			NativeTestItem nativeItem = item as NativeTestItem;
-			Debug.Assert( nativeItem != null );
 
-			if ( nativeItem != null )
+			if ( nativeItem == null )
+			{
+				VisualAssert.ShowInfo( Strings.EmptyRun );
+			}
+			else
 			{
 				ws.RunItemOnCommandLine( nativeItem, debug );
 			}

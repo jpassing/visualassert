@@ -294,7 +294,6 @@ namespace Cfix.Addin
 		{
 			if ( this.toolWindows != null )
 			{
-				this.toolWindows.CloseAll();
 				this.toolWindows.Dispose();
 			}
 
