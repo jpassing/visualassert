@@ -20,6 +20,7 @@ static TEST_CFIX_FIXTURE_WITH_ARRAY SampleFixtureDefinition = {
 	NULL,
 	NULL,
 	CfixApiTypeBase,
+	0,
 	NULL,
 	3,
 	{ L"test1", NULL, NULL } 

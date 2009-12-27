@@ -167,6 +167,7 @@ public:
 			NULL,
 			NULL,
 			CfixApiTypeWinUnitFixture,
+			0,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -183,6 +184,7 @@ public:
 			NULL,
 			NULL,
 			CfixApiTypeCc,
+			0,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -222,6 +224,7 @@ public:
 			NULL,
 			NULL,
 			CfixApiTypeBase,
+			0,
 			NULL,
 			1,
 			{ L"test", NULL, NULL } };
@@ -293,6 +296,7 @@ public:
 				NULL,
 				NULL,
 				CfixApiTypeBase,
+				0,
 				NULL,
 				3,
 				{ L"test1", NULL, NULL } 
