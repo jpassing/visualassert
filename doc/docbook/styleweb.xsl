@@ -1,10 +1,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   version="1.0">
-  <xsl:import href="D:/prog/docbook-xsl-1.73.2/html/chunk.xsl"/>
+  <xsl:import href="D:/prog/docbook-xsl-1.75.2/html/chunk.xsl"/>
   <xsl:param name="admon.graphics" select="1"/>
   <xsl:param name="html.stylesheet" select="'../styleweb.css'"/>
   <xsl:param name="chunk.section.depth" select="4"></xsl:param>
   <xsl:param name="chunk.first.sections" select="1"></xsl:param>
+  <xsl:param name="suppress.header.navigation" select="1"></xsl:param>
   <xsl:param name="use.id.as.filename" select="1"></xsl:param>
   <xsl:param name="highlight.source" select="0"></xsl:param>
   <xsl:param name="toc.section.depth" select="4"></xsl:param>
@@ -60,13 +61,17 @@
   </xsl:template>
   
   <xsl:template name="chunk-element-content">
-  <xsl:param name="prev"/>
-  <xsl:param name="next"/>
-  <xsl:param name="nav.context"/>
-  <xsl:param name="content">
-    <xsl:apply-imports/>
-  </xsl:param>
-
+	  <xsl:param name="prev"/>
+	  <xsl:param name="next"/>
+	  <xsl:param name="nav.context"/>
+	  <xsl:param name="content">
+		<xsl:apply-imports/>
+	  </xsl:param>
+	  <xsl:param name="node" select="."/>
+	  <xsl:param name="title">
+		<xsl:apply-templates select="$node" mode="object.title.markup.textonly"/>
+	  </xsl:param>
+	  
   <xsl:call-template name="user.preroot"/>
 
   <html>
@@ -136,6 +141,8 @@
 				<xsl:with-param name="nav.context" select="$nav.context"/>
 			</xsl:call-template>
 
+			<h1><xsl:copy-of select="$title"/></h1>
+
 			<xsl:call-template name="user.header.content"/>
 
 			<xsl:copy-of select="$content"/>
@@ -162,7 +169,7 @@
 			<a href='/unit-testing-framework/contact.html'>Contact</a> |
             <a href='/unit-testing-framework/terms.html'>Terms of Use</a><br /><br />
 			
-			(C) 2009 <a href='http://int3.de/'>Johannes Passing</a>. All rights reserved.
+			(C) 2009 <a href='http://jpassing.com/'>Johannes Passing</a>. All rights reserved.
 			<br />
 		</div>
 		<script type="text/javascript">
@@ -171,7 +178,7 @@
 		</script>
 		<script type="text/javascript">
 			try {
-			var pageTracker = _gat._getTracker("UA-9197378-1");
+			var pageTracker = _gat._getTracker("UA-9197378-3");
 			pageTracker._trackPageview();
 			} catch(err) {}
 		</script>
