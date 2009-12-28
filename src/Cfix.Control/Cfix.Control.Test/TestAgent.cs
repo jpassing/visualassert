@@ -17,6 +17,9 @@ namespace Cfix.Control.Test
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			agent.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
+
 			agent.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 			IHost host = agent.CreateHost();
 
@@ -32,6 +35,9 @@ namespace Cfix.Control.Test
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			agent.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
+
 			agent.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 			IHost host = agent.CreateHost();
 

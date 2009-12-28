@@ -21,12 +21,15 @@ namespace Cfix.Control.Test
 		[SetUp]
 		public void Setup()
 		{
-			this.ooProcTarget = Agent.CreateLocalAgent(
-				Architecture.I386,
-				false );
 			this.inProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
+
+			this.ooProcTarget = Agent.CreateLocalAgent(
+				Architecture.I386,
+				false );
+			this.ooProcTarget.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
 
 			this.ooProcTarget.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 			this.inProcTarget.SetTrialLicenseCookie( Util.TrialLicenseCookie );

@@ -21,6 +21,8 @@ namespace Cfix.Control.Test
 			this.target = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			this.target.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
 
 			this.target.SetTrialLicenseCookie( Util.TrialLicenseCookie );
 

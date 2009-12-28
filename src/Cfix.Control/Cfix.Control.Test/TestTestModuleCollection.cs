@@ -21,6 +21,9 @@ namespace Cfix.Control.Test
 			this.ooProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				false );
+			this.ooProcTarget.DefaultEnvironment.MergeEnvironmentVariables(
+				Environment.GetEnvironmentVariables() );
+
 			this.inProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
 				true );
