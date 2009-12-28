@@ -14,6 +14,7 @@ private:
 	static COM_EXPORTS Exports;
 	ICfixHost *Host;
 	ICfixAgent *Agent;
+	WCHAR Environment[ 300 ];
 	
 public:
 	TestHost() : Host( NULL )
@@ -67,6 +68,17 @@ public:
 		CFIXCC_ASSERT_EQUALS( GetCurrentProcessId(), Pid );
 
 		AgentFactory->Release();
+		
+		WCHAR SystemRoot[ 200 ];
+		CFIX_ASSERT( GetEnvironmentVariable(
+			L"SystemRoot",
+			SystemRoot,
+			_countof( SystemRoot ) ) );
+		CFIX_ASSERT_OK( StringCchPrintf(
+			Environment,
+			_countof( Environment ),
+			L"SystemRoot=%s\n",
+			SystemRoot ) );
 	}
 
 	virtual void After()
@@ -146,7 +158,7 @@ public:
 			0,
 			INFINITE,
 			NULL,
-			NULL,
+			this->Environment,
 			NULL,
 			&CustomHost ) );
 
@@ -188,7 +200,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			NULL,
+			this->Environment,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );
@@ -231,7 +243,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			NULL,
+			this->Environment,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );
@@ -290,7 +302,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			NULL,
+			this->Environment,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );

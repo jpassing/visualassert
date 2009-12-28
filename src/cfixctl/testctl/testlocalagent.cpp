@@ -8,44 +8,12 @@
 
 #include <testctlp.h>
 
-static DWORD LaunchHostAndWait( 
-	PCWSTR HostPath,
-	PWSTR Environment 
-	)
-{
-	PROCESS_INFORMATION ProcessInfo;
-	STARTUPINFO StartupInfo;
-	ZeroMemory( &StartupInfo, sizeof( STARTUPINFO ) );
-	StartupInfo.cb = sizeof( STARTUPINFO );
-
-	CFIX_ASSERT( CreateProcess(
-		HostPath,
-		NULL,
-		NULL,
-		NULL,
-		FALSE,
-		CREATE_UNICODE_ENVIRONMENT,
-		Environment,
-		NULL,
-		&StartupInfo,
-		&ProcessInfo ) );
-	CFIXCC_ASSERT_EQUALS( WAIT_OBJECT_0, WaitForSingleObject(
-		ProcessInfo.hProcess, INFINITE ) );
-
-	DWORD ExitCode;
-	CFIX_ASSERT( GetExitCodeProcess( ProcessInfo.hProcess, &ExitCode ) );
-
-	CloseHandle( ProcessInfo.hThread );
-	CloseHandle( ProcessInfo.hProcess );
-
-	return ExitCode;
-}
-
 class TestLocalAgent : public cfixcc::TestFixture
 {
 private:
 	static COM_EXPORTS Exports;
-	IClassFactory *AgentFactory;;
+	IClassFactory *AgentFactory;
+	WCHAR Environment[ 300 ];
 	
 public:
 	TestLocalAgent() : AgentFactory( NULL )
@@ -68,6 +36,17 @@ public:
 		CFIX_ASSERT_OK( Exports.GetClassObject( 
 			CLSID_LocalAgent, IID_IClassFactory, ( PVOID* ) &this->AgentFactory ) );
 		CFIXCC_ASSERT( this->AgentFactory );
+
+		WCHAR SystemRoot[ 200 ];
+		CFIX_ASSERT( GetEnvironmentVariable(
+			L"SystemRoot",
+			SystemRoot,
+			_countof( SystemRoot ) ) );
+		CFIX_ASSERT_OK( StringCchPrintf(
+			Environment,
+			_countof( Environment ),
+			L"SystemRoot=%s\n",
+			SystemRoot ) );
 	}
 
 	virtual void After()
@@ -76,6 +55,58 @@ public:
 		{
 			 this->AgentFactory->Release();
 		}
+	}
+
+	DWORD LaunchHostAndWait( 
+		PCWSTR HostPath,
+		PWSTR CustomEnvironment 
+		)
+	{
+		PROCESS_INFORMATION ProcessInfo;
+		STARTUPINFO StartupInfo;
+		ZeroMemory( &StartupInfo, sizeof( STARTUPINFO ) );
+		StartupInfo.cb = sizeof( STARTUPINFO );
+
+		WCHAR Environment[ 512 ];
+		CFIX_ASSERT_OK( StringCchPrintf(
+			Environment,
+			_countof( Environment ),
+			L"%s%s",
+			this->Environment,
+			CustomEnvironment != NULL ? CustomEnvironment : L"" ) );
+
+		//
+		// Replace all \n by \0 so that the buffer becomes a valid
+		// environment string.
+		//
+
+		PWSTR Newline;
+		while ( ( Newline = wcsrchr( Environment, L'\n' ) ) != NULL )
+		{
+			*Newline = UNICODE_NULL;
+		}
+
+		CFIX_ASSERT( CreateProcess(
+			HostPath,
+			NULL,
+			NULL,
+			NULL,
+			FALSE,
+			CREATE_UNICODE_ENVIRONMENT,
+			Environment,
+			NULL,
+			&StartupInfo,
+			&ProcessInfo ) );
+		CFIXCC_ASSERT_EQUALS( WAIT_OBJECT_0, WaitForSingleObject(
+			ProcessInfo.hProcess, INFINITE ) );
+
+		DWORD ExitCode;
+		CFIX_ASSERT( GetExitCodeProcess( ProcessInfo.hProcess, &ExitCode ) );
+
+		CloseHandle( ProcessInfo.hThread );
+		CloseHandle( ProcessInfo.hProcess );
+
+		return ExitCode;
 	}
 
 
@@ -240,7 +271,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					NULL,
-					NULL,
+					this->Environment,
 					WorkingDir,
 					&Host ) );
 			SysFreeString( WorkingDir );
@@ -251,7 +282,7 @@ public:
 				FlagSets[ Flags ],
 				INFINITE,
 				NULL,
-				NULL,
+				this->Environment,
 				NULL,
 				&Host ) );
 
@@ -303,7 +334,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					NULL,
-					NULL,
+					this->Environment,
 					NULL,
 					&Host ) );
 
@@ -378,7 +409,7 @@ public:
 			CFIXCTL_E_MISSING_AGENT_MK,
 			( HRESULT ) LaunchHostAndWait(
 				HostPath,
-				L"FOO=BAR\0" ) );
+				L"FOO=BAR\n" ) );
 
 		SysFreeString( HostPath );
 	}
@@ -425,7 +456,7 @@ public:
 		CFIX_ASSERT_OK( StringCchPrintf( 
 			Env,
 			EnvCch,
-			L"CFIX_AGENT_MK=%s",
+			L"CFIX_AGENT_MK=%s\n",
 			DisplayName ) );
 
 		//
@@ -465,8 +496,8 @@ public:
 	void SpawnCustomHostWithNonExistingEmbeddingExport()
 	{
 		PWSTR ExportEnvVar[] = {
-			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!Idonotexist",
-			CFIX_EMB_INIT_ENVVAR_NAME L"=Idonotexist.dll!Idonotexist"
+			CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!Idonotexist\n",
+			CFIX_EMB_INIT_ENVVAR_NAME L"=Idonotexist.dll!Idonotexist\n"
 		};
 
 		WCHAR Path[ MAX_PATH ];
@@ -532,7 +563,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					HostImage,
-					NULL,
+					this->Environment,
 					NULL,
 					&Host ) );
 
@@ -579,7 +610,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					HostImage,
-					NULL,
+					this->Environment,
 					NULL,
 					&Host ) );
 		}
@@ -608,7 +639,7 @@ public:
 			CFIXCTL_E_MISSING_AGENT_MK,
 			( HRESULT ) LaunchHostAndWait(
 				HostImage,
-				CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\0" ) );
+				CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost\n" ) );
 
 		SysFreeString( HostImage );
 	}
@@ -647,11 +678,9 @@ public:
 		CFIX_ASSERT_OK( StringCchPrintf( 
 			Env,
 			EnvCch,
-			L"%s%s",
+			L"%s%s\n",
 			FixedEnvPart,
 			DisplayName ) );
-
-		*wcschr( Env, L'\n' ) = L'\0';
 
 		//
 		// Wrong moniker.

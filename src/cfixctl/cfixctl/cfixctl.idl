@@ -305,7 +305,10 @@ library Cfixctl
 							  default host is used. Ignored for in-process
 							  hosts.
 				Environ		- Optional. Newline-separated list of 
-							  environemtn variables: FOO=BAR\nBAZ=QUUX\n.
+							  environemt variables: FOO=BAR\nBAZ=QUUX\n.
+
+							  Should contain SystemRoot.
+
 				CurrentDir	- Optional. Current directory to start host in.
 
 				Environ and CurrentDir are ignored for in-process hosts.
