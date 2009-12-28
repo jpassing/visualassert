@@ -197,6 +197,7 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuRefreshButton.Visible = e.Item is ITestItemCollection;
 			this.ctxMenuViewCodeButton.Visible = e.Item is ITestCodeElement;
 			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
+			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;

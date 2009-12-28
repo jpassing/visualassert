@@ -49,7 +49,7 @@
 				BuildCommandLine="ddkbuild -WLHNETA64 checked $(SolutionDir)"
 				ReBuildCommandLine="ddkbuild -WLHNETA64 checked $(SolutionDir) -cZ"
 				CleanCommandLine=""
-				Output="..\..\bin\chk\amd64\testctl.dll"
+				Output="D:\dev\wdev\cfixplus\trunk\bin\chk\amd64\testctl.dll"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
