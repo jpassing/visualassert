@@ -14,6 +14,7 @@ private:
 	static COM_EXPORTS Exports;
 	IClassFactory *AgentFactory;
 	WCHAR Environment[ 300 ];
+	BSTR EnvironmentBstr;
 	
 public:
 	TestLocalAgent() : AgentFactory( NULL )
@@ -47,10 +48,14 @@ public:
 			_countof( Environment ),
 			L"SystemRoot=%s\n",
 			SystemRoot ) );
+
+		EnvironmentBstr = SysAllocString( Environment );
 	}
 
 	virtual void After()
 	{
+		SysFreeString( EnvironmentBstr );
+
 		if ( this->AgentFactory )
 		{
 			 this->AgentFactory->Release();
@@ -271,7 +276,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					NULL,
-					this->Environment,
+					this->EnvironmentBstr,
 					WorkingDir,
 					&Host ) );
 			SysFreeString( WorkingDir );
@@ -282,7 +287,7 @@ public:
 				FlagSets[ Flags ],
 				INFINITE,
 				NULL,
-				this->Environment,
+				this->EnvironmentBstr,
 				NULL,
 				&Host ) );
 
@@ -334,7 +339,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					NULL,
-					this->Environment,
+					this->EnvironmentBstr,
 					NULL,
 					&Host ) );
 
@@ -563,7 +568,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					HostImage,
-					this->Environment,
+					this->EnvironmentBstr,
 					NULL,
 					&Host ) );
 
@@ -610,7 +615,7 @@ public:
 					FlagSets[ Flags ],
 					INFINITE,
 					HostImage,
-					this->Environment,
+					this->EnvironmentBstr,
 					NULL,
 					&Host ) );
 		}

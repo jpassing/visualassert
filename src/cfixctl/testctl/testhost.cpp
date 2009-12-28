@@ -15,6 +15,7 @@ private:
 	ICfixHost *Host;
 	ICfixAgent *Agent;
 	WCHAR Environment[ 300 ];
+	BSTR EnvironmentBstr;
 	
 public:
 	TestHost() : Host( NULL )
@@ -79,10 +80,14 @@ public:
 			_countof( Environment ),
 			L"SystemRoot=%s\n",
 			SystemRoot ) );
+
+		EnvironmentBstr = SysAllocString( Environment );
 	}
 
 	virtual void After()
 	{
+		SysFreeString( EnvironmentBstr );
+
 		if ( Agent )
 		{
 			Agent->Release();
@@ -158,7 +163,7 @@ public:
 			0,
 			INFINITE,
 			NULL,
-			this->Environment,
+			this->EnvironmentBstr,
 			NULL,
 			&CustomHost ) );
 
@@ -200,7 +205,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			this->Environment,
+			this->EnvironmentBstr,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );
@@ -243,7 +248,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			this->Environment,
+			this->EnvironmentBstr,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );
@@ -302,7 +307,7 @@ public:
 			0,
 			INFINITE,
 			CustomHostPath,
-			this->Environment,
+			this->EnvironmentBstr,
 			NULL,
 			&CustomHost ) );
 		SysFreeString( CustomHostPath );
