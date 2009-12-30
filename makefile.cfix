@@ -206,3 +206,7 @@ installer: docs
 	cd ..
 	
 release: build installer
+	if not exist rtm md rtm
+	copy installer\VisualAssert_$(VERSION).msi rtm\
+	
+	codesign.cmd "Visual Assert Installer" rtm\VisualAssert_$(VERSION).msi
