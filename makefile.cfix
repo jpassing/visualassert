@@ -38,6 +38,8 @@ CFIX_CLAGS=-f -z
 
 build: chk fre symadd
 
+ci: chk fre
+
 symadd:
 	symstore add /r /f bin\chk\i386\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
 	symstore add /r /f bin\chk\amd64\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
@@ -45,8 +47,8 @@ symadd:
 	symstore add /r /f bin\fre\amd64\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
 	
 version:
-	rcstamp src\cfixctl\cfixctl\cfixctl.rc $(VERSION)
-	rcstamp src\cfixctl\cfixhost\cfixhost.rc $(VERSION)
+	tools\rcstamp src\cfixctl\cfixctl\cfixctl.rc $(VERSION)
+	tools\rcstamp src\cfixctl\cfixhost\cfixhost.rc $(VERSION)
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Addin\Cfix.Addin\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control\Properties\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.TreeView\Properties\AssemblyInfo.cs
@@ -62,7 +64,7 @@ i386chk: version
 	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\chk\i386
 	
-	cmd /C ddkbuild -WNETW2K checked . -cZ
+	cmd /C tools\ddkbuild -WNETW2K checked . -cZ
 	tools\pdbcopy.exe bin\chk\i386\cfixctl.pdb bin\chk\i386\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\chk\i386\cfixhs32.pdb bin\chk\i386\cfixhs32-public.pdb -p
 	
@@ -79,7 +81,7 @@ i386fre: version
 	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\redist\i386\symsrv.dll 	bin\fre\i386
 	                                           
-	cmd /C ddkbuild -WNETW2K free . -cZ
+	cmd /C tools\ddkbuild -WNETW2K free . -cZ
 	tools\pdbcopy.exe bin\fre\i386\cfixctl.pdb bin\fre\i386\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\fre\i386\cfixhs32.pdb bin\fre\i386\cfixhs32-public.pdb -p
 	
@@ -96,7 +98,7 @@ amd64chk: version
 	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\chk\amd64
                                                      
-	cmd /C ddkbuild -WLHNETA64 checked . -cZ
+	cmd /C tools\ddkbuild -WLHNETA64 checked . -cZ
 	tools\pdbcopy.exe bin\chk\amd64\cfixctl.pdb bin\chk\amd64\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\chk\amd64\cfixhs64.pdb bin\chk\amd64\cfixhs64-public.pdb -p
 		
@@ -110,7 +112,7 @@ amd64fre: version
 	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\redist\amd64\symsrv.dll 	bin\fre\amd64
 	                                                   
-	cmd /C ddkbuild -WLHNETA64 free . -cZ	
+	cmd /C tools\ddkbuild -WLHNETA64 free . -cZ	
 	tools\pdbcopy.exe bin\fre\amd64\cfixctl.pdb bin\fre\amd64\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\fre\amd64\cfixhs64.pdb bin\fre\amd64\cfixhs64-public.pdb -p
 	
