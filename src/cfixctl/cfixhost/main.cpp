@@ -27,19 +27,20 @@
 typedef BOOL ( * HEAPSETINFORMATION_ROUTINE )(
 	__in HANDLE HeapHandle,
 	__in HEAP_INFORMATION_CLASS HeapInformationClass,
-	__in PVOID HeapInformation,
+	__in_opt PVOID HeapInformation,
 	__in SIZE_T HeapInformationLength
 	);
 
 static BOOL CfixctlsHeapSetInformation(
 	__in HANDLE HeapHandle,
 	__in HEAP_INFORMATION_CLASS HeapInformationClass,
-	__in PVOID HeapInformation,
+	__in_opt PVOID HeapInformation,
 	__in SIZE_T HeapInformationLength
 	)
 {
 	HMODULE Kernel32Module = GetModuleHandle( L"kernel32" );
 	_ASSERTE( Kernel32Module != NULL );
+	__assume( Kernel32Module != NULL );
 
 	HEAPSETINFORMATION_ROUTINE Routine = ( HEAPSETINFORMATION_ROUTINE ) 
 		GetProcAddress( 
@@ -89,8 +90,8 @@ int wWinMain(
 	//
 	// Fail early on heap corruptions.
 	//
-	CfixctlsHeapSetInformation(
-		NULL, 
+	( void ) CfixctlsHeapSetInformation(
+		GetProcessHeap(), 
 		HeapEnableTerminationOnCorruption, 
 		NULL, 
 		0 );

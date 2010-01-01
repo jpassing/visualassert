@@ -550,6 +550,9 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	ASSERT( ProcessInfo.hProcess );
 	ASSERT( ProcessInfo.hThread );
 
+	__assume( ProcessInfo.hProcess );
+	__assume( ProcessInfo.hThread );
+
 	//
 	// N.B. The process ID is the cookie.
 	//

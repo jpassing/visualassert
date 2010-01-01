@@ -196,9 +196,14 @@ STDMETHODIMP LocalHost::LoadModule(
 		//
 		// No path specified - use host executable.
 		//
+		HMODULE ModuleHandle = GetModuleHandle( NULL );
 		ModuleType = CfixTestModuleTypeUserEmbedded;
+
+		ASSERT( ModuleHandle != NULL );
+		__assume( ModuleHandle != NULL );
+
 		Hr = CfixCreateTestModule(
-			GetModuleHandle( NULL ),
+			ModuleHandle,
 			&Module );
 
 		if ( SUCCEEDED( Hr ) )

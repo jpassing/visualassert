@@ -340,6 +340,7 @@ STDMETHODIMP TestFixture::MarshalInterface(
 	UNREFERENCED_PARAMETER( Itf );
 	
 	ASSERT( this->Name != NULL );
+	__assume( this->Name != NULL );
 
 	HRESULT Hr = ComMarshalBSTR( Stm, this->Name );
 	if ( FAILED( Hr ) )

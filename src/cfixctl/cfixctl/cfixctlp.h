@@ -158,7 +158,7 @@ HMODULE CfixctlpGetModule();
 --*/
 BOOL CfixctlpIsProcessInJob(
 	__in HANDLE ProcessHandle,
-	__in HANDLE JobHandle,
+	__in_opt HANDLE JobHandle,
 	__out PBOOL Result
 	);
 

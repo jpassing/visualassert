@@ -131,7 +131,7 @@ library Cfixctl
 				Module		- Result.
 		--*/
 		HRESULT LoadModule(
-			[in] const BSTR Path,
+			[in, unique] const BSTR Path,
 			[out, retval] ICfixTestModule **Module
 			);
 
@@ -318,9 +318,9 @@ library Cfixctl
 			[in] DWORD Clsctx,
 			[in] ULONG Flags,
 			[in] ULONG Timeout,
-			[in] const BSTR HostPath,
-			[in] const BSTR Environment,
-			[in] const BSTR CurrentDirectory,
+			[in, unique] const BSTR HostPath,
+			[in, unique] const BSTR Environment,
+			[in, unique] const BSTR CurrentDirectory,
 			[out, retval] ICfixHost** Host
 			);
 
@@ -645,10 +645,10 @@ library Cfixctl
 			);
 
 		HRESULT FailedAssertion(
-			[in] const BSTR Expression,
-			[in] const BSTR Routine,
-			[in] const BSTR File,
-			[in] const BSTR Message,
+			[in, unique] const BSTR Expression,
+			[in, unique] const BSTR Routine,
+			[in, unique] const BSTR File,
+			[in, unique] const BSTR Message,
 			[in] ULONG Line,
 			[in] ULONG LastError,
 			[in] ULONG Flags, // NONFATAL
@@ -661,9 +661,9 @@ library Cfixctl
 			[in] CFIXCTL_RELATE_OPERATOR Operator,
 			[in] const VARIANT ExpectedValue,
 			[in] const VARIANT ActualValue,
-			[in] const BSTR Routine,
-			[in] const BSTR File,
-			[in] const BSTR Message,
+			[in, unique] const BSTR Routine,
+			[in, unique] const BSTR File,
+			[in, unique] const BSTR Message,
 			[in] ULONG Line,
 			[in] ULONG LastError,
 			[in] ULONG Flags, // NONFATAL, VALUE_IS_STATUS/HRESULT
@@ -673,7 +673,7 @@ library Cfixctl
 			);
 
 		HRESULT Inconclusive(
-			[in] const BSTR Message,
+			[in, unique] const BSTR Message,
 			[in] ULONG Reserved,
 			[in] ICfixStackTrace *StackTrace
 			);

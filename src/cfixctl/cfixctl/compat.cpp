@@ -16,12 +16,13 @@ typedef BOOL ( * ISPROCESSINJOB_ROUTINE )(
 
 BOOL CfixctlpIsProcessInJob(
 	__in HANDLE ProcessHandle,
-	__in HANDLE JobHandle,
+	__in_opt HANDLE JobHandle,
 	__out PBOOL Result
 	)
 {
 	HMODULE Kernel32Module = GetModuleHandle( L"kernel32" );
 	ASSERT( Kernel32Module != NULL );
+	__assume( Kernel32Module != NULL );
 
 	ISPROCESSINJOB_ROUTINE Routine = ( ISPROCESSINJOB_ROUTINE ) 
 		GetProcAddress( 

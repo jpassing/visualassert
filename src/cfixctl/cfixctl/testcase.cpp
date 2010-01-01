@@ -285,6 +285,7 @@ STDMETHODIMP TestCase::MarshalInterface(
 	)
 {
 	ASSERT( this->Name != NULL );
+	__assume( this->Name != NULL );
 
 	UNREFERENCED_PARAMETER( Iid );
 	UNREFERENCED_PARAMETER( Itf );

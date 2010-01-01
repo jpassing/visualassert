@@ -317,11 +317,21 @@ static CFIX_REPORT_DISPOSITION CfixctlsExecCtxReportEvent(
 	case CfixEventLog:
 		{
 			BSTR Message = SysAllocString( Event->Info.Inconclusiveness.Message );
-			Hr = Sink->Log(
-				Message,
-				0,
-				StackTrace );
-			SysFreeString( Message );
+			if ( Message == NULL )
+			{
+				//
+				// Ignore this call.
+				//
+				Hr = S_OK;
+			}
+			else
+			{
+				Hr = Sink->Log(
+					Message,
+					0,
+					StackTrace );
+				SysFreeString( Message );
+			}
 
 			Disp = CfixctlDispositionContinue;
 			break;
