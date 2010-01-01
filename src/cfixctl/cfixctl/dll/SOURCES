@@ -58,6 +58,7 @@ PASS0_CLIENTDIR=..\..\..\..\include
 PASS0_SERVERDIR=..\..\..\..\include
 
 SOURCES=\
+	..\cfixctl.idl \
 	..\servehost.cpp \
 	..\licensing.cpp \
 	..\licensingage.cpp \

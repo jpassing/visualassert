@@ -36,9 +36,9 @@ CFIX_CLAGS=-f -z
 #
 #----------------------------------------------------------------------
 
-build: chk fre symadd
+build: clean chk fre symadd
 
-ci: chk fre
+ci: clean chk fre
 
 symadd:
 	symstore add /r /f bin\chk\i386\cfix*.pdb  /s "$(CUSTOMSYMSTORE)" /t cfix /v $(VERSION)	
@@ -68,9 +68,6 @@ i386chk: version
 	tools\pdbcopy.exe bin\chk\i386\cfixctl.pdb bin\chk\i386\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\chk\i386\cfixhs32.pdb bin\chk\i386\cfixhs32-public.pdb -p
 	
-	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
-	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release	
-	
 i386fre: version
 	if not exist bin\fre\i386 md bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix32.exe	bin\fre\i386
@@ -84,10 +81,7 @@ i386fre: version
 	cmd /C tools\ddkbuild -WNETW2K free . -cZ
 	tools\pdbcopy.exe bin\fre\i386\cfixctl.pdb bin\fre\i386\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\fre\i386\cfixhs32.pdb bin\fre\i386\cfixhs32-public.pdb -p
-	
-	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
-	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
-	
+		
 amd64chk: version
 	if not exist bin\chk\amd64 md bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix64.exe	bin\chk\amd64
@@ -116,11 +110,21 @@ amd64fre: version
 	tools\pdbcopy.exe bin\fre\amd64\cfixctl.pdb bin\fre\amd64\cfixctl-public.pdb -p
 	tools\pdbcopy.exe bin\fre\amd64\cfixhs64.pdb bin\fre\amd64\cfixhs64-public.pdb -p
 	
-chk: i386chk amd64chk
+	
+managedchk:
+	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Debug
+	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Debug	
 
-fre: i386fre amd64fre
+managedfre:
+	msbuild src\Cfix.Control\Cfix.Control.sln /t:rebuild /p:Configuration=Release
+	msbuild src\Cfix.Addin\Cfix.Addin.sln /t:rebuild /p:Configuration=Release
 
-i386: i386chk i386fre
+	
+chk: i386chk amd64chk managedchk
+
+fre: i386fre amd64fre managedfre
+
+i386: i386chk i386fre managedchk managedfre
 
 amd64: amd64chk amd64fre
 
