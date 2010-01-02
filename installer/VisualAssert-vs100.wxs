@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+  <Product
+			Id="$(var.ProductCode)"
+			Name="Visual Assert"
+			Language="1033"
+			Version="$(var.ProductVersion)"
+			UpgradeCode="e62e11e1-3058-42cd-b855-e0a3743b380a"
+			Manufacturer="Johannes Passing">
+    <Package
+			Id="$(var.PackageCode)"
+			Description="VisualSudio addin for cfix"
+			InstallerVersion="200"
+			Compressed="yes"
+			Platforms="Intel"/>
+
+    <Upgrade Id="e62e11e1-3058-42cd-b855-e0a3743b380a">
+      <!-- Prevent over-installing newer versions -->
+      <UpgradeVersion MigrateFeatures='yes' Minimum="$(var.ProductVersion)" Property="NEWERPRODUCTFOUND" OnlyDetect="yes" IncludeMinimum="no" />
+      <Property Id="NEWERPRODUCTFOUND" Secure="yes" />
+
+      <!-- Upgrade older versions -->
+      <UpgradeVersion MigrateFeatures='yes' Minimum="1.0.0.0" Maximum="$(var.ProductVersion)" Property="PREVIOUSVERSIONSINSTALLED" IncludeMaximum="yes" />
+      <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    </Upgrade>
+
+    <CustomAction Id="ERRCA_CANCELNEWERVERSION" Return="check" Error="$(loc.NewerVersionInstalled)" />
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize" />
+      <Custom Action="ERRCA_CANCELNEWERVERSION" After="FindRelatedProducts"><![CDATA[NEWERPRODUCTFOUND AND NOT Installed]]></Custom>
+
+      <Custom Action='FormatDevenvPath80' After='RemoveFiles'></Custom>
+      <Custom Action='FormatDevenvPath90' After='RemoveFiles'></Custom>
+      <Custom Action='FormatDevenvPath100' After='RemoveFiles'></Custom>
+
+      <!-- N.B. REMOVE="ALL" also avoids reset during repair -->
+      <Custom Action='ResetAddinVs80' After='FormatDevenvPath80'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
+      <Custom Action='ResetAddinVs90' After='FormatDevenvPath90'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
+      <Custom Action='ResetAddinVs100' After='FormatDevenvPath100'><![CDATA[ REMOVE="ALL" AND VS100INSTALLED ]]></Custom>
+
+      <!-- Older versions are faulty; be sure to reset again -->
+      <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS80INSTALLED ]]></Custom>
+      <Custom Action='ResetLegacyAddinVs90' After='FormatDevenvPath90'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS90INSTALLED ]]></Custom>
+      <Custom Action='ResetLegacyAddinVs100' After='FormatDevenvPath100'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS100INSTALLED ]]></Custom>
+    </InstallExecuteSequence>
+
+    <Media Id="1" Cabinet="VisualAssert.cab" EmbedCab="yes" />
+
+    <!-- Retain install location on upgrade -->
+    <Property Id="INSTALLLOCATION" Secure="yes">
+      <RegistrySearch Id="SearchInstallLocation" Root="HKLM" Key="Software\VisualAssert\1.0" Name="InstallLocation" Type="directory" />
+    </Property>
+
+    
+    <!-- 
+    ****************************************************************************
+    Search VS installations.
+    ****************************************************************************
+    -->
+    
+    <!-- BEGIN VS VERSION SPECIFIC -->
+    <Property Id="VS80INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs80" Root="HKCR" Key="VisualStudio.DTE.8.0" Type="raw" />
+    </Property>
+
+    <Property Id="VS80INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0" Name="InstallDir" Type="directory" />
+    </Property>
+
+    <Property Id="VC80INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
+
+
+    <Property Id="VS90INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
+    </Property>
+
+    <Property Id="VS90INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0" Name="InstallDir" Type="directory" />
+    </Property>
+
+    <Property Id="VC90INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
+
+
+    <Property Id="VS100INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs100" Root="HKCR" Key="VisualStudio.DTE.10.0" Type="raw" />
+    </Property>
+
+    <Property Id="VS100INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs100InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\10.0" Name="InstallDir" Type="directory" />
+    </Property>
+
+    <Property Id="VC100INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc100InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\10.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
+
+    <!-- END VS VERSION SPECIFIC -->
+
+
+    <!-- 
+    ****************************************************************************
+    Launch Conditions. 
+    ****************************************************************************
+    -->
+
+    <Condition Message='Windows 2000 SP4 or better required'>
+      <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
+    </Condition>
+
+    <Condition Message='Neither a Visual Studio 2005, 2008, nor 2010 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
+      <![CDATA[ VS80INSTALLED OR VS90INSTALLED OR VS100INSTALLED ]]>
+    </Condition>
+
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="DirProgMenu" Name="VAssert" LongName="Visual Assert">
+        </Directory>
+      </Directory>
+
+      <Component Id="CompCfixHome" Guid="b205f6ae-19ba-4751-826a-c4db6c024e5b">
+        <CreateFolder/>
+        <Environment
+          Id="EnvCfixHome"
+          Action="set"
+          Name="CFIX_HOME"
+          Part="all"
+          Permanent="no"
+          Value="[INSTALLLOCATION]"/>
+      </Component>
+
+      <Directory Id="CommonAppDataFolder">
+
+        <!-- BEGIN VS VERSION SPECIFIC -->
+
+        <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs8080" Name="80" LongName="8.0">
+              <Directory Id="DirAppDataMsVs80Addins80" Name="Addins">
+                <Component Id="CompVs80" Guid="71f3193d-ba2e-4293-a44c-b1bf868f80ef">
+                  <File Id="FileVs80Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.80.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="8.0"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="DirAppDataMs90" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs90" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs9090" Name="90" LongName="9.0">
+              <Directory Id="DirAppDataMsVs90Addins90" Name="Addins">
+                <Component Id="CompVs90" Guid="ab230fe7-5107-45d7-b636-e1f8442622ea">
+                  <File Id="FileVs90Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="9.0"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="DirAppDataMs100" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs100" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs100100" Name="100" LongName="10.0">
+              <Directory Id="DirAppDataMsVs100Addins100" Name="Addins">
+                <Component Id="CompVs100" Guid="35bf098a-ae26-4cee-806b-b83ff3e3f1c7">
+                  <File Id="FileVs100Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.100.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="10.0"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <!-- END VS VERSION SPECIFIC -->
+      </Directory>
+      
+      <Directory Id="ProgramFilesFolder">
+
+        <!-- BEGIN VS VERSION SPECIFIC -->
+        
+        <Directory Id="VC80INSTALLDIR" Name="VC">
+          <Directory Id="DirVcAddClassVs80" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs80" Name="VAssert" LongName="VisualAssert">
+              <Component Id="CompVcAddClassWizardVs80" Guid="9a21c934-16d1-4813-a1e3-354b5eefcde8">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs80" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVs80" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs80" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.80.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVs80" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DirWizardsVs80" Name="vcwiz" LongName="vcwizards">
+            <Directory Id="DirWizCfixVs80" Name="VAssert" LongName="VisualAssert">
+              <Directory Id="DirWizFixtureVs80" Name="fixture">
+                <Directory Id="DirWizFixtureHtmlVs80" Name="html">
+                  <Directory Id="DirWizFixtureHtml1033Vs80" Name="1033">
+                    <Component Id="CompWizFixtureHtml1033Vs80" Guid="71b4930c-d196-4683-8d84-1ab3d880360d">
+                      <RemoveFolder Id="RemoveDirWizFixtureHtml1033Vs80" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureHtml1033DefaultHtmVs80" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033HeaderJpgVs80" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033NewStylesCssVs80" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033PixGifVs80" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureScriptsVs80" Name="scripts">
+                  <Directory Id="DirWizFixtureScripts1033Vs80" Name="1033">
+                    <Component Id="CompWizFixtureScripts1033Vs80" Guid="99545ad3-6949-4b97-8490-5cc35c72b4da">
+                      <RemoveFolder Id="RemoveDirWizFixtureScripts1033Vs80" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureScripts1033DefaultJsVs80" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureTemplatesVs80" Name="template" LongName="templates">
+                  <Directory Id="DirWizFixtureTemplates1033Vs80" Name="1033">
+                    <Component Id="CompWizFixtureTemplates1033Vs80" Guid="89c1d2ae-4578-4ad4-8729-39cc33afb06c">
+                      <RemoveFolder Id="RemoveDirWizFixtureTemplates1033Vs80" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureTemplates1033CfixTplVs80" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033CfixccTplVs80" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033WinunitTplVs80" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="VC90INSTALLDIR" Name="VC">
+          <Directory Id="DirVcAddClassVs90" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs90" Name="VAssert" LongName="VisualAssert">
+              <Component Id="CompVcAddClassWizardVs90" Guid="eccdbd83-f8e7-4948-83d4-20da8cedcec3">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs90" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVs90" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs90" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.90.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVs90" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DirWizardsVs90" Name="vcwiz" LongName="vcwizards">
+            <Directory Id="DirWizCfixVs90" Name="VAssert" LongName="VisualAssert">
+              <Directory Id="DirWizFixtureVs90" Name="fixture">
+                <Directory Id="DirWizFixtureHtmlVs90" Name="html">
+                  <Directory Id="DirWizFixtureHtml1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureHtml1033Vs90" Guid="48779dca-1b51-47ca-8c3a-57ebf8ed75b4">
+                      <RemoveFolder Id="RemoveDirWizFixtureHtml1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureHtml1033DefaultHtmVs90" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033HeaderJpgVs90" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033NewStylesCssVs90" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033PixGifVs90" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureScriptsVs90" Name="scripts">
+                  <Directory Id="DirWizFixtureScripts1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureScripts1033Vs90" Guid="2351dc4b-0673-46fc-96a0-861ba70d21fe">
+                      <RemoveFolder Id="RemoveDirWizFixtureScripts1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureScripts1033DefaultJsVs90" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureTemplatesVs90" Name="template" LongName="templates">
+                  <Directory Id="DirWizFixtureTemplates1033Vs90" Name="1033">
+                    <Component Id="CompWizFixtureTemplates1033Vs90" Guid="b9fa99c5-0468-4017-bf02-1c436e236811">
+                      <RemoveFolder Id="RemoveDirWizFixtureTemplates1033Vs90" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureTemplates1033CfixTplVs90" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033CfixccTplVs90" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033WinunitTplVs90" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="VC100INSTALLDIR" Name="VC">
+          <Directory Id="DirVcAddClassVs100" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs100" Name="VAssert" LongName="VisualAssert">
+              <Component Id="CompVcAddClassWizardVs100" Guid="32ca9904-b766-49c0-b2c5-0dd58b0f1794">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs100" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVs100" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs100" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.100.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVs100" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DirWizardsVs100" Name="vcwiz" LongName="vcwizards">
+            <Directory Id="DirWizCfixVs100" Name="VAssert" LongName="VisualAssert">
+              <Directory Id="DirWizFixtureVs100" Name="fixture">
+                <Directory Id="DirWizFixtureHtmlVs100" Name="html">
+                  <Directory Id="DirWizFixtureHtml1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureHtml1033Vs100" Guid="224da795-0982-46f4-b173-4c5d25ded78e">
+                      <RemoveFolder Id="RemoveDirWizFixtureHtml1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureHtml1033DefaultHtmVs100" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033HeaderJpgVs100" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033NewStylesCssVs100" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033PixGifVs100" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureScriptsVs100" Name="scripts">
+                  <Directory Id="DirWizFixtureScripts1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureScripts1033Vs100" Guid="ed76c21d-7c11-4e4e-9076-1adbe66b27d3">
+                      <RemoveFolder Id="RemoveDirWizFixtureScripts1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureScripts1033DefaultJsVs100" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureTemplatesVs100" Name="template" LongName="templates">
+                  <Directory Id="DirWizFixtureTemplates1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureTemplates1033Vs100" Guid="3a43adfc-b7bc-47bc-bd29-23d969865cab">
+                      <RemoveFolder Id="RemoveDirWizFixtureTemplates1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureTemplates1033CfixTplVs100" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033CfixccTplVs100" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033WinunitTplVs100" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+        
+        <!-- END VS VERSION SPECIFIC -->
+        
+        <Directory Id="INSTALLLOCATION" Name="VAssert" LongName="VisualAssert">
+          <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
+            <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\VisualAssert\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
+          </Component>
+
+          <Component Id="CompStdole" Guid="579ce302-450f-4192-82c0-3289c8829c4a">
+            <File Id="FileStdoleDll" Name="stdole.dll" KeyPath="yes" Source="redist\stdole.dll" DiskId="1" Assembly=".net"/>
+          </Component>
+
+          <Component Id="CompCfixEnvCmd" Guid="286e4353-a532-4df4-bc0d-358c6548a9a7">
+            <File
+							Id="FileCfixEnvCmd"
+							Name="cfixenv.cmd"
+							DiskId="1"
+							Source="$(var.CFIX_TREE)\cfix\cfixenv.cmd"
+							Vital="yes"/>
+          </Component>
+
+          <Component Id="CompEula" Guid="55596724-7d2c-42ef-af95-d0c9d1e2cd67">
+            <File
+							Id="FileEula"
+							Name="EULA.rtf"
+							DiskId="1"
+							Source="installer\License.rtf"
+							Vital="yes"/>
+          </Component>
+
+          <Directory Id="DirDoc" Name="doc">
+            <Component Id="CompDoc" DiskId="1" Guid="34c84943-04cb-4836-974f-81f327c0ee6c">
+              <File Id="FileCfixChm" Name="VAssert.chm" LongName="VisualAssert.chm" Source="doc\docbook\VisualAssert.chm" Vital="yes">
+                <Shortcut
+									Id="ShortcutCfixChm"
+									Description="Visual Assert Documentation"
+									Directory="DirProgMenu"
+									Icon="HelpIco"
+									Name="Doc"
+									LongName="Visual Assert Documentation"/>
+              </File>
+              <RemoveFolder Id="RemoveDirDoc" On="uninstall"/>
+
+            </Component>
+
+            <Directory Id="DirDocQuickStart" Name="QuickSt" LongName="quickstart">
+              <Component Id="CompDocQuickStart" DiskId="1" Guid="118333d3-4f0e-407c-8338-810be4196592">
+                <File Id="FileQuickStartIndexHtml" Name="index.htm" LongName="index.html" Source="doc\quickstart\index.html" Vital="yes"/>
+
+                <File Id="FileQuickStartMenuPng" Name="Menu.png" Source="doc\quickstart\Menu.png" Vital="yes"/>
+                <File Id="FileQuickStartSlnExplPng" Name="SlnExpl.png" Source="doc\quickstart\SlnExpl.png" Vital="yes"/>
+              </Component>
+
+              <Directory Id="DirDocQuickStartAssets" Name="assets">
+                <Component Id="CompDocQuickStartAssets" DiskId="1" Guid="54cdcd90-dfc9-4553-a0cc-5323141549ed">
+                  <File Id="FileQuickStartAssetsMasterCss" Name="master.css" Source="doc\quickstart\assets\master.css" Vital="yes"/>
+                </Component>
+
+                <Directory Id="DirDocQuickStartAssetsImg" Name="img">
+                  <Component Id="CompDocQuickStartAssetsImg" DiskId="1" Guid="06cc93b0-7579-470a-a34e-f85b5b7ebbc1">
+                    <File Id="FileQuickStartAssetsImgBgJpg" Name="bg.jpg" Source="doc\quickstart\assets\img\bg.jpg" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsLogo" Name="logo.gif" LongName="logo-visualassert.gif" Source="doc\quickstart\assets\img\logo-visualassert.gif" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab1" Name="tab1.png" LongName="tab_active.png" Source="doc\quickstart\assets\img\tab_active.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab2" Name="tab2.png" LongName="tab_active2passive.png" Source="doc\quickstart\assets\img\tab_active2passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab3" Name="tab3.png" LongName="tab_activeend.png" Source="doc\quickstart\assets\img\tab_activeend.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab4" Name="tab4.png" LongName="tab_passive.png" Source="doc\quickstart\assets\img\tab_passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab5" Name="tab5.png" LongName="tab_passive2active.png" Source="doc\quickstart\assets\img\tab_passive2active.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab6" Name="tab6.png" LongName="tab_passiveend.png" Source="doc\quickstart\assets\img\tab_passiveend.png" Vital="yes"/>
+                  </Component>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+
+          <Directory Id="DirBin" Name="bin">
+            <Directory Id="DirBinI386" Name="i386">
+              <Component Id="CompBinI386" Guid="872969e6-2ddc-4306-ac71-5f14c0773614">
+                <?include cfix_bin_i386.wxs?>
+                <RemoveFolder Id="RemoveDirBinI386" On="uninstall"/>
+
+                <File Id="FileCfixctDllI386" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\i386\cfixctl.dll" DiskId="1">
+                  <?include cfixctl-comreg.wxs?>
+                </File>
+                <File Id="FileCfixhsExeI386" Name="cfixhs32.exe" Source="bin\fre\i386\cfixhs32.exe" DiskId="1"/>
+
+                <File Id="FileInteropCfixctlI386" Name="cfintero.dll" LongName="interop.cfixctl.dll" Source="bin\fre\i386\interop.cfixctl.dll" DiskId="1"/>
+                <File Id="FileCfixControlDllI386" Name="cfcontr.dll" LongName="cfix.control.dll" Source="bin\fre\i386\cfix.control.dll" DiskId="1"/>
+                <File Id="FileCfixControlUiDllI386" Name="cfcontui.dll" LongName="cfix.control.ui.dll" Source="bin\fre\i386\cfix.control.ui.dll" DiskId="1"/>
+                <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
+                <File Id="FileCfixAddin80DllI386" Name="cfaddi8.dll" LongName="cfix.addin.80.dll" Source="bin\fre\i386\cfix.addin.80.dll" DiskId="1"/>
+                <File Id="FileCfixAddin90DllI386" Name="cfaddi9.dll" LongName="cfix.addin.90.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
+                
+                <!-- XXX: cfix.addin.100.dll -->
+                <File Id="FileCfixAddin100DllI386" Name="cfaddi10.dll" LongName="cfix.addin.100.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
+
+                <!--
+                <File Id="FileLicAdminExeI386" Name="licadmin.exe" Source="bin\fre\i386\licadmin.exe" DiskId="1"/>
+                -->
+              </Component>
+            </Directory>
+
+            <Directory Id="DirBinAmd64" Name="amd64">
+              <Component Id="CompBinAmd64" Guid="f65055f8-2e34-4b4c-aaeb-1519ee606bfa" Win64="yes">
+                <?include cfix_bin_amd64.wxs?>
+                <RemoveFolder Id="RemoveDirBinAmd64" On="uninstall"/>
+
+                <File Id="FileCfixctAmd64" Name="cfixctl.dll" KeyPath="yes" Source="bin\fre\amd64\cfixctl.dll" DiskId="1">
+                  <?include cfixctl-comreg.wxs?>
+                </File>
+                <File Id="FileCfixhsExeAmd64" Name="cfixhs64.exe" Source="bin\fre\amd64\cfixhs64.exe" DiskId="1"/>
+
+              </Component>
+            </Directory>
+          </Directory>
+
+          <Directory Id="DirInclude" Name="include">
+            <Component Id="CompIncludes" DiskId="1" Guid="916f5c8b-64a5-4aaa-9e41-3dc890a4d454">
+              <?include cfix_include.wxs?>
+              <?include cfix_include_winunit.wxs?>
+              <RemoveFolder Id="RemoveDirInclude" On="uninstall"/>
+            </Component>
+          </Directory>
+
+          <Directory Id="DirLib" Name="lib">
+            <Directory Id="DirLibI386" Name="i386">
+              <Component Id="CompLibI386" DiskId="1" Guid="b2a9d73f-a3fc-462f-b4e8-a4c1506be0fa">
+                <?include cfix_lib_i386.wxs?>
+                <RemoveFolder Id="RemoveDirLibI386" On="uninstall"/>
+              </Component>
+            </Directory>
+            <Directory Id="DirLibAmd64" Name="amd64">
+              <Component Id="CompLibAmd64" DiskId="1" Guid="8b1d09b5-4b0f-46d9-b44a-c3abbd3ffb2a">
+                <?include cfix_lib_amd64.wxs?>
+                <RemoveFolder Id="RemoveDirLibAmd64" On="uninstall"/>
+              </Component>
+            </Directory>
+          </Directory>
+
+          <Directory Id="DirSamples" Name="examples">
+            <Component Id="CompSamples" DiskId="1" Guid="93abb5c0-8c04-44d3-8e05-5a408dd45d04">
+              <CreateFolder>
+                <!-- Grant write permissions s.t. the examples work properly -->
+                <Permission GenericAll="yes" User="Everyone"/>
+
+                <Shortcut
+									Id="ShortcutSamples"
+									Description="Example Projects"
+									Directory="DirProgMenu"
+									Icon="CfixIco"
+									Name="Examples"
+									LongName="Example Projects"/>
+              </CreateFolder>
+            </Component>
+
+            <Directory Id="DirSamplesKernel" Name="KernelMo" LongName="KernelMode">
+              <Component Id="CompSamplesKernel" DiskId="1" Guid="92f7f6c8-8e43-4681-b146-fce0168ee1fe">
+                <?include cfix_samples_kern.wxs?>
+              </Component>
+            </Directory>
+            <Directory Id="DirSamplesUser" Name="UserMode">
+              <Component Id="CompSamplesUser" DiskId="1" Guid="a6daa172-c98f-4d43-9002-d10b75c2ee33">
+                <?include cfix_samples_userc.wxs?>
+              </Component>
+            </Directory>
+            <Directory Id="DirSamplesUserCc" Name="UserCpp" LongName="UserMode C++">
+              <Component Id="CompSamplesUserCc" DiskId="1" Guid="4c2d7641-10e1-4a6e-878f-0c97c2492ec3">
+                <?include cfix_samples_usercc.wxs?>
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="FeatureMain" Title="Visual Assert" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
+      <ComponentRef Id="CompCfixHome"/>
+      <ComponentRef Id="CompInstallLocation"/>
+      <ComponentRef Id="CompStdole"/>
+      <ComponentRef Id="CompCfixEnvCmd"/>
+      <ComponentRef Id="CompEula"/>
+
+      <ComponentRef Id="CompSamples"/>
+      <ComponentRef Id="CompSamplesKernel"/>
+      <ComponentRef Id="CompSamplesUser"/>
+      <ComponentRef Id="CompSamplesUserCc"/>
+
+      <Feature Id="FeatureBinAmd64"
+               Absent="allow"
+               Title="AMD64 (x64) binaries"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Binaries for AMD64 (x64). Required if you intend to write tests for this platform.">
+        <Condition Level="0"><![CDATA[NOT VersionNT64]]></Condition>
+
+        <ComponentRef Id="CompBinAmd64"/>
+        <ComponentRef Id="CompLibAmd64"/>
+      </Feature>
+
+      <!-- BEGIN VS VERSION SPECIFIC -->
+      
+      <Feature Id="FeatureVs80"
+               Absent="allow"
+               Title="Visual Studio 2005 integration"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Installs the Visual Assert Add-In for Visual Studio 2005.">
+        <Condition Level="0"><![CDATA[NOT VS80INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs80"/>
+        <ComponentRef Id="CompVcAddClassWizardVs80"/>
+        <ComponentRef Id="CompWizFixtureHtml1033Vs80"/>
+        <ComponentRef Id="CompWizFixtureScripts1033Vs80"/>
+        <ComponentRef Id="CompWizFixtureTemplates1033Vs80"/>
+      </Feature>
+
+      <Feature Id="FeatureVs90"
+               Absent="allow"
+               Title="Visual Studio 2008 integration"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Installs the Visual Assert Add-In for Visual Studio 2008.">
+        <Condition Level="0"><![CDATA[NOT VS90INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs90"/>
+        <ComponentRef Id="CompVcAddClassWizardVs90"/>
+        <ComponentRef Id="CompWizFixtureHtml1033Vs90"/>
+        <ComponentRef Id="CompWizFixtureScripts1033Vs90"/>
+        <ComponentRef Id="CompWizFixtureTemplates1033Vs90"/>
+      </Feature>
+
+
+      <Feature Id="FeatureVs100"
+               Absent="allow"
+               Title="Visual Studio 2010 integration"
+               Level="1"
+               AllowAdvertise="no"
+               Description="Installs the Visual Assert Add-In for Visual Studio 2010.">
+        <Condition Level="0"><![CDATA[NOT VS100INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs100"/>
+        <ComponentRef Id="CompVcAddClassWizardVs100"/>
+        <ComponentRef Id="CompWizFixtureHtml1033Vs100"/>
+        <ComponentRef Id="CompWizFixtureScripts1033Vs100"/>
+        <ComponentRef Id="CompWizFixtureTemplates1033Vs100"/>
+      </Feature>
+      
+      <!-- END VS VERSION SPECIFIC -->
+
+      <ComponentRef Id="CompBinI386"/>
+      <ComponentRef Id="CompLibI386"/>
+
+      <ComponentRef Id="CompDoc"/>
+      <ComponentRef Id="CompDocQuickStart"/>
+      <ComponentRef Id="CompDocQuickStartAssets"/>
+      <ComponentRef Id="CompDocQuickStartAssetsImg"/>
+      
+      <ComponentRef Id="CompIncludes"/>
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
+    <UIRef Id="CfixUi" />
+
+    <Property Id='ALLUSERS'>1</Property>
+    
+    <Property Id='ARPHELPLINK'>http://www.VisualAssert.com/</Property>
+    <Property Id='ARPURLINFOABOUT'>http://www.VisualAssert.com/</Property>
+    <Property Id='ARPPRODUCTICON'>CfixIco</Property>
+
+    <Property Id='OPENTUTORIALAFTERFINISH'>1</Property>
+
+    <Property Id='HTMLHELP'>hh.exe</Property>
+    <CustomAction Id="LaunchFile" Return="asyncNoWait" Property="HTMLHELP" ExeCommand="mk:@MSITStore:[INSTALLLOCATION]doc\VisualAssert.chm::ch04s01.html" />
+
+    <!-- BEGIN VS VERSION SPECIFIC -->
+
+    <CustomAction Id="FormatDevenvPath80" Property="VS80DEVENV" Value="[VS80INSTALLDIR]devenv.exe"/>
+    <CustomAction Id="FormatDevenvPath90" Property="VS90DEVENV" Value="[VS90INSTALLDIR]devenv.exe"/>
+    <CustomAction Id="FormatDevenvPath100" Property="VS100DEVENV" Value="[VS100INSTALLDIR]devenv.exe"/>
+
+    <CustomAction Id="ResetAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="ResetAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="ResetAddinVs100" Execute="commit" Return="ignore" Impersonate="yes" Property="VS100DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+
+    <CustomAction Id="ResetLegacyAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+    <CustomAction Id="ResetLegacyAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+    <CustomAction Id="ResetLegacyAddinVs100" Execute="commit" Return="ignore" Impersonate="yes" Property="VS100DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
+
+    <!-- END VS VERSION SPECIFIC -->
+        
+    <Icon Id="CfixIco" SourceFile="bitmaps\icon.ico" />
+    <Icon Id="HelpIco" SourceFile="bitmaps\help.ico" />
+  </Product>
+</Wix>
