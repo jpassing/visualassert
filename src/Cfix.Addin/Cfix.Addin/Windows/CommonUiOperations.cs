@@ -289,10 +289,15 @@ namespace Cfix.Addin.Windows
 
 		public static void OpenHomepage()
 		{
+			OpenBrowser( "http://www.visualassert.com/" );
+		}
+
+		public static void OpenBrowser( string url )
+		{
 			try
 			{
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
-				proc.StartInfo.FileName = "http://www.visualassert.com/";
+				proc.StartInfo.FileName = url;
 				proc.Start();
 			}
 			catch ( Exception x )

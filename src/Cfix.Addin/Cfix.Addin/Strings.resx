@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutCmdCaption" xml:space="preserve">
-    <value>About...</value>
+    <value>&amp;About...</value>
   </data>
   <data name="AddUnitTestCmdCaption" xml:space="preserve">
     <value>Unit &amp;Test...</value>
@@ -132,6 +132,9 @@
   <data name="BetaLicenseValidWithExp" xml:space="preserve">
     <value>Beta, {0} days left</value>
   </data>
+  <data name="CheckForUpdatesCmdCaption" xml:space="preserve">
+    <value>Check for &amp;updates</value>
+  </data>
   <data name="CurrentSolution" xml:space="preserve">
     <value>(Current Solution)</value>
   </data>
@@ -142,7 +145,7 @@
     <value>Number of tests: {0}</value>
   </data>
   <data name="DocCmdCaption" xml:space="preserve">
-    <value>Documentation</value>
+    <value>&amp;Documentation</value>
   </data>
   <data name="EmptyRun" xml:space="preserve">
     <value>Selection does not include any test item</value>
@@ -157,7 +160,7 @@
     <value>The executable '{0}' could not be found</value>
   </data>
   <data name="ExplorerCmdCaption" xml:space="preserve">
-    <value>Test Explorer Window</value>
+    <value>Test &amp;Explorer Window</value>
   </data>
   <data name="ExplorerWindowCaption" xml:space="preserve">
     <value>Test Explorer</value>
@@ -176,6 +179,12 @@
   </data>
   <data name="MsgBoxCaption" xml:space="preserve">
     <value>Visual Assert</value>
+  </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>A new version of Visual Assert (Version {0}) is available. Do you wish to download it?</value>
+  </data>
+  <data name="NoNewVersionAvailable" xml:space="preserve">
+    <value>Your version of Visual Assert is up to date.</value>
   </data>
   <data name="NoSlnLoaded" xml:space="preserve">
     <value>No Solution loaded</value>
@@ -196,19 +205,19 @@
     <value>Build output not available -- rebuild the project</value>
   </data>
   <data name="QuickStartCmdCaption" xml:space="preserve">
-    <value>Quick Start Page</value>
+    <value>&amp;Quick Start Page</value>
   </data>
   <data name="ReDebugRunCmdCaption" xml:space="preserve">
-    <value>Restart Last Run</value>
+    <value>Restart Last Ru&amp;n</value>
   </data>
   <data name="ReStartRunCmdCaption" xml:space="preserve">
-    <value>Restart Last Run Without Debugging</value>
+    <value>Re&amp;start Last Run Without Debugging</value>
   </data>
   <data name="RunActive" xml:space="preserve">
     <value>Run still active</value>
   </data>
   <data name="RunCmdCaption" xml:space="preserve">
-    <value>Test Run Window</value>
+    <value>Test &amp;Run Window</value>
   </data>
   <data name="RunWindowCaption" xml:space="preserve">
     <value>Test Run</value>
@@ -248,6 +257,12 @@
   </data>
   <data name="UnsupportedModule" xml:space="preserve">
     <value>The type of module is not supported.</value>
+  </data>
+  <data name="UpdateCheckCaption" xml:space="preserve">
+    <value>Update Check</value>
+  </data>
+  <data name="UpdateCheckFailed" xml:space="preserve">
+    <value>Checking for updates failed. Would you like to open the home page and check manually for updates now?</value>
   </data>
   <data name="VcDirectoriesUpdated" xml:space="preserve">
     <value>The VC++ directory settings have been updated to include the cfix include and library directories. You may have to restart Visual Studio to have these changes take effect.</value>

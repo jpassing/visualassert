@@ -6,14 +6,13 @@ WIXBINPATH=..\tools\wix
 
 VERSION = 1.0.3.$(BUILDNUMBER)
 
-
 #----------------------------------------------------------------------
 #
 # MSI.
 #
 #----------------------------------------------------------------------
 
-VisualAssert.msi: clean VisualAssert.wixobj ui.wixobj dialogs.wixlib 
+VisualAssert.msi: clean VisualAssert.wixobj ui.wixobj dialogs.wixlib versioninfo
 	if not exist wixca.dll copy /Y $(WIXBINPATH)\wixca.dll .
 	if not exist wixca.wixlib copy /Y $(WIXBINPATH)\wixca.wixlib .
 	$(WIXBINPATH)\light -b .. -nologo -w0 -loc dialogs\WixUI_en-us.wxl -loc VisualAssert_en-us.wxl wixca.wixlib dialogs.wixlib VisualAssert.wixobj ui.wixobj -out VisualAssert_$(VERSION).msi
@@ -41,6 +40,10 @@ clean:
 	
 #----------------------------------------------------------------------
 #
-# Examples.
+# Misc.
 #
 #----------------------------------------------------------------------
+
+versioninfo:
+	cat versioninfo-template.xml | sed s/VERSION/$(VERSION)/ > versioninfo.xml
+
