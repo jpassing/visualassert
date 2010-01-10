@@ -1,0 +1,9 @@
+Product:     0
+SubProduct:  0
+Major ver:   1
+Minor ver:   0
+Count:       1
+
+4ZY7M-7L3WZ-Q8P4T-47M47-4ZWBS
+
+in binary: eddda559f5d5edd50003bdbaebd575d40100000000000000

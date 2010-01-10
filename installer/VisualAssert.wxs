@@ -296,6 +296,9 @@
           <Component Id="CompInstallLocation" Guid="e4c7733d-ea7d-4e47-9a53-9dd483092bdc">
             <Registry Id="KeyInstallLocation" Root="HKLM" Key="Software\VisualAssert\1.0" Name="InstallLocation" Type="string" KeyPath="yes" Value="[INSTALLLOCATION]" />
           </Component>
+          <Component Id="CompFreeLicenseKey" Guid="675d4657-b1d0-476d-88c6-8766ef6210ea">
+            <Registry Id="KeyFreeLicenseKey" Root="HKLM" Key="Software\VisualAssert\1.0" Name="License" Type="binary" KeyPath="yes" Value="eddda559f5d5edd50003bdbaebd575d40100000000000000" />
+          </Component>
 
           <Component Id="CompStdole" Guid="579ce302-450f-4192-82c0-3289c8829c4a">
             <File Id="FileStdoleDll" Name="stdole.dll" KeyPath="yes" Source="redist\stdole.dll" DiskId="1" Assembly=".net"/>
@@ -468,6 +471,8 @@
     <Feature Id="FeatureMain" Title="Visual Assert" Absent='disallow' Level="1" AllowAdvertise="no" Display="expand">
       <ComponentRef Id="CompCfixHome"/>
       <ComponentRef Id="CompInstallLocation"/>
+      <ComponentRef Id="CompFreeLicenseKey"/>
+      
       <ComponentRef Id="CompStdole"/>
       <ComponentRef Id="CompCfixEnvCmd"/>
       <ComponentRef Id="CompEula"/>

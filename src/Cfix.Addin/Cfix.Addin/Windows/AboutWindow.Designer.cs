@@ -107,7 +107,7 @@ namespace Cfix.Addin.Windows
 			this.linkLabel.LinkColor = System.Drawing.Color.Lime;
 			this.linkLabel.Location = new System.Drawing.Point( 322, 27 );
 			this.linkLabel.Name = "linkLabel";
-			this.linkLabel.Size = new System.Drawing.Size( 140, 13 );
+			this.linkLabel.Size = new System.Drawing.Size( 148, 13 );
 			this.linkLabel.TabIndex = 4;
 			this.linkLabel.TabStop = true;
 			this.linkLabel.Text = "http://www.visualassert.com/";
@@ -161,7 +161,7 @@ namespace Cfix.Addin.Windows
 			this.copyrightLabel.Size = new System.Drawing.Size( 426, 26 );
 			this.copyrightLabel.TabIndex = 2;
 			this.copyrightLabel.TabStop = false;
-			this.copyrightLabel.Text = "(c) 2008-2009 Johannes Passing. All rights reserved.\r\nUnauthorized copying is str" +
+			this.copyrightLabel.Text = "(c) 2008-2010 Johannes Passing. All rights reserved.\r\nUnauthorized copying is str" +
 				"ictly forbidden.";
 			// 
 			// versionLabel

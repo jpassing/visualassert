@@ -133,6 +133,10 @@ namespace Cfix.Addin.Windows
 #if BETA
 			this.licenseLabel.Text = "Info:";
 			this.enterLicenseButton.Visible = false;
+#elif FREEWARE
+			this.licenseLabel.Visible = false;
+			this.licenseValueLabel.Visible = false;
+			this.enterLicenseButton.Visible = false;
 #endif
 
 			this.workspace = ws;
