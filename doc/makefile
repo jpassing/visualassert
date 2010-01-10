@@ -7,7 +7,7 @@ HH_HOME=c:\Program Files (x86)\HTML Help Workshop\
 all: chmdoc webdoc quickstartdoc
 
 __cfix.xml: $(CFIX_TREE)\doc\docbook\book.xml
-	xsltproc docbook\identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
+	xsltproc --novalid docbook\identity.xsl $(CFIX_TREE)\doc\docbook\book.xml > __cfix.xml
 
 quickstartdoc:
 	cd quickstart
@@ -24,7 +24,7 @@ chmdoc: __cfix.xml
 	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.gif .
 	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.png .
 	
-	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
+	xsltproc --novalid --xinclude --param buildnumber $(BUILDNUMBER) ..\stylechm.xsl ..\book.xml	
 	-1 "$(HH_HOME)\hhc" htmlhelp.hhp	
 	move cfix.chm ..\VisualAssert.chm
 
@@ -42,7 +42,7 @@ webdoc: __cfix.xml
 	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.gif .
 	copy /Y $(CFIX_TREE)\doc\docbook\chm\*.png .
 
-	xsltproc --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
+	xsltproc --novalid --xinclude --param buildnumber $(BUILDNUMBER) ..\..\styleweb.xsl ..\..\book.xml
 	
 	cd ../../..
 	
