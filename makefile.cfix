@@ -53,6 +53,7 @@ version:
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control\Properties\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.TreeView\Properties\AssemblyInfo.cs
 	tools\assemblyversion\AssemblyInfoUtil.exe -set:$(VERSION) src\Cfix.Control\Cfix.Control.Ui\Properties\AssemblyInfo.cs
+	cat src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template-template | sed s/VERSION/$(VERSION)/ > src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template
 	
 i386chk: version
 	if not exist bin\chk\i386 md bin\chk\i386
