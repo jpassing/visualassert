@@ -430,6 +430,11 @@ namespace Cfix.Addin.Windows
 			this.results.TreeDoubleClick += new MouseEventHandler( results_TreeDoubleClick );
 
 			this.Disposed += new EventHandler( RunWindow_Disposed );
+
+
+#if !BETA
+			this.lameButton.Visible = false;
+#endif
 		}
 
 		public void Initialize(

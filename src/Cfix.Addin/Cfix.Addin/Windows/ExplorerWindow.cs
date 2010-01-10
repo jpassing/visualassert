@@ -61,6 +61,10 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuRefreshButton.Click += new EventHandler( ctxMenuRefreshButton_Click );
 
 			this.Disposed += new EventHandler( ExplorerWindow_Disposed );
+
+#if !BETA
+			this.lameButton.Visible = false;
+#endif
 		}
 
 		public void Initialize( 
