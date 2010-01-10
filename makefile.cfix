@@ -209,13 +209,18 @@ docs:
 #----------------------------------------------------------------------
 signbinaries:
 	codesign.cmd "Visual Assert" bin\fre\i386\cfixhs32.exe bin\fre\amd64\cfixhs64.exe
-	
+
+pad:
+	sed s/__VERSION__/$(VERSION)/ installer\pad.xml | sed s/__DAY__/$(NOW_DAY)/ | sed s/__MONTH__/$(NOW_MONTH)/ | sed s/__YEAR__/$(NOW_YEAR)/ > rtm\pad.xml
+
 installer: signbinaries docs
 	cd installer
 	$(MAKE) clean VisualAssert.msi
 	cd ..
 	
-release: build installer
+	copy /Y installer\versioninfo.xml rtm\
+	
+release: build installer pad
 	if not exist rtm md rtm
 	copy installer\VisualAssert_$(VERSION).msi rtm\
 	
