@@ -16,14 +16,6 @@ namespace Cfix.Addin.Windows
 		private delegate VersionInfo ReadCurrentVersionInfoDelegate();
 		private delegate void VoidDelegate();
 
-		private IWin32Window parentWindow = null;
-
-		public IWin32Window ParentWindow
-		{
-			set { this.parentWindow = value; }
-			get { return this.parentWindow; }
-		}
-
 		private void ReadCurrentVersionInfoCallback( IAsyncResult ar )
 		{
 			ReadCurrentVersionInfoDelegate dlg =
@@ -35,14 +27,12 @@ namespace Cfix.Addin.Windows
 			{
 				try
 				{
-					this.Hide();
-
 					VersionInfo currentVersion = dlg.EndInvoke( ar );
 
 					if ( currentVersion.IsNewer )
 					{
 						DialogResult result = MessageBox.Show(
-							this.ParentWindow,
+							this,
 							String.Format(
 								Strings.NewVersionAvailable,
 								currentVersion.Version.ToString() ),
@@ -63,7 +53,7 @@ namespace Cfix.Addin.Windows
 					else
 					{
 						MessageBox.Show(
-							this.ParentWindow,
+							this,
 							Strings.NoNewVersionAvailable,
 							Strings.UpdateCheckCaption,
 							MessageBoxButtons.OK );
@@ -74,7 +64,7 @@ namespace Cfix.Addin.Windows
 					Logger.LogError( "UpdateCheck", x );
 
 					DialogResult result = MessageBox.Show(
-						this.ParentWindow,
+						this,
 						Strings.UpdateCheckFailed,
 						Strings.UpdateCheckCaption,
 						MessageBoxButtons.YesNo );
@@ -95,15 +85,13 @@ namespace Cfix.Addin.Windows
 			InitializeComponent();
 		}
 
-		public static void CheckForUpdate( IWin32Window parentWnd )
+		public static void CheckForUpdate()
 		{
 			ReadCurrentVersionInfoDelegate checkDelegate = 
 				UpdateCheck.ReadCurrentVersionInfo;
 
 			using ( UpdateCheckWindow window = new UpdateCheckWindow() )
 			{
-				window.parentWindow = parentWnd;
-
 				//
 				// Perform check asynchronously s.t. UI stays responsive.
 				//
