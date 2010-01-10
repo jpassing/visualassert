@@ -17,7 +17,7 @@
 		<section id="Legal">
 			<title>Legal notice</title>
 			<para>
-			Copyright of this document 2007-2009 Johannes Passing. All rights reserved.
+			Copyright of this document 2007-2010 Johannes Passing. All rights reserved.
 			</para>
 			<para>
 			Microsoft, Active Directory, ActiveMovie, ActiveX, BackOffice, ClearType, Developer Studio, Direct3D, Direct Animation, 
@@ -30,7 +30,7 @@
 			Java is a trademark of Sun Microsystems.
 			</para>
 			<para>
-			Usage of this documentation is subject to the <link linkend="EULA">End User License Agreement</link>.
+			Usage of this documentation is subject to the Visual Assert End User License Agreement.
 			</para>
 		</section>
 		<section id="Terms">
@@ -148,6 +148,42 @@
 	
 	<chapter id="API">
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="xpointer(//chapter[@id='API']/*)" href="..\__cfix.xml" />
+		
+		<section id="CfixVersionsnUsedByVisualAssert">
+			<title>cfix versions used by Visual Assert</title>
+			
+			<para>
+				The following versions of the cfix testing framework are used by Visual Assert:
+				<table frame="all" tocentry="0">
+					<tgroup cols="2" align="left" colsep="1" rowsep="1">
+						<thead>
+							<row>
+							  <entry>Visual Assert version</entry>
+							  <entry>cfix version</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Visual Assert Beta 1</entry>
+								<entry>cfix 1.4</entry>
+							</row>
+							<row>
+								<entry>Visual Assert Beta 2</entry>
+								<entry>cfix 1.5</entry>
+							</row>
+							<row>
+								<entry>Visual Assert Beta 3</entry>
+								<entry>cfix 1.5.1</entry>
+							</row>
+							<row>
+								<entry>Visual Assert 1.0</entry>
+								<entry>cfix 1.6</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</para>
+		</section>
 	</chapter>
 	<!--
 	<chapter id="EULA">
