@@ -82,6 +82,7 @@
 
 	<body>
 		<div id='tab'>
+			<div class='tab_activebegin'><img src='../assets/img/tab_activebegin.png' alt=''/></div>
 			<div class='tab_active'><a href='http://www.visualassert.com/'>Visual Assert &#x2013; The Unit Testing Add-In for Visual C++</a></div>
 			<div class='tab_active2passive'><img src='../assets/img/tab_active2passive.png' alt=''/></div>
 			<div class='tab_passive'><a href='http://www.cfix-testing.org/'>cfix &#x2013;  C/C++ Unit Testing for Win32 and NT</a></div>
@@ -89,8 +90,9 @@
 			<div class='tab_pad'>&#xA0;</div>
 			<div class='tab_clear'></div>
 	    </div>
+		<div id='topborder'>&#xA0;</div>
 		<div id='header'>
-			<img src='../assets/img/logo-visualassert.gif' alt='Visual Assert &#x2013; The Unit Testing Add-In for Visual C++' style="margin-left: 10px"/>
+			<img src='../assets/img/logo-visualassert.gif' alt='Visual Assert &#x2013; The Unit Testing Add-In for Visual C++' style="margin-left: 30px"/>
 	    </div>
 	    <div id='menu'>
 	        <div id='menu_box'>
@@ -161,7 +163,8 @@
 			</div>
 	        <div id='main_clear'></div>
     	</div>
-	  
+		<div id='bottomborder'>&#xA0;</div>
+		
 		<div id='footer'>
 			Visual Assert &#x2013; The Unit Testing Add-In for Visual C++<br />
 			Build <xsl:value-of select="$buildnumber" /><br />
