@@ -13,7 +13,14 @@ namespace Cfix.Addin.Test
 		{
 			foreach ( ProjectItem item in projectItems )
 			{
-				AddProject( ( Project ) item.Object );
+				//
+				// N.B. Under strange circumstances, Object can be 
+				// null (#355).
+				//
+				if ( item.Object != null )
+				{
+					AddProject( ( Project ) item.Object );
+				}
 			}
 		}
 
@@ -32,7 +39,12 @@ namespace Cfix.Addin.Test
 				config )
 		{
 			Debug.Assert( slnFolder.Kind == ProjectKinds.SolutionFolder );
-			
+
+			if ( slnFolder.ProjectItems == null )
+			{
+				throw new ArgumentNullException();
+			}
+
 			LoadSubProjects( slnFolder.ProjectItems );
 		}
 
