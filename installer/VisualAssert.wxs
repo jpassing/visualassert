@@ -348,18 +348,25 @@
               <Directory Id="DirDocQuickStartAssets" Name="assets">
                 <Component Id="CompDocQuickStartAssets" DiskId="1" Guid="54cdcd90-dfc9-4553-a0cc-5323141549ed">
                   <File Id="FileQuickStartAssetsMasterCss" Name="master.css" Source="doc\quickstart\assets\master.css" Vital="yes"/>
+                  <File Id="FileQuickStartAssetsMasterIe6patchCss" Name="masteri6.css" LongName="master-ie6patch.css" Source="doc\quickstart\assets\master-ie6patch.css" Vital="yes"/>
                 </Component>
 
                 <Directory Id="DirDocQuickStartAssetsImg" Name="img">
                   <Component Id="CompDocQuickStartAssetsImg" DiskId="1" Guid="06cc93b0-7579-470a-a34e-f85b5b7ebbc1">
-                    <File Id="FileQuickStartAssetsImgBgJpg" Name="bg.jpg" Source="doc\quickstart\assets\img\bg.jpg" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsImgBgPng" Name="bg.png" Source="doc\quickstart\assets\img\bg.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsImgTopBgPng" Name="top-bg.png" Source="doc\quickstart\assets\img\top-bg.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsImgBottomborderPng" Name="bborder.png" LongName="bottomborder.png" Source="doc\quickstart\assets\img\bottomborder.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsImgTopborderPng" Name="tborder.png" LongName="topborder.png" Source="doc\quickstart\assets\img\topborder.png" Vital="yes"/>
                     <File Id="FileQuickStartAssetsLogo" Name="logo.gif" LongName="logo-visualassert.gif" Source="doc\quickstart\assets\img\logo-visualassert.gif" Vital="yes"/>
                     <File Id="FileQuickStartAssetsTab1" Name="tab1.png" LongName="tab_active.png" Source="doc\quickstart\assets\img\tab_active.png" Vital="yes"/>
                     <File Id="FileQuickStartAssetsTab2" Name="tab2.png" LongName="tab_active2passive.png" Source="doc\quickstart\assets\img\tab_active2passive.png" Vital="yes"/>
-                    <File Id="FileQuickStartAssetsTab3" Name="tab3.png" LongName="tab_activeend.png" Source="doc\quickstart\assets\img\tab_activeend.png" Vital="yes"/>
-                    <File Id="FileQuickStartAssetsTab4" Name="tab4.png" LongName="tab_passive.png" Source="doc\quickstart\assets\img\tab_passive.png" Vital="yes"/>
-                    <File Id="FileQuickStartAssetsTab5" Name="tab5.png" LongName="tab_passive2active.png" Source="doc\quickstart\assets\img\tab_passive2active.png" Vital="yes"/>
-                    <File Id="FileQuickStartAssetsTab6" Name="tab6.png" LongName="tab_passiveend.png" Source="doc\quickstart\assets\img\tab_passiveend.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab3" Name="tab3.png" LongName="tab_activebegin.png" Source="doc\quickstart\assets\img\tab_activebegin.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab4" Name="tab4.png" LongName="tab_activeend.png" Source="doc\quickstart\assets\img\tab_activeend.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab5" Name="tab5.png" LongName="tab_passive.png" Source="doc\quickstart\assets\img\tab_passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab6" Name="tab6.png" LongName="tab_passive2active.png" Source="doc\quickstart\assets\img\tab_passive2active.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab7" Name="tab7.png" LongName="tab_passive2passive.png" Source="doc\quickstart\assets\img\tab_passive2passive.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab8" Name="tab8.png" LongName="tab_passivebegin.png" Source="doc\quickstart\assets\img\tab_passivebegin.png" Vital="yes"/>
+                    <File Id="FileQuickStartAssetsTab9" Name="tab9.png" LongName="tab_passiveend.png" Source="doc\quickstart\assets\img\tab_passiveend.png" Vital="yes"/>
                   </Component>
                 </Directory>
               </Directory>
