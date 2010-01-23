@@ -244,12 +244,16 @@ namespace Cfix.Addin.Windows
 		{
 			if ( this.explorer != null )
 			{
+				Logger.LogInfo( "ToolWindows", "Closing Explorer Window" );
+
 				this.explorer.Close();
 				this.explorer.UserControl.Dispose();
 			}
 
 			if ( this.run != null )
 			{
+				Logger.LogInfo( "ToolWindows", "Closing Run Window" );
+				
 				this.run.Close();
 				this.run.UserControl.Dispose();
 			}

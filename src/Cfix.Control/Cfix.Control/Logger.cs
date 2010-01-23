@@ -41,7 +41,11 @@ namespace Cfix.Control
 			lst.Close();
 		}
 
-		public static void LogInfo( string source, string format, params object[] args )
+		public static void Log( 
+			TraceEventType level, 
+			string source, 
+			string format, 
+			params object[] args )
 		{
 			if ( listener != null )
 			{
@@ -49,50 +53,33 @@ namespace Cfix.Control
 				{
 					listener.TraceEvent(
 						eventCache,
-						String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
-						TraceEventType.Information,
+						String.Format( 
+							"[{0}] {1}", 
+							Process.GetCurrentProcess().Id, 
+							source ),
+						level,
 						0,
 						format,
 						args );
 					listener.Flush();
 				}
 			}
+		}
+
+		
+		public static void LogInfo( string source, string format, params object[] args )
+		{
+			Log( TraceEventType.Information, source, format, args );
 		}
 
 		public static void LogWarning( string source, string format, params object[] args )
 		{
-			if ( listener != null )
-			{
-				lock ( logLock )
-				{
-					listener.TraceEvent(
-						eventCache,
-						String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
-						TraceEventType.Warning,
-						0,
-						format,
-						args );
-					listener.Flush();
-				}
-			}
+			Log( TraceEventType.Warning, source, format, args );
 		}
 
 		public static void LogError( string source, string format, params object[] args )
 		{
-			if ( listener != null )
-			{
-				lock ( logLock )
-				{
-					listener.TraceEvent(
-						eventCache,
-						String.Format( "[{0}] {1}", Process.GetCurrentProcess().Id, source ),
-						TraceEventType.Error,
-						0,
-						format,
-						args );
-					listener.Flush();
-				}
-			}
+			Log( TraceEventType.Error, source, format, args );
 		}
 
 		public static void LogError( string source, Exception x )
