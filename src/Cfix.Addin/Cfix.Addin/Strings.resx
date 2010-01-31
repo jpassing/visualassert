@@ -168,6 +168,9 @@
   <data name="FailedToObtainCurrentConfig" xml:space="preserve">
     <value>Failed to obtain current configuration</value>
   </data>
+  <data name="FeedbackCmdCaption" xml:space="preserve">
+    <value>Submit &amp;Feedback</value>
+  </data>
   <data name="IncompatibleModule" xml:space="preserve">
     <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type.</value>
   </data>

@@ -214,6 +214,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submit &amp;Feedback.
+        /// </summary>
+        internal static string FeedbackCmdCaption {
+            get {
+                return ResourceManager.GetString("FeedbackCmdCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type..
         /// </summary>
         internal static string IncompatibleModule {

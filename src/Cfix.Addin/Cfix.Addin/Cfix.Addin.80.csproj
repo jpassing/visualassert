@@ -239,6 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\FeedbackMask.bmp" />
     <None Include="Resources\update2_00.gif" />
     <None Include="Icons\PrevFailure.bmp" />
     <None Include="Icons\NextFailure.bmp" />
@@ -274,7 +275,7 @@
     <None Include="Icons\cfix.bmp" />
     <None Include="Icons\cfix.ico" />
     <None Include="Icons\VSObject_VCProject.bmp" />
-    <None Include="Icons\VSObject_Solution.bmp" />
+    <None Include="Test\VSObject_Solution.bmp" />
     <None Include="Icons\CppProject.bmp" />
     <None Include="Resources\Csearch_00.gif" />
     <None Include="Icons\Ffwd.bmp" />

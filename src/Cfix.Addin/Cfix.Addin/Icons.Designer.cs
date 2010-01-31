@@ -200,6 +200,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap FeedbackMask {
+            get {
+                object obj = ResourceManager.GetObject("FeedbackMask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Ffwd {
             get {
                 object obj = ResourceManager.GetObject("Ffwd", resourceCulture);
