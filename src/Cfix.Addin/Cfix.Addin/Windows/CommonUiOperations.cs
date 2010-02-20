@@ -373,7 +373,7 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				Project currentProject = GetProjectFromCurrentHierarchyItem( dte );
-				if ( currentProject != null && currentProject.Kind == ProjectKinds.VcProject )
+				if ( currentProject != null && ProjectKinds.IsCppProjectKind( currentProject.Kind ) )
 				{
 					Wizards.LaunchAddFixtureWizard( dte, currentProject );
 				}
@@ -390,7 +390,7 @@ namespace Cfix.Addin.Windows
 			{
 				Project currentProject = GetProjectFromCurrentHierarchyItem( dte );
 				return currentProject != null &&
-					currentProject.Kind == ProjectKinds.VcProject;
+					 ProjectKinds.IsCppProjectKind( currentProject.Kind );
 			}
 			catch ( Exception )
 			{

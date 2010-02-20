@@ -92,6 +92,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Test\ICProjectTestCollection.cs" />
     <Compile Include="Test\ProjectCollectionBase.cs" />
     <Compile Include="Test\SolutionFolderTestCollection.cs" />
     <Compile Include="UpdateCheck.cs" />

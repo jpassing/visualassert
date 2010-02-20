@@ -16,6 +16,7 @@ using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 using System.IO;
+using Microsoft.VisualStudio.VCProjectEngine;
 
 namespace Cfix.Addin
 {
@@ -36,6 +37,8 @@ namespace Cfix.Addin
 		private IRunnableTestItem lastItemRun;
 
 		private LicenseInfo cachedLicenseInfo;
+
+		private static bool vcDirectoriesRegistered;
 
 		private class DebugTerminator
 		{
@@ -248,6 +251,79 @@ namespace Cfix.Addin
 			return null;
 		}
 
+		private static bool IsArchitectureSupported( VCPlatform plaf )
+		{
+			string plafName = plaf.Name;
+			switch ( plafName )
+			{
+				case "Win32":
+					return true;
+
+				case "x64":
+					return true;
+
+				default:
+					return false;
+			}
+		}
+
+		/*++
+		 * Register cfix directories s.t. the compiler finds them. 
+		 --*/
+		private static void RegisterVcDirectories( DTE2 dte )
+		{
+			Projects projects = ( Projects ) dte.GetObject( "VCProjects" );
+			VCProjectEngine engine = ( VCProjectEngine )
+				projects.Properties.Item( "VCProjectEngine" ).Object;
+
+			if ( vcDirectoriesRegistered || engine == null )
+			{
+				return;
+			}
+
+			IVCCollection platforms = ( IVCCollection ) engine.Platforms;
+			bool changePerformed = false;
+
+			foreach ( VCPlatform platform in platforms )
+			{
+				if ( !IsArchitectureSupported( platform ) )
+				{
+					continue;
+				}
+
+				Architecture arch = GetArchitecture( platform );
+				if ( !platform.IncludeDirectories.Contains( Directories.IncludeDirectory ) )
+				{
+					platform.IncludeDirectories +=
+						";" + Directories.IncludeDirectory;
+
+					changePerformed = true;
+				}
+
+				if ( !platform.LibraryDirectories.Contains( Directories.GetLibDirectory( arch ) ) )
+				{
+					platform.LibraryDirectories +=
+						";" + Directories.GetLibDirectory( arch );
+
+					changePerformed = true;
+				}
+
+#if !VS100
+				//
+				// Write to disk.
+				//
+				 platform.CommitChanges();
+#endif
+			}
+
+			vcDirectoriesRegistered = true;
+
+			if ( changePerformed )
+			{
+				VisualAssert.ShowInfo( Strings.VcDirectoriesUpdated );
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * ctor/dtor.
 		 */
@@ -259,6 +335,11 @@ namespace Cfix.Addin
 			this.config = Configuration.Load( dte );
 			this.runAgents = CreateRunAgent();
 			this.session = new Session();
+
+			//
+			// If not happened yet, register VC directories.
+			//
+			RegisterVcDirectories( dte );
 
 			//
 			// N.B. Search target is always i386 merely because this works on
@@ -653,6 +734,28 @@ namespace Cfix.Addin
 					String.Format( Strings.ExecutableCouldNotBeLaunched, executable ), 
 					x );
 			}
+		}
+
+		public static Architecture GetArchitecture( VCPlatform plaf )
+		{
+			string plafName = plaf.Name;
+			switch ( plafName )
+			{
+				case "Win32":
+					return Architecture.I386;
+
+				case "x64":
+					return Architecture.Amd64;
+
+				default:
+					throw new CfixAddinException(
+						String.Format( Strings.UnrecognizedPlatform, plafName ) );
+			}
+		}
+
+		public static Architecture GetArchitecture( VCConfiguration config )
+		{
+			return GetArchitecture( ( VCPlatform ) config.Platform );
 		}
 	}
 }

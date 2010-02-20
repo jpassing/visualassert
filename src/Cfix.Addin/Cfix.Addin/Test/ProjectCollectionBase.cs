@@ -30,47 +30,46 @@ namespace Cfix.Addin.Test
 
 		protected void AddProject( Project prj )
 		{
-			switch ( prj.Kind )
+			if ( prj.Kind == ProjectKinds.VcProject )
 			{
-				case ProjectKinds.VcProject:
-					Add( new VCProjectTestCollection(
-						this,
-						this.solution,
-						prj,
-						this.agentSet,
-						this.config ) );
-					break;
-
-				case ProjectKinds.SolutionFolder:
-					Add( new SolutionFolderTestCollection(
-						this,
-						prj,
-						this.solution,
-						this.agentSet,
-						this.config ) );
-					break;
-
-				default:
-					//
-					// Ignore.
-					//
-					break;
+				Add( new VCProjectTestCollection(
+					this,
+					this.solution,
+					prj,
+					this.agentSet,
+					this.config ) );
+			}
+			else if ( prj.Kind == ProjectKinds.IcProject )
+			{
+				Add( new ICProjectTestCollection(
+					this,
+					this.solution,
+					prj,
+					this.agentSet,
+					this.config ) );
+			}
+			else if ( ProjectKinds.IsSolutionFolderKind( prj.Kind ) )
+			{
+				Add( new SolutionFolderTestCollection(
+					this,
+					prj,
+					this.solution,
+					this.agentSet,
+					this.config ) );
+			}
+			else
+			{
+				//
+				// Ignore.
+				//
 			}
 		}
 
 		protected bool CanProjectBeAdded( Project prj )
 		{
-			switch ( prj.Kind )
-			{
-				case ProjectKinds.VcProject:
-					return true;
-
-				case ProjectKinds.SolutionFolder:
-				   return true;
-
-				default:
-					return false;
-			}
+			return
+				ProjectKinds.IsCppProjectKind( prj.Kind ) ||
+				ProjectKinds.IsSolutionFolderKind( prj.Kind );
 		}
 
 		public void RefreshProject( string name )

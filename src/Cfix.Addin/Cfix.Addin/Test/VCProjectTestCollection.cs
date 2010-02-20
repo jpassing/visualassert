@@ -46,147 +46,11 @@ namespace Cfix.Addin.Test
 		//
 		private string currentPath;
 
-		private static bool vcDirectoriesRegistered;
-
-		/*++
-		 * Register cfix directories s.t. the compiler finds them. 
-		 --*/
-		private static void RegisterVcDirectories( VCProjectEngine engine )
-		{
-			if ( vcDirectoriesRegistered )
-			{
-				return;
-			}
-
-			IVCCollection platforms = ( IVCCollection ) engine.Platforms;
-			bool changePerformed = false;
-
-			foreach ( VCPlatform platform in platforms )
-			{
-				if ( !IsArchitectureSupported( platform ) )
-				{
-					continue;
-				}
-
-				Architecture arch = GetArchitecture( platform );
-				if ( !platform.IncludeDirectories.Contains( Directories.IncludeDirectory ) )
-				{
-					platform.IncludeDirectories +=
-						";" + Directories.IncludeDirectory;
-
-					changePerformed = true;
-				}
-
-				if ( ! platform.LibraryDirectories.Contains( Directories.GetLibDirectory( arch ) ) )
-				{
-					platform.LibraryDirectories +=
-						";" + Directories.GetLibDirectory( arch );
-
-					changePerformed = true;
-                }
-
-#if !VS100
-				//
-				// Write to disk.
-				//
-				platform.CommitChanges();
-#endif
-            }
-
-			vcDirectoriesRegistered = true;
-
-			if ( changePerformed )
-			{
-				VisualAssert.ShowInfo( Strings.VcDirectoriesUpdated );
-			}
-		}
-		
-		private VCConfiguration CurrentConfiguration
-		{
-			get
-			{
-				VCProject vcProject = this.project.Object as VCProject;
-				Debug.Assert( vcProject != null );
-
-				EnvDTE.Configuration activeConfig = null;
-				try
-				{
-					activeConfig =
-						this.project.ConfigurationManager.ActiveConfiguration;
-				}
-				catch ( ArgumentException )
-				{
-					//
-					// Most likely due to a configuration being active that
-					// is not fully supported, e.g. amd64 on a i386 system.
-					//
-				}
-
-				IVCCollection vcConfigs = ( IVCCollection ) vcProject.Configurations;
-				foreach ( VCConfiguration vcConfig in vcConfigs )
-				{
-					if ( activeConfig == null )
-					{
-						//
-						// Just choose the first.
-						//
-						return vcConfig;
-					}
-					else if ( activeConfig.ConfigurationName == vcConfig.ConfigurationName &&
-						 activeConfig.PlatformName == ( ( VCPlatform ) vcConfig.Platform ).Name )
-					{
-						return vcConfig;
-					}
-				}
-
-				Debug.Fail( "Missing configuration" );
-				throw new CfixAddinException( Strings.FailedToObtainCurrentConfig );
-			}
-		}
-
-		private static Architecture GetArchitecture( VCConfiguration config )
-		{
-			return GetArchitecture( ( VCPlatform ) config.Platform );
-		}
-
-		private static Architecture GetArchitecture( VCPlatform plaf )
-		{
-			string plafName = plaf.Name;
-			switch ( plafName )
-			{
-				case "Win32":
-					return Architecture.I386;
-
-				case "x64":
-					return Architecture.Amd64;
-
-				default:
-					throw new CfixAddinException(
-						String.Format( Strings.UnrecognizedPlatform, plafName ) );
-			}
-		}
-
-		private static bool IsArchitectureSupported( VCPlatform plaf )
-		{
-			string plafName = plaf.Name;
-			switch ( plafName )
-			{
-				case "Win32":
-					return true;
-
-				case "x64":
-					return true;
-
-				default:
-					return false;
-			}
-		}
-
 		private void LoadPrimaryOutputModule( VCConfiguration vcConfig )
 		{
 			lock ( this.loadLock )
 			{
-				Architecture arch = GetArchitecture( vcConfig );
+				Architecture arch = Workspace.GetArchitecture( vcConfig );
 
 				Debug.Assert( this.agentSet.IsArchitectureSupported( arch ) );
 
@@ -274,6 +138,50 @@ namespace Cfix.Addin.Test
 		}
 
 		/*----------------------------------------------------------------------
+		 * Protected.
+		 */
+
+		protected static VCConfiguration GetCurrentConfiguration( Project project )
+		{
+			VCProject vcProject = project.Object as VCProject;
+			Debug.Assert( vcProject != null );
+
+			EnvDTE.Configuration activeConfig = null;
+			try
+			{
+				activeConfig =
+					project.ConfigurationManager.ActiveConfiguration;
+			}
+			catch ( ArgumentException )
+			{
+				//
+				// Most likely due to a configuration being active that
+				// is not fully supported, e.g. amd64 on a i386 system.
+				//
+			}
+
+			IVCCollection vcConfigs = ( IVCCollection ) vcProject.Configurations;
+			foreach ( VCConfiguration vcConfig in vcConfigs )
+			{
+				if ( activeConfig == null )
+				{
+					//
+					// Just choose the first.
+					//
+					return vcConfig;
+				}
+				else if ( activeConfig.ConfigurationName == vcConfig.ConfigurationName &&
+					 activeConfig.PlatformName == ( ( VCPlatform ) vcConfig.Platform ).Name )
+				{
+					return vcConfig;
+				}
+			}
+
+			Debug.Fail( "Missing configuration" );
+			throw new CfixAddinException( Strings.FailedToObtainCurrentConfig );
+		}
+
+		/*----------------------------------------------------------------------
 		 * Public.
 		 */
 
@@ -297,38 +205,7 @@ namespace Cfix.Addin.Test
 			this.agentSet = agents;
 			this.config = config;
 
-			VCConfiguration currentConfig = CurrentConfiguration;
-
-			//
-			// If not happened yet, register VC directories.
-			//
-			// N.B. We need a Project to get hold of the VCProjectEngine,
-			// thus, this has to occur here.
-			//
-			VCProjectEngine engine = null;
-			VCCLCompilerTool clTool = ( VCCLCompilerTool )
-				( ( IVCCollection ) currentConfig.Tools ).Item( "VCCLCompilerTool" );
-			if ( clTool != null )
-			{
-				engine = ( VCProjectEngine ) clTool.VCProjectEngine;
-			}
-			else
-			{
-				VCNMakeTool nmakeTool = ( VCNMakeTool )
-					( ( IVCCollection ) currentConfig.Tools ).Item( "VCNMakeTool" );
-				if ( nmakeTool != null )
-				{
-					engine = ( VCProjectEngine ) nmakeTool.VCProjectEngine;
-				}
-			}
-
-			if ( engine != null )
-			{
-				RegisterVcDirectories( engine );
-			}
-
-
-			LoadPrimaryOutputModule( currentConfig );
+			LoadPrimaryOutputModule( GetCurrentConfiguration( project ) );
 
 			//
 			// N.B. Do not register in loadedProjects yet as child
@@ -400,7 +277,7 @@ namespace Cfix.Addin.Test
 			VCConfiguration vcConfig;
 			try
 			{
-				vcConfig = CurrentConfiguration;
+				vcConfig = GetCurrentConfiguration( this.project );
 			}
 			catch ( COMException )
 			{
@@ -484,7 +361,7 @@ namespace Cfix.Addin.Test
 		{
 			SolutionBuild build = this.solution.SolutionBuild;
 			build.BuildProject(
-				CurrentConfiguration.ConfigurationName,
+				GetCurrentConfiguration( this.project ).ConfigurationName,
 				this.uniqueName, 
 				true );
 

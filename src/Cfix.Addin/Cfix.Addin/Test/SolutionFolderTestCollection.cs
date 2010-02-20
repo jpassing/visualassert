@@ -38,7 +38,7 @@ namespace Cfix.Addin.Test
 				agentSet,
 				config )
 		{
-			Debug.Assert( slnFolder.Kind == ProjectKinds.SolutionFolder );
+			Debug.Assert( ProjectKinds.IsSolutionFolderKind( slnFolder.Kind ) );
 
 			if ( slnFolder.ProjectItems == null )
 			{
