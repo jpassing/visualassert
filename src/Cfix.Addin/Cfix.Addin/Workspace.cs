@@ -109,10 +109,15 @@ namespace Cfix.Addin
 
 			//
 			// Add own library path to PATH s.t. custom hosts can
-			// find cfixctl.dll.
+			// find cfixctl.dll, cfix.dll, etc.
+			//
+			// Prioritize these directories s.t. an EXE modules does
+			// not accidently load an old DLL from another VA/cfix
+			// installation.
 			//
 			agent.DefaultEnvironment.AddSearchPath(
-				Directories.GetBinDirectory( arch ) );
+				Directories.GetBinDirectory( arch ),
+				true );
 
 			return agent;
 		}

@@ -63,11 +63,21 @@ namespace Cfix.Control
 
 		public void AddSearchPath( string module )
 		{
-			Add( "PATH", module );
+			AddSearchPath( module, false );
+		}
+
+		public void AddSearchPath( string module, bool prioritize )
+		{
+			Add( "PATH", module, prioritize );
+		}
+
+		public void Add( string name, string value )
+		{
+			Add( name, value, false );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower" )]
-		public void Add( string name, string value )
+		public void Add( string name, string value, bool prioritize )
 		{
 			//
 			// To avoid casing-conflicts, force everything to lcase.
@@ -79,7 +89,17 @@ namespace Cfix.Control
 				string existing;
 				if ( this.env.TryGetValue( name, out existing ) )
 				{
-					value = String.Format( "{0};{1}", existing, value );
+					if ( prioritize )
+					{
+						//
+						// Put new value in front.
+						//
+						value = String.Format( "{0};{1}", value, existing );
+					}
+					else
+					{
+						value = String.Format( "{0};{1}", existing, value );
+					}
 				}
 
 				this.env[ name ] = value;
