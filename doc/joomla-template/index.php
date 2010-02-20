@@ -88,7 +88,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<a href='contact.html'>Contact</a> |
 			<a href='terms.html'>Terms of Use</a><br /><br />
 			
-			(C) 2009 <a href='http://jpassing.com/'>Johannes Passing</a>. All rights reserved.
+			(C) 2009-2010 <a href='http://jpassing.com/'>Johannes Passing</a>. All rights reserved.
 		</div>
 	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
