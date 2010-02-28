@@ -29,6 +29,8 @@ namespace Cfix.Addin.Dte
 		private int defaultHeight;
 		private int defaultWidth;
 
+		private int activationCount;
+
 		public delegate void WindowClosingDelegate();
 		public event WindowClosingDelegate WindowClosing;
 
@@ -214,8 +216,9 @@ namespace Cfix.Addin.Dte
 			bool wasVisible = this.window.Visible;
 			this.window.Activate();
 
-			if ( !wasVisible && this.window.Visible )
+			if ( this.activationCount == 0 || ( !wasVisible && this.window.Visible ) )
 			{
+				this.activationCount++;
 				//
 				// A true activation.
 				//
