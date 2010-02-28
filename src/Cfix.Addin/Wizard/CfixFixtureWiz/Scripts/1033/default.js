@@ -5,7 +5,7 @@
 --*/
 
 vsProjectKindSolutionFolder = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
-vsProjectVcProject = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}";
+icProjectVcProject = "{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}";
 
 function FindProject( wizard, collection, strProjectName )
 {
@@ -83,7 +83,14 @@ function OnFinish( selProj, selObj )
 		codeModel = selProj.CodeModel;
 		codeModel.Synchronize();
 		codeModel.StartTransaction("Add Unit Test");
-		if ( ! DoesIncludeExist( selProj, "<" + strApiType + ".h>", strFile ) )
+		
+		//
+		// N.B. The IC automation model is incomplete -- DoesIncludeExist
+		// fails for IC projects. Skip the check for these kinds of projects
+		// at the risk of getting duplicate includes.
+		//
+		if ( selProj.Kind == icProjectVcProject ||
+		     ! DoesIncludeExist( selProj, "<" + strApiType + ".h>", strFile ) )
 		{
 			codeModel.AddInclude( "<" + strApiType + ".h>", strFile, vsCMAddPositionDefault );
 		}
