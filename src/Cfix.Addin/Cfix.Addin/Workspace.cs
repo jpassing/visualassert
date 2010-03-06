@@ -17,6 +17,7 @@ using EnvDTE;
 using EnvDTE80;
 using System.IO;
 using Microsoft.VisualStudio.VCProjectEngine;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin
 {
@@ -27,8 +28,13 @@ namespace Cfix.Addin
 		private readonly DTE2 dte;
 		private readonly Configuration config;
 		private readonly Cfix.Addin.Windows.ToolWindows toolWindows;
+
+		private readonly AgentFactory agentFactory = new AgentFactory();
 		private readonly IAgent searchAgent;
 		private readonly AgentSet runAgents;
+
+		private readonly Inspector intelInspector;
+		
 		private readonly ISession session;
 		private readonly CommandEvents cmdEvents;
 
@@ -84,97 +90,6 @@ namespace Cfix.Addin
 						cmdEvents_BeforeExecute );
 			}
 
-		}
-
-		/*----------------------------------------------------------------------
-		 * Private - Agent creation.
-		 */
-
-		private IAgent CreateOutOfProcessLocalAgent( Architecture arch )
-		{
-			Debug.Assert( this.config != null );
-
-			IAgent agent = Agent.CreateLocalAgent(
-				arch,
-				false,
-				this.config.HostCreationOptions );
-			agent.SetTrialLicenseCookie( this.config.Cookie );
-
-			//
-			// Inherit own environment variables.
-			//
-			// N.B. It is absolutely crucial to inherit %SystemRoot% - 
-			// otherwise, SXS will fail to load any SXS-based library,
-			// including the CRT.
-			//
-			agent.DefaultEnvironment.MergeEnvironmentVariables(
-				Environment.GetEnvironmentVariables() );
-
-			//
-			// Add own library path to PATH s.t. custom hosts can
-			// find cfixctl.dll, cfix.dll, etc.
-			//
-			// Prioritize these directories s.t. an EXE modules does
-			// not accidently load an old DLL from another VA/cfix
-			// installation.
-			//
-			agent.DefaultEnvironment.AddSearchPath(
-				Directories.GetBinDirectory( arch ),
-				true );
-
-			return agent;
-		}
-
-		private IAgent CreateInProcessLocalAgent( Architecture arch )
-		{
-			Debug.Assert( this.config != null );
-
-			IAgent agent = Agent.CreateLocalAgent(
-				arch,
-				true,
-				this.config.HostCreationOptions );
-			agent.SetTrialLicenseCookie( this.config.Cookie );
-
-			//
-			// N.B. No need to specify environment or search path.
-			// (would not work either)
-			//
-
-			return agent;
-		}
-
-		/*++
-		 * Create AgentSet for all supported architectures.
-		 --*/
-		private AgentSet CreateRunAgent()
-		{
-			Debug.Assert( this.config != null );
-
-			AgentSet target = new AgentSet();
-			switch ( ArchitectureUtil.NativeArchitecture )
-			{
-				case Architecture.Amd64:
-					target.AddArchitecture(
-						CreateOutOfProcessLocalAgent(
-							Architecture.Amd64 ) );
-					target.AddArchitecture(
-						CreateOutOfProcessLocalAgent(
-							Architecture.I386 ) );
-
-					break;
-
-				case Architecture.I386:
-					target.AddArchitecture(
-						CreateOutOfProcessLocalAgent(
-							Architecture.I386 ) );
-					break;
-
-				default:
-					throw new CfixAddinException(
-						Strings.UnsupportedArchitecture );
-			}
-
-			return target;
 		}
 
 		/*----------------------------------------------------------------------
@@ -333,8 +248,13 @@ namespace Cfix.Addin
 			this.dte = dte;
 
 			this.config = Configuration.Load( dte );
-			this.runAgents = CreateRunAgent();
+			this.runAgents = this.agentFactory.CreateRunAgent( this.config );
 			this.session = new Session();
+
+			//
+			// Attempt to load Instel Inspector.
+			//
+			this.intelInspector = Inspector.TryLoadInspector( this.config, dte );
 
 			//
 			// If not happened yet, register VC directories.
@@ -351,11 +271,15 @@ namespace Cfix.Addin
 			//
 			if ( config.SearchOutOfProcess )
 			{
-				this.searchAgent = CreateOutOfProcessLocalAgent( Architecture.I386 );
+				this.searchAgent = this.agentFactory.CreateOutOfProcessLocalAgent(
+					this.config,
+					Architecture.I386 );
 			}
 			else
 			{
-				this.searchAgent = CreateInProcessLocalAgent( Architecture.I386 );
+				this.searchAgent = this.agentFactory.CreateInProcessLocalAgent(
+					this.config,
+					Architecture.I386 );
 			}
 			
 			//
@@ -456,6 +380,11 @@ namespace Cfix.Addin
 			get { return this.runAgents; }
 		}
 
+		public Inspector IntelInspector
+		{
+			get { return this.intelInspector; }
+		}
+
 		public bool IsSolutionOpened
 		{
 			get
@@ -475,7 +404,11 @@ namespace Cfix.Addin
 			get { return this.lastItemRun != null; }
 		}
 
-		public void RunItem( IRunnableTestItem item, bool debug )
+		private IRun RunItem( 
+			IRunnableTestItem item, 
+			bool debug, 
+			bool allowArchMixing, 
+			AgentSet agent )
 		{
 			lock ( this.runLock )
 			{
@@ -489,12 +422,16 @@ namespace Cfix.Addin
 				}
 				else
 				{
-					return;
+					return null;
 				}
+
+				//
+				// TODO: Check inspector and regular hosts.
+				//
 
 				IRun currentRun = this.toolWindows.Run.UserControl.Run;
 				if ( ( currentRun == null || currentRun.Status != TaskStatus.Running ) &&
-				     this.runAgents.ActiveHostCount > 0 )
+				     agent.ActiveHostCount > 0 )
 				{
 					//
 					// No run active, yet there are host active processes.
@@ -502,7 +439,7 @@ namespace Cfix.Addin
 					if ( VisualAssert.ShowQuestion(
 						Strings.TerminateActiveHosts ) )
 					{
-						this.runAgents.TerminateActiveHosts();
+						agent.TerminateActiveHosts();
 					}
 				}
 
@@ -518,7 +455,7 @@ namespace Cfix.Addin
 					// Bail out. Show error window.
 					//
 					this.dte.ToolWindows.ErrorList.Parent.Activate();
-					return;
+					return null;
 				}
 
 				//
@@ -537,23 +474,8 @@ namespace Cfix.Addin
 					//
 				}
 
-				bool allowArchMixing;
-				if ( debug )
-				{
-					//
-					// N.B. When debugging, it is crucial to use a single host
-					// process only. Debug runs are thus limited to a single
-					// architecture only.
-					//
-					allowArchMixing = false;
-				}
-				else
-				{
-					allowArchMixing = true;
-				}
-
 				SimpleRunCompiler compiler = new SimpleRunCompiler(
-					this.runAgents,
+					agent,
 					GetDispositionPolicy( debug ),
 					this.config.ExecutionOptions,
 					this.config.EnvironmentOptions,
@@ -615,6 +537,8 @@ namespace Cfix.Addin
 					this.toolWindows.Run.UserControl.Run = run;
 					this.toolWindows.Run.Activate();
 					this.toolWindows.Run.UserControl.StartRun();
+
+					return run;
 				}
 				catch ( ConcurrentRunException )
 				{
@@ -624,6 +548,52 @@ namespace Cfix.Addin
 					//
 					run.Dispose();
 					throw;
+				}
+			}
+		}
+
+		public void RunItem( IRunnableTestItem item, bool debug )
+		{
+			bool allowArchMixing;
+			if ( debug )
+			{
+				//
+				// N.B. When debugging, it is crucial to use a single host
+				// process only. Debug runs are thus limited to a single
+				// architecture only.
+				//
+				allowArchMixing = false;
+			}
+			else
+			{
+				allowArchMixing = true;
+			}
+
+			RunItem( item, debug, allowArchMixing, this.runAgents );
+		}
+
+		public void RunItemInIntelInspector( IRunnableTestItem item )
+		{
+			Debug.Assert( this.intelInspector != null );
+
+			//
+			// N.B. Never allow mixing architectures.
+			//
+
+			lock ( this.runLock )
+			{
+				string resultDir = this.intelInspector.ResultDirectory;
+
+				IRun run = RunItem( item, false, false, this.intelInspector.RunAgents );
+
+				if ( run != null )
+				{
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						this.dte.ItemOperations.OpenFile(
+							resultDir + @"\\va.insp",
+							Constants.vsViewKindAny );
+					};
 				}
 			}
 		}

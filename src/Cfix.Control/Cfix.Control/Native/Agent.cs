@@ -117,6 +117,30 @@ namespace Cfix.Control.Native
 		}
 
 		/*--------------------------------------------------------------
+		 * Protected.
+		 */
+
+		protected virtual ICfixHost CreateNativeHost(
+			ICfixAgent agent,
+			CfixTestModuleArch arch,
+			uint clsctx,
+			uint flags,
+			uint timeout,
+			string customHostPath,
+			HostEnvironment env,
+			string currentDir )
+		{
+			return agent.CreateHost(
+				arch,
+				( uint ) clsctx,
+				( uint ) flags,
+				timeout,
+				customHostPath,
+				env.NativeFormat,
+				currentDir );
+		}
+		
+		/*--------------------------------------------------------------
 		 * Internal.
 		 */
 
@@ -156,19 +180,19 @@ namespace Cfix.Control.Native
 		 * IAgent.
 		 */
 
-		public virtual IHost CreateHost()
+		public IHost CreateHost()
 		{
 			return CreateHost( null, null );
 		}
 
-		public virtual IHost CreateHost(
+		public IHost CreateHost(
 			HostEnvironment env
 			)
 		{
 			return CreateHost( null, env );
 		}
 
-		public virtual IHost CreateHost(
+		public IHost CreateHost(
 			string customHostPath,
 			HostEnvironment env
 			)
@@ -189,13 +213,14 @@ namespace Cfix.Control.Native
 				env = this.defaultHostEnv;
 			}
 
-			ICfixHost host = this.agent.CreateHost(
+			ICfixHost host = CreateNativeHost(
+				this.agent,
 				this.arch, 
 				( uint ) this.clsctx,
 				( uint ) this.flags,
 				this.timeout,
 				customHostPath,
-				env.NativeFormat,
+				env,
 				currentDir );
 
 			Debug.Assert( host != null );

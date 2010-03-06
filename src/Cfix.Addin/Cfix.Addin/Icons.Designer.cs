@@ -305,6 +305,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap RunInInspector {
+            get {
+                object obj = ResourceManager.GetObject("RunInInspector", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap RunOnConsole {
             get {
                 object obj = ResourceManager.GetObject("RunOnConsole", resourceCulture);

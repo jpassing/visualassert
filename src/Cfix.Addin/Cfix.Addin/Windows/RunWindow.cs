@@ -323,7 +323,7 @@ namespace Cfix.Addin.Windows
 				CommonUiOperations.RunItem(
 					this.workspace,
 					resultItem.ResultItem.Item,
-					true );
+					RunMode.Debug );
 			}
 		}
 
@@ -335,7 +335,7 @@ namespace Cfix.Addin.Windows
 				CommonUiOperations.RunItem(
 					this.workspace,
 					resultItem.ResultItem.Item,
-					false );
+					RunMode.Normal );
 			}
 		}
 
@@ -378,7 +378,7 @@ namespace Cfix.Addin.Windows
 						CommonUiOperations.RunItem(
 							this.workspace,
 							resultNode.ResultItem.Item,
-							! e.Shift );
+							e.Shift ? RunMode.Normal : RunMode.Debug );
 					}
 				}
 				else
@@ -535,12 +535,12 @@ namespace Cfix.Addin.Windows
 
 		private void redebugButton_Click( object sender, EventArgs e )
 		{
-			CommonUiOperations.RunItem( this.workspace, null, true );
+			CommonUiOperations.RunItem( this.workspace, null, RunMode.Debug );
 		}
 
 		private void restartButton_Click( object sender, EventArgs e )
 		{
-			CommonUiOperations.RunItem( this.workspace, null, false );
+			CommonUiOperations.RunItem( this.workspace, null, RunMode.Normal );
 		}
 
 		private void autoScrollButton_Click( object sender, EventArgs e )

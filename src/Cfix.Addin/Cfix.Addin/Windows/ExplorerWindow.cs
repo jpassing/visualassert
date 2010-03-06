@@ -23,6 +23,7 @@ using Cfix.Addin.Windows;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
@@ -189,6 +190,22 @@ namespace Cfix.Addin.Windows
 		 * Context Menu.
 		 */
 
+		private static bool IsItemPartOfIcProject( ITestItem item )
+		{
+			while ( item != null )
+			{
+				ICProjectTestCollection icProject = item as ICProjectTestCollection;
+				if ( icProject != null )
+				{
+					return true;
+				}
+
+				item = item.Parent;
+			}
+
+			return false;
+		}
+
 		private void explorer_BeforeContextMenuPopup( 
 			object sender, 
 			ExplorerNodeEventArgs e )
@@ -202,6 +219,9 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuViewCodeButton.Visible = e.Item is ITestCodeElement;
 			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
 			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
+
+			this.ctxMenuRunInInspector.Visible = this.workspace.IntelInspector != null;
+			//this.ctxMenuRunInInspector.Enabled = IsItemPartOfIcProject( e.Item );
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -664,7 +684,7 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItem( 
 				this.workspace,
 				this.explorer.SelectedItem, 
-				true );
+				RunMode.Debug );
 		}
 
 		private void runButton_Click( object sender, EventArgs e )
@@ -672,23 +692,23 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItem(
 				this.workspace,
 				this.explorer.SelectedItem,
-				false );
+				RunMode.Normal );
 		}
 
 		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItem(
 				this.workspace,
-				this.contextMenuReferenceNode.Item, 
-				true );
+				this.contextMenuReferenceNode.Item,
+				RunMode.Debug );
 		}
 
 		private void ctxMenuRunButton_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItem(
 				this.workspace,
-				this.contextMenuReferenceNode.Item, 
-				false );
+				this.contextMenuReferenceNode.Item,
+				RunMode.Normal );
 		}
 
 		private void ctxMenuRunOnConsole_Click( object sender, EventArgs e )
@@ -696,7 +716,7 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemOnCommandLine(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				false );
+				RunMode.Normal );
 		}
 
 		private void ctxMenuDebugWithWindbg_Click( object sender, EventArgs e )
@@ -704,7 +724,51 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemOnCommandLine(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				true );
+				RunMode.Debug );
+		}
+
+		private void ctxMenuRunInInspectorCheckDeadlocks_Click( object sender, EventArgs e )
+		{
+			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocks;
+			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				RunMode.IntelInspector );
+		}
+
+		private void ctxMenuRunInInspectorCheckDeadlocksOrRaces_Click( object sender, EventArgs e )
+		{
+			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocksAndRaces;
+			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				RunMode.IntelInspector );
+		}
+
+		private void ctxMenuRunInInspectorComplete_Click( object sender, EventArgs e )
+		{
+			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.Complete;
+			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				RunMode.IntelInspector );
+		}
+
+		private void ctxMenuRunInInspectorLocateDeadlocks_Click( object sender, EventArgs e )
+		{
+			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.LocateDeadlocksAndRaces;
+			
+			CommonUiOperations.RunItem(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				RunMode.IntelInspector );
 		}
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
@@ -724,8 +788,8 @@ namespace Cfix.Addin.Windows
 
 				CommonUiOperations.RunItem(
 					this.workspace,
-					item, 
-					! e.Shift );
+					item,
+					e.Shift ? RunMode.Normal : RunMode.Debug );
 
 				e.Handled = true;
 			}

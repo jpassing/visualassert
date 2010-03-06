@@ -19,6 +19,13 @@ using Microsoft.VisualStudio.VCCodeModel;
 
 namespace Cfix.Addin.Windows
 {
+	enum RunMode
+	{
+		Normal,
+		Debug,
+		IntelInspector
+	}
+
 	internal static class CommonUiOperations
 	{
 		private static Project GetProject( ITestItem item )
@@ -44,7 +51,7 @@ namespace Cfix.Addin.Windows
 		public static void RunItemOnCommandLine( 
 			Workspace ws, 
 			ITestItem item,
-			bool debug
+			RunMode mode
 			)
 		{
 			NativeTestItem nativeItem = item as NativeTestItem;
@@ -55,28 +62,34 @@ namespace Cfix.Addin.Windows
 			}
 			else
 			{
-				ws.RunItemOnCommandLine( nativeItem, debug );
+				ws.RunItemOnCommandLine( nativeItem, mode == RunMode.Debug );
 			}
 		}
 
-		public static void RunItem( Workspace ws, ITestItem item, bool debug )
+		public static void RunItem( Workspace ws, ITestItem item, RunMode mode )
 		{
 			try
 			{
+				IRunnableTestItem runItem;
 				if ( item == null )
 				{
 					//
 					// Rerun last.
 					//
-					ws.RunItem( null, debug );
+					runItem = null;
 				}
 				else
 				{
-					IRunnableTestItem runItem = item as IRunnableTestItem;
-					if ( item != null )
-					{
-						ws.RunItem( runItem, debug );
-					}
+					runItem = item as IRunnableTestItem;
+				}
+
+				if ( mode == RunMode.IntelInspector )
+				{
+					ws.RunItemInIntelInspector( runItem );
+				}
+				else
+				{
+					ws.RunItem( runItem, mode == RunMode.Debug );
 				}
 			}
 			catch ( ConcurrentRunException )
@@ -253,7 +266,7 @@ namespace Cfix.Addin.Windows
 
 				if ( testItem != null )
 				{
-					RunItem( ws, testItem, debug );
+					RunItem( ws, testItem, RunMode.Debug );
 				}
 			}
 			catch ( Exception x )

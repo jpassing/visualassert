@@ -421,10 +421,10 @@ static HRESULT CfixctlsSpawnHost(
 	// N.B. We check the host image, never the shim image.
 	//
 	PCWSTR EffectiveHostPath;
-	WCHAR EffectiveHostPathBuffer[ MAX_PATH ];
+	WCHAR EffectiveHostPathBuffer[ 2 * MAX_PATH ];
 
 	PWSTR EffectiveCmdLineArguments;
-	WCHAR EffectiveCmdLineArgumentsBuffer[ MAX_PATH ];
+	WCHAR EffectiveCmdLineArgumentsBuffer[ 2 * MAX_PATH ];
 
 	if ( ShimPath != NULL )
 	{

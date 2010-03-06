@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentFactory.cs" />
     <Compile Include="ArchitectureUtil.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -80,6 +81,10 @@
     <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
+    <Compile Include="IntelParallelStudio\Inspector.cs" />
+    <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
+    <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
+    <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
@@ -135,7 +140,6 @@
     <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Windows\ExplorerWindow.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\ExplorerWindow.designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
@@ -209,6 +213,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="Cfixctl">
+      <Guid>{57F93E5A-D44F-11DD-99E2-0016D3B98F9B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="EnvDTE">
       <Guid>{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}</Guid>
       <VersionMajor>8</VersionMajor>
