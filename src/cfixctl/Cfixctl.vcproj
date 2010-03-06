@@ -507,6 +507,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testshim1"
+					>
+					<File
+						RelativePath=".\testlibs\testshim1\shim.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testshim1\SOURCES"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

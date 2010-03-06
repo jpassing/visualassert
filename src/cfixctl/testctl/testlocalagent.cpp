@@ -702,6 +702,255 @@ public:
 		AgentMk->Release();
 		BindCtx->Release();
 	}
+
+	void SpawnWithNonExistingShim()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		BSTR ShimPath = SysAllocString( L"nonexistingshim.exe" );
+
+		ICfixHost *Host;
+		CFIX_ASSERT_HRESULT( 
+			CFIXCTL_E_SHIM_IMAGE_NOT_FOUND,
+			Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				0,
+				INFINITE,
+				NULL,
+				this->EnvironmentBstr,
+				NULL,
+				ShimPath,
+				NULL,
+				&Host ) );
+
+		SysFreeString( ShimPath );
+
+		Agent->Release();
+	}
+
+	void SpawnWithWrongShimArguments()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		BSTR DummyString = SysAllocString( L"dummy" );
+
+		ICfixHost *Host;
+		CFIX_ASSERT_HRESULT( 
+			E_INVALIDARG,
+			Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				0,
+				INFINITE,
+				NULL,
+				this->EnvironmentBstr,
+				NULL,
+				NULL,
+				DummyString,	// No Shim, so args are invalid.
+				&Host ) );
+
+		CFIX_ASSERT_HRESULT( 
+			E_INVALIDARG,
+			Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_INPROC_SERVER,	// Cannot be used with shims.
+				0,
+				INFINITE,
+				NULL,
+				this->EnvironmentBstr,
+				NULL,
+				DummyString,
+				DummyString,
+				&Host ) );
+
+		SysFreeString( DummyString );
+
+		Agent->Release();
+	}
+
+	void SpawnWithFailingShim()
+	{
+		WCHAR Path[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			Path,
+			_countof( Path ) ) );
+		PathRemoveFileSpec( Path );
+		PathAppend( Path,  L"testshim1.exe" );
+
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		BSTR ShimPath = SysAllocString( Path );
+
+		ICfixHost *Host;
+		CFIX_ASSERT_HRESULT( 
+			CFIXCTL_E_HOST_EXITED_PREMATURELY,
+			Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				0,
+				INFINITE,
+				NULL,
+				this->EnvironmentBstr,
+				NULL,
+				ShimPath,
+				NULL,
+				&Host ) );
+
+		SysFreeString( ShimPath );
+
+		Agent->Release();
+	}
+
+	void SpawnHostWithShim()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		BSTR DefaultHostPath;
+
+		CFIX_ASSERT_OK( Agent->GetHostPath(
+			CFIXCTL_OWN_ARCHITECTURE,
+			&DefaultHostPath ) );
+
+		WCHAR ShimPath[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			ShimPath,
+			_countof( ShimPath ) ) );
+		PathRemoveFileSpec( ShimPath );
+		PathAppend( ShimPath,  L"testshim1.exe" );
+
+		BSTR ShimPathBstr = SysAllocString( ShimPath );
+
+		WCHAR ShimCommandLine[ 2 * MAX_PATH ];
+		CFIX_ASSERT_OK( StringCchPrintf(
+			ShimCommandLine,
+			_countof( ShimCommandLine ),
+			L"\"%s\" run \"%s\"",
+			ShimPath,
+			DefaultHostPath ) );
+		
+		BSTR ShimCommandLineBstr = SysAllocString( ShimCommandLine );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			ICfixHost *Host;
+			CFIX_ASSERT_OK( Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				FlagSets[ Flags ],
+				INFINITE,
+				NULL,
+				this->EnvironmentBstr,
+				NULL,
+				ShimPathBstr,
+				ShimCommandLineBstr,
+				&Host ) );
+
+			CFIX_ASSUME( Host );
+			Host->Release();
+		}
+
+		SysFreeString( DefaultHostPath );
+		SysFreeString( ShimPathBstr );
+		SysFreeString( ShimCommandLineBstr );
+
+		Agent->Release();
+	}
+
+	void SpawnCustomHostWithShim()
+	{
+		ICfixAgent *Agent;
+		CFIX_ASSERT_OK( AgentFactory->CreateInstance( 
+			NULL, IID_ICfixAgent, ( PVOID* ) &Agent ) );
+		CFIX_ASSUME( Agent );
+
+		CFIX_ASSERT_OK( Agent->SetTrialLicenseCookie(
+			CurrentLicensingDate() ) );
+
+		WCHAR CustomHostPath[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			CustomHostPath,
+			_countof( CustomHostPath ) ) );
+		PathRemoveFileSpec( CustomHostPath );
+		PathAppend( CustomHostPath,  L"testexe11.exe" );
+
+		WCHAR ShimPath[ MAX_PATH ];
+		CFIXCC_ASSERT( GetModuleFileName(
+			GetModuleHandle( L"testctl" ),
+			ShimPath,
+			_countof( ShimPath ) ) );
+		PathRemoveFileSpec( ShimPath );
+		PathAppend( ShimPath,  L"testshim1.exe" );
+
+		BSTR CustomHostImage = SysAllocString( CustomHostPath );
+		BSTR ShimImage = SysAllocString( ShimPath );
+
+		WCHAR ShimCommandLine[ 2 * MAX_PATH ];
+		CFIX_ASSERT_OK( StringCchPrintf(
+			ShimCommandLine,
+			_countof( ShimCommandLine ),
+			L"\"%s\" run \"%s\"",
+			ShimPath,
+			CustomHostPath ) );
+		
+		BSTR ShimCommandLineBstr = SysAllocString( ShimCommandLine );
+
+		ULONG FlagSets[] = { 0, CFIXCTL_AGENT_FLAG_USE_JOB };
+
+		for ( ULONG Flags = 0; Flags < _countof( FlagSets ); Flags++ )
+		{
+			ICfixHost *Host;
+			CFIX_ASSERT_OK( Agent->CreateHostWithShim(
+				CFIXCTL_OWN_ARCHITECTURE,
+				CLSCTX_LOCAL_SERVER,
+				FlagSets[ Flags ],
+				INFINITE,
+				CustomHostImage,
+				this->EnvironmentBstr,
+				NULL,
+				ShimImage,
+				ShimCommandLineBstr,
+				&Host ) );
+
+			CFIX_ASSUME( Host );
+			Host->Release();
+		}
+
+		SysFreeString( CustomHostImage );
+		SysFreeString( ShimImage );
+		SysFreeString( ShimCommandLineBstr );
+
+		Agent->Release();
+	}
 };
 
 COM_EXPORTS TestLocalAgent::Exports;
@@ -715,10 +964,17 @@ CFIXCC_BEGIN_CLASS( TestLocalAgent )
 	CFIXCC_METHOD( ResolveMessage )
 	CFIXCC_METHOD( SpawnWithoutMoniker )
 	CFIXCC_METHOD( SpawnWithWrongMoniker )
+	
 	CFIXCC_METHOD( SpawnCustomHostWithoutEmbedding )
 	CFIXCC_METHOD( SpawnCustomHostWithNonExistingEmbeddingExport )
 	CFIXCC_METHOD( SpawnCustomHost )
 	CFIXCC_METHOD( SpawnCustomHostWithNoFixtures )
 	CFIXCC_METHOD( SpawnCustomHostWithoutMoniker )
 	CFIXCC_METHOD( SpawnCustomHostWithWrongMoniker )
+
+	CFIXCC_METHOD( SpawnWithNonExistingShim )
+	CFIXCC_METHOD( SpawnWithWrongShimArguments ) 
+	CFIXCC_METHOD( SpawnWithFailingShim )
+	CFIXCC_METHOD( SpawnHostWithShim )
+	CFIXCC_METHOD( SpawnCustomHostWithShim )
 CFIXCC_END_CLASS()
