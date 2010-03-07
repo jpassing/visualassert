@@ -85,6 +85,7 @@
     <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
+    <Compile Include="IntelParallelStudio\ResultLocation.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Windows\Chrome.cs" />
     <Compile Include="Windows\CommonUiOperations.cs" />
     <Compile Include="Windows\ExplorerWindow.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\ExplorerWindow.designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>

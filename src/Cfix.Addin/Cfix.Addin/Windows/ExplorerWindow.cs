@@ -220,8 +220,7 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
 			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
 
-			this.ctxMenuRunInInspector.Visible = this.workspace.IntelInspector != null;
-			//this.ctxMenuRunInInspector.Enabled = IsItemPartOfIcProject( e.Item );
+			this.ctxMenuRunInInspector.Enabled = this.workspace.IntelInspector != null;
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -730,7 +729,8 @@ namespace Cfix.Addin.Windows
 		private void ctxMenuRunInInspectorCheckDeadlocks_Click( object sender, EventArgs e )
 		{
 			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocks;
-			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
+				this.contextMenuReferenceNode.Item.Name );
 			
 			CommonUiOperations.RunItem(
 				this.workspace,
@@ -741,7 +741,8 @@ namespace Cfix.Addin.Windows
 		private void ctxMenuRunInInspectorCheckDeadlocksOrRaces_Click( object sender, EventArgs e )
 		{
 			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocksAndRaces;
-			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
+				this.contextMenuReferenceNode.Item.Name );
 			
 			CommonUiOperations.RunItem(
 				this.workspace,
@@ -752,7 +753,8 @@ namespace Cfix.Addin.Windows
 		private void ctxMenuRunInInspectorComplete_Click( object sender, EventArgs e )
 		{
 			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.Complete;
-			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
+			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
+				this.contextMenuReferenceNode.Item.Name );
 			
 			CommonUiOperations.RunItem(
 				this.workspace,
@@ -762,8 +764,9 @@ namespace Cfix.Addin.Windows
 
 		private void ctxMenuRunInInspectorLocateDeadlocks_Click( object sender, EventArgs e )
 		{
-			this.workspace.IntelInspector.ResultDirectory = Inspector.CreateResultDirectory();
 			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.LocateDeadlocksAndRaces;
+			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
+				this.contextMenuReferenceNode.Item.Name );
 			
 			CommonUiOperations.RunItem(
 				this.workspace,

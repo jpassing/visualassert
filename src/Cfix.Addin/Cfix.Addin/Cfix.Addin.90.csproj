@@ -87,6 +87,7 @@
     <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
+    <Compile Include="IntelParallelStudio\ResultLocation.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />

@@ -233,7 +233,13 @@ namespace Cfix.Addin
 
 			vcDirectoriesRegistered = true;
 
-			if ( changePerformed )
+			//
+			// N.B. Check for File.Exit command lines -- these are used
+			// during install to reset the IDE. Showing a message box
+			// during the installation is ugly und useless.
+			//
+
+			if ( changePerformed && ! dte.CommandLineArguments.Contains( "File.Exit" ) )
 			{
 				VisualAssert.ShowInfo( Strings.VcDirectoriesUpdated );
 			}
@@ -582,7 +588,8 @@ namespace Cfix.Addin
 
 			lock ( this.runLock )
 			{
-				string resultDir = this.intelInspector.ResultDirectory;
+				ResultLocation resultLocation = 
+					this.intelInspector.ResultLocation;
 
 				IRun run = RunItem( item, false, false, this.intelInspector.RunAgents );
 
@@ -591,7 +598,7 @@ namespace Cfix.Addin
 					run.Finished += delegate( object sender, FinishedEventArgs e )
 					{
 						this.dte.ItemOperations.OpenFile(
-							resultDir + @"\\va.insp",
+							resultLocation.ResultFile,
 							Constants.vsViewKindAny );
 					};
 				}

@@ -79,6 +79,7 @@
     <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
     <Compile Include="IntelParallelStudio\Inspector.cs" />
+    <Compile Include="IntelParallelStudio\ResultLocation.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
@@ -253,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfix.Addin.AddIn" />
+    <None Include="Icons\IntelInspector.bmp" />
     <None Include="Icons\RunInInspector.bmp" />
     <None Include="Icons\FeedbackMask.bmp" />
     <None Include="Resources\update2_00.gif" />

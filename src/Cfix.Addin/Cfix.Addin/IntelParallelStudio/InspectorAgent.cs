@@ -66,10 +66,10 @@ namespace Cfix.Addin.IntelParallelStudio
 				"{2} -- {3}",
 				shimPath,
 				this.inspector.InspectorLevel.ToString(),
-				this.inspector.ResultDirectory != null
+				this.inspector.ResultLocation.ResultDirectory != null
 					? String.Format( 
 						"-result-dir \"{0}\"",
-						this.inspector.ResultDirectory )
+						this.inspector.ResultLocation.ResultDirectory )
 					: "",
 				hostPath );
 

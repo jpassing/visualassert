@@ -14,7 +14,7 @@ namespace Cfix.Addin.IntelParallelStudio
 		private readonly string installLocation;
 
 		private InspectorLevel currentLevel;
-		private string currentResultDirectory;
+		private ResultLocation currentResultDirectory;
 
 		private Inspector( 
 			string installLocation
@@ -79,7 +79,7 @@ namespace Cfix.Addin.IntelParallelStudio
 			}
 		}
 
-		public static string CreateResultDirectory()
+		public static ResultLocation CreateResultLocation( string name )
 		{
 			string resultsBaseDir = Path.Combine(
 				Path.GetTempPath(),
@@ -97,10 +97,14 @@ namespace Cfix.Addin.IntelParallelStudio
 				Directory.CreateDirectory( tempDir );
 			}
 
-			return Path.Combine( tempDir, "va" );
+			string resultDir = Path.Combine( tempDir, name );
+
+			return new ResultLocation(
+				resultDir,
+				Path.Combine( resultDir, name + ".insp" ) );
 		}
 
-		public string ResultDirectory
+		public ResultLocation ResultLocation
 		{
 			get { return this.currentResultDirectory; }
 			set { this.currentResultDirectory = value; }
