@@ -23,11 +23,13 @@ namespace Cfix.Control.Test
 		{
 			this.inProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
-				true );
+				true,
+				Agent.DefaultHostRegistrationTimeout );
 
 			this.ooProcTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
-				false );
+				false,
+				Agent.DefaultHostRegistrationTimeout );
 			this.ooProcTarget.DefaultEnvironment.MergeEnvironmentVariables(
 				Environment.GetEnvironmentVariables() );
 

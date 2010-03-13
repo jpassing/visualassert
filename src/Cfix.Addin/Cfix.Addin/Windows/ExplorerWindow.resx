@@ -120,11 +120,35 @@
   <metadata name="toolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>365, 25</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolbar.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
+    <value>toolbar</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="debugButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="debugButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
@@ -176,6 +200,15 @@
   <data name="separator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
+  <data name="optionsButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="optionsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="optionsButton.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
   <data name="shortCircuitFixtureOnFailureMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>306, 22</value>
   </data>
@@ -224,17 +257,31 @@
   <data name="breakOnUnhandledExceptionsWhenDebuggingMenuItem.Text" xml:space="preserve">
     <value>Break on unhandled exceptions when debugging</value>
   </data>
-  <data name="optionsButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="optionsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="optionsButton.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
   <data name="separator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
+  </data>
+  <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHoSURBVDhPzZLdT1JxHIf9f+quO6+7sJna8qattdaLNZdl
+        mczKGvYmUyvmepHZzBck1jKbJM5NtIyBEAZKkdDZwCZK2WTBDA4oPHEOE7yIs3XX2T4722/7POf5/s63
+        rOy/fh4OTtDVO8rNbiN1LVqONWrk1J5Vc/D4FRTlH/SZyGZha3ubpJhmJRJFWP4h53MgjMsbory6vgix
+        fxR4PeksHFzrHCCRTBGLJ1jfiMul+VxJinX+KyrNEPsqThUBhrE5vgS/Y/OE8PgjiuoWm49Lt/uKgJFp
+        D6/M75DeHcNmLrY/4/mEW1G9Qd2bB+TV59gQN4kBQiKD3hnkyPlOZt0rJdXrrz/JA6SvBsLr8oWlc4nk
+        APafGbrGFxgaMcmXJc0sZbe6VJYB7T0vWE1uyeXNTJrlmMjsNxGddY0DRy9jdeWLUsZnFtlRL4zQb5zm
+        bShKSATfrxQf1uK88f9GbXRRXnmaqx0Gmu4MyLnQ9pQd9cIIVoeb1n4zltUUlnAWUzCFdirI4Yb73Go9
+        IWuWSmGRRietnGkb5IbegUo3Q9W5bu61VBBd0jD8aNe/Vlq9gCAwNmXD8t7JgtdL9aFKHLq9RP13MTw+
+        qby2fwMvfXJRU1OFvWcPzXX7/x0gQX2LTlTNTbzUa0sC/gBKW9sgKd4E3wAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="selectModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>White</value>
+  </data>
+  <data name="selectModeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="selectModeButton.Text" xml:space="preserve">
+    <value>Select exploration mode</value>
   </data>
   <data name="selectDirModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -269,29 +316,6 @@
   <data name="selectSlnModeButton.Text" xml:space="preserve">
     <value>Current Solution</value>
   </data>
-  <data name="selectModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHoSURBVDhPzZLdT1JxHIf9f+quO6+7sJna8qattdaLNZdl
-        mczKGvYmUyvmepHZzBck1jKbJM5NtIyBEAZKkdDZwCZK2WTBDA4oPHEOE7yIs3XX2T4722/7POf5/s63
-        rOy/fh4OTtDVO8rNbiN1LVqONWrk1J5Vc/D4FRTlH/SZyGZha3ubpJhmJRJFWP4h53MgjMsbory6vgix
-        fxR4PeksHFzrHCCRTBGLJ1jfiMul+VxJinX+KyrNEPsqThUBhrE5vgS/Y/OE8PgjiuoWm49Lt/uKgJFp
-        D6/M75DeHcNmLrY/4/mEW1G9Qd2bB+TV59gQN4kBQiKD3hnkyPlOZt0rJdXrrz/JA6SvBsLr8oWlc4nk
-        APafGbrGFxgaMcmXJc0sZbe6VJYB7T0vWE1uyeXNTJrlmMjsNxGddY0DRy9jdeWLUsZnFtlRL4zQb5zm
-        bShKSATfrxQf1uK88f9GbXRRXnmaqx0Gmu4MyLnQ9pQd9cIIVoeb1n4zltUUlnAWUzCFdirI4Yb73Go9
-        IWuWSmGRRietnGkb5IbegUo3Q9W5bu61VBBd0jD8aNe/Vlq9gCAwNmXD8t7JgtdL9aFKHLq9RP13MTw+
-        qby2fwMvfXJRU1OFvWcPzXX7/x0gQX2LTlTNTbzUa0sC/gBKW9sgKd4E3wAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="selectModeButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>White</value>
-  </data>
-  <data name="selectModeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="selectModeButton.Text" xml:space="preserve">
-    <value>Select exploration mode</value>
-  </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
@@ -306,30 +330,6 @@
   </data>
   <data name="lameButton.ToolTipText" xml:space="preserve">
     <value>Have comments about this window or some other feature? Let us now!</value>
-  </data>
-  <data name="toolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="toolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 25</value>
-  </data>
-  <data name="toolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="toolbar.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Name" xml:space="preserve">
-    <value>toolbar</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;toolbar.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <metadata name="ctxMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>86, 0</value>
@@ -371,28 +371,64 @@
     <value>Debug Using Console Runner and &amp;WinDBG</value>
   </data>
   <data name="ctxMenuRunInInspectorCheckDeadlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 22</value>
+    <value>347, 22</value>
   </data>
   <data name="ctxMenuRunInInspectorCheckDeadlocks.Text" xml:space="preserve">
     <value>Do my tests have deadlocks?</value>
   </data>
   <data name="ctxMenuRunInInspectorCheckDeadlocksOrRaces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 22</value>
+    <value>347, 22</value>
   </data>
   <data name="ctxMenuRunInInspectorCheckDeadlocksOrRaces.Text" xml:space="preserve">
     <value>Do my tests have deadlocks of data races?</value>
   </data>
   <data name="ctxMenuRunInInspectorLocateDeadlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 22</value>
+    <value>347, 22</value>
   </data>
   <data name="ctxMenuRunInInspectorLocateDeadlocks.Text" xml:space="preserve">
-    <value>Find deadlocks and data races</value>
+    <value>Where are the deadlocks or data races?</value>
   </data>
-  <data name="ctxMenuRunInInspectorComplete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 22</value>
+  <data name="ctxMenuRunInInspectorAllThreading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
   </data>
-  <data name="ctxMenuRunInInspectorComplete.Text" xml:space="preserve">
-    <value>Find all threading problems</value>
+  <data name="ctxMenuRunInInspectorAllThreading.Text" xml:space="preserve">
+    <value>Where are all the threading problems Inspector can find?</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 6</value>
+  </data>
+  <data name="ctxMenuRunInInspectorFindDataSharingIssues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
+  </data>
+  <data name="ctxMenuRunInInspectorFindDataSharingIssues.Text" xml:space="preserve">
+    <value>Where are data sharing issues?</value>
+  </data>
+  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 6</value>
+  </data>
+  <data name="ctxMenuRunInInspectorCheckMemoryLeaks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
+  </data>
+  <data name="ctxMenuRunInInspectorCheckMemoryLeaks.Text" xml:space="preserve">
+    <value>Do my tests leak memory?</value>
+  </data>
+  <data name="ctxMenuRunInInspectorCheckMemoryAccessIssues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
+  </data>
+  <data name="ctxMenuRunInInspectorCheckMemoryAccessIssues.Text" xml:space="preserve">
+    <value>Do my tests have memory access problems?</value>
+  </data>
+  <data name="ctxMenuRunInInspectorLocateMemoryAccessIssues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
+  </data>
+  <data name="ctxMenuRunInInspectorLocateMemoryAccessIssues.Text" xml:space="preserve">
+    <value>Where are the memory access probelms?</value>
+  </data>
+  <data name="ctxMenuRunInInspectorAllMemIssues.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 22</value>
+  </data>
+  <data name="ctxMenuRunInInspectorAllMemIssues.Text" xml:space="preserve">
+    <value>Where are all the memory problems Inspector can find?</value>
   </data>
   <data name="ctxMenuRunInInspector.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 22</value>
@@ -471,7 +507,7 @@
     <value>explorer</value>
   </data>
   <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.0.3.3711, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.1.0.3719, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -495,7 +531,7 @@
     <value>infoLabel</value>
   </data>
   <data name="&gt;&gt;infoLabel.Type" xml:space="preserve">
-    <value>Cfix.Addin.Windows.TransparentLabel, Cfix.Addin.80, Version=1.0.3.3711, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Addin.Windows.TransparentLabel, Cfix.Addin.90, Version=1.1.0.3719, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;infoLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -519,7 +555,7 @@
     <value>infoBar</value>
   </data>
   <data name="&gt;&gt;infoBar.Type" xml:space="preserve">
-    <value>Cfix.Addin.Windows.PlainProgressBar, Cfix.Addin.80, Version=1.0.3.3711, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Addin.Windows.PlainProgressBar, Cfix.Addin.90, Version=1.1.0.3719, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;infoBar.Parent" xml:space="preserve">
     <value>$this</value>
@@ -756,10 +792,10 @@
   <data name="&gt;&gt;ctxMenuRunInInspectorLocateDeadlocks.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorComplete.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorComplete</value>
+  <data name="&gt;&gt;ctxMenuRunInInspectorAllThreading.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorAllThreading</value>
   </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorComplete.Type" xml:space="preserve">
+  <data name="&gt;&gt;ctxMenuRunInInspectorAllThreading.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ctxMenuSeparator4.Name" xml:space="preserve">
@@ -802,6 +838,48 @@
     <value>ctxMenuViewProperties</value>
   </data>
   <data name="&gt;&gt;ctxMenuViewProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
+    <value>toolStripMenuItem2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorFindDataSharingIssues.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorFindDataSharingIssues</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorFindDataSharingIssues.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
+    <value>toolStripMenuItem3</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryLeaks.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorCheckMemoryLeaks</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryLeaks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryAccessIssues.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorCheckMemoryAccessIssues</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryAccessIssues.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorLocateMemoryAccessIssues.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorLocateMemoryAccessIssues</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorLocateMemoryAccessIssues.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorAllMemIssues.Name" xml:space="preserve">
+    <value>ctxMenuRunInInspectorAllMemIssues</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunInInspectorAllMemIssues.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

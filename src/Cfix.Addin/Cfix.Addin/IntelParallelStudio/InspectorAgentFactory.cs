@@ -8,22 +8,43 @@ namespace Cfix.Addin.IntelParallelStudio
 	{
 		private readonly Inspector inspector;
 
-		public InspectorAgentFactory( Inspector inspector )
+		/*--------------------------------------------------------------
+		 * Ctor.
+		 */
+
+		public InspectorAgentFactory( 
+			Inspector inspector
+			)
 		{
 			this.inspector = inspector;
 		}
 
-		public override Agent CreateLocalAgent(
+		/*--------------------------------------------------------------
+		 * Overrides.
+		 */
+
+		protected override Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
 		{
-			return InspectorAgent.CreateLocalInspectorAgent(
+			Agent agent = InspectorAgent.CreateLocalInspectorAgent(
 				this.inspector,
 				arch,
 				allowInproc,
-				flags );
+				flags,
+				hostRegistrationTimeout );
+
+			return agent;
+		}
+
+		protected override uint GetHostRegistrationTimeout(
+			Configuration config
+			)
+		{
+			return config.InstrumentedHostRegistrationTimeout;
 		}
 	}
 }

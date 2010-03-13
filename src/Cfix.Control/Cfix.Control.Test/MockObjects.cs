@@ -186,7 +186,8 @@ namespace Cfix.Control.Test
 				new MockAgent( module ), 
 				CfixTestModuleArch.CfixTestModuleArchI386, 
 				true,
-				HostCreationOptions.None )
+				HostCreationOptions.None,
+				Agent.DefaultHostRegistrationTimeout )
 		{
 		}
 

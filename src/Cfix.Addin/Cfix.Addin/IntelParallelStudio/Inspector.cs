@@ -61,7 +61,8 @@ namespace Cfix.Addin.IntelParallelStudio
 			//
 			// Load run agent set.
 			//
-			inspector.runAgents = new InspectorAgentFactory( inspector ).CreateRunAgent( config );
+			inspector.runAgents = new InspectorAgentFactory( 
+				inspector ).CreateRunAgent( config );
 			
 			return inspector;
 		}

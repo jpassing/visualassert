@@ -22,9 +22,15 @@ namespace Cfix.Addin.IntelParallelStudio
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
-			: base( agent, arch, allowInproc, flags )
+			: base( 
+				agent, 
+				arch, 
+				allowInproc, 
+				flags,
+				hostRegistrationTimeout )
 		{
 			this.inspector = inspector;
 		}
@@ -43,6 +49,8 @@ namespace Cfix.Addin.IntelParallelStudio
 			HostEnvironment env,
 			string currentDir )
 		{
+			Debug.Assert( timeout > 0 );
+
 			//
 			// Inject inspector shim.
 			//
@@ -95,7 +103,8 @@ namespace Cfix.Addin.IntelParallelStudio
 			Inspector inspector,
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
 		{
 			return new InspectorAgent(
@@ -103,7 +112,8 @@ namespace Cfix.Addin.IntelParallelStudio
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
 				allowInproc,
-				flags );
+				flags,
+				hostRegistrationTimeout );
 		}
 	}
 }

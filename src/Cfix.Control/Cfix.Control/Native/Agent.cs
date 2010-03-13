@@ -20,19 +20,15 @@ namespace Cfix.Control.Native
 	 --*/
 	public class Agent : IAgent
 	{
-#if DEBUG
-		private const uint DefaultTimeout = 30000;
-#else
-		private const uint DefaultTimeout = 3000;
-#endif
-
 		private ICfixAgent agent;
 		private ICfixMessageResolver resolver;
+
+		public const uint DefaultHostRegistrationTimeout = 3000;
 
 		private readonly CfixTestModuleArch arch;
 		private readonly Clsctx clsctx;
 
-		private uint timeout = DefaultTimeout;
+		private uint timeout;
 
 		private readonly HostCreationOptions flags;
 
@@ -58,7 +54,8 @@ namespace Cfix.Control.Native
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
 		{
 			Debug.Assert( agent != null );
@@ -66,6 +63,7 @@ namespace Cfix.Control.Native
 			this.agent = agent;
 			this.arch = arch;
 			this.flags = flags;
+			this.timeout = hostRegistrationTimeout;
 
 			if ( allowInproc )
 			{
@@ -130,6 +128,8 @@ namespace Cfix.Control.Native
 			HostEnvironment env,
 			string currentDir )
 		{
+			Debug.Assert( timeout > 0 );
+
 			return agent.CreateHost(
 				arch,
 				( uint ) clsctx,
@@ -154,7 +154,7 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		public uint Timeout
+		public uint HostRegistrationTimeout
 		{
 			get
 			{
@@ -344,25 +344,29 @@ namespace Cfix.Control.Native
 		public static Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
 		{
 			return new Agent(
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
 				allowInproc,
-				flags );
+				flags,
+				hostRegistrationTimeout );
 		}
 
 		public static Agent CreateLocalAgent(
 			Architecture arch,
-			bool allowInproc
+			bool allowInproc,
+			uint hostRegistrationTimeout
 			)
 		{
 			return CreateLocalAgent(
 				arch,
 				allowInproc,
-				HostCreationOptions.None );
+				HostCreationOptions.None,
+				hostRegistrationTimeout );
 		}
 
 	}

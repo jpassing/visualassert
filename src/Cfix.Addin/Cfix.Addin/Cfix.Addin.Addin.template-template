@@ -24,6 +24,10 @@
         <Assembly>Cfix.Addin.xx.dll</Assembly>
         <FullClassName>Cfix.Addin.Windows.OptionsPageWindbg</FullClassName>
       </SubCategory>
+	  <SubCategory Name="Advanced">
+        <Assembly>Cfix.Addin.xx.dll</Assembly>
+        <FullClassName>Cfix.Addin.Windows.OptionsPageAdvanced</FullClassName>
+      </SubCategory>
     </Category>
   </ToolsOptionsPage>
 </Extensibility>

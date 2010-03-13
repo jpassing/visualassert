@@ -20,7 +20,8 @@ namespace Cfix.Control.Test
 		{
 			this.target = Agent.CreateLocalAgent(
 				Architecture.I386,
-				false );
+				false,
+				Agent.DefaultHostRegistrationTimeout );
 			this.target.DefaultEnvironment.MergeEnvironmentVariables(
 				Environment.GetEnvironmentVariables() );
 

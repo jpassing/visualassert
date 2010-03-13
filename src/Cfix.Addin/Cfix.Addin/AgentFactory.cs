@@ -8,19 +8,28 @@ namespace Cfix.Addin
 	internal class AgentFactory
 	{
 		/*--------------------------------------------------------------
-		 * Statics.
+		 * Virtuals.
 		 */
 
-		public virtual Agent CreateLocalAgent(
+		protected virtual Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout
 			)
 		{
 			return Agent.CreateLocalAgent(
 				arch,
 				allowInproc,
-				flags );
+				flags,
+				hostRegistrationTimeout );
+		}
+
+		protected virtual uint GetHostRegistrationTimeout(
+			Configuration config
+			)
+		{
+			return config.HostRegistrationTimeout;
 		}
 
 		/*--------------------------------------------------------------
@@ -37,7 +46,8 @@ namespace Cfix.Addin
 			IAgent agent = CreateLocalAgent(
 				arch,
 				false,
-				config.HostCreationOptions );
+				config.HostCreationOptions,
+				GetHostRegistrationTimeout( config ) );
 			agent.SetTrialLicenseCookie( config.Cookie );
 
 			//
@@ -75,7 +85,8 @@ namespace Cfix.Addin
 			IAgent agent = CreateLocalAgent(
 				arch,
 				true,
-				config.HostCreationOptions );
+				config.HostCreationOptions,
+				GetHostRegistrationTimeout( config ) );
 			agent.SetTrialLicenseCookie( config.Cookie );
 
 			//

@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -62,7 +62,7 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuRunInInspectorCheckDeadlocks = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunInInspectorCheckDeadlocksOrRaces = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunInInspectorLocateDeadlocks = new System.Windows.Forms.ToolStripMenuItem();
-			this.ctxMenuRunInInspectorComplete = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunInInspectorAllThreading = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuRefreshButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +74,13 @@ namespace Cfix.Addin.Windows
 			this.infoLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.infoBar = new Cfix.Addin.Windows.PlainProgressBar();
 			this.infoIcon = new System.Windows.Forms.PictureBox();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuRunInInspectorFindDataSharingIssues = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.ctxMenuRunInInspectorCheckMemoryLeaks = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunInInspectorCheckMemoryAccessIssues = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunInInspectorLocateMemoryAccessIssues = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunInInspectorAllMemIssues = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.infoIcon ) ).BeginInit();
@@ -299,7 +306,14 @@ namespace Cfix.Addin.Windows
             this.ctxMenuRunInInspectorCheckDeadlocks,
             this.ctxMenuRunInInspectorCheckDeadlocksOrRaces,
             this.ctxMenuRunInInspectorLocateDeadlocks,
-            this.ctxMenuRunInInspectorComplete} );
+            this.ctxMenuRunInInspectorAllThreading,
+            this.toolStripMenuItem2,
+            this.ctxMenuRunInInspectorFindDataSharingIssues,
+            this.toolStripMenuItem3,
+            this.ctxMenuRunInInspectorCheckMemoryLeaks,
+            this.ctxMenuRunInInspectorCheckMemoryAccessIssues,
+            this.ctxMenuRunInInspectorLocateMemoryAccessIssues,
+            this.ctxMenuRunInInspectorAllMemIssues} );
 			this.ctxMenuRunInInspector.Image = global::Cfix.Addin.Icons.IntelInspector;
 			this.ctxMenuRunInInspector.Name = "ctxMenuRunInInspector";
 			resources.ApplyResources( this.ctxMenuRunInInspector, "ctxMenuRunInInspector" );
@@ -325,12 +339,12 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.ctxMenuRunInInspectorLocateDeadlocks, "ctxMenuRunInInspectorLocateDeadlocks" );
 			this.ctxMenuRunInInspectorLocateDeadlocks.Click += new System.EventHandler( this.ctxMenuRunInInspectorLocateDeadlocks_Click );
 			// 
-			// ctxMenuRunInInspectorComplete
+			// ctxMenuRunInInspectorAllThreading
 			// 
-			this.ctxMenuRunInInspectorComplete.Image = global::Cfix.Addin.Icons.RunInInspector;
-			this.ctxMenuRunInInspectorComplete.Name = "ctxMenuRunInInspectorComplete";
-			resources.ApplyResources( this.ctxMenuRunInInspectorComplete, "ctxMenuRunInInspectorComplete" );
-			this.ctxMenuRunInInspectorComplete.Click += new System.EventHandler( this.ctxMenuRunInInspectorComplete_Click );
+			this.ctxMenuRunInInspectorAllThreading.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorAllThreading.Name = "ctxMenuRunInInspectorAllThreading";
+			resources.ApplyResources( this.ctxMenuRunInInspectorAllThreading, "ctxMenuRunInInspectorAllThreading" );
+			this.ctxMenuRunInInspectorAllThreading.Click += new System.EventHandler( this.ctxMenuRunInInspectorAllThreading_Click );
 			// 
 			// ctxMenuSeparator4
 			// 
@@ -379,7 +393,7 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory1;
+			this.explorer.NodeFactory = nodeFactory2;
 			// 
 			// infoLabel
 			// 
@@ -402,6 +416,51 @@ namespace Cfix.Addin.Windows
 			this.infoIcon.InitialImage = null;
 			this.infoIcon.Name = "infoIcon";
 			this.infoIcon.TabStop = false;
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			resources.ApplyResources( this.toolStripMenuItem2, "toolStripMenuItem2" );
+			// 
+			// ctxMenuRunInInspectorFindDataSharingIssues
+			// 
+			this.ctxMenuRunInInspectorFindDataSharingIssues.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorFindDataSharingIssues.Name = "ctxMenuRunInInspectorFindDataSharingIssues";
+			resources.ApplyResources( this.ctxMenuRunInInspectorFindDataSharingIssues, "ctxMenuRunInInspectorFindDataSharingIssues" );
+			this.ctxMenuRunInInspectorFindDataSharingIssues.Click += new System.EventHandler( this.ctxMenuRunInInspectorFindDataSharingIssues_Click );
+			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			resources.ApplyResources( this.toolStripMenuItem3, "toolStripMenuItem3" );
+			// 
+			// ctxMenuRunInInspectorCheckMemoryLeaks
+			// 
+			this.ctxMenuRunInInspectorCheckMemoryLeaks.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorCheckMemoryLeaks.Name = "ctxMenuRunInInspectorCheckMemoryLeaks";
+			resources.ApplyResources( this.ctxMenuRunInInspectorCheckMemoryLeaks, "ctxMenuRunInInspectorCheckMemoryLeaks" );
+			this.ctxMenuRunInInspectorCheckMemoryLeaks.Click += new System.EventHandler( this.ctxMenuRunInInspectorCheckMemoryLeaks_Click );
+			// 
+			// ctxMenuRunInInspectorCheckMemoryAccessIssues
+			// 
+			this.ctxMenuRunInInspectorCheckMemoryAccessIssues.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorCheckMemoryAccessIssues.Name = "ctxMenuRunInInspectorCheckMemoryAccessIssues";
+			resources.ApplyResources( this.ctxMenuRunInInspectorCheckMemoryAccessIssues, "ctxMenuRunInInspectorCheckMemoryAccessIssues" );
+			this.ctxMenuRunInInspectorCheckMemoryAccessIssues.Click += new System.EventHandler( this.ctxMenuRunInInspectorCheckMemoryAccessIssues_Click );
+			// 
+			// ctxMenuRunInInspectorLocateMemoryAccessIssues
+			// 
+			this.ctxMenuRunInInspectorLocateMemoryAccessIssues.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorLocateMemoryAccessIssues.Name = "ctxMenuRunInInspectorLocateMemoryAccessIssues";
+			resources.ApplyResources( this.ctxMenuRunInInspectorLocateMemoryAccessIssues, "ctxMenuRunInInspectorLocateMemoryAccessIssues" );
+			this.ctxMenuRunInInspectorLocateMemoryAccessIssues.Click += new System.EventHandler( this.ctxMenuRunInInspectorLocateMemoryAccessIssues_Click );
+			// 
+			// ctxMenuRunInInspectorAllMemIssues
+			// 
+			this.ctxMenuRunInInspectorAllMemIssues.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunInInspectorAllMemIssues.Name = "ctxMenuRunInInspectorAllMemIssues";
+			resources.ApplyResources( this.ctxMenuRunInInspectorAllMemIssues, "ctxMenuRunInInspectorAllMemIssues" );
+			this.ctxMenuRunInInspectorAllMemIssues.Click += new System.EventHandler( this.ctxMenuRunInInspectorAllMemIssues_Click );
 			// 
 			// ExplorerWindow
 			// 
@@ -466,6 +525,13 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorCheckDeadlocks;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorCheckDeadlocksOrRaces;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorLocateDeadlocks;
-		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorComplete;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorAllThreading;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorFindDataSharingIssues;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorCheckMemoryLeaks;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorCheckMemoryAccessIssues;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorLocateMemoryAccessIssues;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunInInspectorAllMemIssues;
 	}
 }

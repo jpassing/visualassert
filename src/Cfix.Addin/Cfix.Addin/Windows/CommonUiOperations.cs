@@ -16,6 +16,7 @@ using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.VCCodeModel;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
@@ -66,7 +67,26 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
-		public static void RunItem( Workspace ws, ITestItem item, RunMode mode )
+		public static void RunItemInIntelInspector(
+			Workspace ws,
+			ITestItem item,
+			Inspector inspector,
+			InspectorLevel level
+			)
+		{
+			inspector.InspectorLevel = InspectorLevel.AllThreadingIssues;
+			inspector.ResultLocation = Inspector.CreateResultLocation( item.Name );
+
+			CommonUiOperations.RunItem(
+				ws,
+				item,
+				RunMode.IntelInspector );
+		}
+		
+		public static void RunItem( 
+			Workspace ws, 
+			ITestItem item, 
+			RunMode mode )
 		{
 			try
 			{

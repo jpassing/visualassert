@@ -446,6 +446,47 @@ namespace Cfix.Addin
 			}
 		}
 
+		public uint HostRegistrationTimeout
+		{
+			get
+			{
+				object value = this.key.GetValue(
+					"HostRegistrationTimeout",
+					Agent.DefaultHostRegistrationTimeout );
+				return ( uint ) ( int ) value;
+			}
+			set
+			{
+				this.key.SetValue(
+					"HostRegistrationTimeout",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public uint InstrumentedHostRegistrationTimeout
+		{
+			//
+			// N.B. Use longer default timeout to compensate 
+			// instrumentation slowdown.
+			//
+
+			get
+			{
+				object value = this.key.GetValue(
+					"InstrumentedHostRegistrationTimeout",
+					50 * Agent.DefaultHostRegistrationTimeout );
+				return ( uint ) ( int ) value;
+			}
+			set
+			{
+				this.key.SetValue(
+					"InstrumentedHostRegistrationTimeout",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * Advanced.
 		 */

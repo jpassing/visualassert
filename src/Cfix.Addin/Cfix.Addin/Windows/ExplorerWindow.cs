@@ -710,6 +710,7 @@ namespace Cfix.Addin.Windows
 				RunMode.Normal );
 		}
 
+
 		private void ctxMenuRunOnConsole_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItemOnCommandLine(
@@ -726,53 +727,88 @@ namespace Cfix.Addin.Windows
 				RunMode.Debug );
 		}
 
+
 		private void ctxMenuRunInInspectorCheckDeadlocks_Click( object sender, EventArgs e )
 		{
-			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocks;
-			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
-				this.contextMenuReferenceNode.Item.Name );
-			
-			CommonUiOperations.RunItem(
+			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				RunMode.IntelInspector );
+				this.workspace.IntelInspector,
+				InspectorLevel.CheckDeadlocks );
 		}
 
 		private void ctxMenuRunInInspectorCheckDeadlocksOrRaces_Click( object sender, EventArgs e )
 		{
-			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.CheckDeadlocksAndRaces;
-			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
-				this.contextMenuReferenceNode.Item.Name );
-			
-			CommonUiOperations.RunItem(
+			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				RunMode.IntelInspector );
-		}
-
-		private void ctxMenuRunInInspectorComplete_Click( object sender, EventArgs e )
-		{
-			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.Complete;
-			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
-				this.contextMenuReferenceNode.Item.Name );
-			
-			CommonUiOperations.RunItem(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				RunMode.IntelInspector );
+				this.workspace.IntelInspector,
+				InspectorLevel.CheckDeadlocksAndRaces );
 		}
 
 		private void ctxMenuRunInInspectorLocateDeadlocks_Click( object sender, EventArgs e )
 		{
-			this.workspace.IntelInspector.InspectorLevel = InspectorLevel.LocateDeadlocksAndRaces;
-			this.workspace.IntelInspector.ResultLocation = Inspector.CreateResultLocation(
-				this.contextMenuReferenceNode.Item.Name );
-			
-			CommonUiOperations.RunItem(
+			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				RunMode.IntelInspector );
+				this.workspace.IntelInspector,
+				InspectorLevel.LocateDeadlocksAndRaces );
 		}
+
+		private void ctxMenuRunInInspectorAllThreading_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.AllThreadingIssues );
+		}
+
+		private void ctxMenuRunInInspectorFindDataSharingIssues_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.LocateDataSharingIssues );
+		}
+
+		private void ctxMenuRunInInspectorCheckMemoryLeaks_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.CheckMemoryLeaks );
+		}
+
+		private void ctxMenuRunInInspectorCheckMemoryAccessIssues_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.CheckMemoryAccessIssues );
+		}
+
+		private void ctxMenuRunInInspectorLocateMemoryAccessIssues_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.LocateMemoryAccessIssues );
+		}
+
+		private void ctxMenuRunInInspectorAllMemIssues_Click( object sender, EventArgs e )
+		{
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.IntelInspector,
+				InspectorLevel.AllMemoryIssues );
+		}
+
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
 		{
@@ -916,5 +952,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
 
+		
 	}
 }
