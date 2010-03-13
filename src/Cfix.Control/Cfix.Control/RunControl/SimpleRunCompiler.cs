@@ -197,7 +197,7 @@ namespace Cfix.Control.RunControl
 						IAgent agent = this.agentSet.GetAgent( act.Architecture );
 						task = new Task( 
 							agent,
-							act.CreateHost( agent, env ) );
+							this.env );
 						this.run.AddTask( task );
 						tasks++;
 					}

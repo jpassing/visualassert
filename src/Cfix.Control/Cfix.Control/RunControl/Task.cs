@@ -25,16 +25,25 @@ namespace Cfix.Control.RunControl
 		public event EventHandler<FinishedEventArgs> Finished;
 		
 		private readonly IAgent agent;
+		private readonly HostEnvironment hostEnv;
 		private readonly List<IAction> actions = new List<IAction>();
 		private uint itemCount;
 
 		//
-		// Host to run on. Disposed and nulled eagerly.
+		// Host to run on. Lazily created, disposed and nulled eagerly.
 		//
-		private volatile IHost host;
+		// Do not access directly, call GetHost().
+		//
+		private volatile IHost __host;
 		
-		private readonly uint hostPid;
-		private readonly Architecture hostArch;
+		//
+		// Save these attributes separately s.t. they remain available
+		// after this.host has been reset.
+		//
+		// Not initialized before GetHost has been called at least once.
+		//
+		private volatile uint hostPid;
+		private volatile Architecture hostArch;
 		
 		private volatile TaskStatus status = TaskStatus.Ready;
 
@@ -44,6 +53,31 @@ namespace Cfix.Control.RunControl
 		//
 		private readonly RundownLock rundownLock = new RundownLock();
 		private readonly object actionLock = new object();
+
+		private IHost GetHost( IAction action )
+		{
+			lock ( this )
+			{
+				if ( this.__host == null )
+				{
+					this.__host = action.CreateHost( this.agent, this.hostEnv );
+					this.hostPid = this.__host.ProcessId;
+					this.hostArch = this.__host.Architecture;
+				}
+
+				return this.__host;
+			}
+		}
+
+		private void DisposeHost()
+		{
+			if ( this.__host != null )
+			{
+				IHost host = this.__host;
+				this.__host = null;
+				host.Dispose();
+			}
+		}
 
 		private static bool IsTestRoutineFailureHr( uint hr )
 		{
@@ -63,17 +97,14 @@ namespace Cfix.Control.RunControl
 
 		public Task( 
 			IAgent agent,
-			IHost host
+			HostEnvironment hostEnv
 			)
 		{
 			Debug.Assert( agent != null );
-			Debug.Assert( host != null );
+			Debug.Assert( hostEnv != null );
 
 			this.agent = agent;
-			this.host = host;
-
-			this.hostArch = host.Architecture;
-			this.hostPid = host.ProcessId;
+			this.hostEnv = hostEnv;
 		}
 
 		~Task()
@@ -94,10 +125,7 @@ namespace Cfix.Control.RunControl
 			//
 			this.rundownLock.Rundown();
 
-			if ( this.host != null )
-			{
-				this.host.Dispose();
-			}
+			DisposeHost();
 
 			foreach ( IAction act in this.actions )
 			{
@@ -138,8 +166,6 @@ namespace Cfix.Control.RunControl
 
 		private void AsyncRun()
 		{
-			Debug.Assert( this.host != null );
-
 			if ( this.Started != null )
 			{
 				this.Started( this, EventArgs.Empty );
@@ -150,7 +176,10 @@ namespace Cfix.Control.RunControl
 			{
 				foreach ( IAction act in this.actions )
 				{
-					act.Run( this.host );
+					IHost host = GetHost( act );
+					Debug.Assert( host != null );
+
+					act.Run( host );
 				}
 			}
 			catch ( COMException x )
@@ -219,8 +248,7 @@ namespace Cfix.Control.RunControl
 				// We are done with the host. Dispose it s.t. the 
 				// process can terminate.
 				//
-				this.host.Dispose();
-				this.host = null;
+				DisposeHost();
 			}
 		}
 
@@ -298,10 +326,11 @@ namespace Cfix.Control.RunControl
 				{
 					return;
 				}
-				
-				if ( this.host != null )
+
+				IHost host = this.__host;
+				if ( host != null )
 				{
-					this.host.Terminate();
+					host.Terminate();
 					this.status = TaskStatus.Terminated;
 				}
 			}
