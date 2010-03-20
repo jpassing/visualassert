@@ -185,8 +185,27 @@ library Cfixctl
 			);
 	}
 
+	//
+	// Run tests on a thread not joined to any COM apartment.
+	//
 	const ULONG CFIXCTL_ACTION_COM_NEUTRAL = 1;
+
+	//
+	// Automatically switch current directory to module's directory.
+	//
 	const ULONG CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY = 2;
+
+	//
+	// Use 4 MB stack (only applies when combined with 
+	// CFIXCTL_ACTION_COM_NEUTRAL).
+	//
+	const ULONG CFIXCTL_ACTION_LARGE_STACK = 4;
+
+	//
+	// Use 16 MB stack (only applies when combined with 
+	// CFIXCTL_ACTION_COM_NEUTRAL).
+	//
+	const ULONG CFIXCTL_ACTION_HUGE_STACK = 8;
 
 	[
 	  object,
@@ -213,6 +232,10 @@ library Cfixctl
 						Tests will be runo n a non-COM thread. Tests are 
 						thus free to initialize and tear down COM apatrtments 
 						at will.
+
+					CFIXCTL_LARGE_STACK, CFIXCTL_HUGE_STACK:
+						Use larger stack size  (only applies when combined 
+						with CFIXCTL_ACTION_COM_NEUTRAL).
 		--*/
 		HRESULT Run( 
 			[in] ICfixEventSink *Sink,

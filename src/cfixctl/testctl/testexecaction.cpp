@@ -548,6 +548,78 @@ void RunSingleTestCaseFromTestlib11()
 	Action->Release();
 }
 
+void RunTestOnLargeStack()
+{
+	WCHAR Path[ MAX_PATH ];
+	CFIXCC_ASSERT( GetModuleFileName(
+		GetModuleHandle( L"testctl" ),
+		Path,
+		_countof( Path ) ) );
+	PathRemoveFileSpec( Path );
+	PathAppend( Path,  L"testlibstack.dll" );
+
+	ICfixTestModule *Module;
+
+	BSTR BstrPath = SysAllocString( Path );
+	CFIX_ASSERT_OK( Host->LoadModule( BstrPath, &Module ) );
+	SysFreeString( BstrPath );
+
+	ICfixTestItem *Fixture;
+	CFIX_ASSERT_OK( Module->GetItem( 1, &Fixture ) );
+	Module->Release();
+
+	BSTR Name;
+	CFIX_ASSERT_OK( Fixture->GetName( &Name ) );
+	CFIXCC_ASSERT_EQUALS( L"LargeStack", ( PCWSTR ) Name );
+	SysFreeString( Name );
+
+	ICfixAction *Action;
+	CFIX_ASSERT_OK( Fixture->CreateExecutionAction( 0, 0, &Action ) );
+	Fixture->Release();
+
+	EventSink Sink( 0 );
+	CFIX_ASSERT_OK( Action->Run( 
+		&Sink, 
+		CFIXCTL_ACTION_COM_NEUTRAL | CFIXCTL_ACTION_LARGE_STACK ) );
+	Action->Release();
+}
+
+void RunTestOnHugeStack()
+{
+	WCHAR Path[ MAX_PATH ];
+	CFIXCC_ASSERT( GetModuleFileName(
+		GetModuleHandle( L"testctl" ),
+		Path,
+		_countof( Path ) ) );
+	PathRemoveFileSpec( Path );
+	PathAppend( Path,  L"testlibstack.dll" );
+
+	ICfixTestModule *Module;
+
+	BSTR BstrPath = SysAllocString( Path );
+	CFIX_ASSERT_OK( Host->LoadModule( BstrPath, &Module ) );
+	SysFreeString( BstrPath );
+
+	ICfixTestItem *Fixture;
+	CFIX_ASSERT_OK( Module->GetItem( 0, &Fixture ) );
+	Module->Release();
+
+	BSTR Name;
+	CFIX_ASSERT_OK( Fixture->GetName( &Name ) );
+	CFIXCC_ASSERT_EQUALS( L"HugeStack", ( PCWSTR ) Name );
+	SysFreeString( Name );
+
+	ICfixAction *Action;
+	CFIX_ASSERT_OK( Fixture->CreateExecutionAction( 0, 0, &Action ) );
+	Fixture->Release();
+
+	EventSink Sink( 0 );
+	CFIX_ASSERT_OK( Action->Run( 
+		&Sink, 
+		CFIXCTL_ACTION_COM_NEUTRAL | CFIXCTL_ACTION_HUGE_STACK ) );
+	Action->Release();
+}
+
 CFIX_BEGIN_FIXTURE( TestExecAction )
 	CFIX_FIXTURE_SETUP( SetUp )
 	CFIX_FIXTURE_TEARDOWN( TearDown )
@@ -557,4 +629,7 @@ CFIX_BEGIN_FIXTURE( TestExecAction )
 	CFIX_FIXTURE_ENTRY( CreateAndReleaseActions )
 	CFIX_FIXTURE_ENTRY( RunFixturesFromTestlib10 )
 	CFIX_FIXTURE_ENTRY( RunSingleTestCaseFromTestlib11 )
+
+	CFIX_FIXTURE_ENTRY( RunTestOnLargeStack )
+	CFIX_FIXTURE_ENTRY( RunTestOnHugeStack )
 CFIX_END_FIXTURE()

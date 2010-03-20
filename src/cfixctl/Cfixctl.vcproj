@@ -507,6 +507,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="testlibstack"
+					>
+					<File
+						RelativePath=".\testlibs\testlibstack\SOURCES"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlibstack\suite.c"
+						>
+					</File>
+					<File
+						RelativePath=".\testlibs\testlibstack\testlibstack.def"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="cfixhost"

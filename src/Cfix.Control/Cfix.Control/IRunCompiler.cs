@@ -13,7 +13,9 @@ namespace Cfix.Control
 		// joined any apartment.
 		//
 		ComNeutralThreading = ( int ) Native.NativeAction.CFIXCTL_ACTION_COM_NEUTRAL,
-		AutoAdjustCurrentDirectory = ( int ) Native.NativeAction.CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY
+		AutoAdjustCurrentDirectory = ( int ) Native.NativeAction.CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY,
+		LargeStack = ( int ) Native.NativeAction.CFIXCTL_ACTION_LARGE_STACK,
+		HugeStack = ( int ) Native.NativeAction.CFIXCTL_ACTION_HUGE_STACK
 	}
 
 	public interface IRunCompiler
