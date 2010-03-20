@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Cfix.Control.RunControl
 {
-	internal class AbstractActionEventSink : IActionEvents
+	public class AbstractActionEventSink : IActionEvents
 	{
 		public event EventHandler<NotificationEventArgs> Notification;
 		public event EventHandler<HostEventArgs> HostSpawned;

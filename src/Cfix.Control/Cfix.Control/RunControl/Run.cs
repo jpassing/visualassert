@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Cfix.Control.RunControl
 {
-	internal class Run : AbstractActionEventSink, IRun
+	public class Run : AbstractActionEventSink, IRun
 	{
 		public event EventHandler Started;
 		public event EventHandler<FinishedEventArgs> Finished;

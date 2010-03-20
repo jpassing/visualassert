@@ -40,11 +40,13 @@ namespace QuickTest
 			this.ooTarget = new AgentSet();
 			this.ooTarget.AddArchitecture( Agent.CreateLocalAgent(
 				Architecture.I386,
-				false ) );
+				false,
+				Agent.DefaultHostRegistrationTimeout ) );
 
 			this.inTarget = Agent.CreateLocalAgent(
 				Architecture.I386,
-				true );
+				true,
+				Agent.DefaultHostRegistrationTimeout );
 
 			this.Results.ResultNodeContextMenu = this.contextMenuStrip1;
 			this.Results.FailureNodeContextMenu = this.contextMenuStrip2;

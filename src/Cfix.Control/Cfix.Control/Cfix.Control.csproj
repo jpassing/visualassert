@@ -73,6 +73,8 @@
     <Compile Include="Native\NativeTestItem.cs" />
     <Compile Include="Native\TestCase.cs" />
     <Compile Include="Native\TestFixture.cs" />
+    <Compile Include="RunControl\RunCompilerBase.cs" />
+    <Compile Include="RunControl\ProcessPerTestRunCompiler.cs" />
     <Compile Include="RunControl\Run.cs" />
     <Compile Include="Architecture.cs" />
     <Compile Include="Failure.cs" />

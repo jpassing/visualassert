@@ -410,11 +410,37 @@ namespace Cfix.Addin
 			get { return this.lastItemRun != null; }
 		}
 
+		private void TerminateAllActiveHosts( AgentSet agent )
+		{
+			IRun currentRun = this.toolWindows.Run.UserControl.Run;
+			if ( ( currentRun == null || currentRun.Status != TaskStatus.Running ) &&
+				 agent.ActiveHostCount > 0 )
+			{
+				//
+				// No run active, yet there are host active processes.
+				//
+				if ( VisualAssert.ShowQuestion(
+					Strings.TerminateActiveHosts ) )
+				{
+					agent.TerminateActiveHosts();
+				}
+			}
+		}
+
+		private void TerminateAllActiveHosts()
+		{
+			TerminateAllActiveHosts( this.runAgents );
+
+			if ( this.intelInspector != null )
+			{
+				TerminateAllActiveHosts( this.intelInspector.RunAgents );
+			}
+		}
+
 		private IRun RunItem( 
 			IRunnableTestItem item, 
 			bool debug, 
-			bool allowArchMixing, 
-			AgentSet agent )
+			IRunCompiler compiler )
 		{
 			lock ( this.runLock )
 			{
@@ -432,22 +458,10 @@ namespace Cfix.Addin
 				}
 
 				//
-				// TODO: Check inspector and regular hosts.
+				// Make sure all hosts are terminates in order to avoid
+				// file locking issues during building.
 				//
-
-				IRun currentRun = this.toolWindows.Run.UserControl.Run;
-				if ( ( currentRun == null || currentRun.Status != TaskStatus.Running ) &&
-				     agent.ActiveHostCount > 0 )
-				{
-					//
-					// No run active, yet there are host active processes.
-					//
-					if ( VisualAssert.ShowQuestion(
-						Strings.TerminateActiveHosts ) )
-					{
-						agent.TerminateActiveHosts();
-					}
-				}
+				TerminateAllActiveHosts();
 
 				//
 				// Make sure the run window is reset while the build
@@ -480,12 +494,6 @@ namespace Cfix.Addin
 					//
 				}
 
-				SimpleRunCompiler compiler = new SimpleRunCompiler(
-					agent,
-					GetDispositionPolicy( debug ),
-					this.config.ExecutionOptions,
-					this.config.EnvironmentOptions,
-					allowArchMixing );
 				compiler.Add( item );
 
 				IRun run = compiler.Compile();
@@ -575,7 +583,20 @@ namespace Cfix.Addin
 				allowArchMixing = true;
 			}
 
-			RunItem( item, debug, allowArchMixing, this.runAgents );
+			SimpleRunCompiler compiler = new SimpleRunCompiler(
+				this.runAgents,
+				GetDispositionPolicy( debug ),
+				this.config.ExecutionOptions,
+				this.config.EnvironmentOptions,
+				allowArchMixing );
+
+			//ProcessPerTestRunCompiler compiler = new ProcessPerTestRunCompiler(
+			//    this.runAgents,
+			//    GetDispositionPolicy( debug ),
+			//    this.config.ExecutionOptions,
+			//    this.config.EnvironmentOptions ); 
+			
+			RunItem( item, debug, compiler );
 		}
 
 		public void RunItemInIntelInspector( IRunnableTestItem item )
@@ -585,13 +606,19 @@ namespace Cfix.Addin
 			//
 			// N.B. Never allow mixing architectures.
 			//
+			SimpleRunCompiler compiler = new SimpleRunCompiler(
+				this.intelInspector.RunAgents,
+				GetDispositionPolicy( false ),
+				this.config.ExecutionOptions,
+				this.config.EnvironmentOptions,
+				false );
 
 			lock ( this.runLock )
 			{
 				ResultLocation resultLocation = 
 					this.intelInspector.ResultLocation;
 
-				IRun run = RunItem( item, false, false, this.intelInspector.RunAgents );
+				IRun run = RunItem( item, false, compiler );
 
 				if ( run != null )
 				{

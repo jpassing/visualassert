@@ -96,7 +96,7 @@ namespace Cfix.Control.Test
 
 		[Test]
 		[ExpectedException( typeof( EmptyRunException ) )]
-		public void TestEmptyRunRaisesException()
+		public void TestSimpleRunCompilerRaisesExceptionForEmptyRun()
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )
 			using ( IRun run = new RunControl.SimpleRunCompiler(
@@ -110,6 +110,23 @@ namespace Cfix.Control.Test
 				run.Start();
 			}
 		}
+
+		//[Test]
+		//[ExpectedException( typeof( EmptyRunException ) )]
+		//public void TestProcessPerTestRunCompilerRaisesExceptionForEmptyRun()
+		//{
+		//    using ( IHost host = this.ooProcTarget.CreateHost() )
+		//    using ( IRun run = new RunControl.ProcessPerTestRunCompiler(
+		//        this.ooProcTarget,
+		//        new StandardDispositionPolicy(
+		//                Disposition.Continue, Disposition.Break ),
+		//        ExecutionOptions.None,
+		//        EnvironmentOptions.ComNeutralThreading ).Compile() )
+		//    {
+		//        AutoResetEvent done = new AutoResetEvent( false );
+		//        run.Start();
+		//    }
+		//}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
@@ -950,7 +967,7 @@ namespace Cfix.Control.Test
 			}
 		}
 
-		private void RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+		private void RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				string fixtureName,
 				ExecutionStatus expectedTestStatus )
 		{
@@ -998,7 +1015,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void TestFailingSetupFailsRunWithoutException()
 		{
-			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInSetup",
 				ExecutionStatus.Skipped );
 		}
@@ -1006,7 +1023,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void TestFailingTeardownFailsRunWithoutException()
 		{
-			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInTeardown",
 				ExecutionStatus.Succeeded );
 		}
@@ -1014,7 +1031,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void TestFailingBeforeFailsRunWithoutException()
 		{
-			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInBefore",
 				ExecutionStatus.Failed );
 		}
@@ -1022,7 +1039,7 @@ namespace Cfix.Control.Test
 		[Test]
 		public void TestFailingAfterFailsRunWithoutException()
 		{
-			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInAfter",
 				ExecutionStatus.Failed );
 		}
@@ -1030,9 +1047,50 @@ namespace Cfix.Control.Test
 		[Test]
 		public void TestFailingTestFailsRunWithoutException()
 		{
-			RunAndExpectFailedAssertionToShortcircuitRunWithoutSuccessfully( 
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInTest",
 				ExecutionStatus.Failed );
 		}
+
+		//[Test]
+		//public void TestProcessPerTestRunCompilerForModuleCollection()
+		//{
+		//    using ( IHost host = this.inProcTarget.CreateHost() )
+		//    using ( ITestItemCollection coll = host.SearchModules(
+		//        new DirectoryInfo( this.testdataDir2 ),
+		//        "*.dll",
+		//        this.multiTarget,
+		//        true ) )
+		//    {
+		//        coll.Refresh();
+
+		//        Assert.AreEqual( 2, coll.ItemCount );
+
+		//        IRunCompiler comp = new RunControl.ProcessPerTestRunCompiler(
+		//            this.ooProcTarget,
+		//            new StandardDispositionPolicy(
+		//                    Disposition.Continue, Disposition.Break ),
+		//            ExecutionOptions.None,
+		//            EnvironmentOptions.None );
+		//        comp.Add( ( IRunnableTestItem ) coll );
+		//        using ( IRun run = comp.Compile() )
+		//        {
+		//            Assert.AreEqual( coll.ItemCount, run.TaskCount );
+
+		//            AutoResetEvent done = new AutoResetEvent( false );
+
+		//            run.Finished += delegate( object sender, FinishedEventArgs e )
+		//            {
+		//                Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+		//                done.Set();
+		//            };
+
+		//            run.Start();
+		//            done.WaitOne();
+
+		//            Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+		//        }
+		//    }
+		//}
 	}
 }
