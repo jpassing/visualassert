@@ -18,6 +18,8 @@ namespace Cfix.Control.Native
 	{
 		public const uint CFIXCTL_ACTION_COM_NEUTRAL = 1;
 		public const uint CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY = 2;
+		public const uint CFIXCTL_ACTION_LARGE_STACK = 4;
+		public const uint CFIXCTL_ACTION_HUGE_STACK = 8;
 
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_FIXTURE_ON_FAILURE	= 1;
 		public const uint CFIX_FIXTURE_EXECUTION_SHORTCIRCUIT_RUN_ON_SETUP_FAILURE	= 2;

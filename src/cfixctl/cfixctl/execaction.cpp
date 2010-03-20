@@ -12,6 +12,9 @@
 const GUID IID_ICfixExecutionActionInternal = 
 	{ 0x5bcd9d4e, 0xa622, 0x4d60, { 0x86, 0xed, 0x97, 0xd, 0x11, 0xc1, 0x73, 0x8d } };
 
+#define CFIXCTLP_LARGE_STACK_SIZE	(  4 * 1024 * 1024 )
+#define CFIXCTLP_HUGE_STACK_SIZE	( 16 * 1024 * 1024 )
+
 /*----------------------------------------------------------------------
  * 
  * Class Declaration.
@@ -127,7 +130,8 @@ static DWORD CfixctlsRunIndirectThreadProc( PVOID Args )
 
 static HRESULT CfixctlsRunOnWorkerThread(
 	__in PCFIX_ACTION Action,
-	__in PCFIX_EXECUTION_CONTEXT Adapter
+	__in PCFIX_EXECUTION_CONTEXT Adapter,
+	__in ULONG ThreadStackSize
 	)
 {
 	ASSERT( Action );
@@ -158,7 +162,7 @@ static HRESULT CfixctlsRunOnWorkerThread(
 
 	Thread = CreateThread(
 		NULL,
-		0,
+		ThreadStackSize,
 		CfixctlsRunIndirectThreadProc,
 		&ThreadArgs,
 		0,
@@ -281,7 +285,11 @@ STDMETHODIMP ExecutionAction::Run(
 		return E_POINTER;
 	}
 
-	if ( Flags > ( CFIXCTL_ACTION_COM_NEUTRAL | CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY ) )
+	if ( Flags > 
+		( CFIXCTL_ACTION_COM_NEUTRAL | 
+		  CFIXCTL_ACTION_AUTO_ADJUST_CURRENT_DIRECTORY |
+		  CFIXCTL_ACTION_LARGE_STACK |
+		  CFIXCTL_ACTION_HUGE_STACK ) )
 	{
 		return E_INVALIDARG;
 	}
@@ -337,9 +345,24 @@ STDMETHODIMP ExecutionAction::Run(
 	//
 	// Let it run and tunnel events through the adapter.
 	//
-	if ( Flags & CFIXCTL_ACTION_COM_NEUTRAL )
+	if ( CfixctlpFlagOn( Flags, CFIXCTL_ACTION_COM_NEUTRAL ) )
 	{
-		Hr = CfixctlsRunOnWorkerThread( Action, Adapter );
+		ULONG StackSize;
+
+		if ( CfixctlpFlagOn( Flags, CFIXCTL_ACTION_HUGE_STACK ) )
+		{
+			StackSize = CFIXCTLP_HUGE_STACK_SIZE;
+		}
+		else if ( CfixctlpFlagOn( Flags, CFIXCTL_ACTION_LARGE_STACK ) )
+		{
+			StackSize = CFIXCTLP_LARGE_STACK_SIZE;
+		}
+		else
+		{
+			StackSize = 0; // System default.
+		}
+
+		Hr = CfixctlsRunOnWorkerThread( Action, Adapter, StackSize );
 	}
 	else
 	{

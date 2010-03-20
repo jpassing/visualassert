@@ -40,6 +40,8 @@
 	#define CFIXCTLP_TRACE( Args ) 
 #endif
 
+#define CfixctlpFlagOn( Flags, FlagToTest ) ( ( Flags ) & ( FlagToTest ) )
+
 __inline VOID CfixctlpDbgPrint(
 	__in PCWSTR Format,
 	...
