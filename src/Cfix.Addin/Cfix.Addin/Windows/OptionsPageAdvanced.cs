@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using EnvDTE80;
 using System.Diagnostics;
+using Cfix.Control;
 
 namespace Cfix.Addin.Windows
 {
@@ -41,6 +42,24 @@ namespace Cfix.Addin.Windows
 				this.configuration.HostRegistrationTimeout / 1000;
 			this.instrumentedHostRegTimeout.Value =
 				this.configuration.InstrumentedHostRegistrationTimeout / 1000;
+
+			EnvironmentOptions envOpts = this.configuration.EnvironmentOptions;
+
+			this.autoAdjustCwd.Checked =
+				( ( envOpts & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 );
+
+			if ( ( envOpts & EnvironmentOptions.HugeStack ) != 0 )
+			{
+				this.stackSizeHuge.Checked = true;
+			}
+			else if ( ( envOpts & EnvironmentOptions.LargeStack ) != 0 )
+			{
+				this.stackSizeLarge.Checked = true;
+			}
+			else
+			{
+				this.stackSizeStd.Checked = true;
+			}
 		}
 
 		public void OnCancel()
@@ -61,6 +80,23 @@ namespace Cfix.Addin.Windows
 				( uint ) this.hostRegTimeout.Value * 1000;
 			this.configuration.InstrumentedHostRegistrationTimeout = 
 				( uint ) this.instrumentedHostRegTimeout.Value * 1000;
+
+			EnvironmentOptions envOpts = EnvironmentOptions.ComNeutralThreading;
+			if ( this.autoAdjustCwd.Checked )
+			{
+				envOpts |= EnvironmentOptions.AutoAdjustCurrentDirectory;
+			}
+
+			if ( this.stackSizeHuge.Checked )
+			{
+				envOpts |= EnvironmentOptions.HugeStack;
+			}
+			else if ( this.stackSizeLarge.Checked )
+			{
+				envOpts |= EnvironmentOptions.LargeStack;
+			}
+
+			this.configuration.EnvironmentOptions = envOpts;
 		}
 	}
 }

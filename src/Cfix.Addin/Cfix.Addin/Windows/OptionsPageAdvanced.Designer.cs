@@ -28,7 +28,7 @@ namespace Cfix.Addin.Windows
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.advGroupBox = new System.Windows.Forms.GroupBox();
+			this.hostGroupBox = new System.Windows.Forms.GroupBox();
 			this.restartNotice = new System.Windows.Forms.Label();
 			this.sec2 = new System.Windows.Forms.Label();
 			this.sec1 = new System.Windows.Forms.Label();
@@ -36,26 +36,35 @@ namespace Cfix.Addin.Windows
 			this.hostRegTimeoutLabel = new System.Windows.Forms.Label();
 			this.instrumentedHostRegTimeout = new System.Windows.Forms.NumericUpDown();
 			this.hostRegTimeout = new System.Windows.Forms.NumericUpDown();
-			this.advGroupBox.SuspendLayout();
+			this.threadGroupBox = new System.Windows.Forms.GroupBox();
+			this.stackSizeHuge = new System.Windows.Forms.RadioButton();
+			this.stackSizeLarge = new System.Windows.Forms.RadioButton();
+			this.stackSizeStd = new System.Windows.Forms.RadioButton();
+			this.stackSizeLabel = new System.Windows.Forms.Label();
+			this.eneralGroupBox = new System.Windows.Forms.GroupBox();
+			this.autoAdjustCwd = new System.Windows.Forms.CheckBox();
+			this.hostGroupBox.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.instrumentedHostRegTimeout ) ).BeginInit();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.hostRegTimeout ) ).BeginInit();
+			this.threadGroupBox.SuspendLayout();
+			this.eneralGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// advGroupBox
+			// hostGroupBox
 			// 
-			this.advGroupBox.Controls.Add( this.restartNotice );
-			this.advGroupBox.Controls.Add( this.sec2 );
-			this.advGroupBox.Controls.Add( this.sec1 );
-			this.advGroupBox.Controls.Add( this.instrHostRegTimeoutLabel );
-			this.advGroupBox.Controls.Add( this.hostRegTimeoutLabel );
-			this.advGroupBox.Controls.Add( this.instrumentedHostRegTimeout );
-			this.advGroupBox.Controls.Add( this.hostRegTimeout );
-			this.advGroupBox.Location = new System.Drawing.Point( 3, 3 );
-			this.advGroupBox.Name = "advGroupBox";
-			this.advGroupBox.Size = new System.Drawing.Size( 385, 117 );
-			this.advGroupBox.TabIndex = 0;
-			this.advGroupBox.TabStop = false;
-			this.advGroupBox.Text = "Advanced Settings";
+			this.hostGroupBox.Controls.Add( this.restartNotice );
+			this.hostGroupBox.Controls.Add( this.sec2 );
+			this.hostGroupBox.Controls.Add( this.sec1 );
+			this.hostGroupBox.Controls.Add( this.instrHostRegTimeoutLabel );
+			this.hostGroupBox.Controls.Add( this.hostRegTimeoutLabel );
+			this.hostGroupBox.Controls.Add( this.instrumentedHostRegTimeout );
+			this.hostGroupBox.Controls.Add( this.hostRegTimeout );
+			this.hostGroupBox.Location = new System.Drawing.Point( 4, 139 );
+			this.hostGroupBox.Name = "hostGroupBox";
+			this.hostGroupBox.Size = new System.Drawing.Size( 385, 117 );
+			this.hostGroupBox.TabIndex = 0;
+			this.hostGroupBox.TabStop = false;
+			this.hostGroupBox.Text = "Host Process";
 			// 
 			// restartNotice
 			// 
@@ -90,18 +99,18 @@ namespace Cfix.Addin.Windows
 			this.instrHostRegTimeoutLabel.AutoSize = true;
 			this.instrHostRegTimeoutLabel.Location = new System.Drawing.Point( 6, 52 );
 			this.instrHostRegTimeoutLabel.Name = "instrHostRegTimeoutLabel";
-			this.instrHostRegTimeoutLabel.Size = new System.Drawing.Size( 229, 13 );
+			this.instrHostRegTimeoutLabel.Size = new System.Drawing.Size( 200, 13 );
 			this.instrHostRegTimeoutLabel.TabIndex = 1;
-			this.instrHostRegTimeoutLabel.Text = "Spawn timeout for instrumented host processes";
+			this.instrHostRegTimeoutLabel.Text = "Spawn timeout (instrumented processes):";
 			// 
 			// hostRegTimeoutLabel
 			// 
 			this.hostRegTimeoutLabel.AutoSize = true;
 			this.hostRegTimeoutLabel.Location = new System.Drawing.Point( 6, 26 );
 			this.hostRegTimeoutLabel.Name = "hostRegTimeoutLabel";
-			this.hostRegTimeoutLabel.Size = new System.Drawing.Size( 169, 13 );
+			this.hostRegTimeoutLabel.Size = new System.Drawing.Size( 172, 13 );
 			this.hostRegTimeoutLabel.TabIndex = 1;
-			this.hostRegTimeoutLabel.Text = "Spawn timeout for host processes:";
+			this.hostRegTimeoutLabel.Text = "Spawn timeout (regular processes):";
 			// 
 			// instrumentedHostRegTimeout
 			// 
@@ -118,7 +127,7 @@ namespace Cfix.Addin.Windows
             0} );
 			this.instrumentedHostRegTimeout.Name = "instrumentedHostRegTimeout";
 			this.instrumentedHostRegTimeout.Size = new System.Drawing.Size( 65, 20 );
-			this.instrumentedHostRegTimeout.TabIndex = 0;
+			this.instrumentedHostRegTimeout.TabIndex = 5;
 			this.instrumentedHostRegTimeout.Value = new decimal( new int[] {
             1,
             0,
@@ -140,31 +149,112 @@ namespace Cfix.Addin.Windows
             0} );
 			this.hostRegTimeout.Name = "hostRegTimeout";
 			this.hostRegTimeout.Size = new System.Drawing.Size( 65, 20 );
-			this.hostRegTimeout.TabIndex = 0;
+			this.hostRegTimeout.TabIndex = 4;
 			this.hostRegTimeout.Value = new decimal( new int[] {
             1,
             0,
             0,
             0} );
 			// 
+			// threadGroupBox
+			// 
+			this.threadGroupBox.Controls.Add( this.stackSizeHuge );
+			this.threadGroupBox.Controls.Add( this.stackSizeLarge );
+			this.threadGroupBox.Controls.Add( this.stackSizeStd );
+			this.threadGroupBox.Controls.Add( this.stackSizeLabel );
+			this.threadGroupBox.Location = new System.Drawing.Point( 4, 72 );
+			this.threadGroupBox.Name = "threadGroupBox";
+			this.threadGroupBox.Size = new System.Drawing.Size( 385, 61 );
+			this.threadGroupBox.TabIndex = 1;
+			this.threadGroupBox.TabStop = false;
+			this.threadGroupBox.Text = "Threads";
+			// 
+			// stackSizeHuge
+			// 
+			this.stackSizeHuge.AutoSize = true;
+			this.stackSizeHuge.Location = new System.Drawing.Point( 285, 25 );
+			this.stackSizeHuge.Name = "stackSizeHuge";
+			this.stackSizeHuge.Size = new System.Drawing.Size( 88, 17 );
+			this.stackSizeHuge.TabIndex = 3;
+			this.stackSizeHuge.TabStop = true;
+			this.stackSizeHuge.Text = "Huge (16MB)";
+			this.stackSizeHuge.UseVisualStyleBackColor = true;
+			// 
+			// stackSizeLarge
+			// 
+			this.stackSizeLarge.AutoSize = true;
+			this.stackSizeLarge.Location = new System.Drawing.Point( 196, 25 );
+			this.stackSizeLarge.Name = "stackSizeLarge";
+			this.stackSizeLarge.Size = new System.Drawing.Size( 83, 17 );
+			this.stackSizeLarge.TabIndex = 2;
+			this.stackSizeLarge.TabStop = true;
+			this.stackSizeLarge.Text = "Large (4MB)";
+			this.stackSizeLarge.UseVisualStyleBackColor = true;
+			// 
+			// stackSizeStd
+			// 
+			this.stackSizeStd.AutoSize = true;
+			this.stackSizeStd.Location = new System.Drawing.Point( 91, 25 );
+			this.stackSizeStd.Name = "stackSizeStd";
+			this.stackSizeStd.Size = new System.Drawing.Size( 99, 17 );
+			this.stackSizeStd.TabIndex = 1;
+			this.stackSizeStd.TabStop = true;
+			this.stackSizeStd.Text = "Standard (1MB)";
+			this.stackSizeStd.UseVisualStyleBackColor = true;
+			// 
+			// stackSizeLabel
+			// 
+			this.stackSizeLabel.AutoSize = true;
+			this.stackSizeLabel.Location = new System.Drawing.Point( 6, 25 );
+			this.stackSizeLabel.Name = "stackSizeLabel";
+			this.stackSizeLabel.Size = new System.Drawing.Size( 59, 13 );
+			this.stackSizeLabel.TabIndex = 1;
+			this.stackSizeLabel.Text = "Stack size:";
+			// 
+			// eneralGroupBox
+			// 
+			this.eneralGroupBox.Controls.Add( this.autoAdjustCwd );
+			this.eneralGroupBox.Location = new System.Drawing.Point( 4, 4 );
+			this.eneralGroupBox.Name = "eneralGroupBox";
+			this.eneralGroupBox.Size = new System.Drawing.Size( 384, 62 );
+			this.eneralGroupBox.TabIndex = 2;
+			this.eneralGroupBox.TabStop = false;
+			this.eneralGroupBox.Text = "General";
+			// 
+			// autoAdjustCwd
+			// 
+			this.autoAdjustCwd.AutoSize = true;
+			this.autoAdjustCwd.Location = new System.Drawing.Point( 9, 28 );
+			this.autoAdjustCwd.Name = "autoAdjustCwd";
+			this.autoAdjustCwd.Size = new System.Drawing.Size( 302, 17 );
+			this.autoAdjustCwd.TabIndex = 0;
+			this.autoAdjustCwd.Text = "Automatically adjust current directory to module base folder";
+			this.autoAdjustCwd.UseVisualStyleBackColor = true;
+			// 
 			// OptionsPageAdvanced
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add( this.advGroupBox );
+			this.Controls.Add( this.eneralGroupBox );
+			this.Controls.Add( this.threadGroupBox );
+			this.Controls.Add( this.hostGroupBox );
 			this.Name = "OptionsPageAdvanced";
 			this.Size = new System.Drawing.Size( 400, 280 );
-			this.advGroupBox.ResumeLayout( false );
-			this.advGroupBox.PerformLayout();
+			this.hostGroupBox.ResumeLayout( false );
+			this.hostGroupBox.PerformLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.instrumentedHostRegTimeout ) ).EndInit();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.hostRegTimeout ) ).EndInit();
+			this.threadGroupBox.ResumeLayout( false );
+			this.threadGroupBox.PerformLayout();
+			this.eneralGroupBox.ResumeLayout( false );
+			this.eneralGroupBox.PerformLayout();
 			this.ResumeLayout( false );
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.GroupBox advGroupBox;
+		private System.Windows.Forms.GroupBox hostGroupBox;
 		private System.Windows.Forms.NumericUpDown hostRegTimeout;
 		private System.Windows.Forms.Label sec2;
 		private System.Windows.Forms.Label sec1;
@@ -172,5 +262,12 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.Label hostRegTimeoutLabel;
 		private System.Windows.Forms.NumericUpDown instrumentedHostRegTimeout;
 		private System.Windows.Forms.Label restartNotice;
+		private System.Windows.Forms.GroupBox threadGroupBox;
+		private System.Windows.Forms.RadioButton stackSizeStd;
+		private System.Windows.Forms.Label stackSizeLabel;
+		private System.Windows.Forms.RadioButton stackSizeHuge;
+		private System.Windows.Forms.RadioButton stackSizeLarge;
+		private System.Windows.Forms.GroupBox eneralGroupBox;
+		private System.Windows.Forms.CheckBox autoAdjustCwd;
 	}
 }
