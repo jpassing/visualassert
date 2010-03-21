@@ -18,6 +18,12 @@ namespace Cfix.Control.Test
 		private String testdataDir;
 		private String testdataDir2;
 
+		enum CompilerType
+		{
+			Simple,
+			ProcessPerTest
+		}
+
 		[SetUp]
 		public void Setup()
 		{
@@ -77,21 +83,44 @@ namespace Cfix.Control.Test
 			return null;
 		}
 
-		private IRun CreateRun( TestModule mod, ITestItem item, ExecutionOptions options )
+		private IRun CreateRun( 
+			TestModule mod, 
+			ITestItem item, 
+			ExecutionOptions options, 
+			CompilerType compType 
+			)
 		{
-			IRunCompiler comp = new RunControl.SimpleRunCompiler(
-				this.ooProcTarget,
-				new StandardDispositionPolicy(
-						Disposition.Continue, Disposition.Break ),
-				options,
-				EnvironmentOptions.ComNeutralThreading | EnvironmentOptions.AutoAdjustCurrentDirectory );
+			IRunCompiler comp;
+
+			EnvironmentOptions envOpts =
+				EnvironmentOptions.ComNeutralThreading | EnvironmentOptions.AutoAdjustCurrentDirectory;
+
+			if ( compType == CompilerType.ProcessPerTest )
+			{
+				comp = new RunControl.ProcessPerTestRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					options,
+					envOpts );
+			}
+			else
+			{
+				comp = new RunControl.SimpleRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					options,
+					envOpts );
+			}
+
 			comp.Add( ( IRunnableTestItem ) item );
 			return comp.Compile();
 		}
 
 		private IRun CreateRun( TestModule mod, ITestItem item )
 		{
-			return CreateRun( mod, item, ExecutionOptions.CaptureStackTraces );
+			return CreateRun( mod, item, ExecutionOptions.CaptureStackTraces, CompilerType.Simple );
 		}
 
 		[Test]
@@ -111,22 +140,22 @@ namespace Cfix.Control.Test
 			}
 		}
 
-		//[Test]
-		//[ExpectedException( typeof( EmptyRunException ) )]
-		//public void TestProcessPerTestRunCompilerRaisesExceptionForEmptyRun()
-		//{
-		//    using ( IHost host = this.ooProcTarget.CreateHost() )
-		//    using ( IRun run = new RunControl.ProcessPerTestRunCompiler(
-		//        this.ooProcTarget,
-		//        new StandardDispositionPolicy(
-		//                Disposition.Continue, Disposition.Break ),
-		//        ExecutionOptions.None,
-		//        EnvironmentOptions.ComNeutralThreading ).Compile() )
-		//    {
-		//        AutoResetEvent done = new AutoResetEvent( false );
-		//        run.Start();
-		//    }
-		//}
+		[Test]
+		[ExpectedException( typeof( EmptyRunException ) )]
+		public void TestProcessPerTestRunCompilerRaisesExceptionForEmptyRun()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( IRun run = new RunControl.ProcessPerTestRunCompiler(
+				this.ooProcTarget,
+				new StandardDispositionPolicy(
+						Disposition.Continue, Disposition.Break ),
+				ExecutionOptions.None,
+				EnvironmentOptions.ComNeutralThreading ).Compile() )
+			{
+				AutoResetEvent done = new AutoResetEvent( false );
+				run.Start();
+			}
+		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
@@ -969,7 +998,9 @@ namespace Cfix.Control.Test
 
 		private void RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				string fixtureName,
-				ExecutionStatus expectedTestStatus )
+				ExecutionStatus expectedTestStatus,
+				CompilerType compType
+				)
 		{
 			using ( IHost host = this.ooProcTarget.CreateHost() )
 			using ( TestModule mod = ( TestModule ) host.LoadModule(
@@ -978,7 +1009,11 @@ namespace Cfix.Control.Test
 					true ) )
 			using ( TestFixture fixture =
 				( TestFixture ) GetItemByName( mod, fixtureName ) )
-			using ( IRun run = CreateRun( mod, fixture, ExecutionOptions.ShortCircuitRunOnFailure ) )
+			using ( IRun run = CreateRun( 
+				mod, 
+				fixture, 
+				ExecutionOptions.ShortCircuitRunOnFailure,
+				compType ) )
 			{
 				Assert.AreEqual( TaskStatus.Ready, run.Status );
 
@@ -1013,84 +1048,202 @@ namespace Cfix.Control.Test
 		}
 
 		[Test]
-		public void TestFailingSetupFailsRunWithoutException()
+		public void TestFailingSetupFailsSimpleRunWithoutException()
 		{
 			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInSetup",
-				ExecutionStatus.Skipped );
+				ExecutionStatus.Skipped,
+				CompilerType.Simple );
 		}
 
 		[Test]
-		public void TestFailingTeardownFailsRunWithoutException()
+		public void TestFailingTeardownFailsSimpleRunWithoutException()
 		{
 			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInTeardown",
-				ExecutionStatus.Succeeded );
+				ExecutionStatus.Succeeded,
+				CompilerType.Simple );
 		}
 
 		[Test]
-		public void TestFailingBeforeFailsRunWithoutException()
+		public void TestFailingBeforeFailsSimpleRunWithoutException()
 		{
 			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInBefore",
-				ExecutionStatus.Failed );
+				ExecutionStatus.Failed,
+				CompilerType.Simple );
 		}
 
 		[Test]
-		public void TestFailingAfterFailsRunWithoutException()
+		public void TestFailingAfterFailsSimpleRunWithoutException()
 		{
 			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInAfter",
-				ExecutionStatus.Failed );
+				ExecutionStatus.Failed,
+				CompilerType.Simple );
 		}
 
 		[Test]
-		public void TestFailingTestFailsRunWithoutException()
+		public void TestFailingTestFailsSimpleRunWithoutException()
 		{
 			RunAndExpectFailedAssertionToShortcircuitRunWithoutException( 
 				"Fail_FailInTest",
-				ExecutionStatus.Failed );
+				ExecutionStatus.Failed,
+				CompilerType.Simple );
 		}
 
-		//[Test]
-		//public void TestProcessPerTestRunCompilerForModuleCollection()
-		//{
-		//    using ( IHost host = this.inProcTarget.CreateHost() )
-		//    using ( ITestItemCollection coll = host.SearchModules(
-		//        new DirectoryInfo( this.testdataDir2 ),
-		//        "*.dll",
-		//        this.multiTarget,
-		//        true ) )
-		//    {
-		//        coll.Refresh();
+		[Test]
+		public void TestFailingTeardownFailsProcessPerTestRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException(
+				"Fail_FailInTeardown",
+				ExecutionStatus.Succeeded,
+				CompilerType.ProcessPerTest );
+		}
 
-		//        Assert.AreEqual( 2, coll.ItemCount );
+		[Test]
+		public void TestFailingBeforeFailsProcessPerTestRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException(
+				"Fail_FailInBefore",
+				ExecutionStatus.Failed,
+				CompilerType.ProcessPerTest );
+		}
 
-		//        IRunCompiler comp = new RunControl.ProcessPerTestRunCompiler(
-		//            this.ooProcTarget,
-		//            new StandardDispositionPolicy(
-		//                    Disposition.Continue, Disposition.Break ),
-		//            ExecutionOptions.None,
-		//            EnvironmentOptions.None );
-		//        comp.Add( ( IRunnableTestItem ) coll );
-		//        using ( IRun run = comp.Compile() )
-		//        {
-		//            Assert.AreEqual( coll.ItemCount, run.TaskCount );
+		[Test]
+		public void TestFailingAfterFailsProcessPerTestRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException(
+				"Fail_FailInAfter",
+				ExecutionStatus.Failed,
+				CompilerType.ProcessPerTest );
+		}
 
-		//            AutoResetEvent done = new AutoResetEvent( false );
+		[Test]
+		public void TestFailingTestFailsProcessPerTestRunWithoutException()
+		{
+			RunAndExpectFailedAssertionToShortcircuitRunWithoutException(
+				"Fail_FailInTest",
+				ExecutionStatus.Failed,
+				CompilerType.ProcessPerTest );
+		}
 
-		//            run.Finished += delegate( object sender, FinishedEventArgs e )
-		//            {
-		//                Assert.AreEqual( TaskStatus.Suceeded, run.Status );
-		//                done.Set();
-		//            };
+		[Test]
+		public void TestProcessPerTestRunCompilerForSingleTest()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "XFixtureWithOneTest" ) )
+			using ( ITestItem tc = GetItemByName( fixture, "Nop01" ) )
+			{
+				IRunCompiler comp = new RunControl.ProcessPerTestRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					ExecutionOptions.None,
+					EnvironmentOptions.None );
+				comp.Add( ( IRunnableTestItem ) tc );
 
-		//            run.Start();
-		//            done.WaitOne();
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
 
-		//            Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
-		//        }
-		//    }
-		//}
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				}
+			}
+		}
+
+		[Test]
+		public void TestProcessPerTestRunCompilerForFixtureWithOneTest()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "XFixtureWithOneTest" ) )
+			{
+				IRunCompiler comp = new RunControl.ProcessPerTestRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					ExecutionOptions.None,
+					EnvironmentOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+
+				Assert.AreEqual( 1, fixture.ItemCount );
+
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				}
+			}
+		}
+
+		[Test]
+		public void TestProcessPerTestRunCompilerForFixtureWithTwoTests()
+		{
+			using ( IHost host = this.ooProcTarget.CreateHost() )
+			using ( TestModule mod = ( TestModule ) host.LoadModule(
+					null,
+					this.binDir + "\\testmanaged.dll",
+					true ) )
+			using ( ITestItemCollection fixture =
+				( ITestItemCollection ) GetItemByName( mod, "XFixtureWithTwoTests" ) )
+			{
+				IRunCompiler comp = new RunControl.ProcessPerTestRunCompiler(
+					this.ooProcTarget,
+					new StandardDispositionPolicy(
+							Disposition.Continue, Disposition.Break ),
+					ExecutionOptions.None,
+					EnvironmentOptions.None );
+				comp.Add( ( IRunnableTestItem ) fixture );
+
+				Assert.AreEqual( 2, fixture.ItemCount );
+
+				using ( IRun run = comp.Compile() )
+				{
+					AutoResetEvent done = new AutoResetEvent( false );
+
+					run.Finished += delegate( object sender, FinishedEventArgs e )
+					{
+						Assert.AreEqual( TaskStatus.Suceeded, run.Status );
+						done.Set();
+					};
+
+					run.Start();
+					done.WaitOne();
+
+					Assert.AreEqual( ExecutionStatus.Succeeded, run.RootResult.Status );
+				}
+			}
+		}
+
+		
 	}
 }

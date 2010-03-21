@@ -569,6 +569,7 @@ namespace Cfix.Addin
 		public void RunItem( IRunnableTestItem item, bool debug )
 		{
 			bool allowArchMixing;
+			RunCompilerType compilerType;
 			if ( debug )
 			{
 				//
@@ -577,24 +578,21 @@ namespace Cfix.Addin
 				// architecture only.
 				//
 				allowArchMixing = false;
+				compilerType = RunCompilerType.Simple;
 			}
 			else
 			{
 				allowArchMixing = true;
+				compilerType = this.config.RunCompilerType;
 			}
 
-			SimpleRunCompiler compiler = new SimpleRunCompiler(
+			IRunCompiler compiler = RunCompilerFactory.CreateCompiler(
+				compilerType,
 				this.runAgents,
 				GetDispositionPolicy( debug ),
 				this.config.ExecutionOptions,
 				this.config.EnvironmentOptions,
 				allowArchMixing );
-
-			//ProcessPerTestRunCompiler compiler = new ProcessPerTestRunCompiler(
-			//    this.runAgents,
-			//    GetDispositionPolicy( debug ),
-			//    this.config.ExecutionOptions,
-			//    this.config.EnvironmentOptions ); 
 			
 			RunItem( item, debug, compiler );
 		}
@@ -604,14 +602,17 @@ namespace Cfix.Addin
 			Debug.Assert( this.intelInspector != null );
 
 			//
-			// N.B. Never allow mixing architectures.
+			// N.B. Use ExecutionOptions.None as short-circuiting etc.
+			// is not compatible with the ProcessPerTestCompiler.
 			//
-			SimpleRunCompiler compiler = new SimpleRunCompiler(
+
+			IRunCompiler compiler = RunCompilerFactory.CreateCompiler(
+				RunCompilerType.ProcessPerTest,
 				this.intelInspector.RunAgents,
 				GetDispositionPolicy( false ),
-				this.config.ExecutionOptions,
+				ExecutionOptions.None,
 				this.config.EnvironmentOptions,
-				false );
+				true );
 
 			lock ( this.runLock )
 			{

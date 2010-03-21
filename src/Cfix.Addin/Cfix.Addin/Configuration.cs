@@ -13,6 +13,7 @@ using Microsoft.Win32;
 using Cfix.Control;
 using Cfix.Control.Native;
 using EnvDTE80;
+using Cfix.Control.RunControl;
 
 namespace Cfix.Addin
 {
@@ -378,6 +379,23 @@ namespace Cfix.Addin
 			{
 				this.key.SetValue(
 					"EnvironmentOptions",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public RunCompilerType RunCompilerType
+		{
+			get
+			{
+				return ( RunCompilerType ) this.key.GetValue(
+					"RunCompilerType",
+					RunCompilerType.Simple );
+			}
+			set
+			{
+				this.key.SetValue(
+					"RunCompilerType",
 					value,
 					RegistryValueKind.DWord );
 			}

@@ -96,6 +96,7 @@
     <Compile Include="IResultItem.cs" />
     <Compile Include="ExecutionStatus.cs" />
     <Compile Include="IRun.cs" />
+    <Compile Include="RunControl\RunCompilerFactory.cs" />
     <Compile Include="RunControl\Task.cs" />
     <Compile Include="RundownLock.cs" />
     <Compile Include="AbstractActionEventSink.cs" />

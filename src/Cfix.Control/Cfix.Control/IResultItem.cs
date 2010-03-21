@@ -25,6 +25,13 @@ namespace Cfix.Control
 		// Enforce completion:
 		// Mark pending sub-results skipped and calculate status.
 		//
-		void ForceCompletion( bool propagateToParent );
+		void ForceCompletion( 
+			bool propagateToParent 
+			);
+
+		void ForceCompletion(
+			bool propagateToParent,
+			ExecutionStatus status
+			);
 	}
 }

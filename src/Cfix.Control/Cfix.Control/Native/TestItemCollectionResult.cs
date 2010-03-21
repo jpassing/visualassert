@@ -46,7 +46,6 @@ namespace Cfix.Control.Native
 
 		public void BeforeFixtureStart()
 		{
-			Debug.Assert( this.Status == ExecutionStatus.Pending );
 			this.Status = ExecutionStatus.Running;
 		}
 

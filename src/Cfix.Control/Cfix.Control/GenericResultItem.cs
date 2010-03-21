@@ -263,9 +263,17 @@ namespace Cfix.Control
 
 		public virtual void ForceCompletion( bool propagateToParent )
 		{
+			ForceCompletion( propagateToParent, ExecutionStatus.Skipped );
+		}
+
+		public virtual void ForceCompletion( 
+			bool propagateToParent,
+			ExecutionStatus status
+			)
+		{
 			if ( !Completed )
 			{
-				this.Status = ExecutionStatus.Skipped;
+				this.Status = status;
 
 				GenericResultCollection tp = this.Parent as GenericResultCollection;
 				if ( tp != null )

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Cfix.Control.Native;
 
 namespace Cfix.Control.RunControl
 {
@@ -159,8 +160,29 @@ namespace Cfix.Control.RunControl
 			//
 			foreach ( IAction action in this.actions )
 			{
-				IResultItem actionResult = action.Result;
-				actionResult.ForceCompletion( true );
+				if ( !ReferenceEquals( action.Result.Item, action.Item ) )
+				{
+					Debug.Assert( action.Result is IResultItemCollection );
+					Debug.Assert( action.Item is TestCase );
+
+					//
+					// Special case: single test case run or test case is
+					// run in separate process -- in either case, the 
+					// result belongs to the item's parent.
+					//
+					// To avoid interfering with concurrent tasks, make
+					// sure to only force-complete the one item that 
+					// was covered by the action.
+					//
+					IResultItemCollection parentResult = 
+						( IResultItemCollection ) action.Result;
+					IResultItem testCaseResult = parentResult.GetItem( action.Item.Ordinal );
+					testCaseResult.ForceCompletion( false, ExecutionStatus.Failed );
+				}
+				else
+				{
+					action.Result.ForceCompletion( true );
+				}
 			}
 		}
 

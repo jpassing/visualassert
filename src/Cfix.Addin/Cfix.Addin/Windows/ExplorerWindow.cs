@@ -24,6 +24,7 @@ using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
 using Cfix.Addin.IntelParallelStudio;
+using Cfix.Control.RunControl;
 
 namespace Cfix.Addin.Windows
 {
@@ -117,6 +118,14 @@ namespace Cfix.Addin.Windows
 				( config.DefaultDebugFailedAssertionDisposition == Disposition.Break );
 			this.breakOnUnhandledExceptionsWhenDebuggingMenuItem.Checked =
 				( config.DefaultDebugUnhandledExceptionDisposition == Disposition.Break );
+
+#if ! DEBUG
+			this.runEachTestInSeparateProcessMenuItem.Visible = false;
+#else
+			this.runEachTestInSeparateProcessMenuItem.Visible = true;
+			this.runEachTestInSeparateProcessMenuItem.Checked =
+				this.workspace.Configuration.RunCompilerType == RunCompilerType.ProcessPerTest;
+#endif
 
 			SetInfoPanel();
 		}
@@ -952,6 +961,16 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
 
-		
+		private void runEachTestInSeparateProcessMenuItem_Click( object sender, EventArgs e )
+		{
+			if ( runEachTestInSeparateProcessMenuItem.Checked )
+			{
+				this.workspace.Configuration.RunCompilerType = RunCompilerType.ProcessPerTest;
+			}
+			else
+			{
+				this.workspace.Configuration.RunCompilerType = RunCompilerType.Simple;
+			}
+		}
 	}
 }
