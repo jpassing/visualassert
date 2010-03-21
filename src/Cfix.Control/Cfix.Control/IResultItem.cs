@@ -21,6 +21,8 @@ namespace Cfix.Control
 		TimeSpan Duration { get; }
 		bool Completed { get; }
 
+		void AddFailure( Failure failure );
+
 		//
 		// Enforce completion:
 		// Mark pending sub-results skipped and calculate status.

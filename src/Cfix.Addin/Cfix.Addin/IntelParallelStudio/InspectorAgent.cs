@@ -51,6 +51,11 @@ namespace Cfix.Addin.IntelParallelStudio
 		{
 			Debug.Assert( timeout > 0 );
 
+			InspectorHostEnvironment inspectorHostEnv =
+				( InspectorHostEnvironment ) env;
+			ResultLocation resultLocation = ResultLocation.Create( 
+				inspectorHostEnv.Guid.ToString() );
+
 			//
 			// Inject inspector shim.
 			//
@@ -73,12 +78,10 @@ namespace Cfix.Addin.IntelParallelStudio
 				"\"{0}\" -collect {1} -return-app-exitcode "+
 				"{2} -- {3}",
 				shimPath,
-				this.inspector.InspectorLevel.ToString(),
-				this.inspector.ResultLocation.ResultDirectory != null
-					? String.Format( 
+				inspectorHostEnv.InspectorLevel,
+				String.Format( 
 						"-result-dir \"{0}\"",
-						this.inspector.ResultLocation.ResultDirectory )
-					: "",
+						resultLocation.ResultFile ),
 				hostPath );
 
 			Debug.Print( "Inspector command line: "+ shimCommandLine );

@@ -11,7 +11,7 @@ namespace Cfix.Control.RunControl
 	 * 
 	 * N.B. Do not Dispose() before the task has finished. 
 	 --*/
-	internal class Task : IProcessTask
+	public class Task : IProcessTask
 	{
 		private const uint CFIX_E_SETUP_ROUTINE_FAILED = ( uint ) 0x8004800b;
 		private const uint CFIX_E_TEARDOWN_ROUTINE_FAILED = ( uint ) 0x8004800c;

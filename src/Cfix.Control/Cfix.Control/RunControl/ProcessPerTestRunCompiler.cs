@@ -43,6 +43,13 @@ namespace Cfix.Control.RunControl
 				environmentOptions )
 		{ }
 
+		protected virtual Task CreateTask( IAction action )
+		{
+			return new Task(
+				this.agentSet.GetAgent( action.Architecture ),
+				this.Environment );
+		}
+
 		/*--------------------------------------------------------------
 		 * Overrides.
 		 */
@@ -57,9 +64,7 @@ namespace Cfix.Control.RunControl
 			int tasks = 0;
 			foreach ( IAction action in this.actions )
 			{
-				Task task = new Task(
-					this.agentSet.GetAgent( action.Architecture ),
-					this.Environment );
+				Task task = CreateTask( action );
 				this.run.AddTask( task );
 				task.AddAction( action );
 

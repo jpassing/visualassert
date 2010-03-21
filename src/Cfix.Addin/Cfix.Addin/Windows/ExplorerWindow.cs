@@ -742,7 +742,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.CheckDeadlocks );
 		}
 
@@ -751,7 +750,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.CheckDeadlocksAndRaces );
 		}
 
@@ -760,7 +758,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.LocateDeadlocksAndRaces );
 		}
 
@@ -769,7 +766,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.AllThreadingIssues );
 		}
 
@@ -778,7 +774,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.LocateDataSharingIssues );
 		}
 
@@ -787,7 +782,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.CheckMemoryLeaks );
 		}
 
@@ -796,7 +790,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.CheckMemoryAccessIssues );
 		}
 
@@ -805,7 +798,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.LocateMemoryAccessIssues );
 		}
 
@@ -814,7 +806,6 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				this.workspace.IntelInspector,
 				InspectorLevel.AllMemoryIssues );
 		}
 

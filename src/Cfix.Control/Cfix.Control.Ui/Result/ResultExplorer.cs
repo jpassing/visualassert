@@ -13,10 +13,10 @@ namespace Cfix.Control.Ui.Result
 {
 	public partial class ResultExplorer : UserControl
 	{
-		public const int InconclusiveneIconIndex = 9;
-		public const int UnhandledExceptionIconIndex = 10;
-		public const int FailedAssertionIconIndex = 10;
-		public const int StackFrameIconIndex = 11;
+		public const int InconclusiveneIconIndex = 10;
+		public const int UnhandledExceptionIconIndex = 11;
+		public const int FailedAssertionIconIndex = 11;
+		public const int StackFrameIconIndex = 12;
 
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
 		public event KeyEventHandler TreeKeyDown;

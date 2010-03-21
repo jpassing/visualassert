@@ -84,7 +84,10 @@
     <Compile Include="IntelParallelStudio\Inspector.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
+    <Compile Include="IntelParallelStudio\InspectorHostEnvironment.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
+    <Compile Include="IntelParallelStudio\InspectorRunCompiler.cs" />
+    <Compile Include="IntelParallelStudio\InspectorTask.cs" />
     <Compile Include="IntelParallelStudio\ResultLocation.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />

@@ -19,6 +19,8 @@ namespace Cfix.Control.RunControl
 		
 		private readonly object actionLock = new object();
 
+		private bool involvedPostprocessing;
+
 		public Run(
 			IDispositionPolicy policy
 			)
@@ -29,6 +31,12 @@ namespace Cfix.Control.RunControl
 		~Run()
 		{
 			Dispose( false );
+		}
+
+		public bool InvolvesPostprocessing
+		{
+			get { return this.involvedPostprocessing; }
+			set { this.involvedPostprocessing = value; }
 		}
 
 		protected virtual void Dispose( bool disposing )

@@ -20,15 +20,16 @@ using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
-	enum RunMode
+	public enum RunMode
 	{
 		Normal,
-		Debug,
-		IntelInspector
+		Debug
 	}
 
 	internal static class CommonUiOperations
 	{
+		private delegate void RunItemDelegate();
+
 		private static Project GetProject( ITestItem item )
 		{
 			ITestItem projectItem = item;
@@ -70,17 +71,28 @@ namespace Cfix.Addin.Windows
 		public static void RunItemInIntelInspector(
 			Workspace ws,
 			ITestItem item,
-			Inspector inspector,
 			InspectorLevel level
 			)
 		{
-			inspector.InspectorLevel = InspectorLevel.AllThreadingIssues;
-			inspector.ResultLocation = Inspector.CreateResultLocation( item.Name );
-
-			CommonUiOperations.RunItem(
+			RunItem(
 				ws,
-				item,
-				RunMode.IntelInspector );
+				delegate()
+				{
+					IRunnableTestItem runItem;
+					if ( item == null )
+					{
+						//
+						// Rerun last.
+						//
+						runItem = null;
+					}
+					else
+					{
+						runItem = item as IRunnableTestItem;
+					}
+
+					ws.RunItemInIntelInspector( runItem, level );
+				} );
 		}
 		
 		public static void RunItem( 
@@ -88,29 +100,34 @@ namespace Cfix.Addin.Windows
 			ITestItem item, 
 			RunMode mode )
 		{
+			RunItem(
+				ws,
+				delegate() 
+				{
+					IRunnableTestItem runItem;
+					if ( item == null )
+					{
+						//
+						// Rerun last.
+						//
+						runItem = null;
+					}
+					else
+					{
+						runItem = item as IRunnableTestItem;
+					}
+
+					ws.RunItem( runItem, mode == RunMode.Debug );
+				} );
+		}
+
+		private static void RunItem(
+			Workspace ws,
+			RunItemDelegate dlg )
+		{
 			try
 			{
-				IRunnableTestItem runItem;
-				if ( item == null )
-				{
-					//
-					// Rerun last.
-					//
-					runItem = null;
-				}
-				else
-				{
-					runItem = item as IRunnableTestItem;
-				}
-
-				if ( mode == RunMode.IntelInspector )
-				{
-					ws.RunItemInIntelInspector( runItem );
-				}
-				else
-				{
-					ws.RunItem( runItem, mode == RunMode.Debug );
-				}
+				dlg();
 			}
 			catch ( ConcurrentRunException )
 			{

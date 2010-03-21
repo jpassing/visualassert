@@ -14,6 +14,7 @@ namespace Cfix.Control
 		SucceededWithInconclusiveParts,
 		SucceededWithSkippedParts,
 		Failed,
-		Inconclusive
+		Inconclusive,
+		PostprocessingFailed
 	}
 }

@@ -13,9 +13,6 @@ namespace Cfix.Addin.IntelParallelStudio
 		private AgentSet runAgents;
 		private readonly string installLocation;
 
-		private InspectorLevel currentLevel;
-		private ResultLocation currentResultDirectory;
-
 		private Inspector( 
 			string installLocation
 			)
@@ -70,46 +67,6 @@ namespace Cfix.Addin.IntelParallelStudio
 		/*--------------------------------------------------------------
 		 * Public.
 		 */
-
-		public InspectorLevel InspectorLevel
-		{
-			get { return this.currentLevel; }
-			set
-			{
-				this.currentLevel = value;
-			}
-		}
-
-		public static ResultLocation CreateResultLocation( string name )
-		{
-			string resultsBaseDir = Path.Combine(
-				Path.GetTempPath(),
-				"va-insp" );
-
-			if ( !Directory.Exists( resultsBaseDir ) )
-			{
-				Directory.CreateDirectory( resultsBaseDir );
-			}
-
-			string tempDir = Path.Combine( resultsBaseDir, Guid.NewGuid().ToString() );
-
-			if ( !Directory.Exists( tempDir ) )
-			{
-				Directory.CreateDirectory( tempDir );
-			}
-
-			string resultDir = Path.Combine( tempDir, name );
-
-			return new ResultLocation(
-				resultDir,
-				Path.Combine( resultDir, name + ".insp" ) );
-		}
-
-		public ResultLocation ResultLocation
-		{
-			get { return this.currentResultDirectory; }
-			set { this.currentResultDirectory = value; }
-		}
 
 		public string ShimPath
 		{

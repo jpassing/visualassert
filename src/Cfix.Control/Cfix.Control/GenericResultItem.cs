@@ -47,21 +47,6 @@ namespace Cfix.Control
 			get { return this.events; }
 		}
 
-		protected void AddFailure( Failure failure )
-		{
-			lock ( this.failuresLock )
-			{
-				if ( this.failures == null )
-				{
-					this.failures = new LinkedList<Failure>();
-				}
-
-				this.failures.Add( failure );
-
-				this.events.OnFailureOccured( this );
-			}
-		}
-
 		protected bool IsInconclusive
 		{
 			get { return this.inconclusive; }
@@ -127,6 +112,21 @@ namespace Cfix.Control
 		 * Public.
 		 */
 
+		public void AddFailure( Failure failure )
+		{
+			lock ( this.failuresLock )
+			{
+				if ( this.failures == null )
+				{
+					this.failures = new LinkedList<Failure>();
+				}
+
+				this.failures.Add( failure );
+
+				this.events.OnFailureOccured( this );
+			}
+		}
+
 		public int FailureCount
 		{
 			get
@@ -155,6 +155,7 @@ namespace Cfix.Control
 					case ExecutionStatus.Inconclusive:
 					case ExecutionStatus.Skipped:
 					case ExecutionStatus.Stopped:
+					case ExecutionStatus.PostprocessingFailed:
 						return true;
 
 					case ExecutionStatus.Pending:

@@ -597,7 +597,10 @@ namespace Cfix.Addin
 			RunItem( item, debug, compiler );
 		}
 
-		public void RunItemInIntelInspector( IRunnableTestItem item )
+		public void RunItemInIntelInspector( 
+			IRunnableTestItem item,
+			InspectorLevel level
+			)
 		{
 			Debug.Assert( this.intelInspector != null );
 
@@ -606,31 +609,14 @@ namespace Cfix.Addin
 			// is not compatible with the ProcessPerTestCompiler.
 			//
 
-			IRunCompiler compiler = RunCompilerFactory.CreateCompiler(
-				RunCompilerType.ProcessPerTest,
+			IRunCompiler compiler = new InspectorRunCompiler(
 				this.intelInspector.RunAgents,
 				GetDispositionPolicy( false ),
 				ExecutionOptions.None,
 				this.config.EnvironmentOptions,
-				true );
+				level );
 
-			lock ( this.runLock )
-			{
-				ResultLocation resultLocation = 
-					this.intelInspector.ResultLocation;
-
-				IRun run = RunItem( item, false, compiler );
-
-				if ( run != null )
-				{
-					run.Finished += delegate( object sender, FinishedEventArgs e )
-					{
-						this.dte.ItemOperations.OpenFile(
-							resultLocation.ResultFile,
-							Constants.vsViewKindAny );
-					};
-				}
-			}
+			RunItem( item, false, compiler );
 		}
 
 		public void RunItemOnCommandLine( 

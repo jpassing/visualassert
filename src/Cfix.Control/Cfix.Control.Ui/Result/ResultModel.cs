@@ -167,7 +167,13 @@ namespace Cfix.Control.Ui.Result
 					}
 				}
 
-				if ( item.Status > ExecutionStatus.Running )
+				//
+				// N.B. If the run involved postprocessing, it is possible
+				// that the status changes back from successful to 
+				// some other state.
+				//
+				if ( ! this.Run.InvolvesPostprocessing && 
+					   item.Status > ExecutionStatus.Running )
 				{
 					IResultItemCollection itemColl =
 							item as IResultItemCollection;

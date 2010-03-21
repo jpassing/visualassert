@@ -95,5 +95,11 @@ namespace Cfix.Control
 		uint ItemsSucceeded { get; }
 		uint ItemsFailed { get; }
 		uint ItemsInconclusive { get; }
+
+		/*++
+			Late changes to item status possible due to postprocessing
+			taking place?
+		--*/
+		bool InvolvesPostprocessing { get; set; }
 	}
 }
