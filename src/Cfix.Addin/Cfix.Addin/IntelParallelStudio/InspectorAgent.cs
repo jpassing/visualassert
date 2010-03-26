@@ -81,7 +81,7 @@ namespace Cfix.Addin.IntelParallelStudio
 				inspectorHostEnv.InspectorLevel,
 				String.Format( 
 						"-result-dir \"{0}\"",
-						resultLocation.ResultFile ),
+						resultLocation.ResultDirectory ),
 				hostPath );
 
 			Debug.Print( "Inspector command line: "+ shimCommandLine );

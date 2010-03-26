@@ -109,6 +109,70 @@ namespace Cfix.Control.Ui.Result
 					ResultExplorer.FailedAssertionIconIndex,
 					parent );
 			}
+			else if ( f is GenericCodeInformation )
+			{
+				GenericCodeInformation a = ( GenericCodeInformation ) f;
+				return new FailureNode(
+					a.Message,
+					null,
+					null,
+					a.File,
+					a.Line,
+					a.Routine,
+					-1,
+					a.StackTrace,
+					iconsList,
+					ResultExplorer.GenericInformationIconIndex,
+					parent );
+			}
+			else if ( f is GenericCodeWarning )
+			{
+				GenericCodeWarning a = ( GenericCodeWarning ) f;
+				return new FailureNode(
+					a.Message,
+					null,
+					null,
+					a.File,
+					a.Line,
+					a.Routine,
+				 	-1,
+					a.StackTrace,
+					iconsList,
+					ResultExplorer.GenericWarningIconIndex,
+					parent );
+			}
+			else if ( f is GenericCodeError )
+			{
+				GenericCodeError a = ( GenericCodeError ) f;
+				return new FailureNode(
+					a.Message,
+					null,
+					null,
+					a.File,
+					a.Line,
+					a.Routine,
+					-1,
+					a.StackTrace,
+					iconsList,
+					ResultExplorer.GenericErrorIconIndex,
+					parent );
+			}
+			else if ( f is GenericError )
+			{
+				GenericError a = ( GenericError ) f;
+				return new FailureNode(
+					a.Message,
+					null,
+					null,
+					null,
+					0,
+					null,
+					-1,
+					a.StackTrace,
+					iconsList,
+					ResultExplorer.GenericErrorIconIndex,
+					parent );
+			}
 			else
 			{
 				throw new ArgumentException( "Unrecognized failure type" );

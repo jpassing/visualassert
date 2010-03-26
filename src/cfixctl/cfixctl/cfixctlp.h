@@ -304,6 +304,7 @@ ICfixProcessHostInternal : public ICfixHost
 {
 	STDMETHOD( Initialize )(
 		__in ICfixHost *RemoteHost,
+		__in ULONG ProcessId,
 		__in HANDLE ProcessOrJob,
 		__in BOOL UsesJob
 		) PURE;

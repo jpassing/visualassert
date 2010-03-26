@@ -113,6 +113,7 @@
     <Compile Include="ISession.cs" />
     <Compile Include="IStackTrace.cs" />
     <Compile Include="RunControl\SimpleRunCompiler.cs" />
+    <Compile Include="StackTraceFrame.cs" />
     <Compile Include="StandardDispositionPolicy.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>

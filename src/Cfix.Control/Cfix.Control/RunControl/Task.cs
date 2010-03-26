@@ -143,6 +143,11 @@ namespace Cfix.Control.RunControl
 			}
 		}
 
+		protected HostEnvironment Environment
+		{
+			get { return this.hostEnv; }
+		}
+
 		/*--------------------------------------------------------------
 		 * Async run.
 		 */

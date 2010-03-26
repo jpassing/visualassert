@@ -15,12 +15,20 @@ namespace Cfix.Addin.IntelParallelStudio
 		private readonly Guid guid;
 
 		public InspectorHostEnvironment( 
-			InspectorLevel level 
+			InspectorLevel level ,
+			Guid guid
 			)
 			: base()
 		{
-			this.guid = Guid.NewGuid();
+			this.guid = guid;
 			this.level = level;
+		}
+
+		public InspectorHostEnvironment(
+			InspectorLevel level
+			)
+			: this( level, Guid.NewGuid() )
+		{
 		}
 
 		public InspectorHostEnvironment(
@@ -33,9 +41,22 @@ namespace Cfix.Addin.IntelParallelStudio
 			this.level = level;
 		}
 
-		protected override HostEnvironment CreateNew()
+		protected override HostEnvironment CreateNew( HostEnvironment template )
 		{
-			return new InspectorHostEnvironment( this.level );
+			InspectorHostEnvironment inspTemplate =
+				template as InspectorHostEnvironment;
+
+			if ( inspTemplate != null )
+			{
+				//
+				// Keep guid.
+				//
+				return new InspectorHostEnvironment( this.level, inspTemplate.Guid );
+			}
+			else
+			{
+				return new InspectorHostEnvironment( this.level );
+			}
 		}
 
 		public InspectorLevel InspectorLevel

@@ -13,6 +13,11 @@ namespace Cfix.Addin.IntelParallelStudio
 	{
 		private readonly IResultItem rootResult;
 
+		protected InspectorHostEnvironment InspectorHostEnvironment
+		{
+			get { return ( InspectorHostEnvironment ) this.Environment; }
+		}
+
 		public InspectorTask( 
 			IAgent agent,
 			HostEnvironment hostEnv,
@@ -43,15 +48,92 @@ namespace Cfix.Addin.IntelParallelStudio
 			{
 				this.rootResult = parentResult.GetItem( action.Item.Ordinal );
 			}
-				
-			this.Finished += new EventHandler<FinishedEventArgs>( 
-				InspectorTask_Finished );
+
+			//
+			// N.B. It is crucial to wait until the process has exited -- 
+			// otherwise, the result file may not have been finalized yet.
+			//
+			this.Finished += delegate( object sender, FinishedEventArgs e )
+			{
+				Debug.Assert( this.ProcessId != 0 );
+
+				Process process = Process.GetProcessById( ( int ) this.ProcessId );
+				process.EnableRaisingEvents = true;
+				process.Exited += new EventHandler( process_Exited );
+			};
 		}
 
-		private void InspectorTask_Finished( object sender, FinishedEventArgs e )
+		private void process_Exited( object sender, EventArgs e )
 		{
-			IResultItem result = this.rootResult;
-			this.rootResult.AddFailure( new FailedAssertionFailure( "test", null, null, 0, null, null, 0 ) );
+			if ( this.Status != TaskStatus.Suceeded )
+			{
+				return;
+			}
+
+			//
+			// Load inspector result file.
+			//
+			ResultLocation resultLocation = ResultLocation.Create(
+				InspectorHostEnvironment.Guid.ToString() );
+
+			try
+			{
+				InspectorResultFile resultFile =
+					InspectorResultFile.Load( resultLocation );
+
+				foreach ( InspectorResult result in resultFile.Results )
+				{
+					if ( result.SourceFile == null && result.StackTrace == null )
+					{
+						// 
+						// Pointless to show this node -- ignore.
+						//
+						continue;
+					}
+					
+					CodeFailure failure;
+					switch ( result.Severity )
+					{
+						case InspectorResult.ResultSeverity.Information:
+							failure = new GenericCodeInformation(
+								result.Description ?? result.Type.ToString(),
+								result.SourceFile,
+								result.SourceLine,
+								result.Function,
+								result.StackTrace );
+							break;
+
+						case InspectorResult.ResultSeverity.Warning:
+							failure = new GenericCodeWarning(
+								result.Description ?? result.Type.ToString(),
+								result.SourceFile,
+								result.SourceLine,
+								result.Function,
+								result.StackTrace );
+							break;
+
+						case InspectorResult.ResultSeverity.Error:
+							failure = new GenericCodeError(
+								result.Description ?? result.Type.ToString(),
+								result.SourceFile,
+								result.SourceLine,
+								result.Function,
+								result.StackTrace );
+							break;
+
+						default:
+							continue;
+					}
+					
+					this.rootResult.AddFailure( failure );
+				}
+			}
+			catch ( Exception x )
+			{
+				this.rootResult.AddFailure(
+					new GenericError( x.Message, null ) );
+			}
+			
 			this.rootResult.Status = ExecutionStatus.PostprocessingFailed;
 		}
 	}

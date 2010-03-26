@@ -11,7 +11,7 @@ namespace Cfix.Control
 
 		private string currentDirectory;
 
-		protected virtual HostEnvironment CreateNew()
+		protected virtual HostEnvironment CreateNew( HostEnvironment template )
 		{
 			return new HostEnvironment();
 		}
@@ -59,7 +59,7 @@ namespace Cfix.Control
 			// a merge.
 			//
 
-			HostEnvironment merged = CreateNew();
+			HostEnvironment merged = CreateNew( this );
 			foreach ( KeyValuePair< string, string > p in this.env )
 			{
 				merged.Add( p.Key, p.Value );

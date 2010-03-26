@@ -31,14 +31,7 @@ namespace Cfix.Addin.IntelParallelStudio
 				Directory.CreateDirectory( resultsBaseDir );
 			}
 
-			string tempDir = Path.Combine( resultsBaseDir, Guid.NewGuid().ToString() );
-
-			if ( !Directory.Exists( tempDir ) )
-			{
-				Directory.CreateDirectory( tempDir );
-			}
-
-			string resultDir = Path.Combine( tempDir, name );
+			string resultDir = Path.Combine( resultsBaseDir, name );
 
 			return new ResultLocation(
 				resultDir,

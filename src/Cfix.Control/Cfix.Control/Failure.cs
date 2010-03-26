@@ -185,4 +185,58 @@ namespace Cfix.Control
 			get { return lastError; }
 		} 
 	}
+
+	public class GenericCodeInformation : CodeFailure
+	{
+		public GenericCodeInformation(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericCodeWarning : CodeFailure
+	{
+		public GenericCodeWarning(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericCodeError : CodeFailure
+	{
+		public GenericCodeError(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericError : Failure
+	{
+		public GenericError(
+			String name,
+			IStackTrace stackTrace
+			)
+			: base(name, stackTrace )
+		{
+		}
+	}
+	
 }

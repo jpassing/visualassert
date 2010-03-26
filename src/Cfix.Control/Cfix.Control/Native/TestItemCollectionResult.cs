@@ -158,7 +158,7 @@ namespace Cfix.Control.Native
 					file,
 					line,
 					routine,
-					StackTrace.Wrap( stackTrace ),
+					NativeStackTrace.Wrap( stackTrace ),
 					lastError );
 
 				AddFailure( ass );
@@ -199,7 +199,7 @@ namespace Cfix.Control.Native
 					file,
 					line,
 					routine,
-					StackTrace.Wrap( stackTrace ),
+					NativeStackTrace.Wrap( stackTrace ),
 					lastError );
 
 				AddFailure( fr );
@@ -226,7 +226,7 @@ namespace Cfix.Control.Native
 			{
 				UnhandledExceptionFailure u = new UnhandledExceptionFailure(
 					exceptionCode,
-					StackTrace.Wrap( stackTrace ) );
+					NativeStackTrace.Wrap( stackTrace ) );
 
 				AddFailure( u );
 
@@ -253,7 +253,7 @@ namespace Cfix.Control.Native
 			{
 				AddFailure( new Inconclusiveness(
 					reason,
-					StackTrace.Wrap( stackTrace ) ) );
+					NativeStackTrace.Wrap( stackTrace ) ) );
 				IsInconclusive = true;
 			}
 			catch ( Exception x )

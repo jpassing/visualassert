@@ -596,13 +596,13 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in BOOL PutInJob,
 	__out HANDLE *Process,
 	__out HANDLE *Job,
-	__out DWORD *Cookie
+	__out DWORD *ProcessId
 	)
 {
 	ASSERT( Agent );
 	ASSERT( Process );
 	ASSERT( Job );
-	ASSERT( Cookie );
+	ASSERT( ProcessId );
 
 	//
 	// Spawn the process.
@@ -633,11 +633,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__assume( ProcessInfo.hProcess );
 	__assume( ProcessInfo.hThread );
 
-	//
-	// N.B. The process ID is the cookie.
-	//
-	*Cookie  = ProcessInfo.dwProcessId;
-	*Process = ProcessInfo.hProcess;
+	*ProcessId  = ProcessInfo.dwProcessId;
+	*Process	= ProcessInfo.hProcess;
 
 	//
 	// Reconsider decision of assigning the process to a new job based on
@@ -815,7 +812,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	HANDLE Process = NULL;
 	HANDLE Job	   = NULL;
-	DWORD Cookie;
+	DWORD ProcessId;
 
 	ICfixHost *RemoteHost = NULL;
 	ICfixProcessHostInternal *ProcessHost = NULL;
@@ -841,12 +838,12 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			UseJob,
 			&Process,
 			&Job,
-			&Cookie );
+			&ProcessId );
 		if ( FAILED( Hr ) )
 		{
 			break;
 		}
-		
+
 		//
 		// Wait for it to register and obtain its Host object.
 		//
@@ -859,7 +856,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 		//
 		Hr = WaitForHostConnectionAndProcess(
 			ShimPath == NULL
-				? Cookie
+				? ProcessId
 				: 0,
 			Timeout,
 			Process,
@@ -902,6 +899,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 
 	Hr = ProcessHost->Initialize( 
 		RemoteHost, 
+		ProcessId,
 		Job != NULL ? Job : Process,
 		UseJob );
 	if ( FAILED( Hr ) )

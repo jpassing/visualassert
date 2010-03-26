@@ -86,10 +86,18 @@
     <Compile Include="IntelParallelStudio\Inspector.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
     <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
+    <Compile Include="IntelParallelStudio\InspectorException.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResult.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResultFile.cs" />
     <Compile Include="IntelParallelStudio\InspectorRunCompiler.cs" />
     <Compile Include="IntelParallelStudio\InspectorTask.cs" />
     <Compile Include="IntelParallelStudio\InspectorHostEnvironment.cs" />
+    <Compile Include="IntelParallelStudio\ProblemDescriptions.Designer.cs">
+      <DependentUpon>ProblemDescriptions.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="IntelParallelStudio\ResultLocation.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
@@ -189,6 +197,11 @@
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="IntelParallelStudio\ProblemDescriptions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemDescriptions.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

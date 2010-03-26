@@ -17,6 +17,9 @@ namespace Cfix.Control.Ui.Result
 		public const int UnhandledExceptionIconIndex = 11;
 		public const int FailedAssertionIconIndex = 11;
 		public const int StackFrameIconIndex = 12;
+		public const int GenericInformationIconIndex = 13;
+		public const int GenericWarningIconIndex = 14;
+		public const int GenericErrorIconIndex = 15;
 
 		public event EventHandler<ContextMenuEventArgs> ContextMenuRequested;
 		public event KeyEventHandler TreeKeyDown;

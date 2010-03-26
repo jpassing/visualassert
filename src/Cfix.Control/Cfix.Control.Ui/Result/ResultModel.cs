@@ -246,6 +246,7 @@ namespace Cfix.Control.Ui.Result
 				case ExecutionStatus.SucceededWithInconclusiveParts:
 				case ExecutionStatus.Failed:
 				case ExecutionStatus.Inconclusive:
+				case ExecutionStatus.PostprocessingFailed:
 					return ( filter & ResultNodeFilter.FailureNodes ) != 0;
 
 				default:

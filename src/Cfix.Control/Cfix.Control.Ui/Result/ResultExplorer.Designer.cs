@@ -135,7 +135,9 @@ namespace Cfix.Control.Ui.Result
 			this.icons.Images.SetKeyName( 10, "Inconclusive.bmp" );
 			this.icons.Images.SetKeyName( 11, "Failure.bmp" );
 			this.icons.Images.SetKeyName( 12, "StackFrame.bmp" );
-			this.icons.Images.SetKeyName( 13, "InspectorError.bmp" );
+			this.icons.Images.SetKeyName( 13, "Information.bmp" );
+			this.icons.Images.SetKeyName( 14, "Warning.bmp" );
+			this.icons.Images.SetKeyName( 15, "Error.bmp" );
 			// 
 			// ResultExplorer
 			// 
