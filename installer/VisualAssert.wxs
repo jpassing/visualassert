@@ -118,6 +118,12 @@
       <Directory Id="CommonAppDataFolder">
 
         <!-- BEGIN VS VERSION SPECIFIC -->
+        
+        <!-- 
+          Note the escaping of XPath filter expressions:
+            For [ use [\[] 
+            For ] use [\]]
+        -->
 
         <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
           <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
@@ -138,10 +144,16 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="8.0"/>
                   <XmlFile
-                    Id="XmlConfigOptionsAssemblyVs80"
+                    Id="XmlConfigOptionsWindbgAssemblyVs80"
                     Action="setValue"
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.80.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAdvancedAssemblyVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Advanced'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.80.dll"/>
                 </Component>
               </Directory>
@@ -168,10 +180,16 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="9.0"/>
                   <XmlFile
-                    Id="XmlConfigOptionsAssemblyVs90"
+                    Id="XmlConfigOptionsWinDbgAssemblyVs90"
                     Action="setValue"
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAdvancedAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Advanced'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.90.dll"/>
                 </Component>
               </Directory>

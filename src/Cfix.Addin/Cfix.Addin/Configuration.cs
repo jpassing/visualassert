@@ -485,7 +485,7 @@ namespace Cfix.Addin
 			{
 				object value = this.key.GetValue(
 					"HostRegistrationTimeout",
-					Agent.DefaultHostRegistrationTimeout );
+					( int ) Agent.DefaultHostRegistrationTimeout );
 				return ( uint ) ( int ) value;
 			}
 			set
@@ -508,7 +508,7 @@ namespace Cfix.Addin
 			{
 				object value = this.key.GetValue(
 					"InstrumentedHostRegistrationTimeout",
-					50 * Agent.DefaultHostRegistrationTimeout );
+					( int ) ( 50 * Agent.DefaultHostRegistrationTimeout ) );
 				return ( uint ) ( int ) value;
 			}
 			set

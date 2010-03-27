@@ -136,6 +136,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
+    <Compile Include="Windows\OptionsPageAdvanced.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageAdvanced.Designer.cs">
+      <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OptionsPageWindbg.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -212,6 +218,10 @@
     <EmbeddedResource Include="Windows\ExplorerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageAdvanced.resx">
+      <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\OptionsPageWindbg.resx">
       <SubType>Designer</SubType>

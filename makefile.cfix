@@ -213,6 +213,11 @@ signbinaries:
 pad:
 	sed s/__VERSION__/$(VERSION)/ installer\pad.xml | sed s/__DAY__/$(NOW_DAY)/ | sed s/__MONTH__/$(NOW_MONTH)/ | sed s/__YEAR__/$(NOW_YEAR)/ > rtm\pad.xml
 
+test-installer: build docs
+	cd installer
+	$(MAKE) clean VisualAssert.msi
+	cd ..
+
 installer: signbinaries docs
 	cd installer
 	$(MAKE) clean VisualAssert.msi
