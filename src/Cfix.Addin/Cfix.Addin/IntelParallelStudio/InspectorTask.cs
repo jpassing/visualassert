@@ -124,7 +124,8 @@ namespace Cfix.Addin.IntelParallelStudio
 						default:
 							continue;
 					}
-					
+
+					this.rootResult.Object = resultLocation;
 					this.rootResult.AddFailure( failure );
 				}
 			}

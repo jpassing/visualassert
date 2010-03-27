@@ -187,6 +187,19 @@ namespace Cfix.Addin.IntelParallelStudio
 										}
 										break;
 
+									case "thread":
+										if ( threadCount > 0 && stackFrames.Count == 0 )
+										{
+											//
+											// There already was a thread,
+											// but it has no stack trace -- try
+											// this one.
+											//
+											threadCount = 0;
+											threadId = 0;
+										}
+										break;
+
 									default:
 										break;
 								}

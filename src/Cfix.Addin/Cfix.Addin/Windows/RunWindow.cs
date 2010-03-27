@@ -20,6 +20,7 @@ using Cfix.Control.Ui.Result;
 using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
@@ -32,6 +33,7 @@ namespace Cfix.Addin.Windows
 		private static readonly Color SuccessColor = Color.PaleGreen;
 		private static readonly Color DefaultColor = SystemColors.Control;
 		private static readonly Color InitialColor = Color.LightYellow;
+		private static readonly Color PostprocessingFailedColor = Color.DarkOrange;
 
 		private readonly object runLock = new object();
 		
@@ -104,10 +106,16 @@ namespace Cfix.Addin.Windows
 							( int ) ( completed * 100 / total );
 					}
 
-					if ( item.Status == ExecutionStatus.Failed &&
-						this.progressBar.ProgressBarColor == SuccessColor )
+					if ( this.progressBar.ProgressBarColor == SuccessColor )
 					{
-						this.progressBar.ProgressBarColor = FailedColor;
+						if ( item.Status == ExecutionStatus.Failed )
+						{
+							this.progressBar.ProgressBarColor = FailedColor;
+						}
+						else if ( item.Status == ExecutionStatus.PostprocessingFailed )
+						{
+							this.progressBar.ProgressBarColor = PostprocessingFailedColor;
+						}
 					}
 
 					this.progressLabel.Text =
@@ -276,6 +284,10 @@ namespace Cfix.Addin.Windows
 
 					this.ctxMenuViewCodeButton.Visible = resultItem.ResultItem.Item is ITestCodeElement;
 
+					object associatedObj = resultItem.ResultItem.Object;
+					this.ctxMenuViewInspectorResult.Visible =
+						associatedObj != null && associatedObj is ResultLocation;
+
 					this.resultCtxMenu.Show( this.results, e.Location );
 					return;
 				}
@@ -342,6 +354,25 @@ namespace Cfix.Addin.Windows
 		private void ctxMenuViewCodeButton_Click( object sender, EventArgs e )
 		{
 			GoTo( this.contextMenuReferenceItem );
+		}
+		
+		private void ctxMenuViewInspectorResult_Click( object sender, EventArgs e )
+		{
+			ResultItemNode resultItemNode =
+				this.contextMenuReferenceItem as ResultItemNode;
+			if ( resultItemNode == null )
+			{
+				return;
+			}
+
+			ResultLocation resultLocation = 
+				resultItemNode.ResultItem.Object as ResultLocation;
+			if ( resultLocation != null )
+			{
+				this.dte.ItemOperations.OpenFile(
+					resultLocation.ResultFile,
+					Constants.vsViewKindAny );
+			}
 		}
 
 		private void GoTo( object node )

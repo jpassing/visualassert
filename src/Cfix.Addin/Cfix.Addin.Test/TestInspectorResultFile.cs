@@ -57,7 +57,7 @@ namespace Cfix.Addin.Test
 			InspectorResult result = en.Current;
 
 			Assert.AreEqual( 201, result.Type );
-			Assert.AreEqual( "pdr_thr_create", result.Description );
+			Assert.AreEqual( "Thread information", result.Description );
 			Assert.AreEqual( InspectorResult.ResultSeverity.Information, result.Severity );
 			Assert.AreEqual( 2428, result.ThreadId );
 			Assert.IsNotNull( result.StackTrace );
@@ -125,12 +125,29 @@ namespace Cfix.Addin.Test
 			en.MoveNext();
 			InspectorResult result = en.Current;
 
-			Assert.AreEqual( "pdr_thr_create", result.Description );
+			Assert.AreEqual( "Thread information", result.Description );
 			Assert.AreEqual( InspectorResult.ResultSeverity.Information, result.Severity );
 			Assert.AreEqual( 2428, result.ThreadId );
 			Assert.IsNotNull( result.StackTrace );
 
 			Assert.AreEqual( 2, result.StackTrace.FrameCount );
+		}
+
+		[Test]
+		public void UseSecondThreadIfFirstHasNoStackTrace()
+		{
+			InspectorResultFile file =
+				InspectorResultFile.Parse( this.testdataDir + @"\multiplethreads.pdr" );
+
+			IEnumerator<InspectorResult> en = file.Results.GetEnumerator();
+			en.MoveNext();
+			InspectorResult result = en.Current;
+
+			Assert.AreEqual( "Potential privacy infringement", result.Description );
+			Assert.AreEqual( InspectorResult.ResultSeverity.Warning, result.Severity );
+			Assert.AreEqual( 4580, result.ThreadId );
+			Assert.IsNotNull( result.StackTrace );
+			Assert.AreEqual( 1, result.StackTrace.FrameCount );
 		}
 
 		[Test]
@@ -233,7 +250,9 @@ namespace Cfix.Addin.Test
 			Assert.AreEqual(
 				"Data race",
 				InspectorResult.GetDescriptionFromCode( "pdr_race_xs_ay" ) );
-			Assert.IsNull( InspectorResult.GetDescriptionFromCode( "pdr_xs_ay" ) );
+			Assert.AreEqual( 
+				"pdr_xs_ay",
+				InspectorResult.GetDescriptionFromCode( "pdr_xs_ay" ) );
 		}
 	}
 }

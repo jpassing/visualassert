@@ -21,6 +21,8 @@ namespace Cfix.Control
 		private DateTime? startTime;
 		private DateTime? finishTime;
 
+		private object associatedObject;
+
 		protected GenericResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -285,6 +287,12 @@ namespace Cfix.Control
 						false );
 				}
 			}
+		}
+
+		public object Object 
+		{
+			get { return this.associatedObject; }
+			set { this.associatedObject = value; }
 		}
 	}
 }

@@ -113,7 +113,16 @@ namespace Cfix.Control.RunControl
 				//
 				if ( item.Completed )
 				{
-					Interlocked.Increment( ref this.itemsCompleted );
+					if ( item.Status == ExecutionStatus.PostprocessingFailed )
+					{
+						//
+						// Do not count these.
+						//
+					}
+					else
+					{
+						Interlocked.Increment( ref this.itemsCompleted );
+					}
 
 					switch ( item.Status )
 					{

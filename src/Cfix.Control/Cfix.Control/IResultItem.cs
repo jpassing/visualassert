@@ -35,5 +35,10 @@ namespace Cfix.Control
 			bool propagateToParent,
 			ExecutionStatus status
 			);
+
+		// 
+		// Allows arbitrary object data to be associated.
+		//
+		object Object { get; set; }
 	}
 }

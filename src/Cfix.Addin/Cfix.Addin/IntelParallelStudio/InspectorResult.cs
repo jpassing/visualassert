@@ -120,12 +120,14 @@ namespace Cfix.Addin.IntelParallelStudio
 			}
 		}
 
-		public static String GetDescriptionFromCode( string descrCode )
+		public static String GetDescriptionFromCode( string descriptionCode )
 		{
+			string originalDescriptionCode = descriptionCode;
+
 			while ( true )
 			{
 				string descr = ( string )
-					ProblemDescriptions.ResourceManager.GetObject( descrCode );
+					ProblemDescriptions.ResourceManager.GetObject( descriptionCode );
 				if ( descr != null )
 				{
 					return descr;
@@ -134,13 +136,14 @@ namespace Cfix.Addin.IntelParallelStudio
 				//
 				// No direct match -- strip last component.
 				//
-				if ( descrCode.Contains( "_" ) )
+				if ( descriptionCode.Contains( "_" ) )
 				{
-					descrCode = descrCode.Substring( 0, descrCode.LastIndexOf( '_' ) );
+					descriptionCode = descriptionCode.Substring( 
+						0, descriptionCode.LastIndexOf( '_' ) );
 				}
 				else
 				{
-					return null;
+					return originalDescriptionCode;
 				}
 			}
 		}

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Cfix.Addin.IntelParallelStudio
 {
-	public struct ResultLocation
+	public class ResultLocation
 	{
 		public string ResultDirectory;
 		public string ResultFile;
