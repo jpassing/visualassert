@@ -217,6 +217,11 @@ test-installer: build docs
 	cd installer
 	$(MAKE) clean VisualAssert.msi
 	cd ..
+	
+test-installer-vs100: build docs
+	cd installer
+	$(MAKE) ADDITIONALCANDLEOPTS=-dVs100 clean VisualAssert.msi
+	cd ..
 
 installer: signbinaries docs
 	cd installer
