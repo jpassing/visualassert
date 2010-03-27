@@ -383,6 +383,21 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool AutoRegisterVcDirectories
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "AutoRegisterVcDirectories", 1 ) ) > 0;
+			}
+			set
+			{
+				this.key.SetValue(
+					"AutoRegisterVcDirectories",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public string MostRecentlyUsedDirectory
 		{
 			get
