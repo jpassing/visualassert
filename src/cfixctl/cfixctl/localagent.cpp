@@ -810,9 +810,9 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	// Spawn the process.
 	//
-	HANDLE Process = NULL;
-	HANDLE Job	   = NULL;
-	DWORD ProcessId;
+	HANDLE Process	= NULL;
+	HANDLE Job		= NULL;
+	DWORD ProcessId = 0;
 
 	ICfixHost *RemoteHost = NULL;
 	ICfixProcessHostInternal *ProcessHost = NULL;

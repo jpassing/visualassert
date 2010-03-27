@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Intel C++ Project"
+	Version="11.1"
+	Name="IntelExe"
+	ProjectGUID="{0CA5D73C-64D9-41C1-85F8-14C73190C184}"
+	VCNestedProjectGUID="{D7CE5CB3-B9A5-4A60-B7E8-4F4C0287EBFD}"
+	VCNestedProjectFileName="IntelExe.vcproj">
+	<Configurations/>
+	<Files/>
+</VisualStudioProject>

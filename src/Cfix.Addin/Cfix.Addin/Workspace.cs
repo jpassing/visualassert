@@ -265,7 +265,10 @@ namespace Cfix.Addin
 			//
 			// If not happened yet, register VC directories.
 			//
-			RegisterVcDirectories( dte );
+			if ( this.config.AutoRegisterVcDirectories )
+			{
+				RegisterVcDirectories( dte );
+			}
 
 			//
 			// N.B. Search target is always i386 merely because this works on

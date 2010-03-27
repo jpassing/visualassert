@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Intel C++ Project"
+	Version="11.1"
+	Name="IntelDll"
+	ProjectGUID="{012268AE-3F79-4E1F-A90B-42243B43A8C0}"
+	VCNestedProjectGUID="{485D4627-97B4-4A2B-ACF8-6AB5F291D8ED}"
+	VCNestedProjectFileName="IntelDll.vcproj">
+	<Configurations/>
+	<Files/>
+</VisualStudioProject>
