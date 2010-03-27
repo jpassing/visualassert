@@ -47,6 +47,8 @@ namespace Cfix.Addin.Windows
 
 			this.autoAdjustCwd.Checked =
 				( ( envOpts & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 );
+			this.autoRegisterVcDirs.Checked =
+				this.configuration.AutoRegisterVcDirectories;
 
 			if ( ( envOpts & EnvironmentOptions.HugeStack ) != 0 )
 			{
@@ -97,6 +99,9 @@ namespace Cfix.Addin.Windows
 			}
 
 			this.configuration.EnvironmentOptions = envOpts;
+
+			this.configuration.AutoRegisterVcDirectories = 
+				this.autoRegisterVcDirs.Checked;
 		}
 	}
 }
