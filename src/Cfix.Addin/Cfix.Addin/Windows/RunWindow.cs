@@ -62,17 +62,6 @@ namespace Cfix.Addin.Windows
 			return text;
 		}
 
-		private void SetActiveItem( IResultItem item )
-		{
-			//
-			// Update property window.
-			//
-
-			object[] propObjects = 
-				item == null ? new object[ 0 ] : new object[] { item };
-			this.window.SetSelectionContainer( ref propObjects );
-		}
-
 		/*----------------------------------------------------------------------
 		 * Private - Run events.
 		 * 
@@ -252,7 +241,9 @@ namespace Cfix.Addin.Windows
 
 		private void results_SelectionChanged( object sender, EventArgs e )
 		{
-			SetActiveItem( this.results.SelectedItem );
+			CommonUiOperations.SetActiveSelectionItem( 
+                this.window, 
+                this.results.SelectedItem );
 		}
 
 		/*----------------------------------------------------------------------

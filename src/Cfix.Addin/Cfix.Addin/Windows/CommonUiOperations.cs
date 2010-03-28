@@ -259,7 +259,7 @@ namespace Cfix.Addin.Windows
 		public static void RunSelectedUiHierarchyItem(
 			DTE2 dte,
 			Workspace ws,
-			bool debug
+			RunMode mode
 			)
 		{
 			try
@@ -303,7 +303,7 @@ namespace Cfix.Addin.Windows
 
 				if ( testItem != null )
 				{
-					RunItem( ws, testItem, RunMode.Debug );
+					RunItem( ws, testItem, mode );
 				}
 			}
 			catch ( Exception x )
@@ -385,8 +385,13 @@ namespace Cfix.Addin.Windows
 		private static Project GetProjectFromCurrentHierarchyItem( DTE2 dte )
 		{
 			UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
-			UIHierarchyItem selected = ( UIHierarchyItem )
-				( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+            Array slnHierArray = ( Array ) slnHier.SelectedItems;
+            if ( slnHierArray.GetLength( 0 ) == 0 )
+            {
+                return null;
+            }
+
+			UIHierarchyItem selected = ( UIHierarchyItem ) slnHierArray.GetValue( 0 );
 
 			Project currentProject = selected.Object as Project;
 			if ( currentProject != null )
@@ -453,8 +458,13 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
-				UIHierarchyItem selected = ( UIHierarchyItem )
-					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+                Array slnHierArray = ( Array ) slnHier.SelectedItems;
+                if ( slnHierArray.GetLength( 0 ) == 0 )
+                {
+                    return false;
+                }
+
+                UIHierarchyItem selected = ( UIHierarchyItem ) slnHierArray.GetValue( 0 );
 
 				return selected.Object is Solution;
 			}
@@ -468,5 +478,24 @@ namespace Cfix.Addin.Windows
 		{
 			dte.ExecuteCommand( "View.PropertiesWindow", "" );
 		}
+
+        public static void SetActiveSelectionItem( Window window, object item )
+        {
+            //
+            // Update property window.
+            //
+
+            try
+            {
+                object[] propObjects = new object[] { item };
+                window.SetSelectionContainer( ref propObjects );
+            }
+            catch ( ArgumentException )
+            {
+                //
+                // VS2010 likes to be flaky here.
+                //
+            }
+        }
 	}
 }

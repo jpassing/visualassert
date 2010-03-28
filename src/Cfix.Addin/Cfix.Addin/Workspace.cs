@@ -223,12 +223,12 @@ namespace Cfix.Addin
 					changePerformed = true;
 				}
 
-#if !VS100
+//#if !VS100
 				//
 				// Write to disk.
 				//
-				 platform.CommitChanges();
-#endif
+				platform.CommitChanges();
+//#endif
 			}
 
 			vcDirectoriesRegistered = true;

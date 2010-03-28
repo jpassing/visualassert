@@ -282,7 +282,9 @@ namespace Cfix.Addin.Windows
 
 		private void ctxMenuViewProperties_Click( object sender, EventArgs e )
 		{
-			SetActiveItem( this.contextMenuReferenceNode.Item );
+            CommonUiOperations.SetActiveSelectionItem( 
+                this.window, 
+                this.contextMenuReferenceNode.Item);
 			CommonUiOperations.ActivatePropertyWindow( this.dte );
 		}
 
@@ -303,16 +305,6 @@ namespace Cfix.Addin.Windows
 			this.abortRefreshButton.Enabled = false;
 		}
 
-		private void SetActiveItem( ITestItem item )
-		{
-			//
-			// Update property window.
-			//
-
-			object[] propObjects = new object[] { item };
-			this.window.SetSelectionContainer( ref propObjects );
-		}
-
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
 			bool runnable = e.Item is IRunnableTestItem;
@@ -322,7 +314,7 @@ namespace Cfix.Addin.Windows
 
 			UpdateRefreshButtonStatus();
 
-			SetActiveItem( e.Item );
+			CommonUiOperations.SetActiveSelectionItem( this.window, e.Item );
 		}
 
 		private void explorer_RefreshFinished( object sender, EventArgs e )
