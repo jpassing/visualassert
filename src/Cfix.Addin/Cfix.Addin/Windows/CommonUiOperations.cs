@@ -490,7 +490,7 @@ namespace Cfix.Addin.Windows
                 object[] propObjects = new object[] { item };
                 window.SetSelectionContainer( ref propObjects );
             }
-            catch ( ArgumentException )
+            catch ( Exception )
             {
                 //
                 // VS2010 likes to be flaky here.
