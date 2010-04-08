@@ -1,5 +1,6 @@
 using System;
 using Cfixctl;
+using System.Collections.Generic;
 
 namespace Cfix.Control
 {
@@ -236,6 +237,28 @@ namespace Cfix.Control
 			)
 			: base(name, stackTrace )
 		{
+		}
+	}
+
+	public class ExpandoFailure : Failure
+	{
+		public delegate IEnumerable<Failure> ExpandFailures();
+
+		private readonly ExpandFailures expandDelegate;
+
+		public ExpandoFailure(
+			String name,
+			IStackTrace stackTrace,
+			ExpandFailures expandDelegate
+			)
+			: base( name, stackTrace )
+		{
+			this.expandDelegate = expandDelegate;
+		}
+
+		public IEnumerable<Failure> GetFailures()
+		{
+			return this.expandDelegate();
 		}
 	}
 	

@@ -18,7 +18,8 @@ namespace Cfix.Control.Ui.Result
 		private readonly ImageList iconsList;
 		private readonly int iconIndex;
 
-		private readonly ResultItemNode parent;
+		private readonly IResultNode parentNode;
+		private readonly ResultItemNode parentItemNode;
 
 		private static string Resolve( int errorCode )
 		{
@@ -36,9 +37,10 @@ namespace Cfix.Control.Ui.Result
 			IStackTrace stackTrace,
 			ImageList iconsList,
 			int iconIndex,
-			ResultItemNode parent
+			IResultNode parentNode,			// "real" parent.
+			ResultItemNode parentItemNode	// next ResultItemNode, may be grandparent.
 			)
-			: base( file, line, parent )
+			: base( file, line, parentItemNode )
 		{
 			this.name = name;
 			this.message = message;
@@ -48,15 +50,28 @@ namespace Cfix.Control.Ui.Result
 			this.lastError = lastError;
 			this.iconsList = iconsList;
 			this.iconIndex = iconIndex;
-			this.parent = parent;
+
+			this.parentNode = parentNode;
+			this.parentItemNode = parentItemNode;
+		}
+
+		public static FailureNode Create(
+			Failure f,
+			ImageList iconsList,
+			ResultItemNode parent
+			)
+		{
+			return Create( f, iconsList, parent, parent );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.ArgumentException.#ctor(System.String)" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)" ), System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1800:DoNotCastUnnecessarily" )]
-		public static FailureNode Create( 
+		private static FailureNode Create( 
 			Failure f, 
-			ImageList iconsList, 
-			ResultItemNode parent )
+			ImageList iconsList,
+			IResultNode parentNode,
+			ResultItemNode parentItemNode
+			)
 		{
 			if ( f is Inconclusiveness )
 			{
@@ -72,7 +87,8 @@ namespace Cfix.Control.Ui.Result
 					i.StackTrace,
 					iconsList,
 					ResultExplorer.InconclusiveneIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is UnhandledExceptionFailure )
 			{
@@ -91,7 +107,8 @@ namespace Cfix.Control.Ui.Result
 					u.StackTrace,
 					iconsList,
 					ResultExplorer.UnhandledExceptionIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is FailedAssertionFailure )
 			{
@@ -107,7 +124,8 @@ namespace Cfix.Control.Ui.Result
 					a.StackTrace,
 					iconsList,
 					ResultExplorer.FailedAssertionIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is GenericCodeInformation )
 			{
@@ -123,7 +141,8 @@ namespace Cfix.Control.Ui.Result
 					a.StackTrace,
 					iconsList,
 					ResultExplorer.GenericInformationIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is GenericCodeWarning )
 			{
@@ -139,7 +158,8 @@ namespace Cfix.Control.Ui.Result
 					a.StackTrace,
 					iconsList,
 					ResultExplorer.GenericWarningIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is GenericCodeError )
 			{
@@ -155,7 +175,8 @@ namespace Cfix.Control.Ui.Result
 					a.StackTrace,
 					iconsList,
 					ResultExplorer.GenericErrorIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
 			}
 			else if ( f is GenericError )
 			{
@@ -171,7 +192,16 @@ namespace Cfix.Control.Ui.Result
 					a.StackTrace,
 					iconsList,
 					ResultExplorer.GenericErrorIconIndex,
-					parent );
+					parentNode,
+					parentItemNode );
+			}
+			else if ( f is ExpandoFailure )
+			{
+				return new ExpandoFailureNode(
+					( ExpandoFailure ) f,
+					iconsList,
+					ResultExplorer.GenericErrorIconIndex,
+					parentItemNode );
 			}
 			else
 			{
@@ -190,10 +220,10 @@ namespace Cfix.Control.Ui.Result
 
 		public IResultNode Parent
 		{
-			get { return this.parent; }
+			get { return this.parentNode; }
 		}
 
-		public bool IsLeaf
+		public virtual bool IsLeaf
 		{
 			get
 			{
@@ -201,12 +231,12 @@ namespace Cfix.Control.Ui.Result
 			}
 		}
 
-		public IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
+		public virtual IEnumerable<IResultNode> GetChildren( ResultNodeFilter filter )
 		{
 			return StackFrameNode.EnumerateFrames( 
 				this.stackTrace,
 				this.iconsList,
-				this.parent );
+				this.parentItemNode );
 		}
 
 		public String Status
@@ -266,6 +296,62 @@ namespace Cfix.Control.Ui.Result
 		public Color? TextColor
 		{
 			get { return null; }
+		}
+
+		/*----------------------------------------------------------------------
+		 * Expando Failure.
+		 */
+
+		private class ExpandoFailureNode : FailureNode
+		{
+			private readonly ExpandoFailure failure;
+			private readonly ResultItemNode parentItemNode;
+
+			public ExpandoFailureNode(
+				ExpandoFailure failure,
+				ImageList iconsList,
+				int iconIndex,
+				ResultItemNode parent 
+				)
+				: base(
+					failure.Message,
+					null,
+					null,
+					null,
+					0,
+					null,
+					-1,
+					null,
+					iconsList,
+					iconIndex,
+					parent,
+					parent )
+			{
+				this.failure = failure;
+				this.parentItemNode = parent;
+			}
+
+			public override IEnumerable<IResultNode> GetChildren( 
+				ResultNodeFilter filter 
+				)
+			{
+				foreach ( Failure subFailure in this.failure.GetFailures() )
+				{
+					yield return Create( 
+						subFailure, 
+						this.iconsList, 
+						this,
+						this.parentItemNode );
+				}
+			}
+
+			public override bool IsLeaf
+			{
+				get
+				{
+					return false;
+				}
+			}
 		}
 	}
 }

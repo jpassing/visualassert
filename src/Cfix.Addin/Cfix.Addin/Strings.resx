@@ -180,6 +180,9 @@
   <data name="InvalidWindbgInstallFolder" xml:space="preserve">
     <value>The path '{0}' does not refer to a valid WinDBG installation folder</value>
   </data>
+  <data name="IssuesFoundByInspector" xml:space="preserve">
+    <value>Issues found by Intel Inspector</value>
+  </data>
   <data name="MainMenuCaption" xml:space="preserve">
     <value>Vis&amp;ual Assert</value>
   </data>

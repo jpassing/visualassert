@@ -250,6 +250,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Issues found by Intel Inspector.
+        /// </summary>
+        internal static string IssuesFoundByInspector {
+            get {
+                return ResourceManager.GetString("IssuesFoundByInspector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vis&amp;ual Assert.
         /// </summary>
         internal static string MainMenuCaption {
