@@ -170,6 +170,16 @@ namespace Cfix.Addin.Test
 					//
 					return vcConfig;
 				}
+				else if ( vcConfig.Platform == null &&
+					( activeConfig.ConfigurationName + "|" + activeConfig.PlatformName )
+						== vcConfig.Name )
+				{
+					//
+					// Edge case -- for IC projects, vcConfig.Platform can be null
+					// if OpenMP is enabled.
+					//
+					return vcConfig;
+				}
 				else if ( activeConfig.ConfigurationName == vcConfig.ConfigurationName &&
 					 activeConfig.PlatformName == ( ( VCPlatform ) vcConfig.Platform ).Name )
 				{
