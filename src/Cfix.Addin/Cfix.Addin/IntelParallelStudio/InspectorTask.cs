@@ -50,7 +50,9 @@ namespace Cfix.Addin.IntelParallelStudio
 				resultFile = resultFile.Filter(
 					( InspectorResultFile.FilterDelegate ) delegate( InspectorResult result )
 					{
-						return !filter.IsCfixResult( result );
+						return
+							!filter.IsCfixResult( result ) &&
+							!filter.EqualsLastResult( result );
 					} );
 			}
 

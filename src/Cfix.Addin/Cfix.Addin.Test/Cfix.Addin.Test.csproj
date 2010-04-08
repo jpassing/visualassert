@@ -59,6 +59,7 @@
     <Compile Include="TestConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestInspectorResultFile.cs" />
+    <Compile Include="TestResultFilter.cs" />
     <Compile Include="TestUpdateCheck.cs" />
   </ItemGroup>
   <ItemGroup>

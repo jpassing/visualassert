@@ -11,6 +11,8 @@ namespace Cfix.Addin.IntelParallelStudio
 		private readonly Dictionary<string, object> binaries
 			= new Dictionary<string, object>();
 
+		private InspectorResult lastResult;
+
 		public InspectorResultFilter()
 		{
 			//
@@ -50,6 +52,23 @@ namespace Cfix.Addin.IntelParallelStudio
 			}
 			
 			return false;
+		}
+
+		public bool EqualsLastResult( InspectorResult result )
+		{
+			bool equal;
+			if ( this.lastResult == null )
+			{
+				equal = false;
+			}
+			else
+			{
+				equal = this.lastResult == result;
+			}
+
+			this.lastResult = result;
+
+			return equal;
 		}
 	}
 }
