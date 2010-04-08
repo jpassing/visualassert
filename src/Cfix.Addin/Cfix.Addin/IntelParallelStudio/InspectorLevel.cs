@@ -30,6 +30,52 @@ namespace Cfix.Addin.IntelParallelStudio
 		{
 			return this.name;
 		}
+
+		public static InspectorLevel FromString( string name )
+		{
+			switch ( name )
+			{
+				case "ti1":
+				case "ti2":
+				case "ti3":
+				case "ti4":
+				case "ad1":
+				case "mi1":
+				case "mi2":
+				case "mi3":
+				case "mi4":
+					return new InspectorLevel( name );
+
+				default:
+					throw new ArgumentException( "Invalid level" );
+			}
+		}
+
+		/*--------------------------------------------------------------
+		 * Equality.
+		 */
+
+		public override bool Equals( Object obj )
+		{
+			return obj is InspectorLevel && this == ( InspectorLevel ) obj;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.name.GetHashCode();
+		}
+
+		public static bool operator ==( InspectorLevel x, InspectorLevel y )
+		{
+			if ( ReferenceEquals( x, null ) && ReferenceEquals( y, null ) ) return true;
+			if ( ReferenceEquals( x, null ) != ReferenceEquals( y, null ) ) return false;
+			return x.name == y.name;
+		}
+
+		public static bool operator !=( InspectorLevel x, InspectorLevel y )
+		{
+			return !( x == y );
+		}
 	}
 }
 #endif

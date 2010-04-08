@@ -14,6 +14,7 @@ using Cfix.Control;
 using Cfix.Control.Native;
 using EnvDTE80;
 using Cfix.Control.RunControl;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin
 {
@@ -416,6 +417,7 @@ namespace Cfix.Addin
 			}
 		}
 
+#if INTELINSPECTOR
 		public bool ShowInspectorCfixResults
 		{
 			get
@@ -431,6 +433,36 @@ namespace Cfix.Addin
 			}
 		}
 
+		public InspectorLevel MostRecentlyUsedInspectorMemoryAnalysisLevel
+		{
+			get
+			{
+				return InspectorLevel.FromString(
+					( string ) this.key.GetValue( "MruInspectorMemoryAnalysisLevel",
+					InspectorLevel.CheckMemoryAccessIssues.ToString() ) ); 
+			}
+			set
+			{
+				this.key.SetValue( 
+					"MruInspectorMemoryAnalysisLevel", value, RegistryValueKind.String );
+			}
+		}
+
+		public InspectorLevel MostRecentlyUsedInspectorThreadingAnalysisLevel
+		{
+			get
+			{
+				return InspectorLevel.FromString(
+					( string ) this.key.GetValue( "MruInspectorThreadingAnalysisLevel",
+					InspectorLevel.CheckDeadlocksAndRaces.ToString() ) );
+			}
+			set
+			{
+				this.key.SetValue(
+					"MruInspectorThreadingAnalysisLevel", value, RegistryValueKind.String );
+			}
+		}
+#endif
 
 		public string MostRecentlyUsedDirectory
 		{

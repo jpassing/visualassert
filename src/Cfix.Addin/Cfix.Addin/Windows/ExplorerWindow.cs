@@ -127,8 +127,36 @@ namespace Cfix.Addin.Windows
 				this.workspace.Configuration.RunCompilerType == RunCompilerType.ProcessPerTest;
 #endif
 
+#if INTELINSPECTOR
+			SetInspectorMiSelection( config.MostRecentlyUsedInspectorMemoryAnalysisLevel );
+			SetInspectorTiSelection( config.MostRecentlyUsedInspectorThreadingAnalysisLevel );
+			
+#else
+			this.intelInspectorSeparator.Visible = false;
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Visible = false;
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Visible = false;
+#endif
+
 			SetInfoPanel();
 		}
+
+#if INTELINSPECTOR
+		private void SetInspectorMiSelection( InspectorLevel level )
+		{
+			this.intelInspectorMi1MenuItem.Checked = level == InspectorLevel.CheckMemoryLeaks;
+			this.intelInspectorMi2MenuItem.Checked = level == InspectorLevel.CheckMemoryAccessIssues;
+			this.intelInspectorMi3MenuItem.Checked = level == InspectorLevel.LocateMemoryAccessIssues;
+			this.intelInspectorMi4MenuItem.Checked = level == InspectorLevel.AllMemoryIssues;
+		}
+
+		private void SetInspectorTiSelection( InspectorLevel level )
+		{
+			this.intelInspectorTi1MenuItem.Checked = level == InspectorLevel.CheckDeadlocks;
+			this.intelInspectorTi2MenuItem.Checked = level == InspectorLevel.CheckDeadlocksAndRaces;
+			this.intelInspectorTi3MenuItem.Checked = level == InspectorLevel.LocateDeadlocksAndRaces;
+			this.intelInspectorTi4MenuItem.Checked = level == InspectorLevel.AllThreadingIssues;
+		}
+#endif		
 
 		private void UpdateExecutionOptions()
 		{
@@ -230,9 +258,11 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
 
 #if INTELINSPECTOR
-			this.ctxMenuRunInInspector.Enabled = this.workspace.IntelInspector != null;
+			this.ctxMenuRunWithInspectorMi.Enabled = this.workspace.IntelInspector != null;
+			this.ctxMenuRunWithInspectorTi.Enabled = this.workspace.IntelInspector != null;
 #else
-			this.ctxMenuRunInInspector.Visible = false;
+			this.ctxMenuRunWithInspectorMi.Visible = false;
+			this.ctxMenuRunWithInspectorTi.Visible = false;
 #endif
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
@@ -732,98 +762,6 @@ namespace Cfix.Addin.Windows
 				RunMode.Debug );
 		}
 
-
-		private void ctxMenuRunInInspectorCheckDeadlocks_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.CheckDeadlocks );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorCheckDeadlocksOrRaces_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.CheckDeadlocksAndRaces );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorLocateDeadlocks_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.LocateDeadlocksAndRaces );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorAllThreading_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.AllThreadingIssues );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorFindDataSharingIssues_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.LocateDataSharingIssues );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorCheckMemoryLeaks_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.CheckMemoryLeaks );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorCheckMemoryAccessIssues_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.CheckMemoryAccessIssues );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorLocateMemoryAccessIssues_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.LocateMemoryAccessIssues );
-#endif
-		}
-
-		private void ctxMenuRunInInspectorAllMemIssues_Click( object sender, EventArgs e )
-		{
-#if INTELINSPECTOR
-			CommonUiOperations.RunItemInIntelInspector(
-				this.workspace,
-				this.contextMenuReferenceNode.Item,
-				InspectorLevel.AllMemoryIssues );
-#endif
-		}
-
-
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
 		{
 			if ( this.explorer.SelectedItem == null )
@@ -976,6 +914,86 @@ namespace Cfix.Addin.Windows
 			{
 				this.workspace.Configuration.RunCompilerType = RunCompilerType.Simple;
 			}
+		}
+
+		private void intelInspectorMiXxxMenuItem_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			InspectorLevel level;
+			if ( sender == this.intelInspectorMi1MenuItem )
+			{
+				level = InspectorLevel.CheckMemoryLeaks;
+			}
+			else if ( sender == this.intelInspectorMi2MenuItem )
+			{
+				level = InspectorLevel.CheckMemoryAccessIssues;
+			}
+			else if ( sender == this.intelInspectorMi3MenuItem )
+			{
+				level = InspectorLevel.LocateMemoryAccessIssues;
+			}
+			else if ( sender == this.intelInspectorMi4MenuItem )
+			{
+				level = InspectorLevel.AllMemoryIssues;
+			}
+			else
+			{
+				return;
+			}
+
+			SetInspectorMiSelection( level );
+			this.workspace.Configuration.MostRecentlyUsedInspectorMemoryAnalysisLevel = level;
+#endif
+		}
+
+		private void intelInspectorTiXxxMenuItem_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			InspectorLevel level;
+			if ( sender == this.intelInspectorTi1MenuItem )
+			{
+				level = InspectorLevel.CheckDeadlocks;
+			}
+			else if ( sender == this.intelInspectorTi2MenuItem )
+			{
+				level = InspectorLevel.CheckDeadlocksAndRaces;
+			}
+			else if ( sender == this.intelInspectorTi3MenuItem )
+			{
+				level = InspectorLevel.LocateDeadlocksAndRaces;
+			}
+			else if ( sender == this.intelInspectorTi4MenuItem )
+			{
+				level = InspectorLevel.AllThreadingIssues;
+			}
+			else
+			{
+				return;
+			}
+
+			SetInspectorTiSelection( level );
+			this.workspace.Configuration.MostRecentlyUsedInspectorThreadingAnalysisLevel = level;
+#endif
+		}
+
+		private void ctxMenuRunWithInspectorMi_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.Configuration.MostRecentlyUsedInspectorMemoryAnalysisLevel );
+#endif
+		}
+
+		private void ctxMenuRunWithInspectorTi_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.Configuration.MostRecentlyUsedInspectorThreadingAnalysisLevel );
+#endif
 		}
 	}
 }

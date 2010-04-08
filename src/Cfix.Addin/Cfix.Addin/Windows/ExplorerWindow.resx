@@ -230,6 +230,69 @@
   <data name="breakOnUnhandledExceptionsWhenDebuggingMenuItem.Text" xml:space="preserve">
     <value>Break on unhandled exceptions when debugging</value>
   </data>
+  <data name="intelInspectorSeparator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 6</value>
+  </data>
+  <data name="intelInspectorMi1MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 22</value>
+  </data>
+  <data name="intelInspectorMi1MenuItem.Text" xml:space="preserve">
+    <value>Does my target leak memory? (1x-20x overhead)</value>
+  </data>
+  <data name="intelInspectorMi2MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 22</value>
+  </data>
+  <data name="intelInspectorMi2MenuItem.Text" xml:space="preserve">
+    <value>Does my  target have memory access problems? (10x-40x overhead)</value>
+  </data>
+  <data name="intelInspectorMi3MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 22</value>
+  </data>
+  <data name="intelInspectorMi3MenuItem.Text" xml:space="preserve">
+    <value>Where are the memory Access Problems? (20x-80x overhead)</value>
+  </data>
+  <data name="intelInspectorMi4MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 22</value>
+  </data>
+  <data name="intelInspectorMi4MenuItem.Text" xml:space="preserve">
+    <value>Where are all the memory problems Inspector can find? (40x-160x overhead)</value>
+  </data>
+  <data name="intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>306, 22</value>
+  </data>
+  <data name="intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Text" xml:space="preserve">
+    <value>Intel Inspector Memory errors analysis level</value>
+  </data>
+  <data name="intelInspectorTi1MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 22</value>
+  </data>
+  <data name="intelInspectorTi1MenuItem.Text" xml:space="preserve">
+    <value>Does my target have deadlocks? ( 10x-40x overhead)</value>
+  </data>
+  <data name="intelInspectorTi2MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 22</value>
+  </data>
+  <data name="intelInspectorTi2MenuItem.Text" xml:space="preserve">
+    <value>Does my  target have deadlocks or data races? (20x-80x overhead)</value>
+  </data>
+  <data name="intelInspectorTi3MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 22</value>
+  </data>
+  <data name="intelInspectorTi3MenuItem.Text" xml:space="preserve">
+    <value>Where are the deadlocks or data races? (40x-160x overhead)</value>
+  </data>
+  <data name="intelInspectorTi4MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 22</value>
+  </data>
+  <data name="intelInspectorTi4MenuItem.Text" xml:space="preserve">
+    <value>Where are all the threading problems Inspector can find? (80x-320x overhead)</value>
+  </data>
+  <data name="intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>306, 22</value>
+  </data>
+  <data name="intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Text" xml:space="preserve">
+    <value>Intel Inspector Threading error analysis level</value>
+  </data>
   <data name="optionsButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -344,7 +407,7 @@
     <value>Magenta</value>
   </data>
   <data name="ctxMenuDebugButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuDebugButton.Text" xml:space="preserve">
     <value>&amp;Debug Test</value>
@@ -353,7 +416,7 @@
     <value>Magenta</value>
   </data>
   <data name="ctxMenuRunButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuRunButton.Text" xml:space="preserve">
     <value>&amp;Run Test Without Debugging</value>
@@ -362,7 +425,7 @@
     <value>Magenta</value>
   </data>
   <data name="ctxMenuRunInConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuRunInConsole.Text" xml:space="preserve">
     <value>Run Using Co&amp;nsole Runner</value>
@@ -371,85 +434,31 @@
     <value>Magenta</value>
   </data>
   <data name="ctxMenuDebugWithWindbg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuDebugWithWindbg.Text" xml:space="preserve">
     <value>Debug Using Console Runner and &amp;WinDBG</value>
   </data>
-  <data name="ctxMenuRunInInspectorCheckDeadlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
+  <data name="ctxMenuRunWithInspectorMi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>306, 22</value>
   </data>
-  <data name="ctxMenuRunInInspectorCheckDeadlocks.Text" xml:space="preserve">
-    <value>Do my tests have deadlocks?</value>
+  <data name="ctxMenuRunWithInspectorMi.Text" xml:space="preserve">
+    <value>Check for Memory Errors Using Intel Inspector</value>
   </data>
-  <data name="ctxMenuRunInInspectorCheckDeadlocksOrRaces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
+  <data name="ctxMenuRunWithInspectorTi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>306, 22</value>
   </data>
-  <data name="ctxMenuRunInInspectorCheckDeadlocksOrRaces.Text" xml:space="preserve">
-    <value>Do my tests have deadlocks of data races?</value>
-  </data>
-  <data name="ctxMenuRunInInspectorLocateDeadlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorLocateDeadlocks.Text" xml:space="preserve">
-    <value>Where are the deadlocks or data races?</value>
-  </data>
-  <data name="ctxMenuRunInInspectorAllThreading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorAllThreading.Text" xml:space="preserve">
-    <value>Where are all the threading problems Inspector can find?</value>
-  </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 6</value>
-  </data>
-  <data name="ctxMenuRunInInspectorFindDataSharingIssues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorFindDataSharingIssues.Text" xml:space="preserve">
-    <value>Where are data sharing issues?</value>
-  </data>
-  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 6</value>
-  </data>
-  <data name="ctxMenuRunInInspectorCheckMemoryLeaks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorCheckMemoryLeaks.Text" xml:space="preserve">
-    <value>Do my tests leak memory?</value>
-  </data>
-  <data name="ctxMenuRunInInspectorCheckMemoryAccessIssues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorCheckMemoryAccessIssues.Text" xml:space="preserve">
-    <value>Do my tests have memory access problems?</value>
-  </data>
-  <data name="ctxMenuRunInInspectorLocateMemoryAccessIssues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorLocateMemoryAccessIssues.Text" xml:space="preserve">
-    <value>Where are the memory access probelms?</value>
-  </data>
-  <data name="ctxMenuRunInInspectorAllMemIssues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspectorAllMemIssues.Text" xml:space="preserve">
-    <value>Where are all the memory problems Inspector can find?</value>
-  </data>
-  <data name="ctxMenuRunInInspector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
-  </data>
-  <data name="ctxMenuRunInInspector.Text" xml:space="preserve">
-    <value>Run and Inspect Using Intel Inspector</value>
+  <data name="ctxMenuRunWithInspectorTi.Text" xml:space="preserve">
+    <value>Check for Threading Errors Using Intel Inspector</value>
   </data>
   <data name="ctxMenuSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 6</value>
+    <value>303, 6</value>
   </data>
   <data name="ctxMenuRefreshButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
   <data name="ctxMenuRefreshButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuRefreshButton.Text" xml:space="preserve">
     <value>Re&amp;fresh</value>
@@ -458,37 +467,37 @@
     <value>Magenta</value>
   </data>
   <data name="ctxMenuViewCodeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuViewCodeButton.Text" xml:space="preserve">
     <value>View &amp;Code</value>
   </data>
   <data name="ctxMenuSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 6</value>
+    <value>303, 6</value>
   </data>
   <data name="ctxMenuAddFixtureButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="ctxMenuAddFixtureButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuAddFixtureButton.Text" xml:space="preserve">
     <value>&amp;Add Fixture...</value>
   </data>
   <data name="ctxMenuSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 6</value>
+    <value>303, 6</value>
   </data>
   <data name="ctxMenuViewProperties.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="ctxMenuViewProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 22</value>
+    <value>306, 22</value>
   </data>
   <data name="ctxMenuViewProperties.Text" xml:space="preserve">
     <value>&amp;Properties</value>
   </data>
   <data name="ctxMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 220</value>
+    <value>307, 264</value>
   </data>
   <data name="&gt;&gt;ctxMenu.Name" xml:space="preserve">
     <value>ctxMenu</value>
@@ -513,7 +522,7 @@
     <value>explorer</value>
   </data>
   <data name="&gt;&gt;explorer.Type" xml:space="preserve">
-    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.1.0.3731, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Control.Ui.Explorer.TestExplorer, Cfix.Control.Ui, Version=1.1.0.3739, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;explorer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -583,7 +592,7 @@
     <value>infoLabel</value>
   </data>
   <data name="&gt;&gt;infoLabel.Type" xml:space="preserve">
-    <value>Cfix.Addin.Windows.TransparentLabel, Cfix.Addin.90, Version=1.1.0.3731, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Addin.Windows.TransparentLabel, Cfix.Addin.90, Version=1.1.0.3739, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;infoLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -607,7 +616,7 @@
     <value>infoBar</value>
   </data>
   <data name="&gt;&gt;infoBar.Type" xml:space="preserve">
-    <value>Cfix.Addin.Windows.PlainProgressBar, Cfix.Addin.90, Version=1.1.0.3731, Culture=neutral, PublicKeyToken=null</value>
+    <value>Cfix.Addin.Windows.PlainProgressBar, Cfix.Addin.90, Version=1.1.0.3739, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;infoBar.Parent" xml:space="preserve">
     <value>$this</value>
@@ -720,6 +729,72 @@
   <data name="&gt;&gt;breakOnUnhandledExceptionsWhenDebuggingMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;intelInspectorSeparator.Name" xml:space="preserve">
+    <value>intelInspectorSeparator</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorSeparator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Name" xml:space="preserve">
+    <value>intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi1MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorTi1MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi1MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi2MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorTi2MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi2MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi3MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorTi3MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi3MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi4MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorTi4MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorTi4MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Name" xml:space="preserve">
+    <value>intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi1MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorMi1MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi1MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi2MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorMi2MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi2MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi3MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorMi3MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi3MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi4MenuItem.Name" xml:space="preserve">
+    <value>intelInspectorMi4MenuItem</value>
+  </data>
+  <data name="&gt;&gt;intelInspectorMi4MenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;separator4.Name" xml:space="preserve">
     <value>separator4</value>
   </data>
@@ -780,78 +855,6 @@
   <data name="&gt;&gt;ctxMenuDebugWithWindbg.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ctxMenuRunInInspector.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspector</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspector.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckDeadlocks.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorCheckDeadlocks</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckDeadlocks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckDeadlocksOrRaces.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorCheckDeadlocksOrRaces</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckDeadlocksOrRaces.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorLocateDeadlocks.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorLocateDeadlocks</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorLocateDeadlocks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorAllThreading.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorAllThreading</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorAllThreading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
-    <value>toolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorFindDataSharingIssues.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorFindDataSharingIssues</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorFindDataSharingIssues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
-    <value>toolStripMenuItem3</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryLeaks.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorCheckMemoryLeaks</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryLeaks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryAccessIssues.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorCheckMemoryAccessIssues</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorCheckMemoryAccessIssues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorLocateMemoryAccessIssues.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorLocateMemoryAccessIssues</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorLocateMemoryAccessIssues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorAllMemIssues.Name" xml:space="preserve">
-    <value>ctxMenuRunInInspectorAllMemIssues</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuRunInInspectorAllMemIssues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;ctxMenuSeparator4.Name" xml:space="preserve">
     <value>ctxMenuSeparator4</value>
   </data>
@@ -892,6 +895,18 @@
     <value>ctxMenuViewProperties</value>
   </data>
   <data name="&gt;&gt;ctxMenuViewProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunWithInspectorTi.Name" xml:space="preserve">
+    <value>ctxMenuRunWithInspectorTi</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunWithInspectorTi.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunWithInspectorMi.Name" xml:space="preserve">
+    <value>ctxMenuRunWithInspectorMi</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuRunWithInspectorMi.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
