@@ -42,8 +42,78 @@ function FindProject( wizard, collection, strProjectName )
 	return null;
 }
 
+function GetCompilerToolName( oProj )
+{
+    if ( oProj.Kind == icProjectVcProject )
+    {
+        return "CppCmplrTool"
+    }
+    else
+    {
+        return "VCCLCompilerTool";
+    }
+}
+
+/*++
+    Function Description:
+        Retrieves the path to the precompiled header file.
+        
+        The fucntion offers a subset of the functionality of 
+        GetProjectFile, yet also supports IC projects.
+--*/
+function GetStdafxFile( oProj, bFullPath )
+{
+	try
+	{
+		var oFiles = oProj.Object.Files;
+		var strFileName = "";
+
+        //
+		// Look for name of precompiled header.
+		//
+		var strPrecompiledHeader = oProj.Object.Configurations( 1 ).Tools( GetCompilerToolName( oProj ) ).PrecompiledHeaderThrough;
+		if (strPrecompiledHeader.length)
+		{
+			strFileName = strPrecompiledHeader;
+		}
+		
+		//
+		// If not found look for stdafx.h.
+		//
+		else
+		{
+			strFileName = "stdafx.h";
+        }
+
+		//
+		// Remove path.
+		if (-1 != strFileName.indexOf("\\"))
+		{
+			strFileName = strFileName.substr(strFileName.lastIndexOf("\\") + 1);
+		}
+
+		if (strFileName.length == 0 || !oFiles(strFileName))
+		{
+			return "";
+		}
+
+		if (bFullPath)
+		{
+			return oFiles(strFileName).FullPath;
+		}
+		else
+		{
+			return strFileName;
+		}
+	}
+	catch(e)
+	{
+		throw e;
+	}
+}
 function OnFinish( selProj, selObj )
 {
+    // wizard.OkCancelAlert( "debug" );
 	try
 	{
 		var strProjectName = wizard.FindSymbol( "PROJECT_NAME" );
@@ -85,8 +155,10 @@ function OnFinish( selProj, selObj )
 		codeModel.StartTransaction("Add Unit Test");
 		
 		//
-		// N.B. The IC automation model is incomplete -- DoesIncludeExist
-		// fails for IC projects. Skip the check for these kinds of projects
+		// N.B. The IC automation model does not support ICFile.Includes -- 
+		// DoesIncludeExist therefore always returns fals fails for IC projects. 
+		//
+		// Skip the check for these kinds of projects
 		// at the risk of getting duplicate includes.
 		//
 		if ( selProj.Kind == icProjectVcProject ||
@@ -101,7 +173,7 @@ function OnFinish( selProj, selObj )
 		var strSTDAFX = ""
 		try
 		{
-			strSTDAFX = GetProjectFile( selProj, "STDAFX", false, true );
+			strSTDAFX = GetStdafxFile( selProj, false );
 		}
 		catch (e)
 		{
@@ -115,7 +187,8 @@ function OnFinish( selProj, selObj )
 		    //
 		    // Make sure that we include this, too.
 		    //
-		    if ( ! DoesIncludeExist(selProj, "\"" + strSTDAFX + "\"", strFile ) )
+		    if (  selProj.Kind == icProjectVcProject ||
+		          ! DoesIncludeExist(selProj, "\"" + strSTDAFX + "\"", strFile ) )
 		    {
 			    codeModel.AddInclude( "\"" + strSTDAFX + "\"", strFile, vsCMAddPositionStart );
 		    }
