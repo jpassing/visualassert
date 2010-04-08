@@ -32,9 +32,10 @@ namespace Cfix.Control
 
 		public override string ToString()
 		{
-			return
-				( this.module ?? "[unknown]" ) + "!" +
-				( this.function ?? "[unknown]" );
+			return String.Format( "{0}!{1}+0x{2:x}",
+				( this.module ?? "[unknown]" ),
+				( this.function ?? "[unknown]" ),
+				this.displacement );
 		}
 
 		public string Module
