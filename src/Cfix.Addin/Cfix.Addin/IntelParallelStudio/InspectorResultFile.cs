@@ -7,6 +7,7 @@ using Cfix.Control;
 using System.IO;
 using System.Globalization;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	/*++
@@ -421,5 +422,6 @@ namespace Cfix.Addin.IntelParallelStudio
 				return buf.ToString();
 			}
 		}
+	}
 }
-}
+#endif

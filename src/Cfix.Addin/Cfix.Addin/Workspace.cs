@@ -33,7 +33,9 @@ namespace Cfix.Addin
 		private readonly IAgent searchAgent;
 		private readonly AgentSet runAgents;
 
+#if INTELINSPECTOR
 		private readonly Inspector intelInspector;
+#endif
 		
 		private readonly ISession session;
 		private readonly CommandEvents cmdEvents;
@@ -257,10 +259,12 @@ namespace Cfix.Addin
 			this.runAgents = this.agentFactory.CreateRunAgent( this.config );
 			this.session = new Session();
 
+#if INTELINSPECTOR
 			//
 			// Attempt to load Instel Inspector.
 			//
 			this.intelInspector = Inspector.TryLoadInspector( this.config, dte );
+#endif
 
 			//
 			// If not happened yet, register VC directories.
@@ -389,10 +393,12 @@ namespace Cfix.Addin
 			get { return this.runAgents; }
 		}
 
+#if INTELINSPECTOR
 		public Inspector IntelInspector
 		{
 			get { return this.intelInspector; }
 		}
+#endif
 
 		public bool IsSolutionOpened
 		{
@@ -434,10 +440,12 @@ namespace Cfix.Addin
 		{
 			TerminateAllActiveHosts( this.runAgents );
 
+#if INTELINSPECTOR
 			if ( this.intelInspector != null )
 			{
 				TerminateAllActiveHosts( this.intelInspector.RunAgents );
 			}
+#endif
 		}
 
 		private IRun RunItem( 
@@ -600,6 +608,7 @@ namespace Cfix.Addin
 			RunItem( item, debug, compiler );
 		}
 
+#if INTELINSPECTOR
 		public void RunItemInIntelInspector( 
 			IRunnableTestItem item,
 			InspectorLevel level
@@ -622,6 +631,7 @@ namespace Cfix.Addin
 
 			RunItem( item, false, compiler );
 		}
+#endif
 
 		public void RunItemOnCommandLine( 
 			NativeTestItem item,

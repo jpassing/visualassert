@@ -4,6 +4,7 @@ using System.Text;
 using Cfix.Control.RunControl;
 using Cfix.Control;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	internal class InspectorRunCompiler : ProcessPerTestRunCompiler
@@ -51,3 +52,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

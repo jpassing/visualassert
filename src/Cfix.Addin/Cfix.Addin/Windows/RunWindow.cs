@@ -298,9 +298,11 @@ namespace Cfix.Addin.Windows
 
 					this.ctxMenuViewCodeButton.Visible = resultItem.ResultItem.Item is ITestCodeElement;
 
+#if INTELINSPECTOR
 					object associatedObj = resultItem.ResultItem.Object;
 					this.ctxMenuViewInspectorResult.Visible =
 						associatedObj != null && associatedObj is ResultLocation;
+#endif
 
 					this.resultCtxMenu.Show( this.results, e.Location );
 					return;
@@ -379,6 +381,7 @@ namespace Cfix.Addin.Windows
 				return;
 			}
 
+#if INTELINSPECTOR
 			ResultLocation resultLocation = 
 				resultItemNode.ResultItem.Object as ResultLocation;
 			if ( resultLocation != null )
@@ -387,6 +390,7 @@ namespace Cfix.Addin.Windows
 					resultLocation.ResultFile,
 					Constants.vsViewKindAny );
 			}
+#endif
 		}
 
 		private void GoTo( object node )

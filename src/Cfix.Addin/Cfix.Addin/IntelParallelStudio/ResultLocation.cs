@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	public class ResultLocation
@@ -41,3 +42,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		
 	}
 }
+#endif

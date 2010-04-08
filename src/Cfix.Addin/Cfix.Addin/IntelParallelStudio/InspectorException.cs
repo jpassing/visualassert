@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	[Serializable]
@@ -24,3 +25,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		{ }
 	}
 }
+#endif

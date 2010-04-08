@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using EnvDTE80;
 using System.IO;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	public class Inspector
@@ -84,3 +85,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

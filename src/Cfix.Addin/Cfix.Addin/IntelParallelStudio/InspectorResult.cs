@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cfix.Control;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	public class InspectorResult
@@ -185,3 +186,4 @@ namespace Cfix.Addin.IntelParallelStudio
 
 	}
 }
+#endif

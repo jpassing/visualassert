@@ -2,6 +2,7 @@ using System;
 using Cfix.Control.Native;
 using Cfix.Control;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	internal class InspectorAgentFactory : AgentFactory
@@ -48,3 +49,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

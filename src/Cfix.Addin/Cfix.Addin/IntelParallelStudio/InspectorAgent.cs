@@ -4,6 +4,7 @@ using Cfix.Control.Native;
 using Cfix.Control;
 using System.Diagnostics;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	/*++
@@ -120,3 +121,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

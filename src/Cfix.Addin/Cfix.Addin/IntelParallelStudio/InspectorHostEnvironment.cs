@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cfix.Control;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	/*++
@@ -70,3 +71,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

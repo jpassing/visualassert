@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Collections.Generic;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	/*++
@@ -276,3 +277,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

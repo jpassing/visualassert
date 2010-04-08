@@ -229,7 +229,11 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
 			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
 
+#if INTELINSPECTOR
 			this.ctxMenuRunInInspector.Enabled = this.workspace.IntelInspector != null;
+#else
+			this.ctxMenuRunInInspector.Visible = false;
+#endif
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -731,74 +735,92 @@ namespace Cfix.Addin.Windows
 
 		private void ctxMenuRunInInspectorCheckDeadlocks_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.CheckDeadlocks );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorCheckDeadlocksOrRaces_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.CheckDeadlocksAndRaces );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorLocateDeadlocks_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.LocateDeadlocksAndRaces );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorAllThreading_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.AllThreadingIssues );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorFindDataSharingIssues_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.LocateDataSharingIssues );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorCheckMemoryLeaks_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.CheckMemoryLeaks );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorCheckMemoryAccessIssues_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.CheckMemoryAccessIssues );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorLocateMemoryAccessIssues_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.LocateMemoryAccessIssues );
+#endif
 		}
 
 		private void ctxMenuRunInInspectorAllMemIssues_Click( object sender, EventArgs e )
 		{
+#if INTELINSPECTOR
 			CommonUiOperations.RunItemInIntelInspector(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
 				InspectorLevel.AllMemoryIssues );
+#endif
 		}
 
 

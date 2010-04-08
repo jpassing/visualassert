@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	public class InspectorLevel
@@ -31,3 +32,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif

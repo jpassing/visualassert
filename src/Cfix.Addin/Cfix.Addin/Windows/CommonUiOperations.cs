@@ -68,6 +68,7 @@ namespace Cfix.Addin.Windows
 			}
 		}
 
+#if INTELINSPECTOR
 		public static void RunItemInIntelInspector(
 			Workspace ws,
 			ITestItem item,
@@ -94,6 +95,7 @@ namespace Cfix.Addin.Windows
 					ws.RunItemInIntelInspector( runItem, level );
 				} );
 		}
+#endif
 		
 		public static void RunItem( 
 			Workspace ws, 

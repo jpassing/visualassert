@@ -4,6 +4,7 @@ using System.Text;
 using Cfix.Control;
 using System.IO;
 
+#if INTELINSPECTOR
 namespace Cfix.Addin.IntelParallelStudio
 {
 	public class InspectorResultFilter
@@ -72,3 +73,4 @@ namespace Cfix.Addin.IntelParallelStudio
 		}
 	}
 }
+#endif
