@@ -34,6 +34,7 @@ namespace Cfix.Addin.Windows
 		private static readonly Color DefaultColor = SystemColors.Control;
 		private static readonly Color InitialColor = Color.LightYellow;
 		private static readonly Color PostprocessingFailedColor = Color.DarkOrange;
+		private static readonly Color InitializingColor = Color.Gray;
 
 		private readonly object runLock = new object();
 		
@@ -61,6 +62,9 @@ namespace Cfix.Addin.Windows
 
 			return text;
 		}
+
+		private uint anticipatedInitializationTimeTicks;
+		private uint elapsedInitializationTimeTicks;
 
 		/*----------------------------------------------------------------------
 		 * Private - Run events.
@@ -95,6 +99,11 @@ namespace Cfix.Addin.Windows
 							( int ) ( completed * 100 / total );
 					}
 
+					if ( this.progressBar.ProgressBarColor == InitializingColor )
+					{
+						this.progressBar.ProgressBarColor = SuccessColor;
+					}
+
 					if ( this.progressBar.ProgressBarColor == SuccessColor )
 					{
 						if ( item.Status == ExecutionStatus.Failed )
@@ -106,7 +115,7 @@ namespace Cfix.Addin.Windows
 							this.progressBar.ProgressBarColor = PostprocessingFailedColor;
 						}
 					}
-
+					
 					this.progressLabel.Text =
 						String.Format(
 							Strings.ProgressInfo,
@@ -138,6 +147,8 @@ namespace Cfix.Addin.Windows
 				this.terminateButton.Enabled = false;
 				this.redebugButton.Enabled = true;
 				this.restartButton.Enabled = true;
+
+				this.initTimer.Stop();
 
 				if ( this.run.Status == TaskStatus.Suceeded )
 				{
@@ -188,17 +199,29 @@ namespace Cfix.Addin.Windows
 				this.showFailuresOnlyButton.Checked = false;
 				this.showFailuresOnlyButton.Enabled = false;
 
-				this.progressLabel.Text =
-					String.Format(
-						Strings.ProgressInfo,
-						0,
-						this.run.ItemCount,
-						this.run.TaskCount,
-						this.run.Status.ToString(),
-						0,
-						0,
-						0 );
-				this.progressBar.Invalidate(); 
+				if ( this.run.InvolvesPostprocessing )
+				{
+					this.progressBar.ProgressBarColor = InitializingColor;
+					this.progressLabel.Text = Strings.InitializingRun;
+				}
+				else
+				{
+					this.progressLabel.Text =
+						String.Format(
+							Strings.ProgressInfo,
+							0,
+							this.run.ItemCount,
+							this.run.TaskCount,
+							this.run.Status.ToString(),
+							0,
+							0,
+							0 );
+
+					this.progressBar.ProgressBarColor = SuccessColor;
+				}
+
+				this.progressBar.Value = 0;
+				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
 			} );
 		}
@@ -524,12 +547,14 @@ namespace Cfix.Addin.Windows
 						this.run.Dispose();
 					}
 
-					this.progressBar.Value = 0;
 					this.progressBar.ProgressBarColor = SuccessColor;
 
 					this.terminateButton.Enabled = true;
 					this.restartButton.Enabled = false;
 					this.redebugButton.Enabled = false;
+
+					this.elapsedInitializationTimeTicks = 0;
+					this.anticipatedInitializationTimeTicks = 40;
 
 					this.run = value;
 					this.aborted = false;
@@ -541,6 +566,11 @@ namespace Cfix.Addin.Windows
 						this.run.Finished += new EventHandler<FinishedEventArgs>( run_Finished );
 						this.run.Log += new EventHandler<LogEventArgs>( run_Log );
 						this.run.StatusChanged += new EventHandler( run_StatusChanged );
+
+						if ( this.run.InvolvesPostprocessing )
+						{
+							this.initTimer.Start();
+						}
 					}
 				}
 			}
@@ -607,6 +637,29 @@ namespace Cfix.Addin.Windows
 		private void selectPrevFailureButton_Click( object sender, EventArgs e )
 		{
 			this.results.HighlightNextFailure( true );
+		}
+
+		private void initTimer_Tick( object sender, EventArgs e )
+		{
+			if ( this.elapsedInitializationTimeTicks < 
+				this.anticipatedInitializationTimeTicks )
+			{
+				this.elapsedInitializationTimeTicks++;
+
+				uint fraction = this.elapsedInitializationTimeTicks * 100 /
+					this.anticipatedInitializationTimeTicks;
+				Debug.Assert( fraction <= 100 );
+				Debug.Assert( fraction >= 0 );
+
+				//
+				// Use the 90% trick.
+				//
+				fraction = Math.Min( fraction, 90 );
+
+				this.progressBar.Value = ( int ) fraction;
+				this.progressBar.Invalidate();
+				this.progressLabel.Invalidate();
+			}
 		}
 
 	}

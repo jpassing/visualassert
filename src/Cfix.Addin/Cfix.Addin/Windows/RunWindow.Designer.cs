@@ -46,15 +46,16 @@ namespace Cfix.Addin.Windows
 			this.lameButton = new System.Windows.Forms.ToolStripButton();
 			this.docButton = new System.Windows.Forms.ToolStripButton();
 			this.resultCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+			this.ctxMenuViewInspectorResult = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuDebugButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuRunButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuViewCodeButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctxMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
-			this.ctxMenuViewInspectorResult = new System.Windows.Forms.ToolStripMenuItem();
 			this.stackTraceCtxMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.ctxMenuCopyTraceButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.results = new Cfix.Control.Ui.Result.ResultExplorer();
+			this.initTimer = new System.Windows.Forms.Timer( this.components );
 			this.progressLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.progressBar = new Cfix.Addin.Windows.PlainProgressBar();
 			this.toolbar.SuspendLayout();
@@ -220,7 +221,15 @@ namespace Cfix.Addin.Windows
             this.ctxMenuSeparator,
             this.ctxMenuViewProperties} );
 			this.resultCtxMenu.Name = "resultCtxMenu";
-			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 142 );
+			this.resultCtxMenu.Size = new System.Drawing.Size( 243, 120 );
+			// 
+			// ctxMenuViewInspectorResult
+			// 
+			this.ctxMenuViewInspectorResult.Image = global::Cfix.Addin.Icons.IntelInspector;
+			this.ctxMenuViewInspectorResult.Name = "ctxMenuViewInspectorResult";
+			this.ctxMenuViewInspectorResult.Size = new System.Drawing.Size( 242, 22 );
+			this.ctxMenuViewInspectorResult.Text = "View Results Using Intel Inspector";
+			this.ctxMenuViewInspectorResult.Click += new System.EventHandler( this.ctxMenuViewInspectorResult_Click );
 			// 
 			// ctxMenuDebugButton
 			// 
@@ -263,14 +272,6 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuViewProperties.Text = "Properties";
 			this.ctxMenuViewProperties.Click += new System.EventHandler( this.ctxMenuViewProperties_Click );
 			// 
-			// ctxMenuViewInspectorResult
-			// 
-			this.ctxMenuViewInspectorResult.Image = global::Cfix.Addin.Icons.IntelInspector;
-			this.ctxMenuViewInspectorResult.Name = "ctxMenuViewInspectorResult";
-			this.ctxMenuViewInspectorResult.Size = new System.Drawing.Size( 242, 22 );
-			this.ctxMenuViewInspectorResult.Text = "View Intel Inspector  Result Details";
-			this.ctxMenuViewInspectorResult.Click += new System.EventHandler( this.ctxMenuViewInspectorResult_Click );
-			// 
 			// stackTraceCtxMenu
 			// 
 			this.stackTraceCtxMenu.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
@@ -300,6 +301,11 @@ namespace Cfix.Addin.Windows
 			this.results.Size = new System.Drawing.Size( 555, 214 );
 			this.results.TabIndex = 1;
 			this.results.SelectionChanged += new System.EventHandler( this.results_SelectionChanged );
+			// 
+			// initTimer
+			// 
+			this.initTimer.Interval = 500;
+			this.initTimer.Tick += new System.EventHandler( this.initTimer_Tick );
 			// 
 			// progressLabel
 			// 
@@ -371,5 +377,6 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.ToolStripButton selectPrevFailureButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem ctxMenuViewInspectorResult;
+		private System.Windows.Forms.Timer initTimer;
 	}
 }

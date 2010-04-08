@@ -179,6 +179,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IntelTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My1a.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration

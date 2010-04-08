@@ -12,6 +12,7 @@ namespace Cfix.Addin.IntelParallelStudio
 	internal class InspectorTask : Task
 	{
 		private readonly IResultItem rootResult;
+		private readonly bool filterCfixResults;
 
 		protected InspectorHostEnvironment InspectorHostEnvironment
 		{
@@ -22,13 +23,16 @@ namespace Cfix.Addin.IntelParallelStudio
 			IAgent agent,
 			HostEnvironment hostEnv,
 			InspectorLevel level,
-			IAction action
+			IAction action,
+			bool filterCfixResults
 			)
 			: base( agent, new InspectorHostEnvironment( hostEnv, level ) )
 		{
 			Debug.Assert( !ReferenceEquals( action.Result.Item, action.Item ) );
 			Debug.Assert( action.Result is IResultItemCollection );
 			Debug.Assert( action.Item is TestCase );
+
+			this.filterCfixResults = filterCfixResults;
 
 			//
 			// N.B.: single test case is run in separate process, the 
@@ -80,6 +84,19 @@ namespace Cfix.Addin.IntelParallelStudio
 			{
 				InspectorResultFile resultFile =
 					InspectorResultFile.Load( resultLocation );
+
+				if ( filterCfixResults )
+				{
+					//
+					// Filter results before adding them to results window.
+					//
+					InspectorResultFilter filter = new InspectorResultFilter();
+					resultFile = resultFile.Filter(
+						( InspectorResultFile.FilterDelegate ) delegate( InspectorResult result )
+						{
+							return !filter.IsCfixResult( result );
+						} );
+				}
 
 				foreach ( InspectorResult result in resultFile.Results )
 				{

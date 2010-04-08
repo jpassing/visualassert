@@ -19,9 +19,14 @@ namespace Cfix.Addin.IntelParallelStudio
 	 *		3	Warning
 	 *		4	Error
 	 * 
+	 * Element 'dec_func: decorated function name.
+	 * Element 'func: Undecorated function name.
+	 * 
 	--*/
 	public class InspectorResultFile
 	{
+		public delegate bool FilterDelegate( InspectorResult result );
+
 		private readonly ICollection< InspectorResult > results =
 			new List< InspectorResult >();
 
@@ -29,6 +34,25 @@ namespace Cfix.Addin.IntelParallelStudio
 		{
 			get { return this.results; }
 		}
+
+		public InspectorResultFile Filter( FilterDelegate filter )
+		{
+			InspectorResultFile file = new InspectorResultFile();
+
+			foreach ( InspectorResult result in this.results )
+			{
+				if ( filter( result ) )
+				{
+					file.results.Add( result );
+				}
+			}
+
+			return file;
+		}
+
+		/*----------------------------------------------------------------------
+		 * Parsing logic.
+		 */
 
 		private static uint ParseOptionalUInt32( string s )
 		{
@@ -80,7 +104,7 @@ namespace Cfix.Addin.IntelParallelStudio
 								module = buffer.ToString();
 								break;
 
-							case "dec_func":
+							case "func":
 								function = buffer.ToString();
 								break;
 
@@ -383,6 +407,18 @@ namespace Cfix.Addin.IntelParallelStudio
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 			{
 				return this.frames.GetEnumerator();
+			}
+
+			public override string ToString()
+			{
+				StringBuilder buf = new StringBuilder();
+				foreach ( IStackTraceFrame frame in this.frames )
+				{
+					buf.Append( frame.ToString() );
+					buf.Append( "\r\n" );
+				}
+
+				return buf.ToString();
 			}
 		}
 }

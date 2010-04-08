@@ -232,6 +232,15 @@ namespace Cfix.Addin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing test run....
+        /// </summary>
+        internal static string InitializingRun {
+            get {
+                return ResourceManager.GetString("InitializingRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The path &apos;{0}&apos; does not refer to a valid WinDBG installation folder.
         /// </summary>
         internal static string InvalidWindbgInstallFolder {

@@ -416,6 +416,22 @@ namespace Cfix.Addin
 			}
 		}
 
+		public bool ShowInspectorCfixResults
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "ShowInspectorCfixResults", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"ShowInspectorCfixResults",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
+
 		public string MostRecentlyUsedDirectory
 		{
 			get

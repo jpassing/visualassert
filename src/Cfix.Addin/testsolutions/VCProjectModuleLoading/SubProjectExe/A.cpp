@@ -26,6 +26,7 @@ public:
 
 	void Test()
 	{
+		new char[ 123 ];
 		//abort();
 		CFIX_INCONCLUSIVE(__TEXT("Not implemented"));
 	}

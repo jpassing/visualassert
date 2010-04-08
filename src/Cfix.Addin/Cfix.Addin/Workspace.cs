@@ -617,7 +617,8 @@ namespace Cfix.Addin
 				GetDispositionPolicy( false ),
 				ExecutionOptions.None,
 				this.config.EnvironmentOptions,
-				level );
+				level,
+				! this.config.ShowInspectorCfixResults );
 
 			RunItem( item, false, compiler );
 		}

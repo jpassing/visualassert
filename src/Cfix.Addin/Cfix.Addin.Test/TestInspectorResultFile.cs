@@ -69,7 +69,7 @@ namespace Cfix.Addin.Test
 
 			IStackTraceFrame frame = frames.Current;
 			Assert.AreEqual( "cfixhs32.exe", frame.Module );
-			Assert.AreEqual( "__tmainCRTStartup", frame.Function );
+			Assert.AreEqual( "_tmainCRTStartup", frame.Function );
 			Assert.AreEqual( frame.Function, result.Function );
 			Assert.AreEqual( 0, frame.Dispacement );
 			Assert.AreEqual( @"startup\crt0.c", frame.SourceFile );
@@ -232,6 +232,49 @@ namespace Cfix.Addin.Test
 			{
 				InspectorResultFile.Parse( "nonnumline.pdr" );
 				Assert.Fail();
+			}
+			catch ( InspectorException )
+			{
+			}
+		}
+
+		[Test]
+		public void TestFilterAll()
+		{
+			try
+			{
+				InspectorResultFile	file = InspectorResultFile.Parse( "01.pdr" );
+				Assert.IsTrue( file.Results.Count > 0 );
+
+				InspectorResultFile filtered = file.Filter(
+					( InspectorResultFile.FilterDelegate ) delegate( InspectorResult result )
+					{
+						return false;
+					} );
+
+				Assert.AreEqual( 0, filtered.Results.Count );
+			}
+			catch ( InspectorException )
+			{
+			}
+		}
+
+		[Test]
+		public void TestFilterOne()
+		{
+			try
+			{
+				InspectorResultFile file = InspectorResultFile.Parse( "01.pdr" );
+				Assert.IsTrue( file.Results.Count > 0 );
+
+				int count = 0;
+				InspectorResultFile filtered = file.Filter(
+					( InspectorResultFile.FilterDelegate ) delegate( InspectorResult result )
+					{
+						return count++ == 0;
+					} );
+
+				Assert.AreEqual( file.Results.Count - 1, filtered.Results.Count );
 			}
 			catch ( InspectorException )
 			{

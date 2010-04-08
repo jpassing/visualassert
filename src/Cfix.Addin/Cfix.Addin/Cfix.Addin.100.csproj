@@ -88,6 +88,7 @@
     <Compile Include="IntelParallelStudio\InspectorHostEnvironment.cs" />
     <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
     <Compile Include="IntelParallelStudio\InspectorResultFile.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResultFilter.cs" />
     <Compile Include="IntelParallelStudio\InspectorRunCompiler.cs" />
     <Compile Include="IntelParallelStudio\InspectorTask.cs" />
     <Compile Include="IntelParallelStudio\ProblemDescriptions.Designer.cs">

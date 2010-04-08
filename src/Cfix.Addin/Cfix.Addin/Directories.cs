@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -165,6 +166,28 @@ namespace Cfix.Addin
 			get
 			{
 				return DocDirectory + "\\QuickStart\\index.html";
+			}
+		}
+
+		/*++
+		 *	Returns file paths of cfix/VA binaries.
+		 --*/
+		public static IEnumerable<string> GetBinaries( Architecture arch )
+		{
+			string dir = GetBinDirectory( arch );
+			if ( !Directory.Exists( dir ) )
+			{
+				throw new ArgumentException();
+			}
+
+			foreach ( string file in Directory.GetFiles( dir ) )
+			{
+				if ( file.EndsWith( ".sys", StringComparison.OrdinalIgnoreCase ) ||
+					 file.EndsWith( ".dll", StringComparison.OrdinalIgnoreCase ) ||
+					 file.EndsWith( ".exe", StringComparison.OrdinalIgnoreCase ) )
+				{
+					yield return file;
+				}
 			}
 		}
 	}

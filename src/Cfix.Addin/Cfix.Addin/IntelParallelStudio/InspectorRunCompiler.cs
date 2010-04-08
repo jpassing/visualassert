@@ -9,13 +9,15 @@ namespace Cfix.Addin.IntelParallelStudio
 	internal class InspectorRunCompiler : ProcessPerTestRunCompiler
 	{
 		private readonly InspectorLevel level;
+		private readonly bool filterCfixResults;
 
 		public InspectorRunCompiler(
 			AgentSet agentSet,
 			IDispositionPolicy policy,
 			ExecutionOptions executionOptions,
 			EnvironmentOptions environmentOptions,
-			InspectorLevel level
+			InspectorLevel level,
+			bool filterCfixResults
 			)
 			: base(
 				agentSet,
@@ -24,6 +26,7 @@ namespace Cfix.Addin.IntelParallelStudio
 				environmentOptions )
 		{
 			this.level = level;
+			this.filterCfixResults = filterCfixResults;
 		}
 
 		/*--------------------------------------------------------------
@@ -36,7 +39,8 @@ namespace Cfix.Addin.IntelParallelStudio
 				this.agentSet.GetAgent( action.Architecture ),
 				this.Environment,
 				this.level,
-				action );
+				action,
+				this.filterCfixResults );
 		}
 
 		public override IRun Compile()
