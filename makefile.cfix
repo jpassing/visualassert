@@ -157,7 +157,8 @@ testi386chk:
 	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\chk\i386\cfix32.exe __cfixtests
 	cd ..\..\..
 	
-	nunit-console-x86 bin\chk\i386\Cfix.Control.Test.dll
+	nunit-console-x86 /noshadow bin\chk\i386\Cfix.Control.Test.dll
+	nunit-console-x86 /noshadow bin\chk\i386\Cfix.Addin.Test.dll
 
 testi386fre:
 	echo i386 free
@@ -166,7 +167,8 @@ testi386fre:
 	$(MAKE) -f ..\..\..\makefile.cfix CFIX_CMD=$(CFIX_TREE)\bin\fre\i386\cfix32.exe __cfixtests
 	cd ..\..\..
 
-	nunit-console-x86 bin\fre\i386\Cfix.Control.Test.dll
+	nunit-console-x86 /noshadow bin\fre\i386\Cfix.Control.Test.dll
+	nunit-console-x86 /noshadow bin\fre\i386\Cfix.Addin.Test.dll
 
 testamd64chk:
 	echo amd64 checked

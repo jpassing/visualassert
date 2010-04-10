@@ -177,7 +177,7 @@ namespace Cfix.Addin
 			string dir = GetBinDirectory( arch );
 			if ( !Directory.Exists( dir ) )
 			{
-				throw new ArgumentException();
+				throw new IOException( "Bin directory not found" );
 			}
 
 			foreach ( string file in Directory.GetFiles( dir ) )

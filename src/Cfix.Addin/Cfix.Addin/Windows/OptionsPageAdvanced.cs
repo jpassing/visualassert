@@ -20,6 +20,12 @@ namespace Cfix.Addin.Windows
 		public OptionsPageAdvanced()
 		{
 			InitializeComponent();
+
+#if ! INTELSINPECTOR
+			this.instrHostRegTimeoutLabel.Visible = false;
+			this.instrumentedHostRegTimeout.Visible = false;
+			this.insrSec.Visible = false;
+#endif
 		}
 
 		/*----------------------------------------------------------------------

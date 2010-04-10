@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows
 		{
 			this.hostGroupBox = new System.Windows.Forms.GroupBox();
 			this.restartNotice = new System.Windows.Forms.Label();
-			this.sec2 = new System.Windows.Forms.Label();
+			this.insrSec = new System.Windows.Forms.Label();
 			this.sec1 = new System.Windows.Forms.Label();
 			this.instrHostRegTimeoutLabel = new System.Windows.Forms.Label();
 			this.hostRegTimeoutLabel = new System.Windows.Forms.Label();
@@ -42,8 +42,8 @@ namespace Cfix.Addin.Windows
 			this.stackSizeStd = new System.Windows.Forms.RadioButton();
 			this.stackSizeLabel = new System.Windows.Forms.Label();
 			this.eneralGroupBox = new System.Windows.Forms.GroupBox();
-			this.autoAdjustCwd = new System.Windows.Forms.CheckBox();
 			this.autoRegisterVcDirs = new System.Windows.Forms.CheckBox();
+			this.autoAdjustCwd = new System.Windows.Forms.CheckBox();
 			this.hostGroupBox.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.instrumentedHostRegTimeout ) ).BeginInit();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.hostRegTimeout ) ).BeginInit();
@@ -54,7 +54,7 @@ namespace Cfix.Addin.Windows
 			// hostGroupBox
 			// 
 			this.hostGroupBox.Controls.Add( this.restartNotice );
-			this.hostGroupBox.Controls.Add( this.sec2 );
+			this.hostGroupBox.Controls.Add( this.insrSec );
 			this.hostGroupBox.Controls.Add( this.sec1 );
 			this.hostGroupBox.Controls.Add( this.instrHostRegTimeoutLabel );
 			this.hostGroupBox.Controls.Add( this.hostRegTimeoutLabel );
@@ -77,14 +77,14 @@ namespace Cfix.Addin.Windows
 			this.restartNotice.TabIndex = 3;
 			this.restartNotice.Text = "Please restart the IDE to have your changes take effect.";
 			// 
-			// sec2
+			// insrSec
 			// 
-			this.sec2.AutoSize = true;
-			this.sec2.Location = new System.Drawing.Point( 317, 52 );
-			this.sec2.Name = "sec2";
-			this.sec2.Size = new System.Drawing.Size( 47, 13 );
-			this.sec2.TabIndex = 2;
-			this.sec2.Text = "seconds";
+			this.insrSec.AutoSize = true;
+			this.insrSec.Location = new System.Drawing.Point( 317, 52 );
+			this.insrSec.Name = "insrSec";
+			this.insrSec.Size = new System.Drawing.Size( 47, 13 );
+			this.insrSec.TabIndex = 2;
+			this.insrSec.Text = "seconds";
 			// 
 			// sec1
 			// 
@@ -223,16 +223,6 @@ namespace Cfix.Addin.Windows
 			this.eneralGroupBox.TabStop = false;
 			this.eneralGroupBox.Text = "General";
 			// 
-			// autoAdjustCwd
-			// 
-			this.autoAdjustCwd.AutoSize = true;
-			this.autoAdjustCwd.Location = new System.Drawing.Point( 9, 28 );
-			this.autoAdjustCwd.Name = "autoAdjustCwd";
-			this.autoAdjustCwd.Size = new System.Drawing.Size( 302, 17 );
-			this.autoAdjustCwd.TabIndex = 0;
-			this.autoAdjustCwd.Text = "Automatically adjust current directory to module base folder";
-			this.autoAdjustCwd.UseVisualStyleBackColor = true;
-			// 
 			// autoRegisterVcDirs
 			// 
 			this.autoRegisterVcDirs.AutoSize = true;
@@ -242,6 +232,16 @@ namespace Cfix.Addin.Windows
 			this.autoRegisterVcDirs.TabIndex = 0;
 			this.autoRegisterVcDirs.Text = "Automatically register VC++ directories on startup";
 			this.autoRegisterVcDirs.UseVisualStyleBackColor = true;
+			// 
+			// autoAdjustCwd
+			// 
+			this.autoAdjustCwd.AutoSize = true;
+			this.autoAdjustCwd.Location = new System.Drawing.Point( 9, 28 );
+			this.autoAdjustCwd.Name = "autoAdjustCwd";
+			this.autoAdjustCwd.Size = new System.Drawing.Size( 302, 17 );
+			this.autoAdjustCwd.TabIndex = 0;
+			this.autoAdjustCwd.Text = "Automatically adjust current directory to module base folder";
+			this.autoAdjustCwd.UseVisualStyleBackColor = true;
 			// 
 			// OptionsPageAdvanced
 			// 
@@ -268,7 +268,7 @@ namespace Cfix.Addin.Windows
 
 		private System.Windows.Forms.GroupBox hostGroupBox;
 		private System.Windows.Forms.NumericUpDown hostRegTimeout;
-		private System.Windows.Forms.Label sec2;
+		private System.Windows.Forms.Label insrSec;
 		private System.Windows.Forms.Label sec1;
 		private System.Windows.Forms.Label instrHostRegTimeoutLabel;
 		private System.Windows.Forms.Label hostRegTimeoutLabel;

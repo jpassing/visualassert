@@ -28,7 +28,7 @@ namespace Cfix.Addin.Test
 			InspectorResult three = new InspectorResult(
 				1,
 				InspectorResult.ResultSeverity.Error,
-				"foo",
+				"bar",
 				124,
 				null );
 
