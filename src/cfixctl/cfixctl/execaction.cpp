@@ -8,6 +8,8 @@
  */
 
 #include "cfixctlp.h"
+#include <cfixevnt.h>
+#include <cfixutil.h>
 
 const GUID IID_ICfixExecutionActionInternal = 
 	{ 0x5bcd9d4e, 0xa622, 0x4d60, { 0x86, 0xed, 0x97, 0xd, 0x11, 0xc1, 0x73, 0x8d } };
@@ -41,6 +43,11 @@ private:
 	PCFIX_EXECUTION_CONTEXT CurrentAdapter;
 	CRITICAL_SECTION CurrentAdapterLock;
 
+	//
+	// Optional: Event Sink.
+	//
+	PCFIX_EVENT_SINK EventSink;
+
 protected:
 	ExecutionAction();
 
@@ -70,6 +77,12 @@ public:
 
 	STDMETHOD( GetTestCaseCount )(
 		__out ULONG* Count 
+		);
+
+	STDMETHOD( RegisterEventDll )(
+		__in BSTR DllPath,
+		__in BSTR Options,
+		__reserved ULONG Reserved
 		);
 
 	/*------------------------------------------------------------------
@@ -217,6 +230,7 @@ ExecutionAction::ExecutionAction()
 	: Module( NULL )
 	, Action( NULL )
 	, CurrentAdapter( NULL )
+	, EventSink( NULL )
 	, TestCaseCount( 0 )
 {
 	InitializeCriticalSection( &this->CurrentAdapterLock );
@@ -234,6 +248,11 @@ ExecutionAction::~ExecutionAction()
 	if ( this->Module )
 	{
 		this->Module->Release();
+	}
+
+	if ( this->EventSink )
+	{
+		this->EventSink->Dereference( this->EventSink );
 	}
 
 	DeleteCriticalSection( &this->CurrentAdapterLock );
@@ -326,6 +345,22 @@ STDMETHODIMP ExecutionAction::Run(
 	if ( FAILED( Hr ) )
 	{
 		goto Cleanup;
+	}
+
+	if ( this->EventSink != NULL )
+	{
+		PCFIX_EXECUTION_CONTEXT Proxy;
+		Hr = CfixCreateEventEmittingExecutionContextProxy(
+			Adapter,
+			this->EventSink,
+			&Proxy );
+		if ( FAILED( Hr ) )
+		{
+			goto Cleanup;
+		}
+
+		Adapter->Dereference( Adapter );
+		Adapter = Proxy;
 	}
 
 	Hr = ProcessSink->BeforeRunStart();
@@ -426,6 +461,32 @@ STDMETHODIMP ExecutionAction::GetTestCaseCount(
 		return S_OK;
 	}
 }
+
+STDMETHODIMP ExecutionAction::RegisterEventDll(
+	__in BSTR DllPath,
+	__in BSTR Options,
+	__reserved ULONG Reserved
+	)
+{
+	if ( DllPath == NULL || Reserved != 0 )
+	{
+		return E_INVALIDARG;
+	}
+
+	if ( this->EventSink != NULL )
+	{
+		return E_UNEXPECTED;
+	}
+
+	return CfixutilLoadEventSinkFromDll(
+		( PCWSTR ) DllPath,
+		CFIX_EVENT_SINK_FLAG_SHOW_STACKTRACE_SOURCE_INFORMATION,
+		SysStringByteLen( Options ) > 0
+			? Options
+			: NULL,
+		&this->EventSink );
+}
+
 
 /*----------------------------------------------------------------------
  * ICfixExecutionActionInternal methods.
