@@ -10,6 +10,7 @@
 
 #include <cfix.h>
 #include <cfixapi.h>
+#include <cfixutil.h>
 #include <ole2.h>
 #include <cfixctl.h>
 #include <cfixctlsvr.h>
