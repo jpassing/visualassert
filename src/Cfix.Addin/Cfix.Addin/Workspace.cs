@@ -419,7 +419,7 @@ namespace Cfix.Addin
 			get { return this.lastItemRun != null; }
 		}
 
-		private void TerminateAllActiveHosts( AgentSet agent )
+		private bool TerminateAllActiveHosts( AgentSet agent )
 		{
 			IRun currentRun = this.toolWindows.Run.UserControl.Run;
 			if ( ( currentRun == null || currentRun.Status != TaskStatus.Running ) &&
@@ -432,20 +432,32 @@ namespace Cfix.Addin
 					Strings.TerminateActiveHosts ) )
 				{
 					agent.TerminateActiveHosts();
+					return true;
 				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return true;
 			}
 		}
 
-		private void TerminateAllActiveHosts()
+		private bool TerminateAllActiveHosts()
 		{
-			TerminateAllActiveHosts( this.runAgents );
+			bool noActiveHostsRemaining = TerminateAllActiveHosts( this.runAgents );
 
 #if INTELINSPECTOR
 			if ( this.intelInspector != null )
 			{
-				TerminateAllActiveHosts( this.intelInspector.RunAgents );
+				noActiveHostsRemaining &= 
+					TerminateAllActiveHosts( this.intelInspector.RunAgents );
 			}
 #endif
+
+			return noActiveHostsRemaining;
 		}
 
 		private IRun RunItem( 
@@ -472,7 +484,13 @@ namespace Cfix.Addin
 				// Make sure all hosts are terminates in order to avoid
 				// file locking issues during building.
 				//
-				TerminateAllActiveHosts();
+				if ( !TerminateAllActiveHosts() )
+				{
+					//
+					// Hosts running, user declined termination.
+					//
+					return null;
+				}
 
 				//
 				// Make sure the run window is reset while the build
