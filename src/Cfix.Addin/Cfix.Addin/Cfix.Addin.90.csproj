@@ -166,6 +166,12 @@
     <Compile Include="Windows\OptionsPageAdvanced.Designer.cs">
       <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\OptionsPageGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageGeneral.Designer.cs">
+      <DependentUpon>OptionsPageGeneral.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OptionsPageWindbg.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -229,6 +235,10 @@
     <EmbeddedResource Include="Windows\OptionsPageAdvanced.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageGeneral.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsPageGeneral.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\OptionsPageWindbg.resx">
       <DependentUpon>OptionsPageWindbg.cs</DependentUpon>

@@ -484,20 +484,21 @@ namespace Cfix.Addin.Windows
         public static void SetActiveSelectionItem( Window window, object item )
         {
             //
-            // Update property window.
+            // Update property window. Unsuppotred on VS100 due to casting problems.
             //
-
-            try
-            {
-                object[] propObjects = new object[] { item };
-                window.SetSelectionContainer( ref propObjects );
-            }
-            catch ( Exception )
-            {
-                //
-                // VS2010 likes to be flaky here.
-                //
-            }
+#if !VS100
+			try
+			{
+				object[] propObjects = new object[] { item };
+				window.SetSelectionContainer( ref propObjects );
+			}
+			catch ( Exception )
+			{
+				//
+				// Spurious E_FAIL exceptions.
+				//
+			}
+#endif
         }
 	}
 }

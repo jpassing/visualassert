@@ -279,6 +279,25 @@ namespace Cfix.Control.Native
 					}
 
 					this.action = CreateNativeAction( host );
+					
+					if ( host.EventDll != null && host.EventDll.Path != null )
+					{
+						try
+						{
+							this.action.RegisterEventDll(
+								host.EventDll.Path,
+								host.EventDll.Options,
+								0 );
+						}
+						catch ( Exception x )
+						{
+							CfixException wrapped =
+								this.item.Module.Agent.WrapException( x );
+							throw new CfixException( 
+								"Registering Event DLL failed: "+wrapped.Message, wrapped );
+						}
+					}
+
 					this.action.Run(
 						new Sink(
 							this.item.Module.Agent,

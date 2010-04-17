@@ -51,11 +51,6 @@ namespace Cfix.Addin.Windows
 
 			EnvironmentOptions envOpts = this.configuration.EnvironmentOptions;
 
-			this.autoAdjustCwd.Checked =
-				( ( envOpts & EnvironmentOptions.AutoAdjustCurrentDirectory ) != 0 );
-			this.autoRegisterVcDirs.Checked =
-				this.configuration.AutoRegisterVcDirectories;
-
 			if ( ( envOpts & EnvironmentOptions.HugeStack ) != 0 )
 			{
 				this.stackSizeHuge.Checked = true;
@@ -90,10 +85,6 @@ namespace Cfix.Addin.Windows
 				( uint ) this.instrumentedHostRegTimeout.Value * 1000;
 
 			EnvironmentOptions envOpts = EnvironmentOptions.ComNeutralThreading;
-			if ( this.autoAdjustCwd.Checked )
-			{
-				envOpts |= EnvironmentOptions.AutoAdjustCurrentDirectory;
-			}
 
 			if ( this.stackSizeHuge.Checked )
 			{
@@ -105,9 +96,6 @@ namespace Cfix.Addin.Windows
 			}
 
 			this.configuration.EnvironmentOptions = envOpts;
-
-			this.configuration.AutoRegisterVcDirectories = 
-				this.autoRegisterVcDirs.Checked;
 		}
 	}
 }

@@ -187,7 +187,8 @@ namespace Cfix.Control.Test
 				CfixTestModuleArch.CfixTestModuleArchI386, 
 				true,
 				HostCreationOptions.None,
-				Agent.DefaultHostRegistrationTimeout )
+				Agent.DefaultHostRegistrationTimeout,
+				null )
 		{
 		}
 

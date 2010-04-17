@@ -17,11 +17,15 @@
 	</Addin>
   <ToolsOptionsPage>
     <Category Name="Visual Assert">
+      <SubCategory Name="General">
+        <Assembly>D:\dev\wdev\cfixplus\trunk\bin\chk\i386\Cfix.Addin.80.dll</Assembly>
+        <FullClassName>Cfix.Addin.Windows.OptionsPageGeneral</FullClassName>
+      </SubCategory>
       <SubCategory Name="WinDBG Integration">
         <Assembly>D:\dev\wdev\cfixplus\trunk\bin\chk\i386\Cfix.Addin.80.dll</Assembly>
         <FullClassName>Cfix.Addin.Windows.OptionsPageWindbg</FullClassName>
       </SubCategory>
-	  <SubCategory Name="Advanced">
+      <SubCategory Name="Host Process">
         <Assembly>D:\dev\wdev\cfixplus\trunk\bin\chk\i386\Cfix.Addin.80.dll</Assembly>
         <FullClassName>Cfix.Addin.Windows.OptionsPageAdvanced</FullClassName>
       </SubCategory>

@@ -18,12 +18,14 @@ namespace Cfix.Control.Native
 		private readonly ICfixHost host;
 		private readonly string imagePath;
 		private readonly bool usesCustomImage;
+		private readonly EventDll eventDll;	// optional.
 
 		internal Host(
 			Agent agent,
 			ICfixHost host,
 			bool usesCustomImage,
-			string imagePath
+			string imagePath,
+			EventDll eventDll
 			)
 		{
 			Debug.Assert( agent != null );
@@ -32,8 +34,9 @@ namespace Cfix.Control.Native
 
 			this.agent = agent;
 			this.host = host;
-			this.imagePath = imagePath;
 			this.usesCustomImage = usesCustomImage;
+			this.imagePath = imagePath;
+			this.eventDll = eventDll;
 		}
 
 		~Host()
@@ -159,6 +162,11 @@ namespace Cfix.Control.Native
 		public string Path
 		{
 			get { return this.imagePath; }
+		}
+
+		public EventDll EventDll
+		{
+			get { return this.eventDll; }
 		}
 	}
 }

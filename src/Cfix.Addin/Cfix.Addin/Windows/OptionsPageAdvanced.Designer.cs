@@ -41,14 +41,10 @@ namespace Cfix.Addin.Windows
 			this.stackSizeLarge = new System.Windows.Forms.RadioButton();
 			this.stackSizeStd = new System.Windows.Forms.RadioButton();
 			this.stackSizeLabel = new System.Windows.Forms.Label();
-			this.eneralGroupBox = new System.Windows.Forms.GroupBox();
-			this.autoRegisterVcDirs = new System.Windows.Forms.CheckBox();
-			this.autoAdjustCwd = new System.Windows.Forms.CheckBox();
 			this.hostGroupBox.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.instrumentedHostRegTimeout ) ).BeginInit();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.hostRegTimeout ) ).BeginInit();
 			this.threadGroupBox.SuspendLayout();
-			this.eneralGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// hostGroupBox
@@ -60,7 +56,7 @@ namespace Cfix.Addin.Windows
 			this.hostGroupBox.Controls.Add( this.hostRegTimeoutLabel );
 			this.hostGroupBox.Controls.Add( this.instrumentedHostRegTimeout );
 			this.hostGroupBox.Controls.Add( this.hostRegTimeout );
-			this.hostGroupBox.Location = new System.Drawing.Point( 3, 164 );
+			this.hostGroupBox.Location = new System.Drawing.Point( 3, 70 );
 			this.hostGroupBox.Name = "hostGroupBox";
 			this.hostGroupBox.Size = new System.Drawing.Size( 385, 117 );
 			this.hostGroupBox.TabIndex = 0;
@@ -163,7 +159,7 @@ namespace Cfix.Addin.Windows
 			this.threadGroupBox.Controls.Add( this.stackSizeLarge );
 			this.threadGroupBox.Controls.Add( this.stackSizeStd );
 			this.threadGroupBox.Controls.Add( this.stackSizeLabel );
-			this.threadGroupBox.Location = new System.Drawing.Point( 4, 97 );
+			this.threadGroupBox.Location = new System.Drawing.Point( 3, 3 );
 			this.threadGroupBox.Name = "threadGroupBox";
 			this.threadGroupBox.Size = new System.Drawing.Size( 385, 61 );
 			this.threadGroupBox.TabIndex = 1;
@@ -212,42 +208,10 @@ namespace Cfix.Addin.Windows
 			this.stackSizeLabel.TabIndex = 1;
 			this.stackSizeLabel.Text = "Stack size:";
 			// 
-			// eneralGroupBox
-			// 
-			this.eneralGroupBox.Controls.Add( this.autoRegisterVcDirs );
-			this.eneralGroupBox.Controls.Add( this.autoAdjustCwd );
-			this.eneralGroupBox.Location = new System.Drawing.Point( 4, 4 );
-			this.eneralGroupBox.Name = "eneralGroupBox";
-			this.eneralGroupBox.Size = new System.Drawing.Size( 384, 87 );
-			this.eneralGroupBox.TabIndex = 2;
-			this.eneralGroupBox.TabStop = false;
-			this.eneralGroupBox.Text = "General";
-			// 
-			// autoRegisterVcDirs
-			// 
-			this.autoRegisterVcDirs.AutoSize = true;
-			this.autoRegisterVcDirs.Location = new System.Drawing.Point( 8, 51 );
-			this.autoRegisterVcDirs.Name = "autoRegisterVcDirs";
-			this.autoRegisterVcDirs.Size = new System.Drawing.Size( 255, 17 );
-			this.autoRegisterVcDirs.TabIndex = 0;
-			this.autoRegisterVcDirs.Text = "Automatically register VC++ directories on startup";
-			this.autoRegisterVcDirs.UseVisualStyleBackColor = true;
-			// 
-			// autoAdjustCwd
-			// 
-			this.autoAdjustCwd.AutoSize = true;
-			this.autoAdjustCwd.Location = new System.Drawing.Point( 9, 28 );
-			this.autoAdjustCwd.Name = "autoAdjustCwd";
-			this.autoAdjustCwd.Size = new System.Drawing.Size( 302, 17 );
-			this.autoAdjustCwd.TabIndex = 0;
-			this.autoAdjustCwd.Text = "Automatically adjust current directory to module base folder";
-			this.autoAdjustCwd.UseVisualStyleBackColor = true;
-			// 
 			// OptionsPageAdvanced
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add( this.eneralGroupBox );
 			this.Controls.Add( this.threadGroupBox );
 			this.Controls.Add( this.hostGroupBox );
 			this.Name = "OptionsPageAdvanced";
@@ -258,8 +222,6 @@ namespace Cfix.Addin.Windows
 			( ( System.ComponentModel.ISupportInitialize ) ( this.hostRegTimeout ) ).EndInit();
 			this.threadGroupBox.ResumeLayout( false );
 			this.threadGroupBox.PerformLayout();
-			this.eneralGroupBox.ResumeLayout( false );
-			this.eneralGroupBox.PerformLayout();
 			this.ResumeLayout( false );
 
 		}
@@ -279,8 +241,5 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.Label stackSizeLabel;
 		private System.Windows.Forms.RadioButton stackSizeHuge;
 		private System.Windows.Forms.RadioButton stackSizeLarge;
-		private System.Windows.Forms.GroupBox eneralGroupBox;
-		private System.Windows.Forms.CheckBox autoAdjustCwd;
-		private System.Windows.Forms.CheckBox autoRegisterVcDirs;
 	}
 }

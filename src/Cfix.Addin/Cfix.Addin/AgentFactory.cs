@@ -15,14 +15,16 @@ namespace Cfix.Addin
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			return Agent.CreateLocalAgent(
 				arch,
 				allowInproc,
 				flags,
-				hostRegistrationTimeout );
+				hostRegistrationTimeout,
+				eventDll );
 		}
 
 		protected virtual uint GetHostRegistrationTimeout(
@@ -47,7 +49,8 @@ namespace Cfix.Addin
 				arch,
 				false,
 				config.HostCreationOptions,
-				GetHostRegistrationTimeout( config ) );
+				GetHostRegistrationTimeout( config ),
+				config.GetEventDll( arch ) );
 			agent.SetTrialLicenseCookie( config.Cookie );
 
 			//
@@ -86,7 +89,8 @@ namespace Cfix.Addin
 				arch,
 				true,
 				config.HostCreationOptions,
-				GetHostRegistrationTimeout( config ) );
+				GetHostRegistrationTimeout( config ),
+				config.GetEventDll( arch ) );
 			agent.SetTrialLicenseCookie( config.Cookie );
 
 			//

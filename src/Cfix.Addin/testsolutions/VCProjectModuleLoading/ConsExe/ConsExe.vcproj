@@ -43,6 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="$(INTEL_DEF_IA32_INSTALL_DIR)IPP\ia32\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ippvm.lib ippvc.lib ippsr.lib ippsc.lib ippr.lib ippm.lib ippj.lib ippgen.lib ippdi.lib ippcv.lib ippch.lib ippcc.lib ippac.lib ippdc.lib ippi.lib ipps.lib ippcore.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(INTEL_DEF_IA32_INSTALL_DIR)IPP\ia32\stublib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

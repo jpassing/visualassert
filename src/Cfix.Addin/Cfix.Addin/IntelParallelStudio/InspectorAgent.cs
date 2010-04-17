@@ -24,14 +24,16 @@ namespace Cfix.Addin.IntelParallelStudio
 			CfixTestModuleArch arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 			: base( 
 				agent, 
 				arch, 
 				allowInproc, 
 				flags,
-				hostRegistrationTimeout )
+				hostRegistrationTimeout,
+				eventDll )
 		{
 			this.inspector = inspector;
 		}
@@ -108,7 +110,8 @@ namespace Cfix.Addin.IntelParallelStudio
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			return new InspectorAgent(
@@ -117,7 +120,8 @@ namespace Cfix.Addin.IntelParallelStudio
 				( CfixTestModuleArch ) arch,
 				allowInproc,
 				flags,
-				hostRegistrationTimeout );
+				hostRegistrationTimeout,
+				eventDll );
 		}
 	}
 }

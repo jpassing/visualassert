@@ -199,14 +199,29 @@ namespace Cfix.Control.RunControl
 			}
 
 			this.status = TaskStatus.Running;
+
+
 			try
 			{
-				foreach ( IAction act in this.actions )
+				this.rundownLock.Acquire();
+				try
 				{
-					IHost host = GetHost( act );
-					Debug.Assert( host != null );
+					foreach ( IAction act in this.actions )
+					{
+						IHost host = GetHost( act );
+						Debug.Assert( host != null );
 
-					act.Run( host );
+						act.Run( host );
+					}
+				}
+				finally
+				{
+					//
+					// N.B. Run down lock needs to be released before
+					// ForceComplete is called - otherwise, a deadlock
+					// occurs.
+					//
+					this.rundownLock.Release();
 				}
 			}
 			catch ( COMException x )
@@ -269,8 +284,6 @@ namespace Cfix.Control.RunControl
 			}
 			finally
 			{
-				this.rundownLock.Release();
-
 				//
 				// We are done with the host. Dispose it s.t. the 
 				// process can terminate.
@@ -317,7 +330,6 @@ namespace Cfix.Control.RunControl
 				}
 
 				AsyncRunDelegate asyncRun = AsyncRun;
-				this.rundownLock.Acquire();
 				asyncRun.BeginInvoke(
 					AsyncRunCompletionCallback,
 					asyncRun );

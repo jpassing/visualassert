@@ -567,6 +567,110 @@ namespace Cfix.Addin
 					RegistryValueKind.DWord );
 			}
 		}
+
+		public EventDll EventDll32
+		{
+			get
+			{
+				string dll = ( string ) this.key.GetValue( "EventDll32", null );
+				if ( String.IsNullOrEmpty( dll ) )
+				{
+					return null;
+				}
+
+				return new EventDll(
+					dll,
+					( string ) this.key.GetValue( "EventDllOptions32", null ) );
+			}
+			set
+			{
+				if ( value == null ||  String.IsNullOrEmpty( value.Path ) )
+				{
+					this.key.DeleteValue( "EventDll32", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDll32", value.Path, RegistryValueKind.String );
+				}
+
+				if ( value == null || String.IsNullOrEmpty( value.Options ) )
+				{
+					this.key.DeleteValue( "EventDllOptions32", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDllOptions32", value.Options, RegistryValueKind.String );
+				}
+			}
+		}
+
+		public EventDll EventDll64
+		{
+			get
+			{
+				string dll = ( string ) this.key.GetValue( "EventDll64", null );
+				if ( String.IsNullOrEmpty( dll ) )
+				{
+					return null;
+				}
+
+				return new EventDll(
+					dll,
+					( string ) this.key.GetValue( "EventDllOptions64", null ) );
+			}
+			set
+			{
+				if ( value == null || String.IsNullOrEmpty( value.Path ) )
+				{
+					this.key.DeleteValue( "EventDll64", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDll64", value.Path, RegistryValueKind.String );
+				}
+
+				if ( value == null || String.IsNullOrEmpty( value.Options ) )
+				{
+					this.key.DeleteValue( "EventDllOptions64", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDllOptions64", value.Options, RegistryValueKind.String );
+				}
+			}
+		}
+
+		public EventDll GetEventDll( Architecture arch )
+		{
+			switch ( arch )
+			{
+				case Architecture.I386:
+					return EventDll32;
+
+				case Architecture.Amd64:
+					return EventDll64;
+
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		public void SetEventDll( Architecture arch, EventDll eventDll )
+		{
+			switch ( arch )
+			{
+				case Architecture.I386:
+					this.EventDll32 = eventDll;
+					break;
+
+				case Architecture.Amd64:
+					this.EventDll64 = eventDll;
+					break;
+
+				default:
+					throw new ArgumentException();
+			}
+		}
 		
 		/*----------------------------------------------------------------------
 		 * Advanced.

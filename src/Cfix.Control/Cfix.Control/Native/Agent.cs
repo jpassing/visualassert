@@ -31,6 +31,7 @@ namespace Cfix.Control.Native
 		private uint timeout;
 
 		private readonly HostCreationOptions flags;
+		private readonly EventDll eventDll;
 
 		private readonly LocalProcessWatcher processWatcher = new LocalProcessWatcher();
 
@@ -55,7 +56,8 @@ namespace Cfix.Control.Native
 			CfixTestModuleArch arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll	// optional
 			)
 		{
 			Debug.Assert( agent != null );
@@ -64,6 +66,7 @@ namespace Cfix.Control.Native
 			this.arch = arch;
 			this.flags = flags;
 			this.timeout = hostRegistrationTimeout;
+			this.eventDll = eventDll;
 
 			if ( allowInproc )
 			{
@@ -236,7 +239,8 @@ namespace Cfix.Control.Native
 				customHostPath != null,
 				customHostPath != null 
 					? customHostPath
-					: this.agent.GetHostPath( this.arch ) );
+					: this.agent.GetHostPath( this.arch ),
+				this.eventDll );
 		}
 
 		public ITestItemCollection LoadModule(
@@ -345,7 +349,8 @@ namespace Cfix.Control.Native
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			return new Agent(
@@ -353,7 +358,23 @@ namespace Cfix.Control.Native
 				( CfixTestModuleArch ) arch,
 				allowInproc,
 				flags,
-				hostRegistrationTimeout );
+				hostRegistrationTimeout,
+				eventDll );
+		}
+
+		public static Agent CreateLocalAgent(
+			Architecture arch,
+			bool allowInproc,
+			uint hostRegistrationTimeout,
+			EventDll eventDll
+			)
+		{
+			return CreateLocalAgent(
+				arch,
+				allowInproc,
+				HostCreationOptions.None,
+				hostRegistrationTimeout,
+				eventDll );
 		}
 
 		public static Agent CreateLocalAgent(
@@ -366,8 +387,8 @@ namespace Cfix.Control.Native
 				arch,
 				allowInproc,
 				HostCreationOptions.None,
-				hostRegistrationTimeout );
+				hostRegistrationTimeout,
+				null );
 		}
-
 	}
 }

@@ -28,7 +28,8 @@ namespace Cfix.Addin.IntelParallelStudio
 			Architecture arch,
 			bool allowInproc,
 			HostCreationOptions flags,
-			uint hostRegistrationTimeout
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			Agent agent = InspectorAgent.CreateLocalInspectorAgent(
@@ -36,7 +37,8 @@ namespace Cfix.Addin.IntelParallelStudio
 				arch,
 				allowInproc,
 				flags,
-				hostRegistrationTimeout );
+				hostRegistrationTimeout,
+				eventDll );
 
 			return agent;
 		}
