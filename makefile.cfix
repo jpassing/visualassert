@@ -60,6 +60,7 @@ i386chk: version
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix32.exe	bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfix.dll 		bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixemb.dll 	bin\chk\i386
+	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixcons.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cfixkl.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\bin\chk\i386\cdiag.dll 	bin\chk\i386
 	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\chk\i386
@@ -74,6 +75,7 @@ i386fre: version
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix32.exe	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfix.dll 		bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixemb.dll 	bin\fre\i386
+	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixcons.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cfixkl.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\bin\fre\i386\cdiag.dll 	bin\fre\i386
 	copy /Y $(CFIX_TREE)\redist\i386\dbghelp.dll 	bin\fre\i386
@@ -88,6 +90,7 @@ amd64chk: version
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix64.exe	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfix.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixemb.dll 	bin\chk\amd64
+	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixcons.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cfixkl.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\bin\chk\amd64\cdiag.dll 	bin\chk\amd64
 	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\chk\amd64
@@ -102,6 +105,7 @@ amd64fre: version
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix64.exe	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfix.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixemb.dll 	bin\fre\amd64
+	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixcons.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cfixkl.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\bin\fre\amd64\cdiag.dll 	bin\fre\amd64
 	copy /Y $(CFIX_TREE)\redist\amd64\dbghelp.dll 	bin\fre\amd64

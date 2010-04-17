@@ -169,7 +169,13 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="8.0"/>
                   <XmlFile
-                    Id="XmlConfigOptionsWindbgAssemblyVs80"
+                     Id="XmlConfigOptionsGeneralAssemblyVs80"
+                     Action="setValue"
+                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                     ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
+                     Value="[DirBinI386]cfix.addin.80.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsWinDbgAssemblyVs80"
                     Action="setValue"
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
                     ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
@@ -178,7 +184,7 @@
                     Id="XmlConfigOptionsAdvancedAssemblyVs80"
                     Action="setValue"
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Advanced'[\]]/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.80.dll"/>
                 </Component>
               </Directory>
@@ -205,6 +211,12 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="9.0"/>
                   <XmlFile
+                    Id="XmlConfigOptionsGeneralAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
+                  <XmlFile
                     Id="XmlConfigOptionsWinDbgAssemblyVs90"
                     Action="setValue"
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
@@ -214,7 +226,7 @@
                     Id="XmlConfigOptionsAdvancedAssemblyVs90"
                     Action="setValue"
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Advanced'[\]]/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.90.dll"/>
                 </Component>
               </Directory>
@@ -242,6 +254,12 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="10.0"/>
                   <XmlFile
+                     Id="XmlConfigOptionsGeneralAssemblyVs100"
+                     Action="setValue"
+                     File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                     ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
+                     Value="[DirBinI386]cfix.addin.100.dll"/>
+                  <XmlFile
                     Id="XmlConfigOptionsWinDbgAssemblyVs100"
                     Action="setValue"
                     File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
@@ -251,7 +269,7 @@
                     Id="XmlConfigOptionsAdvancedAssemblyVs100"
                     Action="setValue"
                     File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Advanced'[\]]/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.100.dll"/>
                 </Component>
               </Directory>
@@ -607,6 +625,13 @@
                 <?include cfix_samples_usercc.wxs?>
               </Component>
             </Directory>
+            <Directory Id="DirSamplesEventDll" Name="EventDll">
+              <Directory Id="DirSamplesEventDllLogfile" Name="Logfile">
+                <Component Id="CompSamplesEventDllLogfile" DiskId="1" Guid="94e5af44-9a04-44a0-85c4-9b18bbd2b2ce">
+                  <?include cfix_samples_eventdll.wxs?>
+                </Component>
+              </Directory>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
@@ -625,6 +650,7 @@
       <ComponentRef Id="CompSamplesKernel"/>
       <ComponentRef Id="CompSamplesUser"/>
       <ComponentRef Id="CompSamplesUserCc"/>
+      <ComponentRef Id="CompSamplesEventDllLogfile"/>
 
       <Feature Id="FeatureBinAmd64"
                Absent="allow"
