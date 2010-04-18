@@ -8,11 +8,37 @@ using Cfix.Control.Native;
 
 namespace Cfix.Addin.Test
 {
-	internal abstract class ProjectCollectionBase : GenericTestItemCollection
+	internal abstract class ProjectCollectionBase : SortedTestItemCollection
 	{
 		protected readonly Solution2 solution;
 		protected readonly AgentSet agentSet;
 		protected readonly Configuration config;
+
+		//
+		// Emulate Solution Explorer's ordering: Solution Folders go first,
+		// then sort by name.
+		//
+		private class SolutionExplorerComparer : IComparer<ITestItem>
+		{
+			public int Compare( ITestItem x, ITestItem y )
+			{
+				bool xIsSolFolder = x is SolutionFolderTestCollection;
+				bool yIsSolFolder = y is SolutionFolderTestCollection;
+
+				if ( xIsSolFolder && !yIsSolFolder )
+				{
+					return -1;
+				}
+				else if ( yIsSolFolder && !xIsSolFolder )
+				{
+					return 1;
+				}
+				else
+				{
+					return x.Name.CompareTo( y.Name );
+				}
+			}
+		}
 
 		protected ProjectCollectionBase(
 			ITestItemCollection parent,
@@ -21,7 +47,7 @@ namespace Cfix.Addin.Test
 			AgentSet agentSet,
 			Configuration config
 			)
-			: base( parent, name )
+			: base( parent, name, new SolutionExplorerComparer() )
 		{
 			this.solution = solution;
 			this.agentSet = agentSet;

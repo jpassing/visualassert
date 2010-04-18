@@ -574,8 +574,8 @@ namespace Cfix.Addin.Windows
 			if ( !this.workspace.ToolWindows.Explorer.Visible )
 			{
 				//
-				// Continueing would not only be futil, it would also
-				// cause problems as the controls may not be avaible
+				// Continueing would not only be futile, it would also
+				// cause problems as the controls may not be available
 				// yet.
 				//
 				return;
