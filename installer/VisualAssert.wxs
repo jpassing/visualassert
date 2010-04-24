@@ -31,16 +31,12 @@
 
       <Custom Action='FormatDevenvPath80' After='RemoveFiles'></Custom>
       <Custom Action='FormatDevenvPath90' After='RemoveFiles'></Custom>
-      <?ifdef Vs100 ?>
       <Custom Action='FormatDevenvPath100' After='RemoveFiles'></Custom>
-      <?endif?>
 
       <!-- N.B. REMOVE="ALL" also avoids reset during repair -->
       <Custom Action='ResetAddinVs80' After='FormatDevenvPath80'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
       <Custom Action='ResetAddinVs90' After='FormatDevenvPath90'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
-      <?ifdef Vs100 ?>
       <Custom Action='ResetAddinVs100' After='FormatDevenvPath100'><![CDATA[ REMOVE="ALL" AND VS100INSTALLED ]]></Custom>
-      <?endif?>
 
       <!-- Older versions are faulty; be sure to reset again (VS80, VS90 only) -->
       <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS80INSTALLED ]]></Custom>
@@ -87,7 +83,6 @@
       <RegistrySearch Id="SearchVc90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
 
-    <?ifdef Vs100 ?>
     <Property Id="VS100INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs100" Root="HKCR" Key="VisualStudio.DTE.10.0" Type="raw" />
     </Property>
@@ -99,7 +94,6 @@
     <Property Id="VC100INSTALLDIR" Secure="yes">
       <RegistrySearch Id="SearchVc100InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\10.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
-    <?endif?>
     <!-- END VS VERSION SPECIFIC -->
 
 
@@ -113,15 +107,9 @@
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
     </Condition>
 
-    <?ifdef Vs100 ?>
     <Condition Message='Neither a Visual Studio 2005 , 2008, nor a Visual Studio 2010 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
       <![CDATA[ VS80INSTALLED OR VS90INSTALLED OR VS100INSTALLED]]>
     </Condition>
-    <?else?>
-    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
-      <![CDATA[ VS80INSTALLED OR VS90INSTALLED ]]>
-    </Condition>
-    <?endif?>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
@@ -234,7 +222,6 @@
           </Directory>
         </Directory>
 
-        <?ifdef Vs100 ?>
         <Directory Id="DirAppDataMs100" Name="Microsft" LongName="Microsoft">
           <Directory Id="DirAppDataMsVs100" Name="VisualSt" LongName="VisualStudio">
             <Directory Id="DirAppDataMsVs100100" Name="100" LongName="10.0">
@@ -276,7 +263,6 @@
             </Directory>
           </Directory>
         </Directory>
-        <?endif?>
 
         <!-- END VS VERSION SPECIFIC -->
       </Directory>
@@ -389,7 +375,6 @@
           </Directory>
         </Directory>
 
-        <?ifdef Vs100?>
         <Directory Id="VC100INSTALLDIR" Name="VC">
           <Directory Id="DirVcAddClassVs100" Name="VcAddCls" LongName="VCAddClass">
             <Directory Id="DirVcAddClassCfixVs100" Name="VAssert" LongName="VisualAssert">
@@ -441,7 +426,6 @@
             </Directory>
           </Directory>
         </Directory>
-        <?endif?>
         <!-- END VS VERSION SPECIFIC -->
         
         <Directory Id="INSTALLLOCATION" Name="VAssert" LongName="VisualAssert">
@@ -545,9 +529,7 @@
                 <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
                 <File Id="FileCfixAddin80DllI386" Name="cfaddin8.dll" LongName="cfix.addin.80.dll" Source="bin\fre\i386\cfix.addin.80.dll" DiskId="1"/>
                 <File Id="FileCfixAddin90DllI386" Name="cfaddin9.dll" LongName="cfix.addin.90.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
-                <?ifdef Vs100?>
                 <File Id="FileCfixAddin100DllI386" Name="cfaddi10.dll" LongName="cfix.addin.100.dll" Source="bin\fre\i386\cfix.addin.100.dll" DiskId="1"/>
-                <?endif?>
 
                 <!--
                 <File Id="FileLicAdminExeI386" Name="licadmin.exe" Source="bin\fre\i386\licadmin.exe" DiskId="1"/>
@@ -696,7 +678,6 @@
         <ComponentRef Id="CompWizFixtureTemplates1033Vs90"/>
       </Feature>
       
-      <?ifdef Vs100?>
       <Feature Id="FeatureVs100"
               Absent="allow"
               Title="Visual Studio 2010 integration"
@@ -711,7 +692,6 @@
         <ComponentRef Id="CompWizFixtureScripts1033Vs100"/>
         <ComponentRef Id="CompWizFixtureTemplates1033Vs100"/>
       </Feature>
-      <?endif?>
 
       <!-- END VS VERSION SPECIFIC -->
 
@@ -744,15 +724,11 @@
 
     <CustomAction Id="FormatDevenvPath80" Property="VS80DEVENV" Value="[VS80INSTALLDIR]devenv.exe"/>
     <CustomAction Id="FormatDevenvPath90" Property="VS90DEVENV" Value="[VS90INSTALLDIR]devenv.exe"/>
-    <?ifdef Vs100?>
     <CustomAction Id="FormatDevenvPath100" Property="VS100DEVENV" Value="[VS100INSTALLDIR]devenv.exe"/>
-    <?endif?>
     
     <CustomAction Id="ResetAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
     <CustomAction Id="ResetAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
-    <?ifdef Vs100?>
     <CustomAction Id="ResetAddinVs100" Execute="commit" Return="ignore" Impersonate="yes" Property="VS100DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
-    <?endif?>
 
     <CustomAction Id="ResetLegacyAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
     <CustomAction Id="ResetLegacyAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
