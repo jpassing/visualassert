@@ -331,9 +331,6 @@ Cleanup:
 	return Hr;
 }
 
-#define CFIXCTLP_EMB_INIT_ENVVAR \
-		CFIX_EMB_INIT_ENVVAR_NAME L"=cfixctl.dll!CfixctlServeHost"
-
 static HRESULT CfixctlsSpawnHost(
 	__in ICfixAgent *Agent,
 	__in CfixTestModuleArch Arch,
@@ -478,6 +475,31 @@ static HRESULT CfixctlsSpawnHost(
 	}
 
 	//
+	// Prepare embedding environment variable.
+	//
+	// N.B. Use absolute path to DLL in order not ro rely on PATH.
+	//
+	WCHAR OwnDllPath[ MAX_PATH ];
+	if ( !GetModuleFileName( 
+		CfixctlpGetModule(), 
+		OwnDllPath, 
+		_countof( OwnDllPath ) ) )
+	{
+		return HRESULT_FROM_WIN32( GetLastError() );
+	}
+
+	WCHAR EmbeddingEnvVar[ 300 ];
+	Hr = StringCchPrintf( 
+		EmbeddingEnvVar,
+		_countof( EmbeddingEnvVar ),
+		CFIX_EMB_INIT_ENVVAR_NAME L"=%s!CfixctlServeHost",
+		OwnDllPath );
+	if ( FAILED( Hr ) )
+	{
+		return Hr;
+	}
+
+	//
 	// Prepare environment.
 	//
 	// The environment consists of the custom environment (if any)
@@ -493,7 +515,7 @@ static HRESULT CfixctlsSpawnHost(
 		//
 		// Embedding\n.
 		//
-		( CustomHostPath == NULL ? 0 : wcslen( CFIXCTLP_EMB_INIT_ENVVAR ) + 1 ) +
+		( CustomHostPath == NULL ? 0 : wcslen( EmbeddingEnvVar ) + 1 ) +
 
 		//
 		// name=value\n
@@ -520,9 +542,10 @@ static HRESULT CfixctlsSpawnHost(
 	Hr = StringCchPrintf(
 		FullEnvironment,
 		FullEnvironmentCch,
-		L"%s%s" CFIXCTLP_MONIKER_ENVVAR_NAME L"=%s\n",
+		L"%s%s%s" CFIXCTLP_MONIKER_ENVVAR_NAME L"=%s\n",
 		CustomEnvironment ? CustomEnvironment : L"",
-		CustomHostPath ? CFIXCTLP_EMB_INIT_ENVVAR L"\n" : L"",
+		CustomHostPath ? EmbeddingEnvVar : L"",
+		CustomHostPath ? L"\n" : L"",
 		AgentMkDisplayName
 		);
 	if ( FAILED( Hr ) )
