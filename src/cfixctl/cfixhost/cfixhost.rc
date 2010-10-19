@@ -53,7 +53,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1, 0, 3, 3731
+ FILEVERSION 1, 1, 0, 3780
  PRODUCTVERSION 1,1,0,1
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -70,12 +70,12 @@ BEGIN
         BLOCK "000004b0"
         BEGIN
             VALUE "CompanyName", "Johannes Passing"
-            VALUE "FileDescription", "CfixHost"
-            VALUE "FileVersion", "1, 0, 3, 3731\0"
-            VALUE "InternalName", "Cfix"
+            VALUE "FileDescription", "Visual Assert/cfix host process"
+            VALUE "FileVersion", "1, 1, 0, 3780\0"
+            VALUE "InternalName", "Visual Assert/cfix host process"
             VALUE "LegalCopyright", "Copyright (C) 2009 Johannes Passing"
-            VALUE "OriginalFilename", "Cfix"
-            VALUE "ProductName", "Cfix"
+            VALUE "OriginalFilename", "cfixhost"
+            VALUE "ProductName", "Visual Assert/cfix"
             VALUE "ProductVersion", "1, 1, 0, 1"
         END
     END
@@ -108,6 +108,37 @@ IDI_ICON1               ICON                    "icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

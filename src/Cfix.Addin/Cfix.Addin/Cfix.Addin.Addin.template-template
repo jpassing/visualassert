@@ -20,9 +20,17 @@
 	</Addin>
   <ToolsOptionsPage>
     <Category Name="Visual Assert">
+	  <SubCategory Name="General">
+        <Assembly>Cfix.Addin.xx.dll</Assembly>
+        <FullClassName>Cfix.Addin.Windows.OptionsPageGeneral</FullClassName>
+      </SubCategory>
       <SubCategory Name="WinDBG Integration">
         <Assembly>Cfix.Addin.xx.dll</Assembly>
         <FullClassName>Cfix.Addin.Windows.OptionsPageWindbg</FullClassName>
+      </SubCategory>
+      <SubCategory Name="Host Process">
+        <Assembly>Cfix.Addin.xx.dll</Assembly>
+        <FullClassName>Cfix.Addin.Windows.OptionsPageAdvanced</FullClassName>
       </SubCategory>
     </Category>
   </ToolsOptionsPage>

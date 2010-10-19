@@ -16,7 +16,8 @@ namespace Cfix.Control.Test
 		{
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
-				false );
+				false,
+				Agent.DefaultHostRegistrationTimeout );
 			agent.DefaultEnvironment.MergeEnvironmentVariables(
 				Environment.GetEnvironmentVariables() );
 
@@ -34,7 +35,8 @@ namespace Cfix.Control.Test
 		{
 			IAgent agent = Agent.CreateLocalAgent(
 				Architecture.I386,
-				false );
+				false,
+				Agent.DefaultHostRegistrationTimeout );
 			agent.DefaultEnvironment.MergeEnvironmentVariables(
 				Environment.GetEnvironmentVariables() );
 

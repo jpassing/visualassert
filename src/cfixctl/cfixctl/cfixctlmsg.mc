@@ -177,3 +177,12 @@ SymbolicName	= CFIXCTL_E_HOST_IMAGE_HAS_NO_FIXTURES
 Language		= English
 The custom host process contains no fixture and therefore was not started.
 .
+
+MessageId		= 0xB013
+Severity		= Warning
+Facility		= Interface
+SymbolicName	= CFIXCTL_E_SHIM_IMAGE_NOT_FOUND
+Language		= English
+The shim image could not be located.
+.
+

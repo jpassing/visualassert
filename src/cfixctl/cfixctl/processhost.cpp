@@ -26,6 +26,7 @@ class ProcessHost :
 
 private:
 	ICfixHost *Host;
+	ULONG ProcessId;
 	HANDLE ProcessOrJob;
 	BOOL UsesJob;
 
@@ -79,6 +80,7 @@ public:
 
 	STDMETHOD( Initialize )(
 		__in ICfixHost *RemoteHost,
+		__in ULONG ProcessId,
 		__in HANDLE ProcessOrJob,
 		__in BOOL UsesJob
 		);
@@ -239,14 +241,13 @@ STDMETHODIMP ProcessHost::GetHostProcessId(
 	__out ULONG *Pid
 	)
 {
-	if ( ! this->Host )
-	{
-		return E_UNEXPECTED;
-	}
-	else
-	{
-		return Host->GetHostProcessId( Pid );
-	}
+	//
+	// N.B. In case a shim is used, we have to return
+	// the shim's process id. Therefore, do not delegate
+	// the call but use this->ProcessId.
+	//
+	*Pid = this->ProcessId;
+	return S_OK;
 }
 
 /*------------------------------------------------------------------
@@ -255,6 +256,7 @@ STDMETHODIMP ProcessHost::GetHostProcessId(
 
 STDMETHODIMP ProcessHost::Initialize(
 	__in ICfixHost *RemoteHost,
+	__in ULONG ProcessId,
 	__in HANDLE ProcessOrJob,
 	__in BOOL UsesJob
 	)
@@ -271,6 +273,7 @@ STDMETHODIMP ProcessHost::Initialize(
 
 	RemoteHost->AddRef();
 	this->Host			= RemoteHost;
+	this->ProcessId		= ProcessId;
 	this->ProcessOrJob	= ProcessOrJob;
 	this->UsesJob		= UsesJob;
 

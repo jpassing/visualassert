@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\bin\fre\i386\</OutputPath>
-    <DefineConstants>TRACE;FREEWARE, VS100</DefineConstants>
+    <DefineConstants>TRACE;FREEWARE, VS100, INTELINSPECTOR_</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
@@ -44,7 +44,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\..\bin\chk\i386\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FREEWARE, VS100</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FREEWARE, VS100, INTELINSPECTOR_</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentFactory.cs" />
     <Compile Include="ArchitectureUtil.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -80,6 +81,23 @@
     <Compile Include="Dte\VSConstants.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBuildableTestItem.cs" />
+    <Compile Include="IntelParallelStudio\Inspector.cs" />
+    <Compile Include="IntelParallelStudio\InspectorAgent.cs" />
+    <Compile Include="IntelParallelStudio\InspectorAgentFactory.cs" />
+    <Compile Include="IntelParallelStudio\InspectorException.cs" />
+    <Compile Include="IntelParallelStudio\InspectorHostEnvironment.cs" />
+    <Compile Include="IntelParallelStudio\InspectorLevel.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResultFile.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResultFilter.cs" />
+    <Compile Include="IntelParallelStudio\InspectorRunCompiler.cs" />
+    <Compile Include="IntelParallelStudio\InspectorTask.cs" />
+    <Compile Include="IntelParallelStudio\ProblemDescriptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemDescriptions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="IntelParallelStudio\ResultLocation.cs" />
+    <Compile Include="IntelParallelStudio\InspectorResult.cs" />
     <Compile Include="LicenseInfo.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="ProjectKinds.cs" />
@@ -140,6 +158,18 @@
     <Compile Include="Windows\ExplorerWindow.designer.cs">
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\OptionsPageAdvanced.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageAdvanced.Designer.cs">
+      <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OptionsPageGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\OptionsPageGeneral.Designer.cs">
+      <DependentUpon>OptionsPageGeneral.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OptionsPageWindbg.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -172,6 +202,11 @@
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="IntelParallelStudio\ProblemDescriptions.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemDescriptions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -195,6 +230,14 @@
       <DependentUpon>ExplorerWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageAdvanced.resx">
+      <DependentUpon>OptionsPageAdvanced.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\OptionsPageGeneral.resx">
+      <DependentUpon>OptionsPageGeneral.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\OptionsPageWindbg.resx">
       <DependentUpon>OptionsPageWindbg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -209,6 +252,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="Cfixctl">
+      <Guid>{57F93E5A-D44F-11DD-99E2-0016D3B98F9B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="EnvDTE">
       <Guid>{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}</Guid>
       <VersionMajor>8</VersionMajor>

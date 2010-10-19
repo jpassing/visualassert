@@ -172,10 +172,16 @@
     <value>Submit &amp;Feedback</value>
   </data>
   <data name="IncompatibleModule" xml:space="preserve">
-    <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). To debug, please restrict your selection to modules of a single CPU architecture/type.</value>
+    <value>The testrun comprises modules of differing CPU architectures or of differing type (DLL vs. EXE). For this kind of run, please restrict your selection to modules of a single CPU architecture/type.</value>
+  </data>
+  <data name="InitializingRun" xml:space="preserve">
+    <value>Initializing test run...</value>
   </data>
   <data name="InvalidWindbgInstallFolder" xml:space="preserve">
     <value>The path '{0}' does not refer to a valid WinDBG installation folder</value>
+  </data>
+  <data name="IssuesFoundByInspector" xml:space="preserve">
+    <value>Issues found by Intel Inspector</value>
   </data>
   <data name="MainMenuCaption" xml:space="preserve">
     <value>Vis&amp;ual Assert</value>

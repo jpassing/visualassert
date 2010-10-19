@@ -13,6 +13,8 @@ using Microsoft.Win32;
 using Cfix.Control;
 using Cfix.Control.Native;
 using EnvDTE80;
+using Cfix.Control.RunControl;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin
 {
@@ -383,6 +385,23 @@ namespace Cfix.Addin
 			}
 		}
 
+		public RunCompilerType RunCompilerType
+		{
+			get
+			{
+				return ( RunCompilerType ) this.key.GetValue(
+					"RunCompilerType",
+					RunCompilerType.Simple );
+			}
+			set
+			{
+				this.key.SetValue(
+					"RunCompilerType",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
 		public bool AutoRegisterVcDirectories
 		{
 			get
@@ -397,6 +416,53 @@ namespace Cfix.Addin
 					RegistryValueKind.DWord );
 			}
 		}
+
+#if INTELINSPECTOR
+		public bool ShowInspectorCfixResults
+		{
+			get
+			{
+				return ( ( int ) this.key.GetValue( "ShowInspectorCfixResults", 0 ) ) == 1;
+			}
+			set
+			{
+				this.key.SetValue(
+					"ShowInspectorCfixResults",
+					value ? 1 : 0,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public InspectorLevel MostRecentlyUsedInspectorMemoryAnalysisLevel
+		{
+			get
+			{
+				return InspectorLevel.FromString(
+					( string ) this.key.GetValue( "MruInspectorMemoryAnalysisLevel",
+					InspectorLevel.CheckMemoryAccessIssues.ToString() ) ); 
+			}
+			set
+			{
+				this.key.SetValue( 
+					"MruInspectorMemoryAnalysisLevel", value, RegistryValueKind.String );
+			}
+		}
+
+		public InspectorLevel MostRecentlyUsedInspectorThreadingAnalysisLevel
+		{
+			get
+			{
+				return InspectorLevel.FromString(
+					( string ) this.key.GetValue( "MruInspectorThreadingAnalysisLevel",
+					InspectorLevel.CheckDeadlocksAndRaces.ToString() ) );
+			}
+			set
+			{
+				this.key.SetValue(
+					"MruInspectorThreadingAnalysisLevel", value, RegistryValueKind.String );
+			}
+		}
+#endif
 
 		public string MostRecentlyUsedDirectory
 		{
@@ -461,6 +527,151 @@ namespace Cfix.Addin
 			}
 		}
 
+		public uint HostRegistrationTimeout
+		{
+			get
+			{
+				object value = this.key.GetValue(
+					"HostRegistrationTimeout",
+					( int ) Agent.DefaultHostRegistrationTimeout );
+				return ( uint ) ( int ) value;
+			}
+			set
+			{
+				this.key.SetValue(
+					"HostRegistrationTimeout",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public uint InstrumentedHostRegistrationTimeout
+		{
+			//
+			// N.B. Use longer default timeout to compensate 
+			// instrumentation slowdown.
+			//
+
+			get
+			{
+				object value = this.key.GetValue(
+					"InstrumentedHostRegistrationTimeout",
+					( int ) ( 50 * Agent.DefaultHostRegistrationTimeout ) );
+				return ( uint ) ( int ) value;
+			}
+			set
+			{
+				this.key.SetValue(
+					"InstrumentedHostRegistrationTimeout",
+					value,
+					RegistryValueKind.DWord );
+			}
+		}
+
+		public EventDll EventDll32
+		{
+			get
+			{
+				string dll = ( string ) this.key.GetValue( "EventDll32", null );
+				if ( String.IsNullOrEmpty( dll ) )
+				{
+					return null;
+				}
+
+				return new EventDll(
+					dll,
+					( string ) this.key.GetValue( "EventDllOptions32", null ) );
+			}
+			set
+			{
+				if ( value == null ||  String.IsNullOrEmpty( value.Path ) )
+				{
+					this.key.DeleteValue( "EventDll32", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDll32", value.Path, RegistryValueKind.String );
+				}
+
+				if ( value == null || String.IsNullOrEmpty( value.Options ) )
+				{
+					this.key.DeleteValue( "EventDllOptions32", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDllOptions32", value.Options, RegistryValueKind.String );
+				}
+			}
+		}
+
+		public EventDll EventDll64
+		{
+			get
+			{
+				string dll = ( string ) this.key.GetValue( "EventDll64", null );
+				if ( String.IsNullOrEmpty( dll ) )
+				{
+					return null;
+				}
+
+				return new EventDll(
+					dll,
+					( string ) this.key.GetValue( "EventDllOptions64", null ) );
+			}
+			set
+			{
+				if ( value == null || String.IsNullOrEmpty( value.Path ) )
+				{
+					this.key.DeleteValue( "EventDll64", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDll64", value.Path, RegistryValueKind.String );
+				}
+
+				if ( value == null || String.IsNullOrEmpty( value.Options ) )
+				{
+					this.key.DeleteValue( "EventDllOptions64", false );
+				}
+				else
+				{
+					this.key.SetValue( "EventDllOptions64", value.Options, RegistryValueKind.String );
+				}
+			}
+		}
+
+		public EventDll GetEventDll( Architecture arch )
+		{
+			switch ( arch )
+			{
+				case Architecture.I386:
+					return EventDll32;
+
+				case Architecture.Amd64:
+					return EventDll64;
+
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		public void SetEventDll( Architecture arch, EventDll eventDll )
+		{
+			switch ( arch )
+			{
+				case Architecture.I386:
+					this.EventDll32 = eventDll;
+					break;
+
+				case Architecture.Amd64:
+					this.EventDll64 = eventDll;
+					break;
+
+				default:
+					throw new ArgumentException();
+			}
+		}
+		
 		/*----------------------------------------------------------------------
 		 * Advanced.
 		 */

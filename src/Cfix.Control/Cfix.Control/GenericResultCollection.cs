@@ -95,15 +95,32 @@ namespace Cfix.Control
 
 		protected void OnFinished( bool ranToCompletion )
 		{
-#if DEBUG
+			//
+			// N.B. Normally, when receiving this call and ranToCompletion
+			// is set, all children have completed.
+			//
+			// When splitting a test run over multiple processes though,
+			// ranToCompletion=1 does not necessarily imply that all
+			// children have been run.
+			//
+			// Therefore, play it safe and check the status of all children
+			// before considering this node finished.
+			//
+
 			if ( ranToCompletion )
 			{
 				foreach ( GenericResultItem child in this.subItems )
 				{
-					Debug.Assert( child.Completed );
+					if ( !child.Completed )
+					{
+						//
+						// Ignore this call - we will receive another call
+						// when all children have completed.
+						//
+						return;
+					}
 				}
 			}
-#endif
 
 			bool stoppedInSetup =
 				!ranToCompletion &&

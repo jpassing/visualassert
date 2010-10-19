@@ -23,6 +23,8 @@ using Cfix.Addin.Windows;
 using Cfix.Control;
 using Cfix.Control.Ui.Explorer;
 using Cfix.Control.Native;
+using Cfix.Addin.IntelParallelStudio;
+using Cfix.Control.RunControl;
 
 namespace Cfix.Addin.Windows
 {
@@ -117,8 +119,44 @@ namespace Cfix.Addin.Windows
 			this.breakOnUnhandledExceptionsWhenDebuggingMenuItem.Checked =
 				( config.DefaultDebugUnhandledExceptionDisposition == Disposition.Break );
 
+#if ! DEBUG
+			this.runEachTestInSeparateProcessMenuItem.Visible = false;
+#else
+			this.runEachTestInSeparateProcessMenuItem.Visible = true;
+			this.runEachTestInSeparateProcessMenuItem.Checked =
+				this.workspace.Configuration.RunCompilerType == RunCompilerType.ProcessPerTest;
+#endif
+
+#if INTELINSPECTOR
+			SetInspectorMiSelection( config.MostRecentlyUsedInspectorMemoryAnalysisLevel );
+			SetInspectorTiSelection( config.MostRecentlyUsedInspectorThreadingAnalysisLevel );
+			
+#else
+			this.intelInspectorSeparator.Visible = false;
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Visible = false;
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Visible = false;
+#endif
+
 			SetInfoPanel();
 		}
+
+#if INTELINSPECTOR
+		private void SetInspectorMiSelection( InspectorLevel level )
+		{
+			this.intelInspectorMi1MenuItem.Checked = level == InspectorLevel.CheckMemoryLeaks;
+			this.intelInspectorMi2MenuItem.Checked = level == InspectorLevel.CheckMemoryAccessIssues;
+			this.intelInspectorMi3MenuItem.Checked = level == InspectorLevel.LocateMemoryAccessIssues;
+			this.intelInspectorMi4MenuItem.Checked = level == InspectorLevel.AllMemoryIssues;
+		}
+
+		private void SetInspectorTiSelection( InspectorLevel level )
+		{
+			this.intelInspectorTi1MenuItem.Checked = level == InspectorLevel.CheckDeadlocks;
+			this.intelInspectorTi2MenuItem.Checked = level == InspectorLevel.CheckDeadlocksAndRaces;
+			this.intelInspectorTi3MenuItem.Checked = level == InspectorLevel.LocateDeadlocksAndRaces;
+			this.intelInspectorTi4MenuItem.Checked = level == InspectorLevel.AllThreadingIssues;
+		}
+#endif		
 
 		private void UpdateExecutionOptions()
 		{
@@ -189,6 +227,22 @@ namespace Cfix.Addin.Windows
 		 * Context Menu.
 		 */
 
+		private static bool IsItemPartOfIcProject( ITestItem item )
+		{
+			while ( item != null )
+			{
+				ICProjectTestCollection icProject = item as ICProjectTestCollection;
+				if ( icProject != null )
+				{
+					return true;
+				}
+
+				item = item.Parent;
+			}
+
+			return false;
+		}
+
 		private void explorer_BeforeContextMenuPopup( 
 			object sender, 
 			ExplorerNodeEventArgs e )
@@ -202,6 +256,14 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuViewCodeButton.Visible = e.Item is ITestCodeElement;
 			this.ctxMenuRunInConsole.Visible = e.Item is NativeTestItem;
 			this.ctxMenuDebugWithWindbg.Visible = e.Item is NativeTestItem;
+
+#if INTELINSPECTOR
+			this.ctxMenuRunWithInspectorMi.Enabled = this.workspace.IntelInspector != null;
+			this.ctxMenuRunWithInspectorTi.Enabled = this.workspace.IntelInspector != null;
+#else
+			this.ctxMenuRunWithInspectorMi.Visible = false;
+			this.ctxMenuRunWithInspectorTi.Visible = false;
+#endif
 
 			bool showAddFixture = Wizards.CanAddFixture( e.Item );
 			this.ctxMenuAddFixtureButton.Visible = showAddFixture;
@@ -254,7 +316,9 @@ namespace Cfix.Addin.Windows
 
 		private void ctxMenuViewProperties_Click( object sender, EventArgs e )
 		{
-			SetActiveItem( this.contextMenuReferenceNode.Item );
+            CommonUiOperations.SetActiveSelectionItem( 
+                this.window, 
+                this.contextMenuReferenceNode.Item);
 			CommonUiOperations.ActivatePropertyWindow( this.dte );
 		}
 
@@ -275,16 +339,6 @@ namespace Cfix.Addin.Windows
 			this.abortRefreshButton.Enabled = false;
 		}
 
-		private void SetActiveItem( ITestItem item )
-		{
-			//
-			// Update property window.
-			//
-
-			object[] propObjects = new object[] { item };
-			this.window.SetSelectionContainer( ref propObjects );
-		}
-
 		private void explorer_AfterSelected( object sender, ExplorerNodeEventArgs e )
 		{
 			bool runnable = e.Item is IRunnableTestItem;
@@ -294,7 +348,7 @@ namespace Cfix.Addin.Windows
 
 			UpdateRefreshButtonStatus();
 
-			SetActiveItem( e.Item );
+			CommonUiOperations.SetActiveSelectionItem( this.window, e.Item );
 		}
 
 		private void explorer_RefreshFinished( object sender, EventArgs e )
@@ -520,8 +574,8 @@ namespace Cfix.Addin.Windows
 			if ( !this.workspace.ToolWindows.Explorer.Visible )
 			{
 				//
-				// Continueing would not only be futil, it would also
-				// cause problems as the controls may not be avaible
+				// Continueing would not only be futile, it would also
+				// cause problems as the controls may not be available
 				// yet.
 				//
 				return;
@@ -664,7 +718,7 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItem( 
 				this.workspace,
 				this.explorer.SelectedItem, 
-				true );
+				RunMode.Debug );
 		}
 
 		private void runButton_Click( object sender, EventArgs e )
@@ -672,31 +726,32 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItem(
 				this.workspace,
 				this.explorer.SelectedItem,
-				false );
+				RunMode.Normal );
 		}
 
 		private void ctxMenuDebugButton_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItem(
 				this.workspace,
-				this.contextMenuReferenceNode.Item, 
-				true );
+				this.contextMenuReferenceNode.Item,
+				RunMode.Debug );
 		}
 
 		private void ctxMenuRunButton_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItem(
 				this.workspace,
-				this.contextMenuReferenceNode.Item, 
-				false );
+				this.contextMenuReferenceNode.Item,
+				RunMode.Normal );
 		}
+
 
 		private void ctxMenuRunOnConsole_Click( object sender, EventArgs e )
 		{
 			CommonUiOperations.RunItemOnCommandLine(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				false );
+				RunMode.Normal );
 		}
 
 		private void ctxMenuDebugWithWindbg_Click( object sender, EventArgs e )
@@ -704,7 +759,7 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.RunItemOnCommandLine(
 				this.workspace,
 				this.contextMenuReferenceNode.Item,
-				true );
+				RunMode.Debug );
 		}
 
 		private void explorer_TreeKeyDown( object sender, KeyEventArgs e )
@@ -724,8 +779,8 @@ namespace Cfix.Addin.Windows
 
 				CommonUiOperations.RunItem(
 					this.workspace,
-					item, 
-					! e.Shift );
+					item,
+					e.Shift ? RunMode.Normal : RunMode.Debug );
 
 				e.Handled = true;
 			}
@@ -849,5 +904,96 @@ namespace Cfix.Addin.Windows
 			CommonUiOperations.OpenLameWebpage( this.dte, "Explorer" );
 		}
 
+		private void runEachTestInSeparateProcessMenuItem_Click( object sender, EventArgs e )
+		{
+			if ( runEachTestInSeparateProcessMenuItem.Checked )
+			{
+				this.workspace.Configuration.RunCompilerType = RunCompilerType.ProcessPerTest;
+			}
+			else
+			{
+				this.workspace.Configuration.RunCompilerType = RunCompilerType.Simple;
+			}
+		}
+
+		private void intelInspectorMiXxxMenuItem_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			InspectorLevel level;
+			if ( sender == this.intelInspectorMi1MenuItem )
+			{
+				level = InspectorLevel.CheckMemoryLeaks;
+			}
+			else if ( sender == this.intelInspectorMi2MenuItem )
+			{
+				level = InspectorLevel.CheckMemoryAccessIssues;
+			}
+			else if ( sender == this.intelInspectorMi3MenuItem )
+			{
+				level = InspectorLevel.LocateMemoryAccessIssues;
+			}
+			else if ( sender == this.intelInspectorMi4MenuItem )
+			{
+				level = InspectorLevel.AllMemoryIssues;
+			}
+			else
+			{
+				return;
+			}
+
+			SetInspectorMiSelection( level );
+			this.workspace.Configuration.MostRecentlyUsedInspectorMemoryAnalysisLevel = level;
+#endif
+		}
+
+		private void intelInspectorTiXxxMenuItem_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			InspectorLevel level;
+			if ( sender == this.intelInspectorTi1MenuItem )
+			{
+				level = InspectorLevel.CheckDeadlocks;
+			}
+			else if ( sender == this.intelInspectorTi2MenuItem )
+			{
+				level = InspectorLevel.CheckDeadlocksAndRaces;
+			}
+			else if ( sender == this.intelInspectorTi3MenuItem )
+			{
+				level = InspectorLevel.LocateDeadlocksAndRaces;
+			}
+			else if ( sender == this.intelInspectorTi4MenuItem )
+			{
+				level = InspectorLevel.AllThreadingIssues;
+			}
+			else
+			{
+				return;
+			}
+
+			SetInspectorTiSelection( level );
+			this.workspace.Configuration.MostRecentlyUsedInspectorThreadingAnalysisLevel = level;
+#endif
+		}
+
+		private void ctxMenuRunWithInspectorMi_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.Configuration.MostRecentlyUsedInspectorMemoryAnalysisLevel );
+#endif
+		}
+
+		private void ctxMenuRunWithInspectorTi_Click( object sender, EventArgs e )
+		{
+#if INTELINSPECTOR
+			CommonUiOperations.RunItemInIntelInspector(
+				this.workspace,
+				this.contextMenuReferenceNode.Item,
+				this.workspace.Configuration.MostRecentlyUsedInspectorThreadingAnalysisLevel );
+#endif
+		}
 	}
 }

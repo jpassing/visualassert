@@ -6,86 +6,43 @@ using Cfixctl;
 
 namespace Cfix.Control.Native
 {
-	internal class StackTraceFrame : IStackTraceFrame
+	internal class NativeStackTraceFrame : StackTraceFrame
 	{
-		private string module;
-		private string function;
-		private uint displacement;
-		private string sourceFile;
-		private uint sourceLine;
+		private static string NullifyIfEmpty( string s )
+		{
+			if ( String.IsNullOrEmpty( s ) )
+			{
+				return null;
+			}
+			else
+			{
+				return s;
+			}
+		}
 
-		public StackTraceFrame(
+		public NativeStackTraceFrame(
 			ICfixStackTraceFrame frame
 			)
+			: base (
+				NullifyIfEmpty( frame.GetModuleName() ),
+				NullifyIfEmpty( frame.GetFunctionName() ),
+				frame.GetDisplacement(),
+				NullifyIfEmpty( frame.GetSourceFile() ),
+				frame.GetSourceLine() )
 		{
-			this.module = frame.GetModuleName();
-			this.function = frame.GetFunctionName();
-			this.displacement = frame.GetDisplacement();
-			this.sourceFile = frame.GetSourceFile();
-			this.sourceLine = frame.GetSourceLine();
-
-			//
-			// Favor null over empty strings.
-			//
-			if ( String.IsNullOrEmpty( this.module ) )
-			{
-				this.module = null;
-			}
-
-			if ( String.IsNullOrEmpty( this.function ) )
-			{
-				this.function = null;
-			}
-			
-			if ( String.IsNullOrEmpty( this.sourceFile ) )
-			{
-				this.sourceFile = null;
-			}
-		}
-
-		public override string ToString()
-		{
-			return 
-				( this.module ?? "[unknown]" ) + "!" + 
-				( this.function ?? "[unknown]" );
-		}
-
-		public string Module
-		{
-			get { return this.module; }
-		}
-
-		public string Function
-		{
-			get { return this.function; }
-		}
-
-		public uint Dispacement
-		{
-			get { return this.displacement; }
-		}
-
-		public string SourceFile
-		{
-			get { return this.sourceFile; }
-		}
-
-		public uint SourceLine
-		{
-			get { return this.sourceLine; }
 		}
 	}
 
-	internal class StackTrace : IStackTrace
+	internal class NativeStackTrace : IStackTrace
 	{
 		private IStackTraceFrame[] frames;
 
-		private StackTrace( IStackTraceFrame[] frames )
+		private NativeStackTrace( IStackTraceFrame[] frames )
 		{
 			this.frames = frames;
 		}
 
-		public static StackTrace Wrap( ICfixStackTrace trace )
+		public static NativeStackTrace Wrap( ICfixStackTrace trace )
 		{
 			if ( trace == null )
 			{
@@ -98,7 +55,7 @@ namespace Cfix.Control.Native
 				ICfixStackTraceFrame ctlFrame = trace.GetFrame( i );
 				try
 				{
-					frames[ i ] = new StackTraceFrame( ctlFrame );
+					frames[ i ] = new NativeStackTraceFrame( ctlFrame );
 				}
 				finally
 				{
@@ -107,7 +64,7 @@ namespace Cfix.Control.Native
 			}
 
 			Marshal.ReleaseComObject( trace );
-			return new StackTrace( frames );
+			return new NativeStackTrace( frames );
 		}
 
 		public override string ToString()

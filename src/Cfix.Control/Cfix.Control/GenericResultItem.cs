@@ -21,6 +21,8 @@ namespace Cfix.Control
 		private DateTime? startTime;
 		private DateTime? finishTime;
 
+		private object associatedObject;
+
 		protected GenericResultItem(
 			IActionEvents events,
 			IResultItemCollection parent,
@@ -45,21 +47,6 @@ namespace Cfix.Control
 		protected IActionEvents Events
 		{
 			get { return this.events; }
-		}
-
-		protected void AddFailure( Failure failure )
-		{
-			lock ( this.failuresLock )
-			{
-				if ( this.failures == null )
-				{
-					this.failures = new LinkedList<Failure>();
-				}
-
-				this.failures.Add( failure );
-
-				this.events.OnFailureOccured( this );
-			}
 		}
 
 		protected bool IsInconclusive
@@ -127,6 +114,21 @@ namespace Cfix.Control
 		 * Public.
 		 */
 
+		public void AddFailure( Failure failure )
+		{
+			lock ( this.failuresLock )
+			{
+				if ( this.failures == null )
+				{
+					this.failures = new LinkedList<Failure>();
+				}
+
+				this.failures.Add( failure );
+
+				this.events.OnFailureOccured( this );
+			}
+		}
+
 		public int FailureCount
 		{
 			get
@@ -155,6 +157,7 @@ namespace Cfix.Control
 					case ExecutionStatus.Inconclusive:
 					case ExecutionStatus.Skipped:
 					case ExecutionStatus.Stopped:
+					case ExecutionStatus.PostprocessingFailed:
 						return true;
 
 					case ExecutionStatus.Pending:
@@ -263,9 +266,17 @@ namespace Cfix.Control
 
 		public virtual void ForceCompletion( bool propagateToParent )
 		{
+			ForceCompletion( propagateToParent, ExecutionStatus.Skipped );
+		}
+
+		public virtual void ForceCompletion( 
+			bool propagateToParent,
+			ExecutionStatus status
+			)
+		{
 			if ( !Completed )
 			{
-				this.Status = ExecutionStatus.Skipped;
+				this.Status = status;
 
 				GenericResultCollection tp = this.Parent as GenericResultCollection;
 				if ( tp != null )
@@ -276,6 +287,12 @@ namespace Cfix.Control
 						false );
 				}
 			}
+		}
+
+		public object Object 
+		{
+			get { return this.associatedObject; }
+			set { this.associatedObject = value; }
 		}
 	}
 }

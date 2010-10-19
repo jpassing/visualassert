@@ -21,10 +21,24 @@ namespace Cfix.Control
 		TimeSpan Duration { get; }
 		bool Completed { get; }
 
+		void AddFailure( Failure failure );
+
 		//
 		// Enforce completion:
 		// Mark pending sub-results skipped and calculate status.
 		//
-		void ForceCompletion( bool propagateToParent );
+		void ForceCompletion( 
+			bool propagateToParent 
+			);
+
+		void ForceCompletion(
+			bool propagateToParent,
+			ExecutionStatus status
+			);
+
+		// 
+		// Allows arbitrary object data to be associated.
+		//
+		object Object { get; set; }
 	}
 }

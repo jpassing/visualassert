@@ -167,7 +167,13 @@ namespace Cfix.Control.Ui.Result
 					}
 				}
 
-				if ( item.Status > ExecutionStatus.Running )
+				//
+				// N.B. If the run involved postprocessing, it is possible
+				// that the status changes back from successful to 
+				// some other state.
+				//
+				if ( ! this.Run.InvolvesPostprocessing && 
+					   item.Status > ExecutionStatus.Running )
 				{
 					IResultItemCollection itemColl =
 							item as IResultItemCollection;
@@ -240,6 +246,7 @@ namespace Cfix.Control.Ui.Result
 				case ExecutionStatus.SucceededWithInconclusiveParts:
 				case ExecutionStatus.Failed:
 				case ExecutionStatus.Inconclusive:
+				case ExecutionStatus.PostprocessingFailed:
 					return ( filter & ResultNodeFilter.FailureNodes ) != 0;
 
 				default:

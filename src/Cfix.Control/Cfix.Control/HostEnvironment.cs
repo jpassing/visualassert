@@ -7,10 +7,33 @@ namespace Cfix.Control
 	public class HostEnvironment
 	{
 		private readonly object envLock = new object();
-		private readonly IDictionary<string, string > env
-			= new Dictionary<string, string>();
+		private readonly IDictionary<string, string > env;
 
 		private string currentDirectory;
+
+		protected virtual HostEnvironment CreateNew( HostEnvironment template )
+		{
+			return new HostEnvironment();
+		}
+
+		public HostEnvironment()
+		{
+			this.env = new Dictionary<string, string>();
+		}
+
+		public HostEnvironment( 
+			string currentDirectory,
+			IDictionary<string, string > envVars
+			)
+		{
+			this.currentDirectory = currentDirectory;
+			this.env = envVars;
+		}
+
+		public IDictionary<string, string> EnvironmentVariables
+		{
+			get { return this.env; }
+		}
 
 		public string CurrentDirectory
 		{
@@ -31,7 +54,12 @@ namespace Cfix.Control
 
 		public HostEnvironment Merge( HostEnvironment other )
 		{
-			HostEnvironment merged = new HostEnvironment();
+			//
+			// Call CreateNew to allow subclasses to "survive"
+			// a merge.
+			//
+
+			HostEnvironment merged = CreateNew( this );
 			foreach ( KeyValuePair< string, string > p in this.env )
 			{
 				merged.Add( p.Key, p.Value );

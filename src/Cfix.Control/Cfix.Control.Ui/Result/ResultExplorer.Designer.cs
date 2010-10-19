@@ -131,9 +131,13 @@ namespace Cfix.Control.Ui.Result
 			this.icons.Images.SetKeyName( 6, "Status_SucceededWithSkippedParts.bmp" );
 			this.icons.Images.SetKeyName( 7, "Status_Failed.bmp" );
 			this.icons.Images.SetKeyName( 8, "Status_Inconclusive.bmp" );
-			this.icons.Images.SetKeyName( 9, "Inconclusive.bmp" );
-			this.icons.Images.SetKeyName( 10, "Failure.bmp" );
-			this.icons.Images.SetKeyName( 11, "StackFrame.bmp" );
+			this.icons.Images.SetKeyName( 9, "Status_PostprocessingFailed.bmp" );
+			this.icons.Images.SetKeyName( 10, "Inconclusive.bmp" );
+			this.icons.Images.SetKeyName( 11, "Failure.bmp" );
+			this.icons.Images.SetKeyName( 12, "StackFrame.bmp" );
+			this.icons.Images.SetKeyName( 13, "Information.bmp" );
+			this.icons.Images.SetKeyName( 14, "Warning.bmp" );
+			this.icons.Images.SetKeyName( 15, "Error.bmp" );
 			// 
 			// ResultExplorer
 			// 

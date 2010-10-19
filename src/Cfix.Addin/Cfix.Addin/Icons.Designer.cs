@@ -242,6 +242,13 @@ namespace Cfix.Addin {
             }
         }
         
+        internal static System.Drawing.Bitmap IntelInspector {
+            get {
+                object obj = ResourceManager.GetObject("IntelInspector", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Log {
             get {
                 object obj = ResourceManager.GetObject("Log", resourceCulture);
@@ -301,6 +308,13 @@ namespace Cfix.Addin {
         internal static System.Drawing.Bitmap ResultsMask {
             get {
                 object obj = ResourceManager.GetObject("ResultsMask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap RunInInspector {
+            get {
+                object obj = ResourceManager.GetObject("RunInInspector", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -6,11 +6,11 @@ using System.ComponentModel;
 
 namespace Cfix.Control
 {
-	/// <summary>
-	/// Generic container for test items.
-	/// 
-	/// Threadsafe.
-	/// </summary>
+	/*++
+		Generic container for test items.
+	
+		Threadsafe.
+	--*/
 	public class GenericTestItemCollection :
 		ITestItemCollection, IRunnableTestItemCollection
 	{
@@ -22,7 +22,10 @@ namespace Cfix.Control
 
 		public event EventHandler Disposed;
 
-		public GenericTestItemCollection( ITestItemCollection parent, String name )
+		public GenericTestItemCollection( 
+			ITestItemCollection parent, 
+			String name 
+			)
 		{
 			this.parent = parent;
 			this.name = name;
@@ -114,7 +117,7 @@ namespace Cfix.Control
 		 * IEnumerable.
 		 */
 
-		public IEnumerator<ITestItem> GetEnumerator()
+		protected virtual IEnumerator<ITestItem> CreateEnumerator()
 		{
 			lock ( this.listLock )
 			{
@@ -122,12 +125,14 @@ namespace Cfix.Control
 			}
 		}
 
+		public IEnumerator<ITestItem> GetEnumerator()
+		{
+			return CreateEnumerator();
+		}
+
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			lock ( this.listLock )
-			{
-				return new List<ITestItem>( this.list ).GetEnumerator();
-			}
+			return ( System.Collections.IEnumerator ) CreateEnumerator();
 		}
 
 		/*--------------------------------------------------------------

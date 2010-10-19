@@ -97,7 +97,9 @@ namespace Cfix.Addin.Dte
 			// N.B. See KB555417 for details on icon handling.
 			//
 			buttonCtl.Picture = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( icon );
+#if !VS100
 			buttonCtl.Mask = ( stdole.StdPicture ) IconUtil.GetIPictureDispFromImage( maskIcon );
+#endif
 			buttonCtl.Style = style;
 			DteCommandBarButton button = new DteCommandBarButton(
 				this.connect, 

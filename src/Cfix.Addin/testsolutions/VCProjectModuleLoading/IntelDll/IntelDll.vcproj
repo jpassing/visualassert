@@ -44,7 +44,8 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				OpenMP="true"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -176,6 +177,30 @@
 			>
 			<File
 				RelativePath=".\IntelDll.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IntelTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My1.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My1a.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My2.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My4.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\My5.cpp"
 				>
 			</File>
 			<File

@@ -31,12 +31,14 @@
 
       <Custom Action='FormatDevenvPath80' After='RemoveFiles'></Custom>
       <Custom Action='FormatDevenvPath90' After='RemoveFiles'></Custom>
+      <Custom Action='FormatDevenvPath100' After='RemoveFiles'></Custom>
 
       <!-- N.B. REMOVE="ALL" also avoids reset during repair -->
       <Custom Action='ResetAddinVs80' After='FormatDevenvPath80'><![CDATA[ REMOVE="ALL" AND VS80INSTALLED ]]></Custom>
       <Custom Action='ResetAddinVs90' After='FormatDevenvPath90'><![CDATA[ REMOVE="ALL" AND VS90INSTALLED ]]></Custom>
-      
-      <!-- Older versions are faulty; be sure to reset again -->
+      <Custom Action='ResetAddinVs100' After='FormatDevenvPath100'><![CDATA[ REMOVE="ALL" AND VS100INSTALLED ]]></Custom>
+
+      <!-- Older versions are faulty; be sure to reset again (VS80, VS90 only) -->
       <Custom Action='ResetLegacyAddinVs80' After='FormatDevenvPath80'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS80INSTALLED ]]></Custom>
       <Custom Action='ResetLegacyAddinVs90' After='FormatDevenvPath90'><![CDATA[ PREVIOUSVERSIONSINSTALLED AND VS90INSTALLED ]]></Custom>
     </InstallExecuteSequence>
@@ -67,6 +69,7 @@
     <Property Id="VC80INSTALLDIR" Secure="yes">
       <RegistrySearch Id="SearchVc80InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\8.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
+    
 
     <Property Id="VS90INSTALLED" Secure="yes">
       <RegistrySearch Id="SearchVs90" Root="HKCR" Key="VisualStudio.DTE.9.0" Type="raw" />
@@ -80,6 +83,17 @@
       <RegistrySearch Id="SearchVc90InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\9.0\Setup\VC" Name="ProductDir" Type="directory" />
     </Property>
 
+    <Property Id="VS100INSTALLED" Secure="yes">
+      <RegistrySearch Id="SearchVs100" Root="HKCR" Key="VisualStudio.DTE.10.0" Type="raw" />
+    </Property>
+
+    <Property Id="VS100INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVs100InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\10.0" Name="InstallDir" Type="directory" />
+    </Property>
+
+    <Property Id="VC100INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="SearchVc100InstallDir" Root="HKLM" Key="Software\Microsoft\VisualStudio\10.0\Setup\VC" Name="ProductDir" Type="directory" />
+    </Property>
     <!-- END VS VERSION SPECIFIC -->
 
 
@@ -93,10 +107,9 @@
       <![CDATA[ VersionNT >= 501 OR (VersionNT=500 AND ServicePackLevel>=4) ]]>
     </Condition>
 
-    <Condition Message='Neither a Visual Studio 2005 nor a Visual Studio 2008 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
-      <![CDATA[ VS80INSTALLED OR VS90INSTALLED ]]>
+    <Condition Message='Neither a Visual Studio 2005 , 2008, nor a Visual Studio 2010 installation could be located on your computer. One of these versions is required for Visual Assert. Please note that Visual Assert cannot be used with Visual Studio Express due to licensing restrictions in the Visual Studio Express EULA.'>
+      <![CDATA[ VS80INSTALLED OR VS90INSTALLED OR VS100INSTALLED]]>
     </Condition>
-
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
@@ -118,6 +131,12 @@
       <Directory Id="CommonAppDataFolder">
 
         <!-- BEGIN VS VERSION SPECIFIC -->
+        
+        <!-- 
+          Note the escaping of XPath filter expressions:
+            For [ use [\[] 
+            For ] use [\]]
+        -->
 
         <Directory Id="DirAppDataMs80" Name="Microsft" LongName="Microsoft">
           <Directory Id="DirAppDataMsVs80" Name="VisualSt" LongName="VisualStudio">
@@ -138,10 +157,22 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="8.0"/>
                   <XmlFile
-                    Id="XmlConfigOptionsAssemblyVs80"
+                     Id="XmlConfigOptionsGeneralAssemblyVs80"
+                     Action="setValue"
+                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                     ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
+                     Value="[DirBinI386]cfix.addin.80.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsWinDbgAssemblyVs80"
                     Action="setValue"
                     File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.80.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAdvancedAssemblyVs80"
+                    Action="setValue"
+                    File="[DirAppDataMsVs80Addins80]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.80.dll"/>
                 </Component>
               </Directory>
@@ -168,11 +199,65 @@
                     ElementPath="//Extensibility/HostApplication/Version"
                     Value="9.0"/>
                   <XmlFile
-                    Id="XmlConfigOptionsAssemblyVs90"
+                    Id="XmlConfigOptionsGeneralAssemblyVs90"
                     Action="setValue"
                     File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
-                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory/Assembly"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
                     Value="[DirBinI386]cfix.addin.90.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsWinDbgAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAdvancedAssemblyVs90"
+                    Action="setValue"
+                    File="[DirAppDataMsVs90Addins90]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.90.dll"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+        <Directory Id="DirAppDataMs100" Name="Microsft" LongName="Microsoft">
+          <Directory Id="DirAppDataMsVs100" Name="VisualSt" LongName="VisualStudio">
+            <Directory Id="DirAppDataMsVs100100" Name="100" LongName="10.0">
+              <Directory Id="DirAppDataMsVs100Addins100" Name="Addins">
+                <Component Id="CompVs100" Guid="93fd2454-d41c-494c-b76a-c0b94f053b24">
+                  <File Id="FileVs100Addin" Name="CfixAddn.Add" LongName="Cfix.Addin.Addin" Source="..\src\Cfix.Addin\Cfix.Addin\Cfix.Addin.Addin.template" DiskId="1"/>
+                  <XmlFile
+                    Id="XmlConfigAssemblyVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/Addin/Assembly"
+                    Value="[DirBinI386]cfix.addin.100.dll"/>
+                  <XmlFile
+                    Id="XmlConfigVersionVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/HostApplication/Version"
+                    Value="10.0"/>
+                  <XmlFile
+                     Id="XmlConfigOptionsGeneralAssemblyVs100"
+                     Action="setValue"
+                     File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                     ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='General'[\]]/Assembly"
+                     Value="[DirBinI386]cfix.addin.100.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsWinDbgAssemblyVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='WinDBG Integration'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.100.dll"/>
+                  <XmlFile
+                    Id="XmlConfigOptionsAdvancedAssemblyVs100"
+                    Action="setValue"
+                    File="[DirAppDataMsVs100Addins100]\Cfix.Addin.Addin"
+                    ElementPath="//Extensibility/ToolsOptionsPage/Category/SubCategory[\[]@Name='Host Process'[\]]/Assembly"
+                    Value="[DirBinI386]cfix.addin.100.dll"/>
                 </Component>
               </Directory>
             </Directory>
@@ -290,6 +375,57 @@
           </Directory>
         </Directory>
 
+        <Directory Id="VC100INSTALLDIR" Name="VC">
+          <Directory Id="DirVcAddClassVs100" Name="VcAddCls" LongName="VCAddClass">
+            <Directory Id="DirVcAddClassCfixVs100" Name="VAssert" LongName="VisualAssert">
+              <Component Id="CompVcAddClassWizardVs100" Guid="9dcf9d05-bb39-4134-a363-ab4bba9cc3f7">
+                <RemoveFolder Id="RemoveDirVcAddClassCfixVs100" On="uninstall"/>
+
+                <File Id="FileVcAddClassCfixVsdirVs100" Name="fixture.vsd" LongName="fixture.vsdir" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.vsdir" DiskId="1"/>
+                <File Id="FileVcAddClassCfixVszVs100" Name="fixture.vsd" LongName="fixture.vsz" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.100.vsz" DiskId="1"/>
+                <File Id="FileVcAddClassCfixIcoVs100" Name="fixture.ico" LongName="fixture.ico" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\fixture.ico" DiskId="1"/>
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DirWizardsVs100" Name="vcwiz" LongName="vcwizards">
+            <Directory Id="DirWizCfixVs100" Name="VAssert" LongName="VisualAssert">
+              <Directory Id="DirWizFixtureVs100" Name="fixture">
+                <Directory Id="DirWizFixtureHtmlVs100" Name="html">
+                  <Directory Id="DirWizFixtureHtml1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureHtml1033Vs100" Guid="1caf65f2-7f10-4977-8279-59a9e17936a6">
+                      <RemoveFolder Id="RemoveDirWizFixtureHtml1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureHtml1033DefaultHtmVs100" Name="default.htm" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\default.htm" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033HeaderJpgVs100" Name="header.jpg" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\header.jpg" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033NewStylesCssVs100" Name="styles.css" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\styles.css" DiskId="1"/>
+                      <File Id="FileDirWizFixtureHtml1033PixGifVs100" Name="pix.gif" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\HTML\1033\pix.gif" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureScriptsVs100" Name="scripts">
+                  <Directory Id="DirWizFixtureScripts1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureScripts1033Vs100" Guid="350d3b97-e774-49d3-a4ba-652a4fb1583e">
+                      <RemoveFolder Id="RemoveDirWizFixtureScripts1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureScripts1033DefaultJsVs100" Name="default.js" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Scripts\1033\default.js" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+                <Directory Id="DirWizFixtureTemplatesVs100" Name="template" LongName="templates">
+                  <Directory Id="DirWizFixtureTemplates1033Vs100" Name="1033">
+                    <Component Id="CompWizFixtureTemplates1033Vs100" Guid="5bdb5604-4adb-411d-a6b3-6aa44d2b2900">
+                      <RemoveFolder Id="RemoveDirWizFixtureTemplates1033Vs100" On="uninstall"/>
+
+                      <File Id="FileDirWizFixtureTemplates1033CfixTplVs100" Name="cfix.tpl" KeyPath="yes" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfix.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033CfixccTplVs100" Name="cfixcc.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\cfixcc.tpl" DiskId="1"/>
+                      <File Id="FileDirWizFixtureTemplates1033WinunitTplVs100" Name="winunit.tpl" Source="src\Cfix.Addin\Wizard\CfixFixtureWiz\Templates\1033\winunit.tpl" DiskId="1"/>
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
         <!-- END VS VERSION SPECIFIC -->
         
         <Directory Id="INSTALLLOCATION" Name="VAssert" LongName="VisualAssert">
@@ -393,6 +529,7 @@
                 <File Id="FileCfixControlTreeViewDllI386" Name="cfconttv.dll" LongName="cfix.control.treeview.dll" Source="bin\fre\i386\cfix.control.treeview.dll" DiskId="1"/>
                 <File Id="FileCfixAddin80DllI386" Name="cfaddin8.dll" LongName="cfix.addin.80.dll" Source="bin\fre\i386\cfix.addin.80.dll" DiskId="1"/>
                 <File Id="FileCfixAddin90DllI386" Name="cfaddin9.dll" LongName="cfix.addin.90.dll" Source="bin\fre\i386\cfix.addin.90.dll" DiskId="1"/>
+                <File Id="FileCfixAddin100DllI386" Name="cfaddi10.dll" LongName="cfix.addin.100.dll" Source="bin\fre\i386\cfix.addin.100.dll" DiskId="1"/>
 
                 <!--
                 <File Id="FileLicAdminExeI386" Name="licadmin.exe" Source="bin\fre\i386\licadmin.exe" DiskId="1"/>
@@ -470,6 +607,13 @@
                 <?include cfix_samples_usercc.wxs?>
               </Component>
             </Directory>
+            <Directory Id="DirSamplesEventDll" Name="EventDll">
+              <Directory Id="DirSamplesEventDllLogfile" Name="Logfile">
+                <Component Id="CompSamplesEventDllLogfile" DiskId="1" Guid="94e5af44-9a04-44a0-85c4-9b18bbd2b2ce">
+                  <?include cfix_samples_eventdll.wxs?>
+                </Component>
+              </Directory>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
@@ -488,6 +632,7 @@
       <ComponentRef Id="CompSamplesKernel"/>
       <ComponentRef Id="CompSamplesUser"/>
       <ComponentRef Id="CompSamplesUserCc"/>
+      <ComponentRef Id="CompSamplesEventDllLogfile"/>
 
       <Feature Id="FeatureBinAmd64"
                Absent="allow"
@@ -532,6 +677,21 @@
         <ComponentRef Id="CompWizFixtureScripts1033Vs90"/>
         <ComponentRef Id="CompWizFixtureTemplates1033Vs90"/>
       </Feature>
+      
+      <Feature Id="FeatureVs100"
+              Absent="allow"
+              Title="Visual Studio 2010 integration"
+              Level="1"
+              AllowAdvertise="no"
+              Description="Installs the Visual Assert Add-In for Visual Studio 2010.">
+        <Condition Level="0"><![CDATA[NOT VS100INSTALLED]]></Condition>
+
+        <ComponentRef Id="CompVs100"/>
+        <ComponentRef Id="CompVcAddClassWizardVs100"/>
+        <ComponentRef Id="CompWizFixtureHtml1033Vs100"/>
+        <ComponentRef Id="CompWizFixtureScripts1033Vs100"/>
+        <ComponentRef Id="CompWizFixtureTemplates1033Vs100"/>
+      </Feature>
 
       <!-- END VS VERSION SPECIFIC -->
 
@@ -564,9 +724,11 @@
 
     <CustomAction Id="FormatDevenvPath80" Property="VS80DEVENV" Value="[VS80INSTALLDIR]devenv.exe"/>
     <CustomAction Id="FormatDevenvPath90" Property="VS90DEVENV" Value="[VS90INSTALLDIR]devenv.exe"/>
-
+    <CustomAction Id="FormatDevenvPath100" Property="VS100DEVENV" Value="[VS100INSTALLDIR]devenv.exe"/>
+    
     <CustomAction Id="ResetAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
     <CustomAction Id="ResetAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
+    <CustomAction Id="ResetAddinVs100" Execute="commit" Return="ignore" Impersonate="yes" Property="VS100DEVENV" ExeCommand="/ResetAddin VisualAssert /Command File.Exit" />
 
     <CustomAction Id="ResetLegacyAddinVs80" Execute="commit" Return="ignore" Impersonate="yes" Property="VS80DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />
     <CustomAction Id="ResetLegacyAddinVs90" Execute="commit" Return="ignore" Impersonate="yes" Property="VS90DEVENV" ExeCommand="/ResetAddin CfixStudio /Command File.Exit" />

@@ -1,5 +1,6 @@
 using System;
 using Cfixctl;
+using System.Collections.Generic;
 
 namespace Cfix.Control
 {
@@ -185,4 +186,80 @@ namespace Cfix.Control
 			get { return lastError; }
 		} 
 	}
+
+	public class GenericCodeInformation : CodeFailure
+	{
+		public GenericCodeInformation(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericCodeWarning : CodeFailure
+	{
+		public GenericCodeWarning(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericCodeError : CodeFailure
+	{
+		public GenericCodeError(
+			String message,
+			String file,
+			uint line,
+			String routine,
+			IStackTrace stackTrace
+			)
+			: base( message, file, line, routine, stackTrace )
+		{
+		}
+	}
+
+	public class GenericError : Failure
+	{
+		public GenericError(
+			String name,
+			IStackTrace stackTrace
+			)
+			: base(name, stackTrace )
+		{
+		}
+	}
+
+	public class ExpandoFailure : Failure
+	{
+		public delegate IEnumerable<Failure> ExpandFailures();
+
+		private readonly ExpandFailures expandDelegate;
+
+		public ExpandoFailure(
+			String name,
+			IStackTrace stackTrace,
+			ExpandFailures expandDelegate
+			)
+			: base( name, stackTrace )
+		{
+			this.expandDelegate = expandDelegate;
+		}
+
+		public IEnumerable<Failure> GetFailures()
+		{
+			return this.expandDelegate();
+		}
+	}
+	
 }

@@ -1,8 +1,24 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace Cfix.Control
 {
+	public class EventDll
+	{
+		private readonly string path;
+		private readonly string options;
+
+		public EventDll( string path, string options )
+		{
+			this.path = path;
+			this.options = options;
+		}
+
+		public string Path { get { return this.path; } }
+		public string Options { get { return this.options; } }
+	}
+
 	public interface IHost : IDisposable
 	{
 		uint ProcessId { get; }
@@ -28,5 +44,6 @@ namespace Cfix.Control
 
 		void Terminate();
 		string Path { get; }
+		EventDll EventDll { get; }
 	}
 }

@@ -73,6 +73,8 @@ public:
 		__in_opt PCWSTR CustomHostPath,
 		__in_opt PCWSTR Environment,
 		__in_opt PCWSTR CurrentDirectory,
+		__in_opt PCWSTR ShimPath,
+		__in_opt PCWSTR ShimCommandLine,
 		__in ULONG Flags,
 		__in ULONG Timeout,
 		__out ICfixHost **Result
@@ -105,6 +107,19 @@ public:
 		__in const BSTR HostPath,
 		__in const BSTR Environment,
 		__in const BSTR CurrentDirectory,
+		__out ICfixHost** Host
+		);
+
+	STDMETHOD( CreateHostWithShim )( 
+		__in CfixTestModuleArch Arch,
+		__in DWORD Clsctx,
+		__in ULONG Flags,
+		__in ULONG Timeout,
+		__in const BSTR HostPath,
+		__in const BSTR Environment,
+		__in const BSTR CurrentDirectory,
+		__in_opt const BSTR ShimPath,
+		__in_opt const BSTR ShimCommandLine,
 		__out ICfixHost** Host
 		);
 
@@ -145,6 +160,13 @@ IClassFactory& CfixctlpGetLocalAgentFactory()
  * Helpers.
  *
  */
+
+static BOOL CfixctlsIsBstrParameterAvailable(
+	__in BSTR String 
+	)
+{
+	return String != NULL && SysStringByteLen( String ) > 0;
+}
 
 static HRESULT CfixctlsCheckLicense(
 	__in ULONG Cookie
@@ -318,11 +340,18 @@ static HRESULT CfixctlsSpawnHost(
 	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR CustomEnvironment,
 	__in_opt PCWSTR CurrentDirectory,
+	__in_opt PCWSTR ShimPath,
+	__in_opt PCWSTR ShimCommandLine,
 	__in BOOL Suspend,
 	__out PPROCESS_INFORMATION ProcessInfo
 	)
 {
 	if ( ! Agent || ! ProcessInfo )
+	{
+		return E_INVALIDARG;
+	}
+
+	if ( ShimPath == NULL && ShimCommandLine != NULL )
 	{
 		return E_INVALIDARG;
 	}
@@ -335,9 +364,17 @@ static HRESULT CfixctlsSpawnHost(
 	}
 
 	//
-	// See which host image we have to use.
+	// Validate paths.
 	//
-	WCHAR HostPathBuffer[ MAX_PATH ];
+
+	if ( ShimPath != NULL )
+	{
+		if ( INVALID_FILE_ATTRIBUTES == GetFileAttributes( ShimPath ) )
+		{
+			return CFIXCTL_E_SHIM_IMAGE_NOT_FOUND;
+		}
+	}
+
 	if ( CustomHostPath != NULL )
 	{
 		//
@@ -376,24 +413,63 @@ static HRESULT CfixctlsSpawnHost(
 			//
 			return CFIXCTL_E_HOST_IMAGE_HAS_NO_FIXTURES;
 		}
+	}
+
+	//
+	// See which host image we have to use.
+	//
+	// N.B. We check the host image, never the shim image.
+	//
+	PCWSTR EffectiveHostPath;
+	WCHAR EffectiveHostPathBuffer[ 2 * MAX_PATH ];
+
+	PWSTR EffectiveCmdLineArguments;
+	WCHAR EffectiveCmdLineArgumentsBuffer[ 2 * MAX_PATH ];
+
+	if ( ShimPath != NULL )
+	{
+		//
+		// Shims have precedence.
+		//
+		EffectiveHostPath = ShimPath;
 
 		//
-		// Copy to make string non-const.
+		// Make non-const.
 		//
-		Hr = StringCchCopy(
-			HostPathBuffer,
-			_countof( HostPathBuffer ),
-			CustomHostPath );
+		if ( ShimCommandLine != NULL )
+		{
+			Hr = StringCchCopy(
+				EffectiveCmdLineArgumentsBuffer,
+				_countof( EffectiveCmdLineArgumentsBuffer ),
+				ShimCommandLine );
+
+			EffectiveCmdLineArguments = EffectiveCmdLineArgumentsBuffer;
+		}
+		else
+		{
+			EffectiveCmdLineArguments = NULL;
+		}
+	}
+	else if ( CustomHostPath != NULL )
+	{
+		//
+		// Use unshimmed custom host image.
+		//
+		EffectiveHostPath = CustomHostPath;
+		EffectiveCmdLineArguments = NULL;
 	}
 	else
 	{
 		//
-		// Use default host image.
+		// Use unshimmed default host image.
 		//
 		Hr = CfixctlsFindHostImage(
 			Arch, 
-			_countof( HostPathBuffer ), 
-			HostPathBuffer );
+			_countof( EffectiveHostPathBuffer ), 
+			EffectiveHostPathBuffer );
+
+		EffectiveHostPath = EffectiveHostPathBuffer;
+		EffectiveCmdLineArguments = NULL;
 	}
 
 	if ( FAILED( Hr ) )
@@ -476,8 +552,8 @@ static HRESULT CfixctlsSpawnHost(
 	StartupInfo.cb = sizeof( STARTUPINFO );
 
 	if ( ! CreateProcess(
-		HostPathBuffer,
-		NULL,
+		EffectiveHostPath,	// Shim, custom host or default host image.
+		EffectiveCmdLineArguments,
 		NULL,
 		NULL,
 		FALSE,
@@ -515,16 +591,18 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
+	__in_opt PCWSTR ShimPath,
+	__in_opt PCWSTR ShimCommandLine,
 	__in BOOL PutInJob,
 	__out HANDLE *Process,
 	__out HANDLE *Job,
-	__out DWORD *Cookie
+	__out DWORD *ProcessId
 	)
 {
 	ASSERT( Agent );
 	ASSERT( Process );
 	ASSERT( Job );
-	ASSERT( Cookie );
+	ASSERT( ProcessId );
 
 	//
 	// Spawn the process.
@@ -540,6 +618,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 		CustomHostPath,
 		Environment,
 		CurrentDirectory, 
+		ShimPath,
+		ShimCommandLine,
 		SuspendInitialThread,
 		&ProcessInfo );
 	if ( FAILED( Hr ) )
@@ -553,11 +633,8 @@ static HRESULT CfixctlsSpawnHostAndPutInJobIfRequired(
 	__assume( ProcessInfo.hProcess );
 	__assume( ProcessInfo.hThread );
 
-	//
-	// N.B. The process ID is the cookie.
-	//
-	*Cookie  = ProcessInfo.dwProcessId;
-	*Process = ProcessInfo.hProcess;
+	*ProcessId  = ProcessInfo.dwProcessId;
+	*Process	= ProcessInfo.hProcess;
 
 	//
 	// Reconsider decision of assigning the process to a new job based on
@@ -712,6 +789,8 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	__in_opt PCWSTR CustomHostPath,
 	__in_opt PCWSTR Environment,
 	__in_opt PCWSTR CurrentDirectory,
+	__in_opt PCWSTR ShimPath,
+	__in_opt PCWSTR ShimCommandLine,
 	__in ULONG Flags,
 	__in ULONG Timeout,
 	__out ICfixHost **Result
@@ -731,9 +810,9 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 	//
 	// Spawn the process.
 	//
-	HANDLE Process = NULL;
-	HANDLE Job	   = NULL;
-	DWORD Cookie;
+	HANDLE Process	= NULL;
+	HANDLE Job		= NULL;
+	DWORD ProcessId = 0;
 
 	ICfixHost *RemoteHost = NULL;
 	ICfixProcessHostInternal *ProcessHost = NULL;
@@ -754,23 +833,31 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 			CustomHostPath,
 			Environment,
 			CurrentDirectory, 
+			ShimPath,
+			ShimCommandLine,
 			UseJob,
 			&Process,
 			&Job,
-			&Cookie );
+			&ProcessId );
 		if ( FAILED( Hr ) )
 		{
 			break;
 		}
-		
+
 		//
 		// Wait for it to register and obtain its Host object.
 		//
 		// N.B. Wait for process, not for job. Waiting for jobs is
 		// futile in this context.
 		//
+		// N.B. When using a shim, we cannot use the process id as 
+		// cookie as we do not know which id the actual host process
+		// is using. Revert to cookie-less waiting.
+		//
 		Hr = WaitForHostConnectionAndProcess(
-			Cookie,
+			ShimPath == NULL
+				? ProcessId
+				: 0,
 			Timeout,
 			Process,
 			CustomHostPath != NULL,
@@ -812,6 +899,7 @@ STDMETHODIMP LocalAgent::CreateProcessHost(
 
 	Hr = ProcessHost->Initialize( 
 		RemoteHost, 
+		ProcessId,
 		Job != NULL ? Job : Process,
 		UseJob );
 	if ( FAILED( Hr ) )
@@ -885,7 +973,6 @@ STDMETHODIMP LocalAgent::QueryInterface(
  * ICfixAgent methods.
  */
 
-	
 STDMETHODIMP LocalAgent::CreateHost( 
 	__in CfixTestModuleArch Arch,
 	__in DWORD Clsctx,
@@ -894,6 +981,32 @@ STDMETHODIMP LocalAgent::CreateHost(
 	__in const BSTR CustomHostPath,
 	__in const BSTR Environment,
 	__in const BSTR CurrentDirectory,
+	__out ICfixHost** Host
+	)
+{
+	return CreateHostWithShim(
+		Arch,
+		Clsctx,
+		Flags,
+		Timeout,
+		CustomHostPath,
+		Environment,
+		CurrentDirectory,
+		NULL,
+		NULL,
+		Host );
+}
+	
+STDMETHODIMP LocalAgent::CreateHostWithShim( 
+	__in CfixTestModuleArch Arch,
+	__in DWORD Clsctx,
+	__in ULONG Flags,
+	__in ULONG Timeout,
+	__in const BSTR CustomHostPath,
+	__in const BSTR Environment,
+	__in const BSTR CurrentDirectory,
+	__in_opt const BSTR ShimPath,
+	__in_opt const BSTR ShimCommandLine,
 	__out ICfixHost** Host
 	)
 {
@@ -914,7 +1027,10 @@ STDMETHODIMP LocalAgent::CreateHost(
 
 	if ( ( Clsctx & CLSCTX_INPROC_SERVER ) && Arch == CFIXCTL_OWN_ARCHITECTURE )
 	{
-		if ( CustomHostPath != NULL || Environment != NULL )
+		if ( CfixctlsIsBstrParameterAvailable( CustomHostPath ) || 
+			 CfixctlsIsBstrParameterAvailable( Environment ) ||
+			 CfixctlsIsBstrParameterAvailable( ShimPath ) ||
+			 CfixctlsIsBstrParameterAvailable( ShimCommandLine ) )
 		{
 			return E_INVALIDARG;
 		}
@@ -942,14 +1058,20 @@ STDMETHODIMP LocalAgent::CreateHost(
 		//
 		return CreateProcessHost(
 			Arch,
-			CustomHostPath != NULL && SysStringByteLen( CustomHostPath ) > 0
+			CfixctlsIsBstrParameterAvailable( CustomHostPath ) > 0
 				? CustomHostPath
 				: NULL,
-			Environment != NULL && SysStringByteLen( Environment ) > 0
+			CfixctlsIsBstrParameterAvailable( Environment ) > 0
 				? Environment
 				: NULL,
-			CurrentDirectory != NULL && SysStringByteLen( CurrentDirectory ) > 0
+			CfixctlsIsBstrParameterAvailable( CurrentDirectory ) > 0
 				? CurrentDirectory
+				: NULL,
+			CfixctlsIsBstrParameterAvailable( ShimPath ) > 0
+				? ShimPath
+				: NULL,
+			CfixctlsIsBstrParameterAvailable( ShimCommandLine ) > 0
+				? ShimCommandLine
 				: NULL,
 			Flags,
 			Timeout,
@@ -1023,10 +1145,9 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 		*Host = NULL;
 	}
 
-	if ( Cookie == 0  )
-	{
-		return E_INVALIDARG;
-	}
+	//
+	// N.B. If Cookie == 0, ignore it.
+	//
 
 	CFIXCTLP_TRACE( ( L"LocalAgent: Waiting for %d", Cookie ) );
 
@@ -1038,7 +1159,7 @@ STDMETHODIMP LocalAgent::WaitForHostConnectionAndProcess(
 	
 		if ( this->Registration != NULL )
 		{
-			if ( this->Registration->Cookie == Cookie )
+			if ( Cookie == 0 || this->Registration->Cookie == Cookie )
 			{
 				*Host = Registration->Host;
 				( *Host )->AddRef();

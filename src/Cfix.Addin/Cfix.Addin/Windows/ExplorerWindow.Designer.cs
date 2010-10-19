@@ -30,7 +30,7 @@ namespace Cfix.Addin.Windows
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( ExplorerWindow ) );
-			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory2 = new Cfix.Control.Ui.Explorer.NodeFactory();
+			Cfix.Control.Ui.Explorer.NodeFactory nodeFactory1 = new Cfix.Control.Ui.Explorer.NodeFactory();
 			this.toolbar = new System.Windows.Forms.ToolStrip();
 			this.debugButton = new System.Windows.Forms.ToolStripButton();
 			this.runButton = new System.Windows.Forms.ToolStripButton();
@@ -39,6 +39,7 @@ namespace Cfix.Addin.Windows
 			this.abortRefreshButton = new System.Windows.Forms.ToolStripButton();
 			this.separator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.optionsButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.runEachTestInSeparateProcessMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.shortCircuitFixtureOnFailureMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.shortCircuitRunOnFailureMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -47,6 +48,17 @@ namespace Cfix.Addin.Windows
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.breakOnFailedAssertionsWhenDebuggingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.breakOnUnhandledExceptionsWhenDebuggingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorTi1MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorTi2MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorTi3MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorTi4MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorMi1MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorMi2MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorMi3MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.intelInspectorMi4MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.separator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.selectModeButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.selectDirModeButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,9 +78,11 @@ namespace Cfix.Addin.Windows
 			this.ctxMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ctxMenuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.explorer = new Cfix.Control.Ui.Explorer.TestExplorer();
+			this.infoIcon = new System.Windows.Forms.PictureBox();
+			this.ctxMenuRunWithInspectorTi = new System.Windows.Forms.ToolStripMenuItem();
+			this.ctxMenuRunWithInspectorMi = new System.Windows.Forms.ToolStripMenuItem();
 			this.infoLabel = new Cfix.Addin.Windows.TransparentLabel();
 			this.infoBar = new Cfix.Addin.Windows.PlainProgressBar();
-			this.infoIcon = new System.Windows.Forms.PictureBox();
 			this.toolbar.SuspendLayout();
 			this.ctxMenu.SuspendLayout();
 			( ( System.ComponentModel.ISupportInitialize ) ( this.infoIcon ) ).BeginInit();
@@ -137,6 +151,7 @@ namespace Cfix.Addin.Windows
 			// 
 			this.optionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.optionsButton.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.runEachTestInSeparateProcessMenuItem,
             this.shortCircuitFixtureOnFailureMenuItem,
             this.shortCircuitRunOnFailureMenuItem,
             this.toolStripSeparator2,
@@ -144,10 +159,20 @@ namespace Cfix.Addin.Windows
             this.refreshAfterBuildToolStripMenuItem,
             this.toolStripMenuItem1,
             this.breakOnFailedAssertionsWhenDebuggingMenuItem,
-            this.breakOnUnhandledExceptionsWhenDebuggingMenuItem} );
+            this.breakOnUnhandledExceptionsWhenDebuggingMenuItem,
+            this.intelInspectorSeparator,
+            this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem,
+            this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem} );
 			this.optionsButton.Image = global::Cfix.Addin.Icons.Options;
 			resources.ApplyResources( this.optionsButton, "optionsButton" );
 			this.optionsButton.Name = "optionsButton";
+			// 
+			// runEachTestInSeparateProcessMenuItem
+			// 
+			this.runEachTestInSeparateProcessMenuItem.CheckOnClick = true;
+			this.runEachTestInSeparateProcessMenuItem.Name = "runEachTestInSeparateProcessMenuItem";
+			resources.ApplyResources( this.runEachTestInSeparateProcessMenuItem, "runEachTestInSeparateProcessMenuItem" );
+			this.runEachTestInSeparateProcessMenuItem.Click += new System.EventHandler( this.runEachTestInSeparateProcessMenuItem_Click );
 			// 
 			// shortCircuitFixtureOnFailureMenuItem
 			// 
@@ -203,6 +228,89 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.breakOnUnhandledExceptionsWhenDebuggingMenuItem, "breakOnUnhandledExceptionsWhenDebuggingMenuItem" );
 			this.breakOnUnhandledExceptionsWhenDebuggingMenuItem.Click += new System.EventHandler( this.breakOnUnhandledExceptionsWhenDebuggingMenuItem_Click );
 			// 
+			// intelInspectorSeparator
+			// 
+			this.intelInspectorSeparator.Name = "intelInspectorSeparator";
+			resources.ApplyResources( this.intelInspectorSeparator, "intelInspectorSeparator" );
+			// 
+			// intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem
+			// 
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.intelInspectorTi1MenuItem,
+            this.intelInspectorTi2MenuItem,
+            this.intelInspectorTi3MenuItem,
+            this.intelInspectorTi4MenuItem} );
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Image = global::Cfix.Addin.Icons.IntelInspector;
+			this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem.Name = "intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem";
+			resources.ApplyResources( this.intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem, "intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem" );
+			// 
+			// intelInspectorTi1MenuItem
+			// 
+			this.intelInspectorTi1MenuItem.CheckOnClick = true;
+			this.intelInspectorTi1MenuItem.Name = "intelInspectorTi1MenuItem";
+			resources.ApplyResources( this.intelInspectorTi1MenuItem, "intelInspectorTi1MenuItem" );
+			this.intelInspectorTi1MenuItem.Click += new System.EventHandler( this.intelInspectorTiXxxMenuItem_Click );
+			// 
+			// intelInspectorTi2MenuItem
+			// 
+			this.intelInspectorTi2MenuItem.CheckOnClick = true;
+			this.intelInspectorTi2MenuItem.Name = "intelInspectorTi2MenuItem";
+			resources.ApplyResources( this.intelInspectorTi2MenuItem, "intelInspectorTi2MenuItem" );
+			this.intelInspectorTi2MenuItem.Click += new System.EventHandler( this.intelInspectorTiXxxMenuItem_Click );
+			// 
+			// intelInspectorTi3MenuItem
+			// 
+			this.intelInspectorTi3MenuItem.CheckOnClick = true;
+			this.intelInspectorTi3MenuItem.Name = "intelInspectorTi3MenuItem";
+			resources.ApplyResources( this.intelInspectorTi3MenuItem, "intelInspectorTi3MenuItem" );
+			this.intelInspectorTi3MenuItem.Click += new System.EventHandler( this.intelInspectorTiXxxMenuItem_Click );
+			// 
+			// intelInspectorTi4MenuItem
+			// 
+			this.intelInspectorTi4MenuItem.CheckOnClick = true;
+			this.intelInspectorTi4MenuItem.Name = "intelInspectorTi4MenuItem";
+			resources.ApplyResources( this.intelInspectorTi4MenuItem, "intelInspectorTi4MenuItem" );
+			this.intelInspectorTi4MenuItem.Click += new System.EventHandler( this.intelInspectorTiXxxMenuItem_Click );
+			// 
+			// intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem
+			// 
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.intelInspectorMi1MenuItem,
+            this.intelInspectorMi2MenuItem,
+            this.intelInspectorMi3MenuItem,
+            this.intelInspectorMi4MenuItem} );
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Image = global::Cfix.Addin.Icons.IntelInspector;
+			this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem.Name = "intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem";
+			resources.ApplyResources( this.intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem, "intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem" );
+			// 
+			// intelInspectorMi1MenuItem
+			// 
+			this.intelInspectorMi1MenuItem.CheckOnClick = true;
+			this.intelInspectorMi1MenuItem.Name = "intelInspectorMi1MenuItem";
+			resources.ApplyResources( this.intelInspectorMi1MenuItem, "intelInspectorMi1MenuItem" );
+			this.intelInspectorMi1MenuItem.Click += new System.EventHandler( this.intelInspectorMiXxxMenuItem_Click );
+			// 
+			// intelInspectorMi2MenuItem
+			// 
+			this.intelInspectorMi2MenuItem.CheckOnClick = true;
+			this.intelInspectorMi2MenuItem.Name = "intelInspectorMi2MenuItem";
+			resources.ApplyResources( this.intelInspectorMi2MenuItem, "intelInspectorMi2MenuItem" );
+			this.intelInspectorMi2MenuItem.Click += new System.EventHandler( this.intelInspectorMiXxxMenuItem_Click );
+			// 
+			// intelInspectorMi3MenuItem
+			// 
+			this.intelInspectorMi3MenuItem.CheckOnClick = true;
+			this.intelInspectorMi3MenuItem.Name = "intelInspectorMi3MenuItem";
+			resources.ApplyResources( this.intelInspectorMi3MenuItem, "intelInspectorMi3MenuItem" );
+			this.intelInspectorMi3MenuItem.Click += new System.EventHandler( this.intelInspectorMiXxxMenuItem_Click );
+			// 
+			// intelInspectorMi4MenuItem
+			// 
+			this.intelInspectorMi4MenuItem.CheckOnClick = true;
+			this.intelInspectorMi4MenuItem.Name = "intelInspectorMi4MenuItem";
+			resources.ApplyResources( this.intelInspectorMi4MenuItem, "intelInspectorMi4MenuItem" );
+			this.intelInspectorMi4MenuItem.Click += new System.EventHandler( this.intelInspectorMiXxxMenuItem_Click );
+			// 
 			// separator4
 			// 
 			this.separator4.Name = "separator4";
@@ -249,6 +357,8 @@ namespace Cfix.Addin.Windows
             this.ctxMenuRunButton,
             this.ctxMenuRunInConsole,
             this.ctxMenuDebugWithWindbg,
+            this.ctxMenuRunWithInspectorMi,
+            this.ctxMenuRunWithInspectorTi,
             this.ctxMenuSeparator4,
             this.ctxMenuRefreshButton,
             this.ctxMenuViewCodeButton,
@@ -334,7 +444,29 @@ namespace Cfix.Addin.Windows
 			resources.ApplyResources( this.explorer, "explorer" );
 			this.explorer.Name = "explorer";
 			this.explorer.NodeContextMenu = null;
-			this.explorer.NodeFactory = nodeFactory2;
+			this.explorer.NodeFactory = nodeFactory1;
+			// 
+			// infoIcon
+			// 
+			this.infoIcon.BackColor = System.Drawing.Color.LightYellow;
+			resources.ApplyResources( this.infoIcon, "infoIcon" );
+			this.infoIcon.InitialImage = null;
+			this.infoIcon.Name = "infoIcon";
+			this.infoIcon.TabStop = false;
+			// 
+			// ctxMenuRunWithInspectorTi
+			// 
+			this.ctxMenuRunWithInspectorTi.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunWithInspectorTi.Name = "ctxMenuRunWithInspectorTi";
+			resources.ApplyResources( this.ctxMenuRunWithInspectorTi, "ctxMenuRunWithInspectorTi" );
+			this.ctxMenuRunWithInspectorTi.Click += new System.EventHandler( this.ctxMenuRunWithInspectorTi_Click );
+			// 
+			// ctxMenuRunWithInspectorMi
+			// 
+			this.ctxMenuRunWithInspectorMi.Image = global::Cfix.Addin.Icons.RunInInspector;
+			this.ctxMenuRunWithInspectorMi.Name = "ctxMenuRunWithInspectorMi";
+			resources.ApplyResources( this.ctxMenuRunWithInspectorMi, "ctxMenuRunWithInspectorMi" );
+			this.ctxMenuRunWithInspectorMi.Click += new System.EventHandler( this.ctxMenuRunWithInspectorMi_Click );
 			// 
 			// infoLabel
 			// 
@@ -349,14 +481,6 @@ namespace Cfix.Addin.Windows
 			this.infoBar.Name = "infoBar";
 			this.infoBar.ProgressBarColor = System.Drawing.Color.Blue;
 			this.infoBar.Value = 0;
-			// 
-			// infoIcon
-			// 
-			this.infoIcon.BackColor = System.Drawing.Color.LightYellow;
-			resources.ApplyResources( this.infoIcon, "infoIcon" );
-			this.infoIcon.InitialImage = null;
-			this.infoIcon.Name = "infoIcon";
-			this.infoIcon.TabStop = false;
 			// 
 			// ExplorerWindow
 			// 
@@ -417,5 +541,19 @@ namespace Cfix.Addin.Windows
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem breakOnFailedAssertionsWhenDebuggingMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem breakOnUnhandledExceptionsWhenDebuggingMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem runEachTestInSeparateProcessMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorThreadingErrorAnalysisLevelToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorTi1MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorTi3MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorTi4MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorMemoryErrorsAnalysisLevelToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorMi1MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorMi2MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorMi3MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorMi4MenuItem;
+		private System.Windows.Forms.ToolStripMenuItem intelInspectorTi2MenuItem;
+		private System.Windows.Forms.ToolStripSeparator intelInspectorSeparator;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunWithInspectorTi;
+		private System.Windows.Forms.ToolStripMenuItem ctxMenuRunWithInspectorMi;
 	}
 }

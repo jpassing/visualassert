@@ -20,21 +20,18 @@ namespace Cfix.Control.Native
 	 --*/
 	public class Agent : IAgent
 	{
-#if DEBUG
-		private const uint DefaultTimeout = 30000;
-#else
-		private const uint DefaultTimeout = 3000;
-#endif
-
 		private ICfixAgent agent;
 		private ICfixMessageResolver resolver;
+
+		public const uint DefaultHostRegistrationTimeout = 3000;
 
 		private readonly CfixTestModuleArch arch;
 		private readonly Clsctx clsctx;
 
-		private uint timeout = DefaultTimeout;
+		private uint timeout;
 
 		private readonly HostCreationOptions flags;
+		private readonly EventDll eventDll;
 
 		private readonly LocalProcessWatcher processWatcher = new LocalProcessWatcher();
 
@@ -58,7 +55,9 @@ namespace Cfix.Control.Native
 			ICfixAgent agent,
 			CfixTestModuleArch arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout,
+			EventDll eventDll	// optional
 			)
 		{
 			Debug.Assert( agent != null );
@@ -66,6 +65,8 @@ namespace Cfix.Control.Native
 			this.agent = agent;
 			this.arch = arch;
 			this.flags = flags;
+			this.timeout = hostRegistrationTimeout;
+			this.eventDll = eventDll;
 
 			if ( allowInproc )
 			{
@@ -117,6 +118,32 @@ namespace Cfix.Control.Native
 		}
 
 		/*--------------------------------------------------------------
+		 * Protected.
+		 */
+
+		protected virtual ICfixHost CreateNativeHost(
+			ICfixAgent agent,
+			CfixTestModuleArch arch,
+			uint clsctx,
+			uint flags,
+			uint timeout,
+			string customHostPath,
+			HostEnvironment env,
+			string currentDir )
+		{
+			Debug.Assert( timeout > 0 );
+
+			return agent.CreateHost(
+				arch,
+				( uint ) clsctx,
+				( uint ) flags,
+				timeout,
+				customHostPath,
+				env.NativeFormat,
+				currentDir );
+		}
+		
+		/*--------------------------------------------------------------
 		 * Internal.
 		 */
 
@@ -130,7 +157,7 @@ namespace Cfix.Control.Native
 		 * Publics.
 		 */
 
-		public uint Timeout
+		public uint HostRegistrationTimeout
 		{
 			get
 			{
@@ -156,19 +183,19 @@ namespace Cfix.Control.Native
 		 * IAgent.
 		 */
 
-		public virtual IHost CreateHost()
+		public IHost CreateHost()
 		{
 			return CreateHost( null, null );
 		}
 
-		public virtual IHost CreateHost(
+		public IHost CreateHost(
 			HostEnvironment env
 			)
 		{
 			return CreateHost( null, env );
 		}
 
-		public virtual IHost CreateHost(
+		public IHost CreateHost(
 			string customHostPath,
 			HostEnvironment env
 			)
@@ -189,13 +216,14 @@ namespace Cfix.Control.Native
 				env = this.defaultHostEnv;
 			}
 
-			ICfixHost host = this.agent.CreateHost(
+			ICfixHost host = CreateNativeHost(
+				this.agent,
 				this.arch, 
 				( uint ) this.clsctx,
 				( uint ) this.flags,
 				this.timeout,
 				customHostPath,
-				env.NativeFormat,
+				env,
 				currentDir );
 
 			Debug.Assert( host != null );
@@ -211,7 +239,8 @@ namespace Cfix.Control.Native
 				customHostPath != null,
 				customHostPath != null 
 					? customHostPath
-					: this.agent.GetHostPath( this.arch ) );
+					: this.agent.GetHostPath( this.arch ),
+				this.eventDll );
 		}
 
 		public ITestItemCollection LoadModule(
@@ -319,26 +348,47 @@ namespace Cfix.Control.Native
 		public static Agent CreateLocalAgent(
 			Architecture arch,
 			bool allowInproc,
-			HostCreationOptions flags
+			HostCreationOptions flags,
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			return new Agent(
 				new LocalAgentClass(),
 				( CfixTestModuleArch ) arch,
 				allowInproc,
-				flags );
+				flags,
+				hostRegistrationTimeout,
+				eventDll );
 		}
 
 		public static Agent CreateLocalAgent(
 			Architecture arch,
-			bool allowInproc
+			bool allowInproc,
+			uint hostRegistrationTimeout,
+			EventDll eventDll
 			)
 		{
 			return CreateLocalAgent(
 				arch,
 				allowInproc,
-				HostCreationOptions.None );
+				HostCreationOptions.None,
+				hostRegistrationTimeout,
+				eventDll );
 		}
 
+		public static Agent CreateLocalAgent(
+			Architecture arch,
+			bool allowInproc,
+			uint hostRegistrationTimeout
+			)
+		{
+			return CreateLocalAgent(
+				arch,
+				allowInproc,
+				HostCreationOptions.None,
+				hostRegistrationTimeout,
+				null );
+		}
 	}
 }

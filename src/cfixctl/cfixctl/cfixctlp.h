@@ -10,6 +10,7 @@
 
 #include <cfix.h>
 #include <cfixapi.h>
+#include <cfixutil.h>
 #include <ole2.h>
 #include <cfixctl.h>
 #include <cfixctlsvr.h>
@@ -304,6 +305,7 @@ ICfixProcessHostInternal : public ICfixHost
 {
 	STDMETHOD( Initialize )(
 		__in ICfixHost *RemoteHost,
+		__in ULONG ProcessId,
 		__in HANDLE ProcessOrJob,
 		__in BOOL UsesJob
 		) PURE;

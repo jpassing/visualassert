@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Intel C++ Project"
+	Version="11.1"
+	Name="IntelDllWithOpenMp"
+	ProjectGUID="{FD75954C-16B9-43CD-9332-869217D8DE71}"
+	VCNestedProjectGUID="{0B55A46C-CA25-467F-A572-19E1DF948773}"
+	VCNestedProjectFileName="IntelDllWithOpenMp.vcproj">
+	<Configurations/>
+	<Files/>
+</VisualStudioProject>

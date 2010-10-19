@@ -28,6 +28,7 @@ USER_C_FLAGS=/analyze
 
 USE_LIBCMT=1
 USE_STL=1
+USE_ATL=1
 
 TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
 		   $(SDK_LIB_PATH)\shlwapi.lib \

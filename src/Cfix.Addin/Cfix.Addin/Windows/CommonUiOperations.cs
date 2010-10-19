@@ -16,11 +16,20 @@ using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.VCCodeModel;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
+	public enum RunMode
+	{
+		Normal,
+		Debug
+	}
+
 	internal static class CommonUiOperations
 	{
+		private delegate void RunItemDelegate();
+
 		private static Project GetProject( ITestItem item )
 		{
 			ITestItem projectItem = item;
@@ -44,7 +53,7 @@ namespace Cfix.Addin.Windows
 		public static void RunItemOnCommandLine( 
 			Workspace ws, 
 			ITestItem item,
-			bool debug
+			RunMode mode
 			)
 		{
 			NativeTestItem nativeItem = item as NativeTestItem;
@@ -55,29 +64,72 @@ namespace Cfix.Addin.Windows
 			}
 			else
 			{
-				ws.RunItemOnCommandLine( nativeItem, debug );
+				ws.RunItemOnCommandLine( nativeItem, mode == RunMode.Debug );
 			}
 		}
 
-		public static void RunItem( Workspace ws, ITestItem item, bool debug )
+#if INTELINSPECTOR
+		public static void RunItemInIntelInspector(
+			Workspace ws,
+			ITestItem item,
+			InspectorLevel level
+			)
+		{
+			RunItem(
+				ws,
+				delegate()
+				{
+					IRunnableTestItem runItem;
+					if ( item == null )
+					{
+						//
+						// Rerun last.
+						//
+						runItem = null;
+					}
+					else
+					{
+						runItem = item as IRunnableTestItem;
+					}
+
+					ws.RunItemInIntelInspector( runItem, level );
+				} );
+		}
+#endif
+		
+		public static void RunItem( 
+			Workspace ws, 
+			ITestItem item, 
+			RunMode mode )
+		{
+			RunItem(
+				ws,
+				delegate() 
+				{
+					IRunnableTestItem runItem;
+					if ( item == null )
+					{
+						//
+						// Rerun last.
+						//
+						runItem = null;
+					}
+					else
+					{
+						runItem = item as IRunnableTestItem;
+					}
+
+					ws.RunItem( runItem, mode == RunMode.Debug );
+				} );
+		}
+
+		private static void RunItem(
+			Workspace ws,
+			RunItemDelegate dlg )
 		{
 			try
 			{
-				if ( item == null )
-				{
-					//
-					// Rerun last.
-					//
-					ws.RunItem( null, debug );
-				}
-				else
-				{
-					IRunnableTestItem runItem = item as IRunnableTestItem;
-					if ( item != null )
-					{
-						ws.RunItem( runItem, debug );
-					}
-				}
+				dlg();
 			}
 			catch ( ConcurrentRunException )
 			{
@@ -209,7 +261,7 @@ namespace Cfix.Addin.Windows
 		public static void RunSelectedUiHierarchyItem(
 			DTE2 dte,
 			Workspace ws,
-			bool debug
+			RunMode mode
 			)
 		{
 			try
@@ -253,7 +305,7 @@ namespace Cfix.Addin.Windows
 
 				if ( testItem != null )
 				{
-					RunItem( ws, testItem, debug );
+					RunItem( ws, testItem, mode );
 				}
 			}
 			catch ( Exception x )
@@ -335,8 +387,13 @@ namespace Cfix.Addin.Windows
 		private static Project GetProjectFromCurrentHierarchyItem( DTE2 dte )
 		{
 			UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
-			UIHierarchyItem selected = ( UIHierarchyItem )
-				( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+            Array slnHierArray = ( Array ) slnHier.SelectedItems;
+            if ( slnHierArray.GetLength( 0 ) == 0 )
+            {
+                return null;
+            }
+
+			UIHierarchyItem selected = ( UIHierarchyItem ) slnHierArray.GetValue( 0 );
 
 			Project currentProject = selected.Object as Project;
 			if ( currentProject != null )
@@ -403,8 +460,13 @@ namespace Cfix.Addin.Windows
 			try
 			{
 				UIHierarchy slnHier = dte.ToolWindows.SolutionExplorer;
-				UIHierarchyItem selected = ( UIHierarchyItem )
-					( ( System.Array ) slnHier.SelectedItems ).GetValue( 0 );
+                Array slnHierArray = ( Array ) slnHier.SelectedItems;
+                if ( slnHierArray.GetLength( 0 ) == 0 )
+                {
+                    return false;
+                }
+
+                UIHierarchyItem selected = ( UIHierarchyItem ) slnHierArray.GetValue( 0 );
 
 				return selected.Object is Solution;
 			}
@@ -418,5 +480,25 @@ namespace Cfix.Addin.Windows
 		{
 			dte.ExecuteCommand( "View.PropertiesWindow", "" );
 		}
+
+        public static void SetActiveSelectionItem( Window window, object item )
+        {
+            //
+            // Update property window. Unsuppotred on VS100 due to casting problems.
+            //
+#if !VS100
+			try
+			{
+				object[] propObjects = new object[] { item };
+				window.SetSelectionContainer( ref propObjects );
+			}
+			catch ( Exception )
+			{
+				//
+				// Spurious E_FAIL exceptions.
+				//
+			}
+#endif
+        }
 	}
 }

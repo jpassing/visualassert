@@ -8,6 +8,11 @@
 
 #include <testctlp.h>
 
+#pragma warning( push )
+#pragma warning( disable: 6255; disable: 6011 )
+#include <atlbase.h>
+#pragma warning( pop )
+
 #define EVENT_SINK_FAIL_PROCESS_SINK	1
 
 #pragma warning( disable: 4100 ) // Unreferenced argument.
@@ -548,6 +553,67 @@ void RunSingleTestCaseFromTestlib11()
 	Action->Release();
 }
 
+void RunTestWithEventDll()
+{
+	WCHAR Path[ MAX_PATH ];
+	CFIXCC_ASSERT( GetModuleFileName(
+		GetModuleHandle( L"testctl" ),
+		Path,
+		_countof( Path ) ) );
+	PathRemoveFileSpec( Path );
+	PathAppend( Path,  L"testlib10.dll" );
+
+	ICfixTestModule *Module;
+
+	BSTR BstrPath = SysAllocString( Path );
+	CFIX_ASSERT_OK( Host->LoadModule( BstrPath, &Module ) );
+	SysFreeString( BstrPath );
+
+	ICfixAction *Action;
+	CFIX_ASSERT_OK( Module->CreateExecutionAction( 0, 0, &Action ) );
+	Module->Release();
+
+	CFIX_ASSERT_HRESULT( 
+		CFIX_E_LOADING_EVENTDLL_FAILED,
+		Action->RegisterEventDll(
+			CComBSTR( L"notexistant.dll" ),
+			NULL,
+			0 ) );
+
+	CFIX_ASSERT_HRESULT( 
+		CFIX_E_MISSING_EVENT_SINK_EXPORT,
+		Action->RegisterEventDll(
+			CComBSTR( L"cfix.dll" ),
+			NULL,
+			0 ) );
+
+	CFIX_ASSERT_HRESULT( 
+		E_INVALIDARG,
+		Action->RegisterEventDll(
+			CComBSTR( L"cfixcons.dll" ),
+			CComBSTR( L"invalidparms" ),
+			0 ) );
+
+	CFIX_ASSERT_OK(
+		Action->RegisterEventDll(
+			CComBSTR( L"cfixcons.dll" ),
+			CComBSTR( L"" ),
+			0 ) );
+
+	CFIX_ASSERT_HRESULT( 
+		E_UNEXPECTED,
+		Action->RegisterEventDll(
+			CComBSTR( L"cfixcons.dll" ),
+			NULL,
+			0 ) );
+
+	EventSink Sink( 0 );
+	CFIX_ASSERT_OK( Action->Run( 
+		&Sink, 
+		CFIXCTL_ACTION_COM_NEUTRAL ) );
+	Action->Release();
+}
+
 void RunTestOnLargeStack()
 {
 	WCHAR Path[ MAX_PATH ];
@@ -632,4 +698,6 @@ CFIX_BEGIN_FIXTURE( TestExecAction )
 
 	CFIX_FIXTURE_ENTRY( RunTestOnLargeStack )
 	CFIX_FIXTURE_ENTRY( RunTestOnHugeStack )
+
+	CFIX_FIXTURE_ENTRY( RunTestWithEventDll )
 CFIX_END_FIXTURE()

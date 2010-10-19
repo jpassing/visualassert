@@ -4,7 +4,7 @@ WIXBINPATH=..\tools\wix
 !ENDIF
 !INCLUDE __buildnum.inc
 
-VERSION = 1.0.3.$(BUILDNUMBER)
+VERSION = 1.1.0.$(BUILDNUMBER)
 
 #----------------------------------------------------------------------
 #
@@ -19,7 +19,7 @@ VisualAssert.msi: clean VisualAssert.wixobj ui.wixobj dialogs.wixlib versioninfo
 
 VisualAssert.wixobj: VisualAssert.wxs
 	copy /Y $(CFIX_TREE)\installer\cfix_*.wxs .
-	$(WIXBINPATH)\candle -dCFIX_TREE=$(CFIX_TREE) -dProductCode=$(PRODUCTCODE) -dPackageCode=$(PACKAGECODE) -dProductVersion=$(VERSION) -nologo VisualAssert.wxs
+	$(WIXBINPATH)\candle -dCFIX_TREE=$(CFIX_TREE) -dProductCode=$(PRODUCTCODE) -dPackageCode=$(PACKAGECODE) -dProductVersion=$(VERSION) $(ADDITIONALCANDLEOPTS) -nologo VisualAssert.wxs
 
 ui.wixobj: ui.wxi
 	$(WIXBINPATH)\candle -nologo ui.wxi

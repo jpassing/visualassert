@@ -27,6 +27,7 @@ public:
 
 	void Test1()
 	{
+		new char[213];
 		//abort();
 		CFIX_LOG(__TEXT("Not implemented"));
 	}

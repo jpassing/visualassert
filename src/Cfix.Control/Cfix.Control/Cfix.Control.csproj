@@ -73,6 +73,8 @@
     <Compile Include="Native\NativeTestItem.cs" />
     <Compile Include="Native\TestCase.cs" />
     <Compile Include="Native\TestFixture.cs" />
+    <Compile Include="RunControl\RunCompilerBase.cs" />
+    <Compile Include="RunControl\ProcessPerTestRunCompiler.cs" />
     <Compile Include="RunControl\Run.cs" />
     <Compile Include="Architecture.cs" />
     <Compile Include="Failure.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="IResultItem.cs" />
     <Compile Include="ExecutionStatus.cs" />
     <Compile Include="IRun.cs" />
+    <Compile Include="RunControl\RunCompilerFactory.cs" />
     <Compile Include="RunControl\Task.cs" />
     <Compile Include="RundownLock.cs" />
     <Compile Include="AbstractActionEventSink.cs" />
@@ -110,6 +113,8 @@
     <Compile Include="ISession.cs" />
     <Compile Include="IStackTrace.cs" />
     <Compile Include="RunControl\SimpleRunCompiler.cs" />
+    <Compile Include="SortedTestItemCollection.cs" />
+    <Compile Include="StackTraceFrame.cs" />
     <Compile Include="StandardDispositionPolicy.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>

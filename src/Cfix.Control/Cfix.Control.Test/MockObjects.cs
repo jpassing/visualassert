@@ -136,6 +136,20 @@ namespace Cfix.Control.Test
 			return new MockHost( this.module );
 		}
 
+		public ICfixHost CreateHostWithShim(
+			CfixTestModuleArch Arch,
+			uint Clsctx,
+			uint Flags,
+			uint Timeout,
+			string hostPath,
+			string environment,
+			string CurrentDirectory,
+			string shim,
+			string shimCmdLine )
+		{
+			return new MockHost( this.module );
+		}
+
 		public string GetHostPath( CfixTestModuleArch Arch )
 		{
 			return "mock";
@@ -172,7 +186,9 @@ namespace Cfix.Control.Test
 				new MockAgent( module ), 
 				CfixTestModuleArch.CfixTestModuleArchI386, 
 				true,
-				HostCreationOptions.None )
+				HostCreationOptions.None,
+				Agent.DefaultHostRegistrationTimeout,
+				null )
 		{
 		}
 

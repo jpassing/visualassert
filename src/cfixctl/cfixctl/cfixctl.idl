@@ -15,8 +15,8 @@ import "ocidl.idl";
 //
 //
 //
-//d010ca05-1b6d-11de-b555-0016d3b98f9b
-//d010ca06-1b6d-11de-b555-0016d3b98f9b
+//
+//
 //d010ca07-1b6d-11de-b555-0016d3b98f9b
 //d010ca08-1b6d-11de-b555-0016d3b98f9b
 //d010ca09-1b6d-11de-b555-0016d3b98f9b
@@ -209,7 +209,7 @@ library Cfixctl
 
 	[
 	  object,
-	  uuid( 57f93e41-d44f-11dd-99e2-0016d3b98f9b ),
+	  uuid( d010ca06-1b6d-11de-b555-0016d3b98f9b ),
 	  version( 1.0 ),
 	  oleautomation
 	]
@@ -261,6 +261,21 @@ library Cfixctl
 		HRESULT GetTestCaseCount(
 			[out, retval] ULONG *Count 
 			);
+
+		/*++
+			Method Description:
+				Reister a event DLL that will receive event notifications.
+
+				Currently, only a single event DLL can be registered.
+
+				To have effect, this method must be called before
+				Run is invoked.
+		--*/
+		HRESULT RegisterEventDll(
+			[in] BSTR DllPath,
+			[in] BSTR Options,
+			[in] ULONG Reserved
+			);
 	}
 
 	[
@@ -294,7 +309,7 @@ library Cfixctl
 
 	[
 	  object,
-	  uuid( d010ca02-1b6d-11de-b555-0016d3b98f9b ),
+	  uuid( d010ca05-1b6d-11de-b555-0016d3b98f9b ),
 	  version( 1.0 ),
 	  oleautomation
 	]
@@ -334,6 +349,13 @@ library Cfixctl
 
 				CurrentDir	- Optional. Current directory to start host in.
 
+				ShimPath	- Optional. Path to shimming executable. If set,
+							  this executable is launched, not the default or
+							  custom host executable. HostPath (if available)
+							  is still used to verify that the executable is 
+							  a valid cfix test executable.
+				ShimCmdLine	- Optional. Command line for shim -- including argv[0].
+
 				Environ and CurrentDir are ignored for in-process hosts.
 		--*/
 		HRESULT CreateHost( 
@@ -344,6 +366,19 @@ library Cfixctl
 			[in, unique] const BSTR HostPath,
 			[in, unique] const BSTR Environment,
 			[in, unique] const BSTR CurrentDirectory,
+			[out, retval] ICfixHost** Host
+			);
+
+		HRESULT CreateHostWithShim( 
+			[in] CfixTestModuleArch Arch,
+			[in] DWORD Clsctx,
+			[in] ULONG Flags,
+			[in] ULONG Timeout,
+			[in, unique] const BSTR HostPath,
+			[in, unique] const BSTR Environment,
+			[in, unique] const BSTR CurrentDirectory,
+			[in, unique] const BSTR ShimPath,
+			[in, unique] const BSTR ShimCommandLine,
 			[out, retval] ICfixHost** Host
 			);
 

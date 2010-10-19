@@ -416,6 +416,11 @@ namespace Cfix.Control.Native
 				uint count = 0;
 				lock ( this.updateLock )
 				{
+					if ( this.subItems == null )
+					{
+						return 0;
+					}
+
 					foreach ( ITestItem item in this.subItems )
 					{
 						if ( item is IRunnableTestItemCollection )

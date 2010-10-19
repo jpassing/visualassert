@@ -20,6 +20,7 @@ using Cfix.Control.Ui.Result;
 using Cfix.Addin.Windows;
 using EnvDTE;
 using EnvDTE80;
+using Cfix.Addin.IntelParallelStudio;
 
 namespace Cfix.Addin.Windows
 {
@@ -32,6 +33,8 @@ namespace Cfix.Addin.Windows
 		private static readonly Color SuccessColor = Color.PaleGreen;
 		private static readonly Color DefaultColor = SystemColors.Control;
 		private static readonly Color InitialColor = Color.LightYellow;
+		private static readonly Color PostprocessingFailedColor = Color.DarkOrange;
+		private static readonly Color InitializingColor = Color.Gray;
 
 		private readonly object runLock = new object();
 		
@@ -60,16 +63,8 @@ namespace Cfix.Addin.Windows
 			return text;
 		}
 
-		private void SetActiveItem( IResultItem item )
-		{
-			//
-			// Update property window.
-			//
-
-			object[] propObjects = 
-				item == null ? new object[ 0 ] : new object[] { item };
-			this.window.SetSelectionContainer( ref propObjects );
-		}
+		private uint anticipatedInitializationTimeTicks;
+		private uint elapsedInitializationTimeTicks;
 
 		/*----------------------------------------------------------------------
 		 * Private - Run events.
@@ -104,12 +99,23 @@ namespace Cfix.Addin.Windows
 							( int ) ( completed * 100 / total );
 					}
 
-					if ( item.Status == ExecutionStatus.Failed &&
-						this.progressBar.ProgressBarColor == SuccessColor )
+					if ( this.progressBar.ProgressBarColor == InitializingColor )
 					{
-						this.progressBar.ProgressBarColor = FailedColor;
+						this.progressBar.ProgressBarColor = SuccessColor;
 					}
 
+					if ( this.progressBar.ProgressBarColor == SuccessColor )
+					{
+						if ( item.Status == ExecutionStatus.Failed )
+						{
+							this.progressBar.ProgressBarColor = FailedColor;
+						}
+						else if ( item.Status == ExecutionStatus.PostprocessingFailed )
+						{
+							this.progressBar.ProgressBarColor = PostprocessingFailedColor;
+						}
+					}
+					
 					this.progressLabel.Text =
 						String.Format(
 							Strings.ProgressInfo,
@@ -141,6 +147,8 @@ namespace Cfix.Addin.Windows
 				this.terminateButton.Enabled = false;
 				this.redebugButton.Enabled = true;
 				this.restartButton.Enabled = true;
+
+				this.initTimer.Stop();
 
 				if ( this.run.Status == TaskStatus.Suceeded )
 				{
@@ -191,17 +199,29 @@ namespace Cfix.Addin.Windows
 				this.showFailuresOnlyButton.Checked = false;
 				this.showFailuresOnlyButton.Enabled = false;
 
-				this.progressLabel.Text =
-					String.Format(
-						Strings.ProgressInfo,
-						0,
-						this.run.ItemCount,
-						this.run.TaskCount,
-						this.run.Status.ToString(),
-						0,
-						0,
-						0 );
-				this.progressBar.Invalidate(); 
+				if ( this.run.InvolvesPostprocessing )
+				{
+					this.progressBar.ProgressBarColor = InitializingColor;
+					this.progressLabel.Text = Strings.InitializingRun;
+				}
+				else
+				{
+					this.progressLabel.Text =
+						String.Format(
+							Strings.ProgressInfo,
+							0,
+							this.run.ItemCount,
+							this.run.TaskCount,
+							this.run.Status.ToString(),
+							0,
+							0,
+							0 );
+
+					this.progressBar.ProgressBarColor = SuccessColor;
+				}
+
+				this.progressBar.Value = 0;
+				this.progressBar.Invalidate();
 				this.progressLabel.Invalidate();
 			} );
 		}
@@ -244,7 +264,9 @@ namespace Cfix.Addin.Windows
 
 		private void results_SelectionChanged( object sender, EventArgs e )
 		{
-			SetActiveItem( this.results.SelectedItem );
+			CommonUiOperations.SetActiveSelectionItem( 
+                this.window, 
+                this.results.SelectedItem );
 		}
 
 		/*----------------------------------------------------------------------
@@ -275,6 +297,12 @@ namespace Cfix.Addin.Windows
 					this.ctxMenuRunButton.Enabled = !running;
 
 					this.ctxMenuViewCodeButton.Visible = resultItem.ResultItem.Item is ITestCodeElement;
+
+#if INTELINSPECTOR
+					object associatedObj = resultItem.ResultItem.Object;
+					this.ctxMenuViewInspectorResult.Visible =
+						associatedObj != null && associatedObj is ResultLocation;
+#endif
 
 					this.resultCtxMenu.Show( this.results, e.Location );
 					return;
@@ -323,7 +351,7 @@ namespace Cfix.Addin.Windows
 				CommonUiOperations.RunItem(
 					this.workspace,
 					resultItem.ResultItem.Item,
-					true );
+					RunMode.Debug );
 			}
 		}
 
@@ -335,13 +363,34 @@ namespace Cfix.Addin.Windows
 				CommonUiOperations.RunItem(
 					this.workspace,
 					resultItem.ResultItem.Item,
-					false );
+					RunMode.Normal );
 			}
 		}
 
 		private void ctxMenuViewCodeButton_Click( object sender, EventArgs e )
 		{
 			GoTo( this.contextMenuReferenceItem );
+		}
+		
+		private void ctxMenuViewInspectorResult_Click( object sender, EventArgs e )
+		{
+			ResultItemNode resultItemNode =
+				this.contextMenuReferenceItem as ResultItemNode;
+			if ( resultItemNode == null )
+			{
+				return;
+			}
+
+#if INTELINSPECTOR
+			ResultLocation resultLocation = 
+				resultItemNode.ResultItem.Object as ResultLocation;
+			if ( resultLocation != null )
+			{
+				this.dte.ItemOperations.OpenFile(
+					resultLocation.ResultFile,
+					Constants.vsViewKindAny );
+			}
+#endif
 		}
 
 		private void GoTo( object node )
@@ -378,7 +427,7 @@ namespace Cfix.Addin.Windows
 						CommonUiOperations.RunItem(
 							this.workspace,
 							resultNode.ResultItem.Item,
-							! e.Shift );
+							e.Shift ? RunMode.Normal : RunMode.Debug );
 					}
 				}
 				else
@@ -502,12 +551,14 @@ namespace Cfix.Addin.Windows
 						this.run.Dispose();
 					}
 
-					this.progressBar.Value = 0;
 					this.progressBar.ProgressBarColor = SuccessColor;
 
 					this.terminateButton.Enabled = true;
 					this.restartButton.Enabled = false;
 					this.redebugButton.Enabled = false;
+
+					this.elapsedInitializationTimeTicks = 0;
+					this.anticipatedInitializationTimeTicks = 40;
 
 					this.run = value;
 					this.aborted = false;
@@ -519,6 +570,11 @@ namespace Cfix.Addin.Windows
 						this.run.Finished += new EventHandler<FinishedEventArgs>( run_Finished );
 						this.run.Log += new EventHandler<LogEventArgs>( run_Log );
 						this.run.StatusChanged += new EventHandler( run_StatusChanged );
+
+						if ( this.run.InvolvesPostprocessing )
+						{
+							this.initTimer.Start();
+						}
 					}
 				}
 			}
@@ -535,12 +591,12 @@ namespace Cfix.Addin.Windows
 
 		private void redebugButton_Click( object sender, EventArgs e )
 		{
-			CommonUiOperations.RunItem( this.workspace, null, true );
+			CommonUiOperations.RunItem( this.workspace, null, RunMode.Debug );
 		}
 
 		private void restartButton_Click( object sender, EventArgs e )
 		{
-			CommonUiOperations.RunItem( this.workspace, null, false );
+			CommonUiOperations.RunItem( this.workspace, null, RunMode.Normal );
 		}
 
 		private void autoScrollButton_Click( object sender, EventArgs e )
@@ -585,6 +641,29 @@ namespace Cfix.Addin.Windows
 		private void selectPrevFailureButton_Click( object sender, EventArgs e )
 		{
 			this.results.HighlightNextFailure( true );
+		}
+
+		private void initTimer_Tick( object sender, EventArgs e )
+		{
+			if ( this.elapsedInitializationTimeTicks < 
+				this.anticipatedInitializationTimeTicks )
+			{
+				this.elapsedInitializationTimeTicks++;
+
+				uint fraction = this.elapsedInitializationTimeTicks * 100 /
+					this.anticipatedInitializationTimeTicks;
+				Debug.Assert( fraction <= 100 );
+				Debug.Assert( fraction >= 0 );
+
+				//
+				// Use the 90% trick.
+				//
+				fraction = Math.Min( fraction, 90 );
+
+				this.progressBar.Value = ( int ) fraction;
+				this.progressBar.Invalidate();
+				this.progressLabel.Invalidate();
+			}
 		}
 
 	}

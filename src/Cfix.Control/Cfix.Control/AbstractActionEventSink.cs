@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Cfix.Control.RunControl
 {
-	internal class AbstractActionEventSink : IActionEvents
+	public class AbstractActionEventSink : IActionEvents
 	{
 		public event EventHandler<NotificationEventArgs> Notification;
 		public event EventHandler<HostEventArgs> HostSpawned;
@@ -113,7 +113,16 @@ namespace Cfix.Control.RunControl
 				//
 				if ( item.Completed )
 				{
-					Interlocked.Increment( ref this.itemsCompleted );
+					if ( item.Status == ExecutionStatus.PostprocessingFailed )
+					{
+						//
+						// Do not count these.
+						//
+					}
+					else
+					{
+						Interlocked.Increment( ref this.itemsCompleted );
+					}
 
 					switch ( item.Status )
 					{

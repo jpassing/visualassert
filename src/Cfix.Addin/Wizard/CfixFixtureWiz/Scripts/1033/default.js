@@ -42,8 +42,95 @@ function FindProject( wizard, collection, strProjectName )
 	return null;
 }
 
+function GetCompilerToolName( oProj )
+{
+    if ( oProj.Kind == icProjectVcProject )
+    {
+        return "CppCmplrTool"
+    }
+    else
+    {
+        return "VCCLCompilerTool";
+    }
+}
+
+function IsCodeModelAvailable( oProj )
+{
+    //
+    // Intel C++ projects have some dummy object as Code Model -- 
+    // try to detect this.
+    //
+    try
+    {
+        oProj.CodeModel.Synchronize();
+        return true;
+    }
+    catch ( e )
+    {
+        return false;
+    }
+}
+
+/*++
+    Function Description:
+        Retrieves the path to the precompiled header file.
+        
+        The fucntion offers a subset of the functionality of 
+        GetProjectFile, yet also supports IC projects.
+--*/
+function GetStdafxFile( oProj, bFullPath )
+{
+	try
+	{
+		var oFiles = oProj.Object.Files;
+		var strFileName = "";
+
+        //
+		// Look for name of precompiled header.
+		//
+		var strPrecompiledHeader = oProj.Object.Configurations( 1 ).Tools( GetCompilerToolName( oProj ) ).PrecompiledHeaderThrough;
+		if (strPrecompiledHeader.length)
+		{
+			strFileName = strPrecompiledHeader;
+		}
+		
+		//
+		// If not found look for stdafx.h.
+		//
+		else
+		{
+			strFileName = "stdafx.h";
+        }
+
+		//
+		// Remove path.
+		if (-1 != strFileName.indexOf("\\"))
+		{
+			strFileName = strFileName.substr(strFileName.lastIndexOf("\\") + 1);
+		}
+
+		if (strFileName.length == 0 || !oFiles(strFileName))
+		{
+			return "";
+		}
+
+		if (bFullPath)
+		{
+			return oFiles(strFileName).FullPath;
+		}
+		else
+		{
+			return strFileName;
+		}
+	}
+	catch(e)
+	{
+		throw e;
+	}
+}
 function OnFinish( selProj, selObj )
 {
+    // wizard.OkCancelAlert( "debug" );
 	try
 	{
 		var strProjectName = wizard.FindSymbol( "PROJECT_NAME" );
@@ -68,6 +155,21 @@ function OnFinish( selProj, selObj )
 			}
 		}
 		
+		if ( selProj.Kind == icProjectVcProject && ! IsCodeModelAvailable( selProj ) )
+		{
+		    //
+		    // Code Model not available.
+		    //
+		    
+		    if ( ! wizard.YesNoAlert( 
+		        "For Intel C++ projects using OpenMP, Visual Assert cannot "+
+		        "automatically add include directives. Would you like to continue "+
+		        "and add them manually?" ) )
+	        {
+	            return 0;
+	        }
+		}
+		
 		//
 		// Generate template code. If the file exists, the code is appended.
 		//
@@ -77,51 +179,57 @@ function OnFinish( selProj, selObj )
 			selProj.Object.AddFile( strFile );
 		}
 		
-		//
-		// Add include.
-		//
-		codeModel = selProj.CodeModel;
-		codeModel.Synchronize();
-		codeModel.StartTransaction("Add Unit Test");
-		
-		//
-		// N.B. The IC automation model is incomplete -- DoesIncludeExist
-		// fails for IC projects. Skip the check for these kinds of projects
-		// at the risk of getting duplicate includes.
-		//
-		if ( selProj.Kind == icProjectVcProject ||
-		     ! DoesIncludeExist( selProj, "<" + strApiType + ".h>", strFile ) )
-		{
-			codeModel.AddInclude( "<" + strApiType + ".h>", strFile, vsCMAddPositionDefault );
-		}
-		
-		//
-		// Get path to stdafx.h, may be empty.
-		//
-		var strSTDAFX = ""
-		try
-		{
-			strSTDAFX = GetProjectFile( selProj, "STDAFX", false, true );
-		}
-		catch (e)
-		{
-			//
-			// Fails for makefile projects.
-			//
-		}
-				
-		if ( strSTDAFX != "" )
+		if ( IsCodeModelAvailable( selProj ) )
 		{
 		    //
-		    // Make sure that we include this, too.
+		    // Add include.
 		    //
-		    if ( ! DoesIncludeExist(selProj, "\"" + strSTDAFX + "\"", strFile ) )
+		    codeModel = selProj.CodeModel;
+		    codeModel.Synchronize();
+		    codeModel.StartTransaction("Add Unit Test");
+    		
+		    //
+		    // N.B. The IC automation model does not support ICFile.Includes -- 
+		    // DoesIncludeExist therefore always returns fals fails for IC projects. 
+		    //
+		    // Skip the check for these kinds of projects
+		    // at the risk of getting duplicate includes.
+		    //
+		    if ( selProj.Kind == icProjectVcProject ||
+		         ! DoesIncludeExist( selProj, "<" + strApiType + ".h>", strFile ) )
 		    {
-			    codeModel.AddInclude( "\"" + strSTDAFX + "\"", strFile, vsCMAddPositionStart );
+			    codeModel.AddInclude( "<" + strApiType + ".h>", strFile, vsCMAddPositionDefault );
 		    }
+    		
+		    //
+		    // Get path to stdafx.h, may be empty.
+		    //
+		    var strSTDAFX = ""
+		    try
+		    {
+			    strSTDAFX = GetStdafxFile( selProj, false );
+		    }
+		    catch (e)
+		    {
+			    //
+			    // Fails for makefile projects.
+			    //
+		    }
+    				
+		    if ( strSTDAFX != "" )
+		    {
+		        //
+		        // Make sure that we include this, too.
+		        //
+		        if (  selProj.Kind == icProjectVcProject ||
+		              ! DoesIncludeExist(selProj, "\"" + strSTDAFX + "\"", strFile ) )
+		        {
+			        codeModel.AddInclude( "\"" + strSTDAFX + "\"", strFile, vsCMAddPositionStart );
+		        }
+		    }
+    		
+		    codeModel.CommitTransaction();
 		}
-		
-		codeModel.CommitTransaction();
 		
 		selProj.Object.Save();
 		

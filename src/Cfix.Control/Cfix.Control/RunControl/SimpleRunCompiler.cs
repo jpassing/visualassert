@@ -7,21 +7,14 @@ namespace Cfix.Control.RunControl
 {
 	// Non-threadsafe
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable" )]
-	public class SimpleRunCompiler : IRunCompiler
+	public class SimpleRunCompiler : RunCompilerBase
 	{
-		private readonly AgentSet agentSet;
-		private readonly ExecutionOptions executionOptions;
-		private readonly EnvironmentOptions environmentOptions;
-		private readonly Run run;
 		private readonly bool allowIncompatibleModules;
-
-		private readonly HostEnvironment env = new HostEnvironment();
 
 		//
 		// One bucket per architecture; one for embedded modules.
 		//
 		private IList<IAction>[] actionBuckets = new IList<IAction>[ 3 ];
-		private IResultItem result;
 
 		private const int BucketEmbedded = 0;
 		private const int BucketAmd64 = 1;
@@ -63,37 +56,27 @@ namespace Cfix.Control.RunControl
 			}
 		}
 
-		private static AgentSet CreateSingleArchitectureAgentSet(
-			IAgent agent
-			)
-		{
-			AgentSet set = new AgentSet();
-			set.AddArchitecture( agent );
-			return set;
-		}
-
 		public SimpleRunCompiler(
 			AgentSet agentSet,
 			IDispositionPolicy policy,
 			ExecutionOptions executionOptions,
 			EnvironmentOptions environmentOptions,
 			bool allowIncompatibleModules
-			)
+			) : base(
+				agentSet,
+				policy,
+				executionOptions,
+				environmentOptions )
 		{
 			for ( int i = 0; i < this.actionBuckets.Length; i++ )
 			{
 				this.actionBuckets[ i ] = new List<IAction>();
 			}
 
-			this.agentSet = agentSet;
-			this.executionOptions = executionOptions;
-			this.environmentOptions = environmentOptions;
-
 			this.allowIncompatibleModules = allowIncompatibleModules;
-			this.run = new Run( policy );
 		}
 
-		internal SimpleRunCompiler(
+		public SimpleRunCompiler(
 			IAgent agent,
 			IDispositionPolicy policy,
 			ExecutionOptions executionOptions,
@@ -108,51 +91,11 @@ namespace Cfix.Control.RunControl
 		{ }
 
 		/*--------------------------------------------------------------
-		 * IRunCompiler.
+		 * Overrides.
 		 */
 
-		public ExecutionOptions ExecutionOptions
+		protected override void AddAction( IAction action )
 		{
-			get { return this.executionOptions; }
-		}
-
-		public EnvironmentOptions EnvironmentOptions
-		{
-			get { return this.environmentOptions; }
-		}
-
-		public void Add( IAction action )
-		{
-			if ( this.result == null )
-			{
-				this.result = GetRootAncestor( action.Result );
-			}
-			else
-			{
-				//
-				// The action's result must belong to the existing
-				// tree of results.
-				//
-				if ( ReferenceEquals(
-					GetRootAncestor( action.Result ),
-					GetRootAncestor( this.result ) ) )
-				{
-					//
-					// Ok.
-					//
-				}
-				else
-				{
-					//
-					// Forests not supported.
-					//
-					throw new ArgumentException(
-						"The action's result does not integrate with " +
-						"the existing result tree" );
-
-				}
-			}
-
 			int bucket = GetBucket( action );
 			if ( !this.allowIncompatibleModules )
 			{
@@ -173,18 +116,7 @@ namespace Cfix.Control.RunControl
 			this.actionBuckets[ bucket ].Add( action );
 		}
 
-		public void Add( IRunnableTestItem item )
-		{
-			item.Add(
-				this,
-				this.run,
-				item.CreateResultItem(
-					null,
-					this.run,
-					ExecutionStatus.Pending ) );
-		}
-
-		public IRun Compile()
+		public override IRun Compile()
 		{
 			int tasks = 0;
 			for ( int i = 0; i < this.actionBuckets.Length; i++ )
@@ -197,7 +129,7 @@ namespace Cfix.Control.RunControl
 						IAgent agent = this.agentSet.GetAgent( act.Architecture );
 						task = new Task( 
 							agent,
-							act.CreateHost( agent, env ) );
+							this.Environment );
 						this.run.AddTask( task );
 						tasks++;
 					}
@@ -222,11 +154,6 @@ namespace Cfix.Control.RunControl
 			this.run.RootResult = ( IResultItemCollection ) this.result;
 
 			return this.run;
-		}
-
-		public HostEnvironment Environment
-		{
-			get { return this.env; }
 		}
 	}
 }
