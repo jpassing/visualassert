@@ -181,7 +181,21 @@ namespace Cfix.Control.RunControl
 					//
 					IResultItemCollection parentResult = 
 						( IResultItemCollection ) action.Result;
-					IResultItem testCaseResult = parentResult.GetItem( action.Item.Ordinal );
+					IResultItem testCaseResult;
+
+					if ( action.Item.Ordinal < parentResult.ItemCount )
+					{
+						testCaseResult = parentResult.GetItem( action.Item.Ordinal );
+					}
+					else
+					{
+						//
+						// Partial result.
+						//
+						Debug.Assert( parentResult.ItemCount == 1 );
+						testCaseResult = parentResult.GetItem( 0 );
+					}
+
 					testCaseResult.ForceCompletion( false, ExecutionStatus.Failed );
 				}
 				else

@@ -108,7 +108,10 @@ namespace Cfix.Addin.Windows
 		{
 			Debug.Assert( this.configuration != null );
 
-			EnvironmentOptions envOpts = EnvironmentOptions.ComNeutralThreading;
+			EnvironmentOptions envOpts = this.configuration.EnvironmentOptions;
+
+			envOpts |= EnvironmentOptions.ComNeutralThreading;
+
 			if ( this.autoAdjustCwd.Checked )
 			{
 				envOpts |= EnvironmentOptions.AutoAdjustCurrentDirectory;
@@ -152,16 +155,14 @@ namespace Cfix.Addin.Windows
 		{
 			EventDllData data = ( EventDllData ) this.archComboBox.SelectedItem;
 
-			if ( this.dllTextBox.Text.Trim().Length == 0 &&
+			data.eventDll = new EventDll(
+				this.dllTextBox.Text,
+				data.eventDll != null ? data.eventDll.Options : null );
+
+			if ( String.IsNullOrEmpty( data.eventDll.Path ) &&
 				 String.IsNullOrEmpty( data.eventDll.Options ) )
 			{
 				data.eventDll = null;
-			}
-			else
-			{
-				data.eventDll = new EventDll(
-					this.dllTextBox.Text,
-					data.eventDll != null ? data.eventDll.Options : null );
 			}
 		}
 
@@ -169,16 +170,14 @@ namespace Cfix.Addin.Windows
 		{
 			EventDllData data = ( EventDllData ) this.archComboBox.SelectedItem;
 
+			data.eventDll = new EventDll(
+				data.eventDll != null ? data.eventDll.Path : null,
+				this.optionsTextBox.Text );
+
 			if ( String.IsNullOrEmpty( data.eventDll.Path ) &&
-				 this.optionsTextBox.Text.Trim().Length == 0 )
+				 String.IsNullOrEmpty( data.eventDll.Options ) )
 			{
 				data.eventDll = null;
-			}
-			else
-			{
-				data.eventDll = new EventDll(
-					data.eventDll != null ? data.eventDll.Path : null,
-					this.optionsTextBox.Text );
 			}
 		}
 	}

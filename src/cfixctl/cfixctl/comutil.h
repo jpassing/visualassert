@@ -220,7 +220,7 @@ public:
 		}
 
 		ComObjectBase* NewObject = new T( this );
-		if ( Object == NULL )
+		if ( NewObject == NULL )
 		{
 			*Object = NULL;
 			return E_OUTOFMEMORY;

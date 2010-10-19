@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace Cfix.Addin.Test
 {
+#if INTELINSPECTOR
 	[TestFixture]
 	public class TestResultFilter
 	{
@@ -43,4 +44,5 @@ namespace Cfix.Addin.Test
 		}
 
 	}
+#endif
 }

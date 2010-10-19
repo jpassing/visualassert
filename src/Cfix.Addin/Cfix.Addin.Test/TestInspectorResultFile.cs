@@ -9,6 +9,7 @@ using Cfix.Control;
 
 namespace Cfix.Addin.Test
 {
+#if INTELINSPECTOR
 	[TestFixture]
 	public class TestInspectorResultFile
 	{
@@ -298,4 +299,5 @@ namespace Cfix.Addin.Test
 				InspectorResult.GetDescriptionFromCode( "pdr_xs_ay" ) );
 		}
 	}
+#endif
 }
